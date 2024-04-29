@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models\apps\servicios_tecnicos\servicios;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ModelEvidenciasSeguimiento extends Model
+{
+    use HasFactory;
+
+    protected $connection = 'servicios_tecnicos';
+
+    protected $table = 'evidencias_seg_taller';
+
+    protected $fillable = [
+        "id",
+        "nombre_img",
+        "tipo",
+        "tama",
+        "url",
+        "id_seguimiento",
+    ];
+}
