@@ -45,7 +45,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.docs.tmp', ['dpto' => 'sistemas']) }}">
-                                <img src="{{ asset('storage/icons/temporal.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sistemas', 'memo' => 'protocolos']) }}">
-                                <img src="{{ asset('storage/icons/protocolo.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/protocolo.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sistemas', 'memo' => 'comunicados-sistemas']) }}">
-                                <img src="{{ asset('storage/icons/laws.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/laws.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sistemas', 'memo' => 'documentos-varios-sistemas']) }}">
-                                <img src="{{ asset('storage/icons/tarea-multiple.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/tarea-multiple.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
-                                <img src="{{ asset('storage/icons/opinion.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

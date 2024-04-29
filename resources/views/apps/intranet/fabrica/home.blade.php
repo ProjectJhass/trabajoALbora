@@ -34,7 +34,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.docs.tmp', ['dpto' => 'fabrica']) }}">
-                                <img src="{{ asset('storage/icons/temporal.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('home.intranet.fabrica') }}">
-                                <img src="{{ asset('storage/icons/camion.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/fabrica_int.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'bodega-transporte']) }}">
-                                <img src="{{ asset('storage/icons/camion.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/camion.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'combinacion-de-telas']) }}">
-                                <img src="{{ asset('storage/icons/tela.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/tela.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'fabrica-comercializadora']) }}">
-                                <img src="{{ asset('storage/icons/casa.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/casa.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('memos.fabrica') }}">
-                                <img src="{{ asset('storage/icons/memorando.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memorando.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ $baseUrl }}/pqrs_fabrica/formulario/" target="_BLANK">
-                                <img src="{{ asset('storage/icons/pqr.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/pqr.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'videos-armado']) }}">
-                                <img src="{{ asset('storage/icons/video.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/video.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ $baseUrl }}/encuestas_fabrica/tipo.php" target="_BLANK">
-                                <img src="{{ asset('storage/icons/eval.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/eval.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ url('fabrica/docs/ideas-fabrica') }}">
-                                <img src="{{ asset('storage/icons/ideas.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/ideas.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('info.ideas') }}">
-                                    <img src="{{ asset('storage/icons/ideas.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/ideas.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ $baseUrl }}/tareas/public/login" target="_BLANK">
-                                <img src="{{ asset('storage/icons/tareas.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/tareas.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="http://192.168.1.84:6654/reloj-fabrica/login/" target="_BLANK">
-                                <img src="{{ asset('storage/icons/clock_fab.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/clock_fab.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

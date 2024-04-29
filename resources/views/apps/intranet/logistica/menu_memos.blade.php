@@ -33,7 +33,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.log.memos', ['memo'=>'logistica-promociones']) }}">
-                                <img src="{{ asset('storage/icons/discount.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/discount.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.log.memos', ['memo'=>'logistica-memorandos-fabrica']) }}">
-                                <img src="{{ asset('storage/icons/trabajador.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/trabajador.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.log.memos', ['memo'=>'lista-de-precios']) }}">
-                                <img src="{{ asset('storage/icons/precio.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/precio.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.log.memos', ['memo'=>'empaque-y-arrume']) }}">
-                                <img src="{{ asset('storage/icons/boxes.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/boxes.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.log.memos', ['memo'=>'instructivos-de-logistica']) }}">
-                                <img src="{{ asset('storage/icons/mandatory.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/mandatory.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.log.memos', ['memo'=>'tarifas-de-envios']) }}">
-                                <img src="{{ asset('storage/icons/transportadora.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/transportadora.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

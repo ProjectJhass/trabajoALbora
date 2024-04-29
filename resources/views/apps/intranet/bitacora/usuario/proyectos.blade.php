@@ -84,7 +84,7 @@
                                                                 @foreach ($item['seguimiento'] as $seg)
                                                                     <div class="post clearfix">
                                                                         <div class="user-block">
-                                                                            <img class="img-circle img-bordered-sm" src="{{ asset('storage/icons/usuario.png') }}" alt="User Image">
+                                                                            <img class="img-circle img-bordered-sm" src="{{ asset('icons/usuario.png') }}" alt="User Image">
                                                                             <span class="username">
                                                                                 <div class="text-blue">{{ $seg['responsable'] }}</div>
                                                                             </span>
@@ -116,7 +116,7 @@
                                     @foreach ($seguimiento as $seg)
                                         <div class="post clearfix">
                                             <div class="user-block">
-                                                <img class="img-circle img-bordered-sm" src="{{ asset('storage/icons/usuario.png') }}" alt="user image">
+                                                <img class="img-circle img-bordered-sm" src="{{ asset('icons/usuario.png') }}" alt="user image">
                                                 <span class="username">
                                                     <div class="text-blue">{{ $seg['responsable'] }}</div>
                                                 </span>

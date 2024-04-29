@@ -46,7 +46,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.docs.tmp', ['dpto' => 'auditoria']) }}">
-                                <img src="{{ asset('storage/icons/temporal.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'auditoria', 'memo' => 'memorandos-auditoria']) }}">
-                                <img src="{{ asset('storage/icons/book.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/book.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
-                                <img src="{{ asset('storage/icons/opinion.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

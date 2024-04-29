@@ -33,7 +33,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://www.transunion.co/" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/cifin.jpg') }} " width="80%" alt="">
+                                    <img src="{{ asset('icons/cifin.jpg') }} " width="80%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://www.datacredito.com.co/" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/datacredito.png') }} " width="60%" alt="">
+                                    <img src="{{ asset('icons/datacredito.png') }} " width="60%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://antecedentes.policia.gov.co:7005/WebJudicial/index.xhtml" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/policeman.png') }} " width="30%" alt="">
+                                    <img src="{{ asset('icons/policeman.png') }} " width="30%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://ruaf.sispro.gov.co/TerminosCondiciones.aspx" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/ruaf.png') }} " width="40%" alt="">
+                                    <img src="{{ asset('icons/ruaf.png') }} " width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://www.adres.gov.co/consulte-su-eps" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/adres.jpg') }} " width="60%" alt="">
+                                    <img src="{{ asset('icons/adres.jpg') }} " width="60%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://certificados.supernotariado.gov.co/certificado" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/certificado.png') }} " width="35%" alt="">
+                                    <img src="{{ asset('icons/certificado.png') }} " width="35%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://www.rues.org.co/" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/rues.png') }} " width="45%" alt="">
+                                    <img src="{{ asset('icons/rues.png') }} " width="45%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="https://www.aportesenlinea.com/Autoservicio/CertificadoAportes.aspx" target="_BLANK">
-                                    <img src="{{ asset('storage/icons/aportes.png') }} " width="100%" alt="">
+                                    <img src="{{ asset('icons/aportes.png') }} " width="100%" alt="">
                                 </a>
                             </div>
                         </div>

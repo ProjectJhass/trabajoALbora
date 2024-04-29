@@ -49,7 +49,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'ventas', 'memo' => 'memorandos-ventas']) }}">
-                                <img src="{{ asset('storage/icons/book.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/book.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="{{ route('lista.precios', ['origen' => '1']) }}">
-                                    <img src="{{ asset('storage/icons/cotizador.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/cotizador.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="{{ route('inicio.crm.punto.venta') }}">
-                                    <img src="{{ asset('storage/icons/gcp.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/gcp.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                 <!-- {{ $baseUrl }}/crm/php/login/autenticar.php -->
                                 <a href="{{ $baseUrl }}/crm/php/autenticar.php?txt_usuario={{ base64_encode(Auth::user()->usuario) }}&txt_clave={{ base64_encode(session('pwdApp')) }}"
                                     target="_BLANK">
-                                    <img src="{{ asset('storage/icons/gcp.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/gcp.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                             <div class="text-center">
                                 <a href="{{ $baseUrl }}/crm_ecommerce/login/aut/autenticar.php?txt_name_user={{ base64_encode(Auth::user()->usuario) }}&&txt_passwd={{ base64_encode(session('pwdApp')) }}"
                                     target="_BLANK">
-                                    <img src="{{ asset('storage/icons/crm.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/crm.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                         <div class="card-body text-center">
                             <div onclick="event.preventDefault(); document.getElementById('autenticar-cotizador-pruebas').submit();"
                                 style="cursor: pointer;">
-                                <img src="{{ asset('storage/icons/pruebas.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/pruebas.png') }}" width="40%" alt="">
                             </div>
                             <form hidden action="{{ $baseUrl }}/cotizador_pruebas/public/login" id="autenticar-cotizador-pruebas" target="_blank"
                                 method="post" enctype="multipart/form-data">
@@ -140,7 +140,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
-                                <img src="{{ asset('storage/icons/opinion.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

@@ -49,7 +49,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.docs.tmp', ['dpto' => 'rrhh']) }}">
-                                    <img src="{{ asset('storage/icons/temporal.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'rrhh', 'memo' => 'memorandos-rrhh']) }}">
-                                    <img src="{{ asset('storage/icons/memorando.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/memorando.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'rrhh', 'memo' => 'politicas-de-seguridad']) }}">
-                                    <img src="{{ asset('storage/icons/seguridad.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/seguridad.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'rrhh', 'memo' => 'documentos-varios-rrhh']) }}">
-                                    <img src="{{ asset('storage/icons/memorando1.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/memorando1.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('reglamento.interno') }}">
-                                    <img src="{{ asset('storage/icons/reglamento.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/reglamento.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                         <div class="text-center">
                                             <a href="{{ $baseUrl }}/retirados/php/login.php?txt_user_rrhh={{ base64_encode('pruebas') }}&&txt_pass_rrhh={{ base64_encode('pruebas') }}"
                                                 target="_BLANK">
-                                                <img src="{{ asset('storage/icons/retirados.png') }}" width="40%" alt="">
+                                                <img src="{{ asset('icons/retirados.png') }}" width="40%" alt="">
                                             </a>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                         <div class="text-center">
                                             <a href="{{ $baseUrl }}/hojas-de-vida/login/aut/login.php?txt_user_rrhh={{ base64_encode('pruebas') }}&&txt_pass_rrhh={{ base64_encode('pruebas') }}"
                                                 target="_BLANK">
-                                                <img src="{{ asset('storage/icons/cv.png') }}" width="40%" alt="">
+                                                <img src="{{ asset('icons/cv.png') }}" width="40%" alt="">
                                             </a>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@
                                     <div class="card-body">
                                         <div class="text-center">
                                             <a href="{{ $baseUrl }}/registro/" target="_BLANK">
-                                                <img src="{{ asset('storage/icons/registro.png') }}" width="40%" alt="">
+                                                <img src="{{ asset('icons/registro.png') }}" width="40%" alt="">
                                             </a>
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="text-center" style="cursor: pointer;" onclick="CargarInformacionRRHH('cumple.php');">
-                                            <img src="{{ asset('storage/icons/cumple.png') }}" width="40%" alt="">
+                                            <img src="{{ asset('icons/cumple.png') }}" width="40%" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -169,10 +169,10 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="text-center">
-                                            <a href="{{ Route('reloj.rrhh') }}"><img src="{{ asset('storage/icons/clock.png') }}" width="40%"
+                                            <a href="{{ Route('reloj.rrhh') }}"><img src="{{ asset('icons/clock.png') }}" width="40%"
                                                     alt=""></a>
                                             {{-- <a href="{{ $baseUrl }}/reloj-fabrica/login/" target="_BLANK">
-                                            <img src="{{ asset('storage/icons/clock.png') }}" width="40%" alt="">
+                                            <img src="{{ asset('icons/clock.png') }}" width="40%" alt="">
                                         </a> --}}
                                         </div>
                                     </div>
@@ -185,7 +185,7 @@
                                     </div>
                                     <div class="card-body text-center">
                                         <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
-                                            <img src="{{ asset('storage/icons/opinion.png') }}" width="40%" alt="">
+                                            <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                                 </div>
                                 <div class="card-body text-center">
                                     <a href="{{ route('paginas.historialEvaluacion') }}">
-                                        <img src="{{ asset('storage/icons/chequeo.png') }}" width="40%" alt="">
+                                        <img src="{{ asset('icons/chequeo.png') }}" width="40%" alt="">
                                     </a>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('sst') }}">
-                                    <img src="{{ asset('storage/icons/sst.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/sst.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'rrhh', 'memo' => 'comunicados-fabrica-rrhh']) }}">
-                                <img src="{{ asset('storage/icons/fabrica.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/fabrica.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

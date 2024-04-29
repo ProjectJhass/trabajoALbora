@@ -49,7 +49,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <a href="{{ route('analytics') }}">
-                                    <img src="{{ asset('storage/icons/servicios1.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/servicios1.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.docs.tmp', ['dpto' => 'logistica']) }}">
-                                    <img src="{{ asset('storage/icons/temporal.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
-                                    <img src="{{ asset('storage/icons/apoyo-tecnico.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/apoyo-tecnico.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'instructivos-de-inventario']) }}">
-                                    <img src="{{ asset('storage/icons/inventario.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/inventario.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('menu.memos.log') }}">
-                                    <img src="{{ asset('storage/icons/memorando1.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/memorando1.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                             <div class="card-body text-center">
                                 <a
                                     href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'logistica-memorandos-derogados']) }}">
-                                    <img src="{{ asset('storage/icons/memorando2.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/memorando2.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="{{ route('albura.autos') }}">
-                                    <img src="{{ asset('storage/icons/automovil.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/automovil.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
-                                    <img src="{{ asset('storage/icons/opinion.png') }}" width="40%" alt="">
+                                    <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>

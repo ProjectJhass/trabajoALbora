@@ -56,33 +56,33 @@
                 <li class="nav-item" role="presentation" id="container_data" data-section="salas">
                     <button onclick="seccion(this.id,'{{ route('secciones-ideas') }}')" id="botones_salas" class="nav-link active" data-toggle="pill"
                         data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><img
-                            src="{{ asset('storage/icons/salas.png') }}" alt="" width="30" height="30"> Salas</button>
+                            src="{{ asset('icons/salas.png') }}" alt="" width="30" height="30"> Salas</button>
                 </li>
                 <li class="nav-item " role="presentation">
                     <button onclick="seccion(this.id,'{{ route('secciones-ideas') }}')" id="botones_comedores" class="nav-link botones" data-toggle="pill"
                         data-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><img
-                            src="{{ asset('storage/icons/comedores.png') }}" alt="" width="30" height="30"> Comedores</button>
+                            src="{{ asset('icons/comedores.png') }}" alt="" width="30" height="30"> Comedores</button>
                 </li>
                 <li class="nav-item " role="presentation">
                     <button onclick="seccion(this.id,'{{ route('secciones-ideas') }}')" id="botones_alcobas" class="nav-link botones" data-toggle="pill"
                         data-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><img
-                            src="{{ asset('storage/icons/alcobas.png') }}" alt="" width="30" height="30"> Alcobas</button>
+                            src="{{ asset('icons/alcobas.png') }}" alt="" width="30" height="30"> Alcobas</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button onclick="seccion(this.id,'{{ route('secciones-ideas') }}')" id="botones_colchones" class="nav-link botones" data-toggle="pill"
                         data-target="#pills-contacts" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><img
-                            src="{{ asset('storage/icons/colchones.png') }}" alt="" width="30" height="30"> Colchones</button>
+                            src="{{ asset('icons/colchones.png') }}" alt="" width="30" height="30"> Colchones</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button onclick="seccion(this.id,'{{ route('secciones-ideas') }}')" id="botones_accesorios" class="nav-link botones"
                         data-toggle="pill" data-target="#pills-acces" type="button" role="tab" aria-controls="pills-contact"
-                        aria-selected="false"><img src="{{ asset('storage/icons/accesorios.png') }}" alt="" width="30" height="30">
+                        aria-selected="false"><img src="{{ asset('icons/accesorios.png') }}" alt="" width="30" height="30">
                         Accesorios</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button onclick="seccion(this.id,'{{ route('secciones-ideas') }}')" id="botones_otros" class="nav-link botones"
                         data-toggle="pill" data-target="#pills-other" type="button" role="tab" aria-controls="pills-contact"
-                        aria-selected="false"><img src="{{ asset('storage/icons/otros.png') }}" alt="" width="30" height="30">
+                        aria-selected="false"><img src="{{ asset('icons/otros.png') }}" alt="" width="30" height="30">
                         Otros</button>
                 </li>
             </ul>

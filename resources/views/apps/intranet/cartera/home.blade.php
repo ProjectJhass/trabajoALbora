@@ -49,7 +49,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.docs.tmp', ['dpto' => 'cartera']) }}">
-                                <img src="{{ asset('storage/icons/temporal.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'cartas-generales']) }}">
-                                <img src="{{ asset('storage/icons/cartas.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/cartas.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'memorandos-cartera']) }}">
-                                <img src="{{ asset('storage/icons/memorando.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memorando.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'actas-de-visita']) }}">
-                                <img src="{{ asset('storage/icons/contrato.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/contrato.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'politicas-y-leyes']) }}">
-                                <img src="{{ asset('storage/icons/leyes.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/leyes.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('liquidador.intereses') }}">
-                                <img src="{{ asset('storage/icons/interes.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/interes.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ $baseUrl }}/digitalizacion/login/" target="_BLANK">
-                                <img src="{{ asset('storage/icons/digital.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/digital.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="https://albura.coxti.com/auth" target="_BLANK">
-                                <img src="{{ asset('storage/icons/credit.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/credit.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="https://credidescuentos.bextramites.com/login.php?empresa=credidescuentos" target="_BLANK">
-                                <img src="{{ asset('storage/icons/bext.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/bext.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('paginas.referenciar') }}">
-                                <img src="{{ asset('storage/icons/link.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/link.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -171,13 +171,13 @@
                             <div class="card-body text-center col-6 p-0 mt-2 mb-3">
                                 <small><b>Cartera</b></small><br>
                                 <a onclick="abrir(7)">
-                                    <img src="{{ asset('storage/icons/opinion.png') }}" width="65%" alt="">
+                                    <img src="{{ asset('icons/opinion.png') }}" width="65%" alt="">
                                 </a>
                             </div>
                             <div class="card-body text-center col-6 p-0 mt-2 mb-3">
                                 <small><b>Oncredit</b></small><br>
                                 <a onclick="abrir(8)">
-                                    <img src="{{ asset('storage/icons/credit.png') }}" width="65%" alt="">
+                                    <img src="{{ asset('icons/credit.png') }}" width="65%" alt="">
                                 </a>
                             </div>
 

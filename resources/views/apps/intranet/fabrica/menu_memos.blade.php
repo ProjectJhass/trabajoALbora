@@ -32,7 +32,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'memorandos-empaque-y-arrume']) }}">
-                                <img src="{{ asset('storage/icons/memo_fab1.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memo_fab1.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'memorandos-productos-nuevos']) }}">
-                                <img src="{{ asset('storage/icons/memo_fab2.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memo_fab2.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'memorandos-cambio-de-version']) }}">
-                                <img src="{{ asset('storage/icons/memo_fab3.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memo_fab3.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'memorandos-de-telas']) }}">
-                                <img src="{{ asset('storage/icons/memo_telas.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memo_telas.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'fabrica', 'memo' => 'otros-memorandos-fabrica']) }}">
-                                <img src="{{ asset('storage/icons/memo_otros.png') }}" width="40%" alt="">
+                                <img src="{{ asset('icons/memo_otros.png') }}" width="40%" alt="">
                             </a>
                         </div>
                     </div>

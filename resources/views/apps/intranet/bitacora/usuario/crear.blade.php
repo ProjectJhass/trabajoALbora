@@ -114,7 +114,7 @@
                                             <td class="text-center">
                                                 <ul class="list-inline">
                                                     <li class="list-inline-item">
-                                                        <img alt="Avatar" class="table-avatar" src="{{ asset('storage/icons/usuario.png') }}">
+                                                        <img alt="Avatar" class="table-avatar" src="{{ asset('icons/usuario.png') }}">
                                                     </li>
                                                 </ul>
                                             </td>
