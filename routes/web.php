@@ -83,6 +83,7 @@ use App\Http\Controllers\apps\servicios_tecnicos\servicios\plantilla\ControllerA
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\pw\ControllerAdminInfoPw;
 use App\Http\Controllers\apps\servicios_tecnicos\ws\ControllerConexionWs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -100,6 +101,10 @@ Auth::routes();
 
 Route::get('/', function () {
     return redirect(route('login'));
+});
+
+Route::get('/makehash/{pwd}', function ($pwd) {
+    return Hash::make($pwd);    
 });
 
 Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIngreso'])->name("registrar.ingreso.asesor");
