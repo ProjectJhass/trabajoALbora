@@ -24,10 +24,10 @@ return [
     |
     | Here are each of the database connections setup for your application.
     | Of course, examples of configuring each database platform that is
-    | supported by Laravel is shown below to make development simple.
+    | supported by Plataformas is shown below to make development simple.
     |
     |
-    | All database work in Laravel is done through the PHP PDO facilities
+    | All database work in Plataformas is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
     |
@@ -208,7 +208,7 @@ return [
     |
     | Redis is an open source, fast, and advanced key-value store that also
     | provides a richer body of commands than a typical key-value system
-    | such as APC or Memcached. Laravel makes it easy to dig right in.
+    | such as APC or Memcached. Plataformas makes it easy to dig right in.
     |
     */
 
@@ -218,7 +218,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'Plataformas'), '_').'_database_'),
         ],
 
         'default' => [
