@@ -72,6 +72,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('madera.home') }}" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Control madera
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item @yield('menu-prod')">
                             <a href="#" class="nav-link @yield('active')">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>

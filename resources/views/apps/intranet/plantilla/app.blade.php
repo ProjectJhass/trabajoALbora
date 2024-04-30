@@ -13,14 +13,14 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
     <link rel="shortcut icon" href="{{ asset('img/alburac.png') }}" type="image/x-icon">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('intranet/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('intranet/dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('intranet/plugins/sweetalert2/sweetalert2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('intranet/plugins/fullcalendar/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('intranet/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('intranet/plugins/select2/css/select2.css') }}">
-    <link rel="stylesheet" href="{{ asset('intranet/plugins/daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Incluir Flatpickr JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -336,18 +336,18 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
     </div>
 </body>
 <footer>
-    <script src="{{ asset('intranet/plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('intranet/dist/js/adminlte.js') }}"></script>
-    {{-- <script src="{{ asset('intranet/dist/js/demo.js') }}"></script> --}}
-    <script src="{{ asset('intranet/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/fullcalendar/main.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/moment/moment.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
-    <script src="{{ asset('intranet/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    {{-- <script src="{{ asset('dist/js/demo.js') }}"></script> --}}
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/main.js') }}"></script>
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"

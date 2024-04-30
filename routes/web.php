@@ -5,6 +5,16 @@ use App\Http\Controllers\apps\automoviles\ControllerComparativo;
 use App\Http\Controllers\apps\automoviles\ControllerComparativoGeneral;
 use App\Http\Controllers\apps\automoviles\ControllerPolizas;
 use App\Http\Controllers\apps\automoviles\ControllerProveedores;
+use App\Http\Controllers\apps\control_madera\ControllerCrearNuevasSeries;
+use App\Http\Controllers\apps\control_madera\ControllerFabricaMadera;
+use App\Http\Controllers\apps\control_madera\ControllerHistorialImpresora;
+use App\Http\Controllers\apps\control_madera\ControllerInfoGeneralCortes;
+use App\Http\Controllers\apps\control_madera\ControllerMaderaDisponible;
+use App\Http\Controllers\apps\control_madera\ControllerPlannerMadera;
+use App\Http\Controllers\apps\control_madera\ControllerPlannerWood;
+use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
+use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
+use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
 use App\Http\Controllers\apps\cotizador\ControllerCatalogo;
 use App\Http\Controllers\apps\cotizador\ControllerFinalizar;
 use App\Http\Controllers\apps\cotizador\ControllerGenerarCredito;
@@ -105,7 +115,7 @@ Route::get('/', function () {
 });
 
 Route::get('/makehash/{pwd}', function ($pwd) {
-    return Hash::make($pwd);    
+    return Hash::make($pwd);
 });
 
 Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIngreso'])->name("registrar.ingreso.asesor");
@@ -338,6 +348,64 @@ Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function (
 });
 
 Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function () {
+
+    Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
+
+    Route::group(['prefix' => 'printer'], function () {
+        Route::get('', [ControllerPrinterQr::class, 'index'])->name('printer');
+        Route::post('', [ControllerPrinterQr::class, 'generateQRCode'])->name('print.info.qr');
+        Route::post('/search_printed', [ControllerPrinterQr::class, 'printedHistory'])->name('search.printed');
+        Route::post('/reprinter-info', [ControllerPrinterQr::class, 'infoRePrinterCodigoQr'])->name('info.reprinted');
+
+        Route::group(['prefix' => 'history'], function () {
+            Route::get('', [ControllerHistorialImpresora::class, 'index'])->name('history.printer');
+            Route::get('/print_doc/{id}', [ControllerHistorialImpresora::class, 'renderPrinter'])->name('print.history.info');
+            Route::post('/search_history', [ControllerHistorialImpresora::class, 'searchInfoHistory'])->name('search.history.printer');
+            Route::post('/edit-history', [ControllerHistorialImpresora::class, 'editInfoHistory'])->name('edit.history.printed');
+            Route::post('/edit-info-history', [ControllerHistorialImpresora::class, 'editHistoryPrinted'])->name('edit.info.printed');
+        });
+
+        Route::group(['prefix' => 'config'], function () {
+            Route::get('', [ControllerPrinterQr::class, 'config'])->name('config.printer');
+            Route::post('', [ControllerPrinterQr::class, 'saveConfig'])->name('save.config.printer');
+            Route::post('/search', [ControllerPrinterQr::class, 'search_info'])->name('search.config.printer');
+        });
+    });
+
+    Route::group(['prefix' => 'planner'], function () {
+        Route::get('', [ControllerPlannerMadera::class, 'planner'])->name('new.planner.day');
+        Route::post('search-madera', [ControllerPlannerMadera::class, 'searchMadera'])->name('planner.search.madera');
+        Route::post('search-mueble', [ControllerPlannerMadera::class, 'searchMueble'])->name('planner.search.mueble');
+        Route::post('create-planificacion', [ControllerPlannerMadera::class, 'createPlanificacionSerie'])->name('create.planner.info');
+        Route::post('create-planner-corte', [ControllerSavePlanificacionCorte::class, 'savePlanificacion'])->name('planner.corte.piezas');
+        Route::post('search-troncos', [ControllerSearchMadera::class, 'search'])->name('search.info.troncos');
+        Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
+
+        Route::group(['prefix' => 'admin'], function () {
+            Route::post('/search-troncos-utilizados', [ControllerInfoGeneralCortes::class, 'getinfoTroncosUtilizados'])->name('get.info.troncos.utili');
+            Route::get('/cortes-pendientes', [ControllerInfoGeneralCortes::class, 'index'])->name('cortes.madera.planner');
+            Route::get('/piezas-planificadas/{id_corte}', [ControllerInfoGeneralCortes::class, 'piezasPlanificadas'])->name('info.piezas.c.planner');
+            Route::get('/cortes-completados', [ControllerInfoGeneralCortes::class, 'cortesTerminados'])->name('cortes.madera.completado');
+            Route::get('/crear-series', [ControllerCrearNuevasSeries::class, 'getView'])->name('create.series');
+            Route::get('/madera-disponible', [ControllerMaderaDisponible::class, 'index'])->name('madera.disponible.cortes');
+            Route::post('/madera-disponible', [ControllerMaderaDisponible::class, 'updateEstadoMadera'])->name('update.madera.estado');
+        });
+    });
+
+    Route::group(['prefix' => 'siesa'], function () {
+        // Route::get('', [ControllerFabricaMadera::class, 'home']);
+    });
+
+    Route::group(['prefix' => 'wood'], function () {
+        Route::get('/', [ControllerPlannerWood::class, 'index'])->name('index.wood');
+        Route::get('/cortar/{id_corte}', [ControllerPlannerWood::class, 'infoPiezasCorte'])->name('corte.woodmiser');
+        Route::post('/agregar-troncos', [ControllerPlannerWood::class, 'addTroncoUtilizado'])->name('add.tronco.woodmiser');
+        Route::post('/agregar-piezas-cortadas', [ControllerPlannerWood::class, 'addPiezasCortadas'])->name('add.piezas.woodmiser');
+        Route::post('/search-troncos-wood', [ControllerPlannerWood::class, 'getDataTableCortes'])->name('getDataTables');
+        Route::post('/search-obs-wood', [ControllerPlannerWood::class, 'getDataObsCortes'])->name('getObsWood');
+        Route::post('/search-piezas-favor', [ControllerPlannerWood::class, 'getInfoDataPiezasMadera'])->name('getinfoPiezasFavor');
+        Route::post('/save-piezas-favor', [ControllerPlannerWood::class, 'saveInformacionPiezasFavor'])->name('saveinfoPiezasFavor');
+    });
 });
 
 Route::group(['prefix' => 'cotizador', 'middleware' => 'auth'], function () {
@@ -489,7 +557,7 @@ Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () 
 
 Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function () {
 
-    Route::get('/inicio', [ControllerInicioFabrica::class, 'index'])->name("home.intranet.fabrica"); 
+    Route::get('/inicio', [ControllerInicioFabrica::class, 'index'])->name("home.intranet.fabrica");
 
     /* ---------------------- */
 
