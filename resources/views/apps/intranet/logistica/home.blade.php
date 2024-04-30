@@ -56,91 +56,97 @@
                     </div>
                 </div>
                 @if (Auth::user()->dpto_user != '8')
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Carpeta temporal</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a href="{{ route('intranet.docs.tmp', ['dpto' => 'logistica']) }}">
-                                    <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
-                                </a>
+                    @if (Auth::user()->empresa != 'HAPPY SLEEP')
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header">
+                                    <strong>Carpeta temporal</strong>
+                                </div>
+                                <div class="card-body text-center">
+                                    <a href="{{ route('intranet.docs.tmp', ['dpto' => 'logistica']) }}">
+                                        <img src="{{ asset('icons/temporal.png') }}" width="40%" alt="">
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="col-md-3 mb-3">
                         <div class="card card-outline card-danger">
                             <div class="card-header">
                                 <strong>Memos Servicios técnicos</strong>
                             </div>
                             <div class="card-body text-center">
-                                <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
+                                <a
+                                    href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
                                     <img src="{{ asset('icons/apoyo-tecnico.png') }}" width="40%" alt="">
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Instructivos de inventario</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'instructivos-de-inventario']) }}">
-                                    <img src="{{ asset('icons/inventario.png') }}" width="40%" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Memorandos vigentes</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a href="{{ route('menu.memos.log') }}">
-                                    <img src="{{ asset('icons/memorando1.png') }}" width="40%" alt="">
-                                </a>
+                    @if (Auth::user()->empresa != 'HAPPY SLEEP')
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header">
+                                    <strong>Instructivos de inventario</strong>
+                                </div>
+                                <div class="card-body text-center">
+                                    <a
+                                        href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'instructivos-de-inventario']) }}">
+                                        <img src="{{ asset('icons/inventario.png') }}" width="40%" alt="">
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Memorandos derogados</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a
-                                    href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'logistica-memorandos-derogados']) }}">
-                                    <img src="{{ asset('icons/memorando2.png') }}" width="40%" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Seguimiento vehículos</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a href="{{ route('albura.autos') }}">
-                                    <img src="{{ asset('icons/automovil.png') }}" width="40%" alt="">
-                                </a>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header">
+                                    <strong>Memorandos vigentes</strong>
+                                </div>
+                                <div class="card-body text-center">
+                                    <a href="{{ route('menu.memos.log') }}">
+                                        <img src="{{ asset('icons/memorando1.png') }}" width="40%" alt="">
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Evaluaciòn</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
-                                    <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
-                                </a>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header">
+                                    <strong>Memorandos derogados</strong>
+                                </div>
+                                <div class="card-body text-center">
+                                    <a
+                                        href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'logistica-memorandos-derogados']) }}">
+                                        <img src="{{ asset('icons/memorando2.png') }}" width="40%" alt="">
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header">
+                                    <strong>Seguimiento vehículos</strong>
+                                </div>
+                                <div class="card-body text-center">
+                                    <a href="{{ route('albura.autos') }}">
+                                        <img src="{{ asset('icons/automovil.png') }}" width="40%" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-outline card-danger">
+                                <div class="card-header">
+                                    <strong>Evaluaciòn</strong>
+                                </div>
+                                <div class="card-body text-center">
+                                    <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
+                                        <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
@@ -162,14 +168,14 @@
                         <div class="row col-8">
                             <form>
                                 <div class="d-flex flex-row text-center d-flex justify-content-evenly">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito1" name="digito"
-                                        maxlength="1" oninput="limitarInput(this, 2)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito2" name="digito"
-                                        maxlength="1" oninput="limitarInput(this, 3)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito3" name="digito"
-                                        maxlength="1" oninput="limitarInput(this, 4)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito4" name="digito"
-                                        maxlength="1" oninput="limitarInput(this)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito1"
+                                        name="digito" maxlength="1" oninput="limitarInput(this, 2)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito2"
+                                        name="digito" maxlength="1" oninput="limitarInput(this, 3)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito3"
+                                        name="digito" maxlength="1" oninput="limitarInput(this, 4)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito4"
+                                        name="digito" maxlength="1" oninput="limitarInput(this)" placeholder="-">
                                 </div>
                             </form>
                         </div>

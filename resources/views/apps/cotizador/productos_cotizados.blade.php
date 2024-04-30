@@ -389,12 +389,6 @@
                                 res.viewDetalle;
 
                             StylesTableCotizacion();
-
-                            Swal.fire(
-                                "Excelente!",
-                                "El producto fue eliminado",
-                                "success"
-                            );
                         }
                     });
                     datos.fail(() => {
@@ -512,13 +506,6 @@
 
                     StylesTableCotizacion();
 
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Información actualizada",
-                        showConfirmButton: false,
-                        timer: 2000,
-                    });
                 }
             });
             datos.fail(() => {
