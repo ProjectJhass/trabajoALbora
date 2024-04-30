@@ -64,7 +64,7 @@ class DocumentacionTecnica extends Controller
 
             $nombre_doc = uniqid() . "_" . $nombre;
 
-            $response_file = $request->file('DocumentoSeccion' . $request->id_titulo)->storeAs('documentacion-tecnica', $nombre_doc);
+            $response_file = $request->file('DocumentoSeccion' . $request->id_titulo)->storeAs('public/documentacion-tecnica', $nombre_doc);
             if ($response_file) {
                 ModelDocumentacionTecnica::GuardarInformacionNuevoDocuemento($nombre_doc, $tipo, $tama, $id_titulo);
                 return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

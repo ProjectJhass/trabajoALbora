@@ -26,7 +26,7 @@ class ControllerCarrucel extends Controller
                 $tama = filesize($file);
                 $tipo = $file->getClientOriginalExtension();
 
-                $response_file = $file->storeAs('carrucel', $nombre);
+                $response_file = $file->storeAs('public/carrucel', $nombre);
                 if ($response_file) {
                     ModelCarrucel::GuardarInformacionImagenes($nombre, $tipo, $tama, $seccion);
                 }

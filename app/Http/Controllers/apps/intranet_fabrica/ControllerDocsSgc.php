@@ -54,7 +54,7 @@ class ControllerDocsSgc extends Controller
             $nombre_doc = str_replace('.' . $tipo, '', $nombre);
             $nombre_cargue = uniqid() . "_" . $nombre;
 
-            $response_file = $documento->storeAs('documentacion-sgc', $nombre_cargue);
+            $response_file = $documento->storeAs('public/documentacion-sgc', $nombre_cargue);
             if ($response_file) {
                 $data = ([
                     'nombre_doc' => $nombre_doc,
