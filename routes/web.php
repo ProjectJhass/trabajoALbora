@@ -63,6 +63,7 @@ use App\Http\Controllers\apps\intranet_fabrica\ControllerInicioFabrica;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerMantenimiento;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerMaquinasFab;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerSolicitudesMtto;
+use App\Http\Controllers\apps\intranet_fabrica\ControllerUsuarios as Intranet_fabricaControllerUsuarios;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerUsuariosEncuesta;
 use App\Http\Controllers\apps\intranet_fabrica\DocumentacionTecnica;
 use App\Http\Controllers\apps\servicios_tecnicos\analytics\ControllerAnalytics;
@@ -569,13 +570,12 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
     Route::post('/searcher-date', [ControllerMantenimiento::class, 'searcherDate'])->name('search.date');
 
     /*Rutas para usuarios */
-    Route::get('/usuarios-fabrica', [ControllerUsuarios::class, 'index'])->name('usuarios.fabrica');
-    Route::get('/registrar-usuario', [ControllerUsuarios::class, 'RegistrarNuevoUsuario'])->name('registrar.usuario');
-    Route::post('/registrar-nuevo-usuario', [ControllerUsuarios::class, 'AgregarNuevoUsuarioDB'])->name('registrar.users.fab');
-    Route::post('/eliminar-usuario-registrado', [ControllerUsuarios::class, 'EliminarUsuarioRegistrado'])->name('eliminar.user.fab');
-
-    Route::get('/agregar-referencia-prod', [ControllerUsuarios::class, 'AgregarReferenciaDocumentacion'])->name('referencia.producto');
-    Route::post('/nueva-referencia-fab', [ControllerUsuarios::class, 'CrearReferenciaFabrica'])->name('agregar.referencia.fab');
+    Route::get('/usuarios-fabrica', [Intranet_fabricaControllerUsuarios::class, 'index'])->name('usuarios.fabrica');
+    Route::get('/registrar-usuario', [Intranet_fabricaControllerUsuarios::class, 'RegistrarNuevoUsuario'])->name('registrar.usuario');
+    Route::post('/registrar-nuevo-usuario', [Intranet_fabricaControllerUsuarios::class, 'AgregarNuevoUsuarioDB'])->name('registrar.users.fab');
+    Route::post('/eliminar-usuario-registrado', [Intranet_fabricaControllerUsuarios::class, 'EliminarUsuarioRegistrado'])->name('eliminar.user.fab');
+    Route::get('/agregar-referencia-prod', [Intranet_fabricaControllerUsuarios::class, 'AgregarReferenciaDocumentacion'])->name('referencia.producto');
+    Route::post('/nueva-referencia-fab', [Intranet_fabricaControllerUsuarios::class, 'CrearReferenciaFabrica'])->name('agregar.referencia.fab');
 
     Route::get('/maquinas-fabrica', [ControllerMaquinasFab::class, 'MaquinasFabrica'])->name('maquinas.fab');
     Route::get('/agregar-nueva-maquina', [ControllerMaquinasFab::class, 'AgregarMaquinasFabrica'])->name('agregar.maquina.fab');

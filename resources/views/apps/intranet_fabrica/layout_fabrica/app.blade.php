@@ -195,7 +195,7 @@
                             </ul>
                         </li>
                         @if (Auth::user()->rol_user == 1)
-                            <li class="nav-item @yield('menu-open')">
+                            <li class="nav-item @yield('menu-usuarios')">
                                 <a href="#" class="nav-link @yield('active-usuarios')">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>

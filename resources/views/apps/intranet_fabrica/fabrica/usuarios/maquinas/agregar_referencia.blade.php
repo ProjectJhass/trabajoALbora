@@ -2,6 +2,9 @@
 @section('title')
     Máquinas
 @endsection
+@section('menu-usuarios')
+    menu-open
+@endsection
 @section('active-usuarios')
     bg-danger active
 @endsection
