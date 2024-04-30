@@ -34,6 +34,6 @@ class NotificacionCambioEstado extends Mailable
      */
     public function build()
     {
-        return $this->view('email.cambio_estado', ['solicitud' => $this->solicitud, 'estado' => $this->estado, 'prioridad' => $this->prioridad]);
+        return $this->view('apps.intranet.email.cambio_estado', ['solicitud' => $this->solicitud, 'estado' => $this->estado, 'prioridad' => $this->prioridad]);
     }
 }
