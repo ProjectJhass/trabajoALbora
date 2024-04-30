@@ -44,7 +44,7 @@ class CambiosEnSeries extends Controller
                         $tama = filesize($file);
                         $tipo = $file->getClientOriginalExtension();
 
-                        $response_file = $file->storeAs('imagenes-cambios-series', $nombre);
+                        $response_file = $file->storeAs('public/imagenes-cambios-series', $nombre);
                         if ($response_file) {
                             ModelCambiosEnSeries::GuardarImagenesDeReporte($tipo, $nombre, $insert_id);
                         }
