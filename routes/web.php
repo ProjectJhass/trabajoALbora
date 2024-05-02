@@ -139,7 +139,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
     //Calendario individual Asesores
 
-    Route::get('calendario/general', [ControllerCalendar::class, 'index'])->name('calendar')->middleware('intranet');
+    Route::get('calendario/general', [ControllerCalendar::class, 'index'])->name('calendar');
 
     // evaluaciones Regionales
     Route::get('/paginas-para-evaluacion', [ControllerEvaluacionDepartamentos::class, 'formularioEvaluacion'])->name('paginas.evaluacion');
