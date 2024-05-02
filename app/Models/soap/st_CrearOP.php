@@ -11,7 +11,7 @@ class st_CrearOP extends Model
 {
     use HasFactory;
 
-    public static function conexion_siesa($parametros)
+    public static function conexion_ws_siesa($parametros)
     {
         $url_servidor_db = env('SOAP_URL');
         return new SoapClient($url_servidor_db, $parametros);

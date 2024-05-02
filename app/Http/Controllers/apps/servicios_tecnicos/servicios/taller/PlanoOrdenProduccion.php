@@ -104,6 +104,12 @@ class PlanoOrdenProduccion extends Controller
         $item = trim($ost_info->id_item);
         $item_ = str_repeat("0", (7 - strlen($item))) . $item;
 
+        //Cantidad
+        $cantidad_ = !empty($ost_info->cantidad) ? trim($ost_info->cantidad) : 1;
+        $cantidad_ = $cantidad_ > 0 ? $cantidad_ : 1;
+        $cantidad_planeada = str_repeat("0", (15 - strlen($cantidad_))) . $cantidad_;
+        $cantidad_planeada = $cantidad_planeada.".0000";
+
         $F_NUMERO_REG = "0000003";
         $F_TIPO_REG = "0851";
         $F_SUBTIPO_REG = "00";
@@ -120,7 +126,7 @@ class PlanoOrdenProduccion extends Controller
         $f851_id_ext2_detalle = str_repeat(" ", 20);
         $f851_id_unidad_medida = "UND ";
         $f851_porc_rendimiento = "100.0000";
-        $f851_cant_planeada_base = "000000000000001.0000";
+        $f851_cant_planeada_base = $cantidad_planeada; // "000000000000001.0000";
         $f851_fecha_inicio = date("Ymd");
         $f851_fecha_terminacion = date("Ymd");
         $f851_id_metodo_lista = str_repeat(" ", 4);
