@@ -83,7 +83,7 @@ class ModelIngresosSalidas extends Model
     public static function ObtenerDataIngresosDiarios($fecha_i, $fecha_f, $co)
     {
         return DB::table('registro_ingreso as r')
-            ->join('usuarios as u', 'u.id', '=', 'r.id_usuario')
+            ->join('users as u', 'u.id', '=', 'r.id_usuario')
             ->select(['u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
             ->whereBetween('r.fecha_registro', ([$fecha_i, $fecha_f]))
             ->where('r.co', $co)
@@ -93,7 +93,7 @@ class ModelIngresosSalidas extends Model
     public static function ObtenerDataLlegadasTarde($fecha_i, $fecha_f, $co, $hora_i)
     {
         return DB::table('registro_ingreso as r')
-            ->join('usuarios as u', 'u.id', '=', 'r.id_usuario')
+            ->join('users as u', 'u.id', '=', 'r.id_usuario')
             ->select(['u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
             ->whereBetween('r.fecha_registro', ([$fecha_i, $fecha_f]))
             ->where('r.co', $co)
@@ -123,7 +123,7 @@ class ModelIngresosSalidas extends Model
     public static function ObtenerInformacionNovedades($co, $fecha_i, $fecha_f)
     {
         return DB::table('novedades as n')
-            ->join('usuarios as u', 'n.id_registro', '=', 'u.id')
+            ->join('users as u', 'n.id_registro', '=', 'u.id')
             ->select(['u.id', 'u.nombre'])
             ->where('n.co', $co)
             ->whereBetween('n.fecha_novedad', ([$fecha_i, $fecha_f]))

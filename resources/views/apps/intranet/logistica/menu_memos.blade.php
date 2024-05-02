@@ -32,7 +32,8 @@
                             <strong>Promociones</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.log.memos', ['memo'=>'logistica-promociones']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'logistica-promociones']) }}">
                                 <img src="{{ asset('icons/discount.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -44,7 +45,8 @@
                             <strong>Momorandos fábrica</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.log.memos', ['memo'=>'logistica-memorandos-fabrica']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'logistica-memorandos-fabrica']) }}">
                                 <img src="{{ asset('icons/trabajador.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -56,7 +58,8 @@
                             <strong>Lista de precios</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.log.memos', ['memo'=>'lista-de-precios']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'lista-de-precios']) }}">
                                 <img src="{{ asset('icons/precio.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -68,7 +71,8 @@
                             <strong>Empaque y arrume</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.log.memos', ['memo'=>'empaque-y-arrume']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'empaque-y-arrume']) }}">
                                 <img src="{{ asset('icons/boxes.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -80,7 +84,8 @@
                             <strong>Instructivos de logística</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.log.memos', ['memo'=>'instructivos-de-logistica']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'instructivos-de-logistica']) }}">
                                 <img src="{{ asset('icons/mandatory.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -92,7 +97,8 @@
                             <strong>Tarifas de envíos</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.log.memos', ['memo'=>'tarifas-de-envios']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'tarifas-de-envios']) }}">
                                 <img src="{{ asset('icons/transportadora.png') }}" width="40%" alt="">
                             </a>
                         </div>
