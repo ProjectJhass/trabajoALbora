@@ -1,0 +1,201 @@
+<?php
+
+namespace App\Http\Controllers\apps\control_madera;
+
+use App\Http\Controllers\Controller;
+use App\Models\apps\control_madera\ModelCantidadesFavor;
+use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelCortesPlanificados;
+use App\Models\apps\control_madera\ModelInfoPiezasMueble;
+use App\Models\apps\control_madera\ModelInfoSerie;
+use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
+use Illuminate\Http\Request;
+
+class ControllerPlannerWood extends Controller
+{
+    public function index()
+    {
+        $cortes_p = ModelCortesPlanificados::where("estado", "Pendiente")->orderBy("created_at")->get();
+        $view = self::renderCortes($cortes_p);
+        return view("apps.control_madera.app.wood.cortes", ["cortes" => $view]);
+    }
+
+    public function renderCortes($cortes)
+    {
+        return view("apps.control_madera.app.wood.cortes_p", ["cortes" => $cortes])->render();
+    }
+
+    public function infoPiezasCorte(Request $request)
+    {
+        $id_corte = $request->id_corte;
+        $series = ModelInfoSerie::all();
+        $cortes_planificados = ModelCortesPlanificados::find($id_corte);
+        $piezas_planificadas = ModelPiezasPlanificadasCorte::where("estado", "Pendiente")->where("id_plan", $id_corte)->get();
+        $view = self::renderPiezasInfo($piezas_planificadas);
+        return view("apps.control_madera.app.wood.iniciar_corte.piezas", ['planner' => $cortes_planificados, 'piezas_corte' => $view, 'series' => $series]);
+    }
+
+    public function renderPiezasInfo($piezas)
+    {
+        return view("apps.control_madera.app.wood.iniciar_corte.piezas_info", ['piezas' => $piezas])->render();
+    }
+
+    public function addTroncoUtilizado(Request $request)
+    {
+        $id_pieza = $request->id_pieza;
+        $tronco = $request->tronco;
+
+        $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+        $tronco_db = $info_->troncos_utilizados;
+
+        $info_->troncos_utilizados = empty($tronco_db) ? $tronco : $tronco_db . "," . $tronco;
+        $info_->save();
+
+        $info_tronco = ModelConsecutivosMadera::find($tronco);
+        $pulgadas_tronco = $info_tronco->pulgadas;
+        $pulgadas_restantes =  $info_->pulgadas_resta;
+
+        return response()->json(['status' => true, 'tronco' => number_format($tronco), 'pulgadas' => number_format($pulgadas_tronco), 'utilizables' => number_format($pulgadas_restantes)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function addPiezasCortadas(Request $request)
+    {
+        $id_pieza = $request->id_pieza;
+        $cantidad_ = $request->cantidad;
+
+        $restante = '';
+        $clase = 'red';
+
+        $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+
+        $cantidad_solicitada = $info_->cantidad;
+        $cantidad_cortada = $info_->cantidad_cortada;
+
+        $cantidad_total = $cantidad_cortada + $cantidad_;
+        if ($cantidad_total >= $cantidad_solicitada) {
+            $restante = $cantidad_total - $cantidad_solicitada;
+            $cantidad_total = $cantidad_solicitada;
+            $info_->estado = 'Completado';
+            $clase = 'green';
+            self::updateInfoTroncos($info_->troncos, $info_->troncos_utilizados);
+        }
+
+        $info_->cantidad_cortada = $cantidad_total;
+        $info_->save();
+
+        self::checkStatusPlanCorte($info_->id_plan);
+
+        return response()->json(['status' => true, 'estado' => $info_->estado, 'cantidad' => $info_->cantidad_cortada, 'resta' => $restante, 'clase' => $clase], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function updateInfoTroncos($troncos_db, $troncos_utilizados)
+    {
+        $troncos_1 = explode(",", $troncos_db);
+        $troncos_2 = explode(",", $troncos_utilizados);
+
+        $troncos_no_utilizados_array = [];
+
+        foreach ($troncos_1 as $tronco) {
+            if (!in_array($tronco, $troncos_2)) {
+                $troncos_no_utilizados_array[] = $tronco;
+            }
+        }
+
+        ModelConsecutivosMadera::whereIn('id', $troncos_no_utilizados_array)->update(["estado" => "Activo"]);
+        ModelConsecutivosMadera::whereIn('id', $troncos_2)->update(["estado" => "Procesado"]);
+    }
+
+    public function checkStatusPlanCorte($id_plan)
+    {
+        $cantidad_piezas = ModelPiezasPlanificadasCorte::where("id_plan", $id_plan)->count();
+        $cantidad_completadas = ModelPiezasPlanificadasCorte::where("estado", "Completado")->where("id_plan", $id_plan)->count();
+        if ($cantidad_piezas == $cantidad_completadas) {
+            $data_c = ModelCortesPlanificados::find($id_plan);
+            $data_c->estado = "Completado";
+            $data_c->save();
+        }
+    }
+
+    public function getDataTableCortes(Request $request)
+    {
+        $id_pieza = $request->id_pieza;
+        $dataTable = '<table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th>Consecutivo</th>
+                <th>Pulgadas</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">';
+        $piezas_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+        $troncos = explode(",", $piezas_->troncos);
+        sort($troncos);
+        foreach ($troncos as $key => $value) {
+            $pulgadas_ = ModelConsecutivosMadera::find($value);
+            $pulgadas = $pulgadas_->pulgadas;
+            $dataTable .= '<tr>
+           <td>' . $value . '</td>
+           <td>' . number_format($pulgadas) . '</td>
+           </tr>';
+        }
+        $dataTable .= '</tbody>
+        </table>';
+
+        return response()->json(['status' => true, 'table' => $dataTable], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function getDataObsCortes(Request $request)
+    {
+        $id_pieza = $request->id_pieza;
+        $piezas_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+        $obs = $piezas_->obs;
+
+        return response()->json(['status' => true, 'obs' => $obs], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function getInfoDataPiezasMadera(Request $request)
+    {
+        $serie = $request->serie;
+        $madera = $request->madera;
+        $mueble =  $request->mueble;
+
+        $piezas_ = ModelInfoPiezasMueble::where("id_mueble", $mueble)
+            ->where("id_serie", $serie)
+            ->where("id_madera", $madera)
+            ->where("estado", "1")->get();
+
+        $view = view("apps.control_madera.app.wood.iniciar_corte.formPiezasFavor", ["data" => $piezas_])->render();
+
+        return response()->json(['status' => true, 'view' => $view], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function saveInformacionPiezasFavor(Request $request)
+    {
+        $cantidad = $request->valor;
+
+        for ($i = 1; $i < $cantidad; $i++) {
+
+            $id_pieza = $request["idPieza" . $i];
+            $cantidad_ = $request["piezasFavorNum" . $i];
+
+            if (!empty($cantidad_) && $cantidad_ > 0) {
+                $info = ModelInfoPiezasMueble::find($id_pieza);
+                $info_fav = ModelCantidadesFavor::where("id_pieza", $id_pieza)->where("estado", "Pendiente")->first();
+                if ($info_fav) {
+                    $cantidad_db = $info_fav->cantidad;
+                    $info_fav->cantidad = ($cantidad_db + $cantidad_);
+                    $info_fav->save();
+                } else {
+                    ModelCantidadesFavor::create([
+                        'id_pieza' => $id_pieza,
+                        'nom_pieza' => $info->pieza,
+                        'cantidad' => $cantidad_,
+                        'estado' => 'Pendiente'
+                    ]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+}
