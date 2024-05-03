@@ -210,13 +210,13 @@ class ControllerMaestraAsesor extends Controller
     public function whatsapp($celular)
     {
         $mensaje = "Hola 👋 buen día, le escribe " . Auth::user()->nombre . ", su especialista en productos para el hogar 🏡 de Muebles Albura SAS.";
-        return Redirect::to("https://web.whatsapp.com/send/?phone=57$celular&text=$mensaje&type=phone_number&app_absent=0", 302, []);
+        return Redirect::to("https://api.whatsapp.com/send/?phone=57$celular&text=$mensaje&type=phone_number&app_absent=0", 302, []);
     }
 
     public function encuesta(Request $request)
     {
         $mensaje = "Hola 👋 buen día " . $request->nombre . ", Espero que se encuentre muy bien.%0A%0APara nuestra empresa es muy valioso conocer sus comentarios con respecto a nuestro producto y servicio, por tal razón le envío esta breve encuesta.%0A%0A Estamos comprometidos en hacer cada día más hogares 🏡 felices y sus comentarios contribuyen a nuestra mejora continua.%0A%0AHaga click aquí 👇🏼%0A%0Ahttps://intranet.mueblesalbura.com.co/encuesta-satisfaccion/public/";
-        return Redirect::to("https://web.whatsapp.com/send/?phone=57$request->celular&text=$mensaje&type=phone_number&app_absent=0", 302, []);
+        return Redirect::to("https://api.whatsapp.com/send/?phone=57$request->celular&text=$mensaje&type=phone_number&app_absent=0", 302, []);
     }
 
     public function EliminarClienteCrm(Request $request)
