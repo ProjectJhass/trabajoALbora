@@ -5,8 +5,10 @@ namespace App\Http\Controllers\apps\crm_almacenes;
 use App\Http\Controllers\Controller;
 use App\Models\apps\crm_almacenes\ModelClientesCRM;
 use App\Models\apps\crm_almacenes\ModelInfoAsesores;
+use App\Models\apps\crm_almacenes\ModelItemsCotizadosCrm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ControllerInformeDeVentas extends Controller
 {
@@ -24,7 +26,9 @@ class ControllerInformeDeVentas extends Controller
         $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
         $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, $asesor);
 
-        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones])->render();
+        $items_cotizados = self::getInfoProductosCotizados(Auth::user()->nombre, $fechaInicio, $fechaFin);
+
+        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados])->render();
         return response()->json(['status' => true, 'estadisticas' => $estadisticas], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
@@ -41,8 +45,10 @@ class ControllerInformeDeVentas extends Controller
         $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
         $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
 
+        $items_cotizados = self::getInfoProductosCotizados(Auth::user()->nombre, $fechaInicio, $fechaFin);
+
         $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, $asesor);
-        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones])->render();
+        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados])->render();
 
         return view('apps.crm_almacenes.gcp.asesor.estadisticas', ['estadisticas' => $estadisticas]);
     }
@@ -61,7 +67,7 @@ class ControllerInformeDeVentas extends Controller
             'presupuestoAsesor',
             'clientesEfectivos' => function ($query) use ($fechaInicio, $fechaFin) {
                 $query->with([
-                    'itemsCotizados',
+                    'cotizaciones',
                     'ventasEfectivas'
                 ])->whereHas('ventasEfectivas', function ($query) use ($fechaInicio, $fechaFin) {
                     $query->whereBetween('fecha_compra', [$fechaInicio, $fechaFin]);
@@ -76,7 +82,7 @@ class ControllerInformeDeVentas extends Controller
             'ventasEfectivas' => function ($query) use ($fechaInicio, $fechaFin) {
                 $query->whereBetween('fecha_compra', [$fechaInicio, $fechaFin]);
             },
-            'itemsCotizados',
+            'cotizaciones',
             'asesoresCRM'
         ])->whereHas('ventasEfectivas', function ($query) use ($fechaInicio, $fechaFin) {
             $query->whereBetween('fecha_compra', [$fechaInicio, $fechaFin]);
@@ -93,7 +99,7 @@ class ControllerInformeDeVentas extends Controller
                 $nombre_asesor = $cliente->asesoresCRM[0]->nombre; // Suponiendo que "nombre" es el campo que almacena el nombre del asesor
                 $medio_pago = $venta->medio_de_pago; // Suponiendo que "nombre" es el campo que almacena el tipo de pago
                 $valor_venta_total = 0; // Inicializamos el valor total de la venta en 0
-                foreach ($cliente->itemsCotizados as $producto) {
+                foreach ($cliente->cotizaciones as $producto) {
                     $valor_venta_total += (($producto->vlr_credito - (($producto->vlr_credito * $producto->descuento))) * $producto->cantidad);
                 }
                 // Verificamos si ya tenemos registrado este asesor en los resultados
@@ -122,7 +128,7 @@ class ControllerInformeDeVentas extends Controller
         foreach ($info_presupuesto as $info) {
             $asesor = $info->nombre;
             foreach ($info->clientesEfectivos as $cliente) {
-                foreach ($cliente->itemsCotizados as $item) {
+                foreach ($cliente->cotizaciones as $item) {
                     // Verificar si ya existe el item para este asesor en los resultados
                     if (array_key_exists($asesor, $resultados) && array_key_exists($item->sku, $resultados[$asesor])) {
                         // Si existe, aumentar la cantidad
@@ -153,7 +159,7 @@ class ControllerInformeDeVentas extends Controller
             $ciudad = $cliente->ciudad;
             $total_venta_cliente = 0;
 
-            foreach ($cliente->itemsCotizados as $producto) {
+            foreach ($cliente->cotizaciones as $producto) {
                 // Sumar el valor de cada producto vendido
                 $total_venta_cliente += (($producto->vlr_credito - (($producto->vlr_credito * $producto->descuento))) * $producto->cantidad);
             }
@@ -174,5 +180,38 @@ class ControllerInformeDeVentas extends Controller
         }
 
         return $ventas_por_asesor_ciudad;
+    }
+
+    public function getInfoProductosCotizados($asesor, $fecha_i, $fecha_f)
+    {
+        $data = ModelItemsCotizadosCrm::join('users as u', 'u.nombre', '=', 'cotizaciones.asesor')
+            ->select(['asesor', 'sku', 'producto', DB::raw('COUNT(sku) as cantidad')])
+            ->where('u.cargo', 'asesor')
+            ->where('u.nombre', $asesor)
+            ->whereBetween('cotizaciones.fecha', [$fecha_i, $fecha_f])
+            ->groupBy('asesor', 'sku', 'producto')
+            ->orderBy('asesor')
+            ->orderByDesc('cantidad')
+            ->get();
+
+        $data_info = [];
+
+        foreach ($data as $value) {
+            $nombre = $value->asesor;
+
+            if (!isset($data_info[$nombre])) {
+                $data_info[$nombre] = [];
+            }
+
+            if (count($data_info[$nombre]) < 10) {
+                $data_info[$nombre][] = [
+                    'asesor' => $value->asesor,
+                    'sku' => $value->sku,
+                    'item' => $value->producto,
+                    'cantidad' => $value->cantidad
+                ];
+            }
+        }
+        return $data_info;
     }
 }

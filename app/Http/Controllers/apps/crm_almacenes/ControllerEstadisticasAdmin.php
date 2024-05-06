@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\apps\crm_almacenes\ModelClientesCRM;
 use App\Models\apps\crm_almacenes\ModelInfoAsesores;
 use App\Models\apps\crm_almacenes\ModelInfoSucursales;
+use App\Models\apps\crm_almacenes\ModelItemsCotizadosCrm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,8 @@ class ControllerEstadisticasAdmin extends Controller
         $fechaInicio = $request->fecha_i;
         $fechaFin = $request->fecha_f;
 
+        $info_ase = ModelInfoAsesores::find($asesor);
+
         if (empty($asesor)) {
             $info_clientes = self::getInfoClientes($fechaInicio, $fechaFin, '');
             $info_presupuesto = self::getInfoPresupuesto($fechaInicio, $fechaFin, '');
@@ -26,6 +29,8 @@ class ControllerEstadisticasAdmin extends Controller
             $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
             $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
             $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, '');
+
+            $items_cotizados = self::getInfoProductosCotizados('', $fechaInicio, $fechaFin);
         } else {
             $info_clientes = self::getInfoClientes($fechaInicio, $fechaFin, $asesor);
             $info_presupuesto = self::getInfoPresupuesto($fechaInicio, $fechaFin, $asesor);
@@ -34,9 +39,11 @@ class ControllerEstadisticasAdmin extends Controller
             $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
             $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
             $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, $asesor);
+
+            $items_cotizados = self::getInfoProductosCotizados($info_ase->nombre, $fechaInicio, $fechaFin);
         }
 
-        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones])->render();
+        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados])->render();
         return response()->json(['status' => true, 'estadisticas' => $estadisticas], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
@@ -53,8 +60,10 @@ class ControllerEstadisticasAdmin extends Controller
         $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
         $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
 
+        $items_cotizados = self::getInfoProductosCotizados('', $fechaInicio, $fechaFin);
+
         $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, '');
-        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones])->render();
+        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados])->render();
 
         return view('apps.crm_almacenes.gcp.administrador.estadisticas', ['sucursales' => $almacenes, 'estadisticas' => $estadisticas]);
     }
@@ -221,5 +230,49 @@ class ControllerEstadisticasAdmin extends Controller
         }
 
         return $ventas_por_asesor_ciudad;
+    }
+
+    public function getInfoProductosCotizados($asesor, $fecha_i, $fecha_f)
+    {
+        if (empty($asesor)) {
+            $data = ModelItemsCotizadosCrm::join('users as u', 'u.nombre', '=', 'cotizaciones.asesor')
+                ->select(['asesor', 'sku', 'producto', DB::raw('COUNT(sku) as cantidad')])
+                ->where('u.cargo', 'asesor')
+                ->whereBetween('cotizaciones.fecha', [$fecha_i, $fecha_f])
+                ->groupBy('asesor', 'sku', 'producto')
+                ->orderBy('asesor')
+                ->orderByDesc('cantidad')
+                ->get();
+        } else {
+            $data = ModelItemsCotizadosCrm::join('users as u', 'u.nombre', '=', 'cotizaciones.asesor')
+                ->select(['asesor', 'sku', 'producto', DB::raw('COUNT(sku) as cantidad')])
+                ->where('u.cargo', 'asesor')
+                ->where('u.nombre', $asesor)
+                ->whereBetween('cotizaciones.fecha', [$fecha_i, $fecha_f])
+                ->groupBy('asesor', 'sku', 'producto')
+                ->orderBy('asesor')
+                ->orderByDesc('cantidad')
+                ->get();
+        }
+
+        $data_info = [];
+
+        foreach ($data as $value) {
+            $nombre = $value->asesor;
+
+            if (!isset($data_info[$nombre])) {
+                $data_info[$nombre] = [];
+            }
+
+            if (count($data_info[$nombre]) < 10) {
+                $data_info[$nombre][] = [
+                    'asesor' => $value->asesor,
+                    'sku' => $value->sku,
+                    'item' => $value->producto,
+                    'cantidad' => $value->cantidad
+                ];
+            }
+        }
+        return $data_info;
     }
 }

@@ -32,6 +32,9 @@
     <section class="content">
         <div class="container-fluid">
 
+            <a href="{{ route('crear.info.usuario', ['cedula' => '', 'nombre' => '']) }}" class="btn btn-danger mb-4"><i class="fas fa-user-alt"></i> Crear
+                usuario</a>
+
             <div class="card card-outline card-danger">
                 <div class="card-header">
                     Gestión de usuarios
@@ -67,6 +70,8 @@
                                             <button class="btn btn-success btn-sm"
                                                 onclick="ConsultarInformacion('{{ trim($item['cedula']) }}','{{ trim($item['nombre']) }}')"><i
                                                     class="fas fa-edit"></i></button>
+                                            <a
+                                                href="{{ route('crear.info.usuario', ['cedula' => trim($item['cedula']), 'nombre' => trim($item['nombre'])]) }}">Crear</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -321,7 +326,7 @@
             $('#ModalVisualizarInformacion').modal('show');
             var datos = $.ajax({
                 type: "POST",
-                url: "{{ $baseUrl }}/app/public/api/intranet/consultar",
+                url: "{{ route('get.info.usuarios') }}",
                 dataType: "json",
                 data: {
                     cedula
@@ -335,17 +340,17 @@
                     $('#checkReal').prop('checked', res.real);
                     $('#checkPruebas').prop('checked', res.pruebas);
                     if (res.intranet == true) {
-                        $('#email_u').val(res.data[0].email);
-                        $('#dpto_u').val(res.data[0].dpto);
-                        $('#permiso_dpto').val(res.data[0].permiso_dpto);
-                        $('#sucursal_u').val(res.data[0].sucursal);
-                        $('#cargo_u').val(res.data[0].cargo);
-                        $('#nom_usuario_u').val(res.data[0].usuario);
-                        $('#zona_u').val(res.data[0].zona);
-                        $('#reloj_u').val(res.data[0].ingreso);
-                        $('#calendario_u').val(res.data[0].calendario);
-                        $('#estado_u').val(res.data[0].estado);
-                        $('#bitacora').val(res.data[0].bitacora)
+                        $('#email_u').val(res.data.email);
+                        $('#dpto_u').val(res.data.dpto_user);
+                        $('#permiso_dpto').val(res.data.permiso_dpto);
+                        $('#sucursal_u').val(res.data.sucursal);
+                        $('#cargo_u').val(res.data.cargo);
+                        $('#nom_usuario_u').val(res.data.usuario);
+                        $('#zona_u').val(res.data.zona);
+                        $('#reloj_u').val(res.data.ingreso_personal);
+                        $('#calendario_u').val(res.data.calendario);
+                        $('#estado_u').val(res.data.estado);
+                        $('#bitacora').val(res.data.bitacora)
                     }
                 }
             });

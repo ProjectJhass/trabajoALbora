@@ -296,6 +296,11 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'usuarios'], function () {
         Route::get('/general', [ControllerUsuarios::class, 'index'])->name('usuarios');
+        Route::post('/general', [ControllerUsuarios::class, 'getInfoUsuarioIntranet'])->name('get.info.usuarios');
+
+        Route::group(['prefix' => 'admin'], function () {
+            Route::get('/crear-info/{cedula?}/{nombre?}', [ControllerUsuarios::class, 'createUserIntranet'])->name('crear.info.usuario');
+        });
     });
 
     Route::group(['prefix' => 'bitacora'], function () {

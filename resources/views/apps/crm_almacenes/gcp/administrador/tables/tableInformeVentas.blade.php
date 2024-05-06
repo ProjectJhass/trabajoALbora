@@ -50,7 +50,6 @@
                                         @php
                                             $valor_prod = $prod->vlr_credito;
                                             $valor_venta += ($valor_prod - $valor_prod * $prod->descuento) * $prod->cantidad;
-                                            $total_ventas += $valor_venta;
                                         @endphp
                                         <div class="dropdown-item">{{ $prod->producto }}</div>
                                         <div class="dropdown-divider"></div>
@@ -60,6 +59,9 @@
                         </td>
                         <td>{{ $item->origen }}</td>
                         <td>{{ $ventas_ef[0]['medio_de_pago'] }}</td>
+                        @php
+                            $total_ventas += $valor_venta;
+                        @endphp
                         <td>$ {{ number_format($valor_venta) }}</td>
                         <td>{{ $ventas_ef[0]['estado'] }}</td>
                     </tr>
@@ -255,7 +257,7 @@
             </div>
         </div>
     </div>
-    {{--     <div class="col-md-12 mb-3">
+    <div class="col-md-12 mb-3">
         <div class="card card-outline card-danger">
             <div class="card-header">
                 Productos más cotizados
@@ -268,29 +270,24 @@
                             <th>Sku</th>
                             <th>Producto</th>
                             <th>Cantidad</th>
-                            <th>Valor/U</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        @foreach ($itemsCot as $item => $registros)
+                            @foreach ($registros as $registro)
+                                <tr>
+                                    <td class="text-left">{{ $registro['asesor'] }}</td>
+                                    <td>{{ $registro['sku'] }}</td>
+                                    <td class="text-left">{{ $registro['item'] }}</td>
+                                    <td>{{ $registro['cantidad'] }}</td>
+                                </tr>
+                            @endforeach
+                        @endforeach
                     </tbody>
-                    <tfoot class="text-center">
-                        <tr class="table-secondary">
-                            <td colspan="3">Total</td>
-                            <td>0</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <div class="col-md-12 mb-3">
         <div class="card card-outline card-danger">
