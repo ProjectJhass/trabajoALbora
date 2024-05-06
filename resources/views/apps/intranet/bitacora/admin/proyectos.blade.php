@@ -3,6 +3,8 @@
     Bitácora
 @endsection
 @section('head')
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 @endsection
 @section('bitacora')
     bg-danger active
@@ -12,7 +14,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h4>Crear proyecto</h4>
+                    <h4>Historial de proyectos</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -26,61 +28,93 @@
 
     <section class="content">
         <div class="container-fluid">
-
-            <div class="card card-outline card-secondary">
-                <div class="card-body">
-                    <table class="table table-striped projects">
-                        <thead>
-                            <tr class="text-center">
-                                <th>#</th>
-                                <th>Proyecto</th>
-                                <th>Prioridad</th>
-                                <th>Equipo</th>
-                                <th>Progreso</th>
-                                <th class="text-center">Estado</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($solicitudes as $item)
-                                <tr>
-                                    <td>{{ $item->id_solicitud }}</td>
-                                    <td>
-                                        {{ $item->nombre_solicitud }} <br><small>creada {{ str_replace('-', '.', $item->fecha_creacion) }}</small>
-                                    </td>
-                                    <td>{{ $item->prioridad }}</td>
-                                    <td class="text-center">
-                                        <ul class="list-inline">
-                                            <li class="list-inline-item">
-                                                <img alt="Avatar" class="table-avatar" src="{{ asset('icons/usuario.png') }}">
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td class="project_progress">
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="{{ $item->porcentaje }}"
-                                                aria-valuemin="0" aria-valuemax="100" style="width: {{ $item->porcentaje }}%">
-                                            </div>
-                                        </div>
-                                        <small>
-                                            {{ $item->porcentaje }}% Completado
-                                        </small>
-                                    </td>
-                                    <td class="project-state">
-                                        <span class="badge badge-{{ $item->color }}">{{ $item->estado }}</span>
-                                    </td>
-                                    <td class="project-actions text-right">
-                                        <a class="btn btn-primary btn-sm" href="{{ route('dev.admin.ver', ['idSolicitud' => $item->id_solicitud]) }}">
-                                            <i class="fas fa-eye"></i> Ver
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+            <center>
+                <div class="btn-group mb-4" role="group" aria-label="Basic example">
+                    <button type="button" onclick="buscarInfoBitacora('creada')" class="btn btn-danger"><i class="fas fa-hourglass-start"></i>
+                        Creados</button>
+                    <button type="button" onclick="buscarInfoBitacora('En proceso')" class="btn btn-info"><i class="fas fa-spinner"></i> En
+                        proceso</button>
+                    <button type="button" onclick="buscarInfoBitacora('Completado')" class="btn btn-success"><i class="far fa-calendar-check"></i>
+                        Completados</button>
                 </div>
-            </div>
+            </center>
 
+            <div class="card card-outline card-secondary" id="infoProyectosBitacora">
+                {!! $table !!}
+            </div>
         </div>
     </section>
+@endsection
+@section('footer')
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+
+    <script>
+        $(document).ready(() => {
+            tableFormatter()
+        })
+
+        tableFormatter = () => {
+            $('#proyectsBitacora').DataTable({
+                "oLanguage": {
+                    "sSearch": "Buscar:",
+                    "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
+                    "oPaginate": {
+                        "sPrevious": "Volver",
+                        "sNext": "Siguiente"
+                    },
+                    "sEmptyTable": "No se encontró ningun registro en la base de datos",
+                    "sZeroRecords": "No se encontraron resultados...",
+                    "sLengthMenu": "Mostrar _MENU_ registros"
+                },
+                "order": [
+                    [0, "desc"]
+                ],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": false,
+            });
+        }
+
+        buscarInfoBitacora = (estado) => {
+            var datos = $.ajax({
+                type: 'POST',
+                url: "{{ route('search.admin.solicitudes') }}",
+                dataType: 'json',
+                data: {
+                    estado
+                }
+            })
+            datos.done(function(respuesta) {
+                if (respuesta.status == true) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Información encontrada',
+                        showConfirmButton: false,
+                        timer: '2000',
+                        toast: true
+                    })
+                    document.getElementById('infoProyectosBitacora').innerHTML = respuesta.table
+                    tableFormatter()
+                }
+            })
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Hubo un problema de conexión',
+                    showConfirmButton: false,
+                    timer: '2000',
+                    toast: true
+                })
+            })
+        }
+    </script>
 @endsection

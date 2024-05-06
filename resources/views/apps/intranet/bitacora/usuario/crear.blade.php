@@ -14,7 +14,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h4>Bitácora @if (Auth::user()->bitacora == '3')
-                            <a href="{{ route('dev.admin.listar', ['estado' => 'progreso']) }}" type="button" class="btn btn-danger btn-sm">Administrador</a>
+                            <a href="{{ route('dev.admin.listar') }}" type="button" class="btn btn-danger btn-sm">Administrador</a>
                         @else
                             @if (Auth::user()->bitacora == '2')
                                 <a href="{{ route('dev.asignado.listar', ['estado' => 'progreso']) }}" type="button" class="btn btn-danger btn-sm">Proyectos

@@ -306,11 +306,14 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
             Route::get('/crear', [ControllerBitacoraUsuario::class, 'crear'])->name('bitacora.crear');
             Route::post('/crear', [ControllerProyectos::class, 'crearNuevoProyecto']);
         });
+
         Route::group(['prefix' => '/admin'], function () {
-            Route::get('/general/{estado}', [ControllerAdmin::class, 'index'])->name('dev.admin.listar');
+            Route::get('/general', [ControllerAdmin::class, 'index'])->name('dev.admin.listar');
+            Route::post('/general', [ControllerAdmin::class, 'getInfoSolicitudes'])->name('search.admin.solicitudes');
             Route::get('/detalles/{idSolicitud}', [ControllerAdmin::class, 'ObtenerInformacion'])->name('dev.admin.ver');
             Route::post('/detalles/{idSolicitud}/{accion}', [ControllerAdmin::class, 'agregarPuntosP']);
         });
+
         Route::group(['prefix' => '/asignado'], function () {
             Route::get('/general/{estado}', [ControllerAsignado::class, 'index'])->name('dev.asignado.listar');
             Route::get('/detalles/{idSolicitud}', [ControllerAsignado::class, 'ObtenerInformacion'])->name('dev.asig.detalle');

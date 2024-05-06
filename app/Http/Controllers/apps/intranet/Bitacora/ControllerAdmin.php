@@ -12,16 +12,32 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\apps\intranet\Bitacora\ControllerProyectos as notificacion;
+use App\Models\apps\intranet\Bitacora\ModelBitacora;
 
 class ControllerAdmin extends Controller
 {
-    
-    public function index(Request $request)
+
+    public function index()
+    {
+        $table = self::renderTableInfo('');
+        return view('apps.intranet.bitacora.admin.proyectos', ['table' => $table]);
+    }
+
+    public function renderTableInfo($estado)
+    {
+        if ($estado == null || trim($estado) === "") {
+            $solicitudes = ModelBitacora::where("estado", "<>", "Completado")->get();
+        } else {
+            $solicitudes = ModelBitacora::where("estado", $estado)->get();
+        }
+        return view('apps.intranet.bitacora.admin.table', ['solicitudes' => $solicitudes])->render();
+    }
+
+    public function getInfoSolicitudes(Request $request)
     {
         $estado = $request->estado;
-        $solicitudes = ModelAdmin::ObtenerSolicitudesProgreso($estado);
-
-        return view('apps.intranet.bitacora.admin.proyectos', ['solicitudes' => $solicitudes]);
+        $table = self::renderTableInfo($estado);
+        return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
     public function ObtenerInformacion(Request $request)
