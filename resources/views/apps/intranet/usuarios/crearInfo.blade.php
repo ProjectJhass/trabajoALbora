@@ -40,29 +40,32 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <form action="" method="post" class="was-validated">
+                    <form id="formInfoGeneralUsuarios" method="post" class="was-validated">
                         @csrf
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <label for="">Permiso general</label>
-                                <select name="" id="" class="form-control" required>
+                                <select name="permisoGeneral" id="permisoGeneral" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="1">General</option>
-                                    <option value="4">Super admin</option>
+                                    <option value="1" @php echo isset($data->permisos)? (1==$data->permisos?'selected':''):'' @endphp>General
+                                    </option>
+                                    <option value="4" @php echo isset($data->permisos)? (4==$data->permisos?'selected':''):'' @endphp>Super admin
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Cédula</label>
-                                <input type="text" class="form-control mb-3" value="{{ $cedula }}" name="cedula" id="cedula" required>
+                                <input type="number" class="form-control mb-3" value="{{ $cedula }}" name="cedula" id="cedula" required>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Nombre</label>
-                                <input type="text" class="form-control mb-3" value="{{ $nombre }}" name="" id="" required>
+                                <input type="text" onkeyup="this.value=this.value.toUpperCase()" class="form-control mb-3" value="{{ $nombre }}"
+                                    name="nombre" id="nombre" required>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Email</label>
-                                <input type="text" class="form-control mb-3" value="{{ isset($data->email) ? $data->email : '' }}" name=""
-                                    id="" required>
+                                <input type="email" onkeyup="this.value=this.value.toLowerCase()" class="form-control mb-3"
+                                    value="{{ isset($data->email) ? $data->email : '' }}" name="email" id="email" required>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Departamento</label>
@@ -70,7 +73,7 @@
                                     <option value=""></option>
                                     <?php foreach ($dptos as $key => $value) { ?>
                                     <option value="{{ $value->id_dpto }}"
-                                        @php isset($data->sucursal)? ($value->id_dpto==$data->sucursal?'selected':''):'' @endphp>
+                                        @php echo isset($data->sucursal)? ($value->id_dpto==$data->dpto_user?'selected':''):'' @endphp>
                                         {{ $value->nombre_dpto }}</option>
                                     <?php } ?>
                                 </select>
@@ -79,132 +82,165 @@
                                 <label for="">Permiso dpto</label>
                                 <select name="permiso_dpto" id="permiso_dpto" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="1">Editor</option>
-                                    <option value="0">Visualizar</option>
-                                    <option value="2">Especial</option>
+                                    <option value="1" @php echo isset($data->permiso_dpto)? (1==$data->permiso_dpto?'selected':''):'' @endphp>Editor
+                                    </option>
+                                    <option value="0" @php echo isset($data->permiso_dpto)? (0==$data->permiso_dpto?'selected':''):'' @endphp>
+                                        Visualizar</option>
+                                    <option value="2" @php echo isset($data->permiso_dpto)? (2==$data->permiso_dpto?'selected':''):'' @endphp>
+                                        Especial
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Sucursal</label>
-                                <select class="form-control" name="sucursal_u" id="sucursal_u" required>
+                                <select class="form-control" name="sucursal" id="sucursal" required>
                                     <option value=""></option>
-                                    <option value="002">002</option>
-                                    <option value="004">004</option>
-                                    <option value="006">006</option>
-                                    <option value="007">007</option>
-                                    <option value="008">008</option>
-                                    <option value="010">010</option>
-                                    <option value="011">011</option>
-                                    <option value="012">012</option>
-                                    <option value="014">014</option>
-                                    <option value="017">017</option>
-                                    <option value="020">020</option>
-                                    <option value="025">025</option>
-                                    <option value="027">027</option>
-                                    <option value="028">028</option>
-                                    <option value="036">036</option>
-                                    <option value="038">038</option>
+                                    @foreach ($almacen as $item)
+                                        <option value="{{ $item->numero }}"
+                                            @php echo !empty($data->sucursal)? ($item->numero==$data->sucursal?'selected':''):'' @endphp>
+                                            {{ $item->almacen }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Código vendedor</label>
-                                <input type="text" class="form-control mb-3" name="codVendedor" id="codVendedor" required>
+                                <input type="number" value="{{ isset($data->codigo) ? $data->codigo : '' }}" class="form-control mb-3" name="codVendedor"
+                                    id="codVendedor" required>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Zona</label>
-                                <select name="zona_u" id="zona_u" class="form-control" required>
+                                <select name="zona" id="zona" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="2">Norte</option>
-                                    <option value="1">Centro</option>
-                                    <option value="0">No aplica</option>
+                                    <option value="1" @php echo isset($data->zona)? (1==$data->zona?'selected':''):'' @endphp>Centro
+                                    </option>
+                                    <option value="2" @php echo isset($data->zona)? (2==$data->zona?'selected':''):'' @endphp>Norte</option>
+                                    <option value="0" @php echo isset($data->zona)? (0==$data->zona?'selected':''):'' @endphp>No aplica</option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Cargo sucursal</label>
-                                <select name="cargo_u" id="cargo_u" class="form-control" required>
+                                <select name="cargo" id="cargo" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="administrador">Administrador</option>
-                                    <option value="asesor">Asesor</option>
-                                    <option value="guest">No aplica</option>
+                                    <option value="administrador"
+                                        @php echo isset($data->cargo)? ('administrador'==$data->cargo?'selected':''):'' @endphp>
+                                        Administrador</option>
+                                    <option value="asesor" @php echo isset($data->cargo)? ('asesor'==$data->cargo?'selected':''):'' @endphp>Asesor
+                                    </option>
+                                    <option value="guest" @php echo isset($data->cargo)? ('guest'==$data->cargo?'selected':''):'' @endphp>No aplica
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Registrar ingreso</label>
-                                <select name="reloj_u" id="reloj_u" class="form-control" required>
+                                <select name="reloj" id="reloj" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="1">Si</option>
-                                    <option value="0">No</option>
+                                    <option value="1"
+                                        @php echo isset($data->ingreso_personal)? (1==$data->ingreso_personal?'selected':''):'' @endphp>Si</option>
+                                    <option value="0"
+                                        @php echo isset($data->ingreso_personal)? (0==$data->ingreso_personal?'selected':''):'' @endphp>No
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Acceso calendario</label>
-                                <select name="calendario_u" id="calendario_u" class="form-control" required>
+                                <select name="calendario" id="calendario" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="1">Si</option>
-                                    <option value="0">No</option>
+                                    <option value="1" @php echo isset($data->calendario)? (1==$data->calendario?'selected':''):'' @endphp>Si
+                                    </option>
+                                    <option value="0" @php echo isset($data->calendario)? (0==$data->calendario?'selected':''):'' @endphp>No
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Usuario</label>
-                                <input type="text" class="form-control mb-3" name="" id="" required>
+                                <input type="text" onkeyup="this.value=this.value.toUpperCase()" onchange="validarNombreUsuario(this.value)"
+                                    value="{{ isset($data->usuario) ? $data->usuario : '' }}" class="form-control mb-3" name="usuario" id="usuario"
+                                    required>
+                                <span class="text-red" id="userNameValidate" hidden><small>Este usuario ya existe en la base de datos</small></span>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Contraseña</label>
-                                <input type="password" class="form-control mb-3" name="" id="" required>
+                                <input type="password" class="form-control mb-3" name="pwd" id="pwd" required>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Bitacora</label>
                                 <select name="bitacora" id="bitacora" class="form-control" required>
-                                    <option value="1">Usuario</option>
-                                    <option value="2">Asignado</option>
-                                    <option value="3">Administrador</option>
+                                    <option value="1" @php echo isset($data->bitacora)? (1==$data->bitacora?'selected':''):'' @endphp>Usuario
+                                    </option>
+                                    <option value="2" @php echo isset($data->bitacora)? (2==$data->bitacora?'selected':''):'' @endphp>Asignado
+                                    </option>
+                                    <option value="3" @php echo isset($data->bitacora)? (3==$data->bitacora?'selected':''):'' @endphp>Administrador
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Empresa</label>
                                 <select name="empresa" id="empresa" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="MUEBLES ALBURA">MUEBLES ALBURA</option>
-                                    <option value="HAPPY SLEEP">HAPPY SLEEP</option>
+                                    <option value="MUEBLES ALBURA"
+                                        @php echo isset($data->empresa)? ('MUEBLES ALBURA'==$data->empresa?'selected':''):'' @endphp>MUEBLES ALBURA
+                                    </option>
+                                    <option value="HAPPY SLEEP"
+                                        @php echo isset($data->empresa)? ('HAPPY SLEEP'==$data->empresa?'selected':''):'' @endphp>HAPPY SLEEP</option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Almacen ST</label>
-                                <input type="text" class="form-control mb-3" name="" id="" required>
+                                <select class="form-control" name="almacen_st" id="almacen_st" required>
+                                    <option value=""></option>
+                                    @foreach ($almacen as $item)
+                                        <option value="{{ $item->almacen }}"
+                                            @php echo !empty($data->almacen)? ($item->almacen==$data->almacen?'selected':''):'' @endphp>
+                                            {{ $item->almacen }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Rol ST</label>
-                                <select class="form-control" name="create_rol" id="create_rol" required>
+                                <select class="form-control" name="rol_st" id="rol_st" required>
                                     <option value=""></option>
-                                    <option value="1">Admin</option>
-                                    <option value="0">General</option>
+                                    <option value="1" @php echo isset($data->rol)? (1==$data->rol?'selected':''):'' @endphp>Admin</option>
+                                    <option value="0" @php echo isset($data->rol)? (0==$data->rol?'selected':''):'' @endphp>General</option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Fotografía</label>
-                                <input type="file" class="form-control mb-3" name="" id="" required>
+                                <small><i>{{ isset($data->ruta_foto) ? str_replace('/storage/perfil/', '', $data->ruta_foto) : '' }}</i></small>
+                                <input type="file" class="form-control mb-3" name="fotografia" id="fotografia" required>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Permisos Intranet Fab</label>
-                                <select class="form-control" name="intranet_fab" id="intranet_fab" required>
+                                <select class="form-control" name="rol_fab" id="rol_fab" required>
                                     <option value=""></option>
-                                    <option value="1">Admin</option>
-                                    <option value="2">General</option>
+                                    <option value="1" @php echo isset($data->rol_user)? (1==$data->rol_user?'selected':''):'' @endphp>Admin
+                                    </option>
+                                    <option value="2" @php echo isset($data->rol_user)? (2==$data->rol_user?'selected':''):'' @endphp>General
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="">Inhabilitar automaticamente</label>
+                                <select name="inhabilitar" id="inhabilitar" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="1" @php echo isset($data->inhabilitar)? (1==$data->inhabilitar?'selected':''):'' @endphp>Si
+                                    </option>
+                                    <option value="0" @php echo isset($data->inhabilitar)? (0==$data->inhabilitar?'selected':''):'' @endphp>No
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="">Estado</label>
-                                <select name="estado_u" id="estado_u" class="form-control" required>
+                                <select name="estado" id="estado" class="form-control" required>
                                     <option value=""></option>
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                                    <option value="1" @php echo isset($data->estado)? (1==$data->estado?'selected':''):'' @endphp>Activo</option>
+                                    <option value="0" @php echo isset($data->estado)? (0==$data->estado?'selected':''):'' @endphp>Inactivo</option>
                                 </select>
                             </div>
                         </div>
                         <center>
                             <div class="btn-group mt-4" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-secondary">Actualizar info</button>
-                                <button type="button" class="btn btn-secondary">Crear información</button>
+                                <button type="button" onclick="updateInfoUsuarioIntranet()" class="btn btn-warning">Actualizar información</button>
+                                <button type="button" onclick="createInfoUsuarioIntranet()" class="btn btn-success">Crear información</button>
                             </div>
                         </center>
                     </form>
@@ -214,4 +250,116 @@
     </section>
 @endsection
 @section('footer')
+    <script>
+        updateInfoUsuarioIntranet = () => {
+            var formData = new FormData(document.getElementById('formInfoGeneralUsuarios'));
+            formData.append('dato', 'valor');
+            var datos = $.ajax({
+                url: "{{ route('update.info.usuario') }}",
+                type: "POST",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+            })
+            datos.done((response) => {
+                if (response.status == true) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: "¡Buen trabajo! La información del usuario ha sido actualizada correctamente.",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        toast: true
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: response.mensaje,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        toast: true
+                    });
+                }
+            })
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: '¡ERROR! Revisa la información y vuelve a intentar',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    toast: true
+                });
+            })
+        }
+
+        createInfoUsuarioIntranet = () => {
+            var formData = new FormData(document.getElementById('formInfoGeneralUsuarios'));
+            formData.append('dato', 'valor');
+            var datos = $.ajax({
+                url: "{{ route('create.info.user') }}",
+                type: "POST",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+            })
+            datos.done((response) => {
+                if (response.status == true) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: "¡Buen trabajo! La información del usuario ha sido creada correctamente.",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        toast: true
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: response.mensaje,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        toast: true
+                    });
+                }
+            })
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: '¡ERROR! Revisa la información y vuelve a intentar',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    toast: true
+                });
+            })
+        }
+
+        validarNombreUsuario = (valor) => {
+            var datos = $.ajax({
+                url: "{{ route('validar.info.user') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    userName: valor
+                }
+            })
+            datos.done((res) => {
+                if (res.status == true) {
+                    document.getElementById('userNameValidate').hidden = false
+                } else {
+                    document.getElementById('userNameValidate').hidden = true
+                }
+            })
+            datos.fail(() => {
+                document.getElementById('userNameValidate').hidden = true
+            })
+        }
+    </script>
 @endsection

@@ -300,6 +300,9 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
         Route::group(['prefix' => 'admin'], function () {
             Route::get('/crear-info/{cedula?}/{nombre?}', [ControllerUsuarios::class, 'createUserIntranet'])->name('crear.info.usuario');
+            Route::post('/crear-info', [ControllerUsuarios::class, 'updateInfoUsuarioIntranet'])->name('update.info.usuario');
+            Route::post('/crear-info-user', [ControllerUsuarios::class, 'createInfoGeneralUser'])->name('create.info.user');
+            Route::post('/validar-info-user', [ControllerUsuarios::class, 'findUserName'])->name('validar.info.user');
         });
     });
 

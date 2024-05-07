@@ -12,6 +12,7 @@ class ModelUsersIntranet extends Model
     protected $table = 'users';
 
     protected $fillable = [
+        'id',
         'codigo',
         'nombre',
         'email',
