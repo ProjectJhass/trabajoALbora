@@ -29,7 +29,6 @@ class ControllerUsuarios extends Controller
         $usuarios = ModelConsultasWs::informacion();
 
         if (count($usuarios) > 0) {
-            array_push($usuarios, (['empresa' => 2, 'cedula' => '6401505', 'nombre' => 'SISTEMAS MUEBLES ALBURA SAS']));
             foreach ($usuarios as $key => $value) {
                 $info_ = ModelUsersIntranet::find($value['cedula']);
 
