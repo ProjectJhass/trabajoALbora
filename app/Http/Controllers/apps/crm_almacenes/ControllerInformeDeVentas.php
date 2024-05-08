@@ -41,6 +41,7 @@ class ControllerInformeDeVentas extends Controller
 
         $info_clientes = self::getInfoClientes($fechaInicio, $fechaFin, $asesor);
         $info_presupuesto = self::getInfoPresupuesto($fechaInicio, $fechaFin, $asesor);
+
         $resultados = self::getInfoProductosAdquiridos($info_presupuesto);
         $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
         $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
@@ -67,7 +68,7 @@ class ControllerInformeDeVentas extends Controller
             'presupuestoAsesor',
             'clientesEfectivos' => function ($query) use ($fechaInicio, $fechaFin) {
                 $query->with([
-                    'cotizaciones',
+                    'itemsCotizados',
                     'ventasEfectivas'
                 ])->whereHas('ventasEfectivas', function ($query) use ($fechaInicio, $fechaFin) {
                     $query->whereBetween('fecha_compra', [$fechaInicio, $fechaFin]);
@@ -82,7 +83,7 @@ class ControllerInformeDeVentas extends Controller
             'ventasEfectivas' => function ($query) use ($fechaInicio, $fechaFin) {
                 $query->whereBetween('fecha_compra', [$fechaInicio, $fechaFin]);
             },
-            'cotizaciones',
+            'itemsCotizados',
             'asesoresCRM'
         ])->whereHas('ventasEfectivas', function ($query) use ($fechaInicio, $fechaFin) {
             $query->whereBetween('fecha_compra', [$fechaInicio, $fechaFin]);
@@ -99,7 +100,7 @@ class ControllerInformeDeVentas extends Controller
                 $nombre_asesor = $cliente->asesoresCRM[0]->nombre; // Suponiendo que "nombre" es el campo que almacena el nombre del asesor
                 $medio_pago = $venta->medio_de_pago; // Suponiendo que "nombre" es el campo que almacena el tipo de pago
                 $valor_venta_total = 0; // Inicializamos el valor total de la venta en 0
-                foreach ($cliente->cotizaciones as $producto) {
+                foreach ($cliente->itemsCotizados as $producto) {
                     $valor_venta_total += (($producto->vlr_credito - (($producto->vlr_credito * $producto->descuento))) * $producto->cantidad);
                 }
                 // Verificamos si ya tenemos registrado este asesor en los resultados
@@ -128,7 +129,7 @@ class ControllerInformeDeVentas extends Controller
         foreach ($info_presupuesto as $info) {
             $asesor = $info->nombre;
             foreach ($info->clientesEfectivos as $cliente) {
-                foreach ($cliente->cotizaciones as $item) {
+                foreach ($cliente->itemsCotizados as $item) {
                     // Verificar si ya existe el item para este asesor en los resultados
                     if (array_key_exists($asesor, $resultados) && array_key_exists($item->sku, $resultados[$asesor])) {
                         // Si existe, aumentar la cantidad
@@ -159,7 +160,7 @@ class ControllerInformeDeVentas extends Controller
             $ciudad = $cliente->ciudad;
             $total_venta_cliente = 0;
 
-            foreach ($cliente->cotizaciones as $producto) {
+            foreach ($cliente->itemsCotizados as $producto) {
                 // Sumar el valor de cada producto vendido
                 $total_venta_cliente += (($producto->vlr_credito - (($producto->vlr_credito * $producto->descuento))) * $producto->cantidad);
             }

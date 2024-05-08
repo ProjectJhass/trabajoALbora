@@ -61,7 +61,7 @@
                                                     class="fas fa-shopping-cart"></i></button>
                                             <button type="button" class="btn btn-warning"
                                                 onclick="VisualizarCometariosCliente('{{ $item->id_cliente }}')"><i class="fas fa-comments"></i></button>
-                                            <a href="{{ route('asesor.whatsapp', ['celular' => empty($value->celular_1) ? 1 : $value->celular_1]) }}"
+                                            <a href="{{ route('asesor.whatsapp', ['celular' => empty($item->celular_1) ? 1 : $item->celular_1]) }}"
                                                 target="_BLANK" type="button" class="btn btn-success"><i class="fab fa-whatsapp"></i></a>
                                         </div>
                                     </td>
