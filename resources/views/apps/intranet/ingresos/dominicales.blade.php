@@ -66,7 +66,7 @@
                             </div>
                             <div class="card-body">
 
-                                <input class="form-control mb-4" type="text" id="searchInput" placeholder="Buscar...">
+                                <input class="form-control mb-4" autocomplete="off" type="text" id="searchInput" placeholder="Buscar...">
                                 <!-- the events -->
                                 <!-- class="overflow-auto" style="max-width: 300px; max-height: 250px;" -->
                                 <div id="external-events" class="overflow-auto" style="max-width: 300px; max-height: 320px;">

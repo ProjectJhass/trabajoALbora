@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        @if (Auth::user()->dpto_user == '4' || Auth::user()->id == '6401505')
+        @if (Auth::user()->dpto_user == '4' || Auth::user()->permisos == '4')
             <a href="{{ route('home.edit') }}" id="delete-clients" class="btn btn-danger back-to-top" role="button" aria-label="Editar inicio">
                 <i class="fas fa-edit"></i>
             </a>

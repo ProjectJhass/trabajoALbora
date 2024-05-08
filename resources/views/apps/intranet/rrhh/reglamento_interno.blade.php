@@ -3,8 +3,8 @@
     Reglamento Interno de Trabajo
 @endsection
 @section('head')
-    <link rel="stylesheet" href="{{ asset('storage/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('storage/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 @endsection
 @section('rrhh')
     bg-danger active
@@ -28,7 +28,7 @@
     @php
         $validar_r = false;
     @endphp
-    @if (Auth::user()->dpto_user == '4' || Auth::user()->id == '6401505')
+    @if (Auth::user()->dpto_user == '4' || Auth::user()->permisos == '4')
         @php
             $validar_r = true;
         @endphp
@@ -158,9 +158,9 @@
     </section>
 @endsection
 @section('footer')
-    <script src="{{ asset('storage/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('storage/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('storage/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('storage/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('js/reglamento_interno.js') }}"></script>
 @endsection

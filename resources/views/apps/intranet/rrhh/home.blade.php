@@ -103,7 +103,7 @@
                             </div>
                         </div>
                     </div>
-                    @if (Auth::user()->dpto_user == '4' || Auth::user()->id == '6401505' || (Auth::user()->dpto_user == '2' && Auth::user()->permiso_dpto == '1'))
+                    @if (Auth::user()->dpto_user == '4' || Auth::user()->permisos == '4' || (Auth::user()->dpto_user == '2' && Auth::user()->permiso_dpto == '1'))
                         @if (Auth::user()->dpto_user != '2')
                             <div class="col-md-3 mb-3">
                                 <div class="card card-outline card-danger">
@@ -181,11 +181,23 @@
                             <div class="col-md-3 mb-3">
                                 <div class="card card-outline card-danger">
                                     <div class="card-header">
-                                        <strong>Evaluaciòn</strong>
+                                        <strong>Evaluación</strong>
                                     </div>
                                     <div class="card-body text-center">
                                         <a href="#" class="" data-toggle="modal" data-target="#exampleModal">
                                             <img src="{{ asset('icons/opinion.png') }}" width="40%" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card card-outline card-danger">
+                                    <div class="card-header">
+                                        <strong>Descansos firmados</strong>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <a href="{{ route('firmas.descansos') }}">
+                                            <img src="{{ asset('icons/firma.png') }}" width="40%" alt="">
                                         </a>
                                     </div>
                                 </div>

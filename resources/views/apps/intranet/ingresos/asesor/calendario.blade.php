@@ -5,6 +5,14 @@
 @section('calendar')
     bg-danger active
 @endsection
+@section('head')
+    <style>
+        label {
+            color: rgb(116, 116, 116);
+            font-size: 13px;
+        }
+    </style>
+@endsection
 @section('body')
     <div class="content-header">
         <div class="container-fluid">
@@ -33,8 +41,9 @@
                             </div>
                             <div class="card-body">
                                 <div id="external-events" class="overflow-auto" style="max-width: 300px; max-height: 320px;">
-                                        <div class="external-event" data-url="" data-evento="1" data-zona="" data-cedula=""
-                                            style="background-color: rgb(10, 136, 138); border-color: rgb(10, 136, 138); color: rgb(255, 255, 255); position: relative;"></div>
+                                    <div class="external-event" data-url="" data-evento="1" data-zona="" data-cedula=""
+                                        style="background-color: rgb(10, 136, 138); border-color: rgb(10, 136, 138); color: rgb(255, 255, 255); position: relative;">
+                                    </div>
                                     <div class="checkbox" hidden>
                                         <label for="drop-remove">
                                             <input type="checkbox" id="drop-remove" checked>
@@ -56,7 +65,8 @@
                                             <label class="form-check-label" for="inlineRadio1">Asesor</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="R" checked>
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="R"
+                                                checked>
                                             <label class="form-check-label" for="inlineRadio2">Reunión</label>
                                         </div>
                                     </div>
@@ -85,7 +95,11 @@
                 </div>
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-12 mb-2 text-center">
+                        <div class="col-md-2">
+                            <button type="button" id="btnAbrirModalFirmarDescanso" onclick="modalFirmarDescansosDom()"
+                                class="btn btn-sm btn-danger">Firmar descanso</button>
+                        </div>
+                        <div class="col-md-10 mb-2 text-center">
                             <div class="form-group">
                                 <div class="form-check form-check-inline">
                                     <i class="fas fa-stop" style="color: rgb(10, 136, 138);"></i>&nbsp; Descanso
@@ -119,14 +133,182 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modalFirmarDescansos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Firmar descansos compensatorios</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formInfoFirmarDescanso" method="post" class="was-validated">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Cédula</label>
+                                    <input type="text" value="{{ Auth::user()->id }}" readonly class="form-control" name="cedula" id="cedula">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Nombre</label>
+                                    <input type="text" value="{{ Auth::user()->nombre }}" readonly class="form-control" name="nombre"
+                                        id="nombre">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Departamento</label>
+                                    <select class="form-control" onchange="searchInfoCiudades(this.value)" name="departamento" id="departamento"
+                                        required>
+                                        <option value="">Seleccionar...</option>
+                                        @foreach ($deptos as $item)
+                                            <option value="{{ $item->id_depto }}" data-depto="{{ $item->depto }}">{{ $item->depto }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Ciudad</label>
+                                    <select class="form-control" name="ciudad" id="ciudad" required></select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Centro de experiencia</label>
+                                    <select class="form-control" name="almacen" id="almacen" required>
+                                        <option value="">Seleccionar...</option>
+                                        @foreach ($almacen as $item)
+                                            <option value="{{ $item->almacen }}">{{ $item->almacen }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Dominical laborado</label>
+                                    <select class="form-control" name="dominical_laborado" id="dominical_laborado" required></select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="">Día descanso compensatorio</label>
+                                    <select class="form-control" name="dia_compensado" id="dia_compensado" required></select>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label for="">Observaciones</label>
+                                    <input type="text" class="form-control" name="observaciones" id="observaciones">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar formulario</button>
+                        <button type="button" class="btn btn-danger" onclick="validarFieldsDescanso()">Firmar descanso compensatorio</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalTomarFotografia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="card card-outline card-danger">
+                            <div class="card-header">
+                                <label for="">Dispositivo</label>
+                                <select name="listaDeDispositivos" id="listaDeDispositivos" class="form-control"></select>
+                            </div>
+                            <div class="card-body text-center">
+                                <video muted="muted" id="video" style="width: 80%;"></video>
+                                <canvas id="canvas" style="display: none;"></canvas>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button type="button" id="boton" class="btn btn-danger">Tomar fotografía</button>
+                                <button type="button" id="cerrarModalFotoGrafia" class="btn btn-secondary" data-dismiss="modal">Cerrar
+                                    ventana</button>
+                                <p id="estado"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="actualizar-programacion-calendario">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Información del evento <span id="estadoFirmaDominical"></span> </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="was-validated" id="formulario-actualizar-info-prog-cal" autocomplete="off">
+                            @csrf
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Nombre</label>
+                                    <input type="text" readonly class="form-control" id="nombre_prog_cal" name="nombre_prog_cal">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPassword4">Fecha inicio</label>
+                                    <input type="date" readonly class="form-control" id="fecha_i_prog_cal" name="fecha_i_prog_cal">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPassword4">Fecha final</label>
+                                    <input type="date" readonly class="form-control" id="fecha_f_prog_cal" name="fecha_f_prog_cal">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="inputCity">Evento</label>
+                                    <select readonly name="tipo_evento_prog_cal" id="tipo_evento_prog_cal" class="form-control">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="1">Descanso</option>
+                                        <option value="2">Dominical</option>
+                                        <option value="4">Compensatorio mes anterior</option>
+                                        <option value="5">Compensatorio próximo mes</option>
+                                        <option value="6">Compensatorio adelantado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="inputState">Asesor quien reemplaza</label>
+                                    <input type="text" readonly class="form-control" name="cedula_reemplaza_prog" id="cedula_reemplaza_prog">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress2">Observación</label>
+                                <textarea readonly name="observacion_evento_cal" class="form-control" id="observacion_evento_cal" placeholder="Observaciones de la programación"
+                                    cols="30" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" id="btnFirmarDesdeModal" onclick="firmarFechaDescansoModal()"><i
+                                class="fas fa-edit"></i> Firmar fecha</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar información</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 @endsection
 @section('footer')
     <script>
-        $(function() {
+        firmarFechaDescansoModal = () => {
+            var fecha = $("#fecha_i_prog_cal").val()
+            var evento = $("#tipo_evento_prog_cal").val()
 
+            $("#actualizar-programacion-calendario").modal("hide")
+            $("#btnAbrirModalFirmarDescanso").click()
+
+            setTimeout(() => {
+                if (evento == 1) {
+                    $('#dia_compensado option[data-fecha="' + fecha + '"]').prop('selected', true);
+                }
+                if (evento == 2) {
+                    $('#dominical_laborado option[data-fecha="' + fecha + '"]').prop('selected', true);
+                }
+            }, 1000);
+        }
+
+        $(() => {
             /* initialize the external events
-             -----------------------------------------------------------------*/
+                        -----------------------------------------------------------------*/
             function ini_events(ele, url, accion) {
                 ele.each(function() {
 
@@ -211,7 +393,8 @@
                             nom_reem: '<?php echo $value->nombre_reemplaza; ?>',
                             fecha_i: '<?php echo $value->fecha_i; ?>',
                             fecha_f: '<?php echo date('Y-m-d', strtotime($value->fecha_f . '-1 days')); ?>',
-                            bloqueado: '<?php echo $value->bloqueado; ?>'
+                            bloqueado: '<?php echo $value->bloqueado; ?>',
+                            firmar: '<?php echo $value->firmar; ?>'
                         },
                         allDay: true
                     },
@@ -219,82 +402,6 @@
                 ],
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar !!!
-                eventReceive: function(info) {
-
-                    var fecha_calendario = ObtenerFechaSeleccionada(info.event._instance.range.end);
-
-                    var datos = $.ajax({
-                        type: "POST",
-                        url: window.location.href + "/nuevo-evento",
-                        dataType: "json",
-                        data: {
-                            cedula_u: info.event._def.extendedProps.cedula_u,
-                            nombre_e: info.event._def.title,
-                            fecha_i: fecha_calendario,
-                            url: info.event._def.url,
-                            color: info.event._def.ui.backgroundColor,
-                            evento: info.event._def.extendedProps.evento,
-                            zona: info.event._def.extendedProps.zona
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    datos.done((res) => {
-                        if (res.status == true) {
-                            if ((info.event._def.ui.backgroundColor) == 'rgb(220, 53, 69)') {
-                                info.draggedEl.parentNode.removeChild(info.draggedEl);
-                            }
-                            location.reload();
-                        }
-                    });
-                    datos.fail(() => {
-                        Swal.fire(
-                            'ERROR!',
-                            'Hubo un problema al procesar la solicitud',
-                            'error'
-                        )
-                    });
-                },
-                eventChange: function(info) {
-                    if (info.event._def.extendedProps.bloqueado == '0') {
-                        var id_evento = info.event._def.publicId;
-                        var date_i = info.event._instance.range.start;
-                        var date_f = info.event._instance.range.end;
-
-                        var fecha_i = ObtenerFechaSeleccionada(date_i);
-                        var fecha_f = ObtenerFechaSeleccionada(date_f);
-
-                        var datos = $.ajax({
-                            type: "POST",
-                            url: window.location.href + "/actualizar-fecha-evento",
-                            dataType: "json",
-                            data: {
-                                id_evento,
-                                fecha_i,
-                                fecha_f
-                            },
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-
-                        });
-                        datos.done((res) => {
-                            if (res.status == true) {
-                                location.reload();
-                            }
-                        });
-                        datos.fail(() => {
-                            Swal.fire(
-                                'ERROR!',
-                                'Hubo un problema al procesar la solicitud',
-                                'error'
-                            )
-                        });
-                    } else {
-                        location.reload();
-                    }
-                },
                 eventClick: function(info) {
                     if (info.event._def.extendedProps.bloqueado == '0') {
                         if ((info.event._def.extendedProps.evento) !== undefined && (info.event._def.extendedProps.evento) != 3) {
@@ -305,8 +412,18 @@
                             $('#fecha_f_prog_cal').val(info.event._def.extendedProps.fecha_f);
                             $('#url_prog_cal').val(info.event._def.url);
                             $('#tipo_evento_prog_cal').val(info.event._def.extendedProps.evento);
-                            $('#cedula_reemplaza_prog').val(info.event._def.extendedProps.ced_reem + "/" + info.event._def.extendedProps.nom_reem);
+                            $('#cedula_reemplaza_prog').val(info.event._def.extendedProps.nom_reem);
                             $('#observacion_evento_cal').val(info.event._def.extendedProps.obs);
+
+                            var firmar_ = info.event._def.extendedProps.firmar
+                            if (firmar_ == "firmado") {
+                                var title = '<span class="badge badge-success">Fecha firmada</span>';
+                                document.getElementById("btnFirmarDesdeModal").hidden = true
+                            } else {
+                                var title = '<span class="badge badge-danger">Fecha sin firmar</span>';
+                                document.getElementById("btnFirmarDesdeModal").hidden = false
+                            }
+                            $("#estadoFirmaDominical").html(title)
                         }
                     }
                 }
@@ -322,7 +439,7 @@
                     'background-color': currColor,
                     'border-color': currColor,
                 })
-            })
+            });
             $('#add-new-event').click(function(e) {
                 e.preventDefault()
                 var val = $('#new-event').val()
@@ -364,21 +481,34 @@
                 ini_events(event, url, tipo_)
                 $('#new-event').val('')
                 $('#url-event').val('')
-            })
+            });
         });
 
-        BuscarInfoZona = () => {
-            $('#enviar-infor-zona').click();
-        }
+        modalFirmarDescansosDom = () => {
 
-        EliminarEventoCalendario = () => {
-            var id_evento = $('#id_prog_cal').val();
+            $("#modalFirmarDescansos").modal("show")
+
             var datos = $.ajax({
-                type: "POST",
-                url: window.location.href + "/eliminar-evento",
+                type: "post",
+                url: "{{ route('datos.descansodom') }}",
                 dataType: "json",
                 data: {
-                    id_evento
+                    dato: 1
+                }
+            })
+            datos.done((res) => {
+                $("#dominical_laborado").html(res.dominicales)
+                $("#dia_compensado").html(res.descansos)
+            })
+        }
+
+        searchInfoCiudades = (valor) => {
+            var datos = $.ajax({
+                url: "{{ Route('ciudades.consultar') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: valor
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -386,152 +516,248 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
-                    Swal.fire(
-                        'BIEN!',
-                        'Evento eliminado',
-                        'success'
-                    )
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
+                    $('#ciudad').html(res.ciudad);
                 }
-            });
-            datos.fail(() => {
-                Swal.fire(
-                    'ERROR!',
-                    'Hubo un problema al procesar la solicitud',
-                    'error'
-                )
             });
         }
 
-        ActualilzarEventoCalendario = () => {
-            var formData = new FormData(document.getElementById('formulario-actualizar-info-prog-cal'));
-            formData.append("valor", "valor");
+        tomarFotografiaDescanso = () => {
+
+            document.getElementById("boton").hidden = false;
+            $("#cerrarModalFotoGrafia").text("Cerrar ventana")
+
+            function tieneSoporteUserMedia() {
+                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator
+                    .webkitGetUserMedia || navigator.msGetUserMedia)
+            }
+
+            function _getUserMedia() {
+                return (navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator
+                    .webkitGetUserMedia || navigator.msGetUserMedia).apply(navigator, arguments);
+            }
+
+            // Declaramos elementos del DOM
+            const $video = document.querySelector("#video"),
+                $canvas = document.querySelector("#canvas"),
+                $boton = document.querySelector("#boton"),
+                $estado = document.querySelector("#estado"),
+                $listaDeDispositivos = document.querySelector("#listaDeDispositivos");
+
+            // La función que es llamada después de que ya se dieron los permisos
+            // Lo que hace es llenar el select con los dispositivos obtenidos
+            const llenarSelectConDispositivosDisponibles = () => {
+
+                navigator
+                    .mediaDevices
+                    .enumerateDevices()
+                    .then(function(dispositivos) {
+                        const dispositivosDeVideo = [];
+                        dispositivos.forEach(function(dispositivo) {
+                            const tipo = dispositivo.kind;
+                            if (tipo === "videoinput") {
+                                dispositivosDeVideo.push(dispositivo);
+                            }
+                        });
+
+                        // Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
+                        if (dispositivosDeVideo.length > 0) {
+                            // Llenar el select
+                            dispositivosDeVideo.forEach(dispositivo => {
+                                const option = document.createElement('option');
+                                option.value = dispositivo.deviceId;
+                                option.text = dispositivo.label;
+                                $listaDeDispositivos.appendChild(option);
+                                console.log("$listaDeDispositivos => ", $listaDeDispositivos)
+                            });
+                        }
+                    });
+            }
+
+            (function() {
+                // Comenzamos viendo si tiene soporte, si no, nos detenemos
+                if (!tieneSoporteUserMedia()) {
+                    alert("Lo siento. Tu navegador no soporta esta característica");
+                    $estado.innerHTML = "Parece que tu navegador no soporta esta característica. Intenta actualizarlo.";
+                    return;
+                }
+                //Aquí guardaremos el stream globalmente
+                let stream;
+
+
+                // Comenzamos pidiendo los dispositivos
+                navigator
+                    .mediaDevices
+                    .enumerateDevices()
+                    .then(function(dispositivos) {
+                        // Vamos a filtrarlos y guardar aquí los de vídeo
+                        const dispositivosDeVideo = [];
+
+                        // Recorrer y filtrar
+                        dispositivos.forEach(function(dispositivo) {
+                            const tipo = dispositivo.kind;
+                            if (tipo === "videoinput") {
+                                dispositivosDeVideo.push(dispositivo);
+                            }
+                        });
+
+                        // Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
+                        // y le pasamos el id de dispositivo
+                        if (dispositivosDeVideo.length > 0) {
+                            // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
+                            mostrarStream(dispositivosDeVideo[0].deviceId);
+                        }
+                    });
+
+
+
+                const mostrarStream = idDeDispositivo => {
+                    _getUserMedia({
+                            video: {
+                                // Justo aquí indicamos cuál dispositivo usar
+                                deviceId: idDeDispositivo,
+                            }
+                        },
+                        function(streamObtenido) {
+                            // Aquí ya tenemos permisos, ahora sí llenamos el select,
+                            // pues si no, no nos daría el nombre de los dispositivos
+                            llenarSelectConDispositivosDisponibles();
+
+                            // Escuchar cuando seleccionen otra opción y entonces llamar a esta función
+                            $listaDeDispositivos.onchange = () => {
+                                // Detener el stream
+                                if (stream) {
+                                    stream.getTracks().forEach(function(track) {
+                                        track.stop();
+                                    });
+                                }
+                                // Mostrar el nuevo stream con el dispositivo seleccionado
+                                mostrarStream($listaDeDispositivos.value);
+                            }
+
+                            // Simple asignación
+                            stream = streamObtenido;
+
+                            // Mandamos el stream de la cámara al elemento de vídeo
+                            $video.srcObject = stream;
+                            $video.play();
+
+                            //Escuchar el click del botón para tomar la foto
+                            $boton.addEventListener("click", function() {
+
+                                document.getElementById("boton").hidden = true;
+                                $("#cerrarModalFotoGrafia").text("Tomar nuevamente")
+
+                                //Pausar reproducción
+                                $video.pause();
+
+                                //Obtener contexto del canvas y dibujar sobre él
+                                let contexto = $canvas.getContext("2d");
+                                $canvas.width = $video.videoWidth;
+                                $canvas.height = $video.videoHeight;
+
+                                contexto.clearRect(0, 0, $canvas.width, $canvas.height);
+
+                                contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
+
+                                let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
+
+                                var datos_ = $.ajax({
+                                    type: "POST",
+                                    url: "{{ route('guardar.foto') }}",
+                                    dataType: "json",
+                                    data: encodeURIComponent(foto),
+
+                                });
+
+                                datos_.done((res) => {
+                                    if (res.status == true) {
+                                        sendInfoGeneralFormDescanso(res.name, res.url)
+                                    }
+                                })
+                            });
+                        },
+                        function(error) {
+                            console.log("Permiso denegado o error: ", error);
+                            $estado.innerHTML = "No se puede acceder a la cámara, o no diste permiso.";
+                        });
+                }
+            })();
+        }
+
+        validarFieldsDescanso = () => {
+            var depto = $("#departamento").val()
+            var ciudad = $("#ciudad").val()
+            var almacen = $("#almacen").val()
+            var dominical = $("#dominical_laborado").val()
+            var descanso = $("#dia_compensado").val()
+            if (depto.length > 0 && ciudad.length > 0 && almacen.length > 0) {
+                if (dominical.length > 0 || descanso.length > 0) {
+                    $("#modalTomarFotografia").modal("show")
+                    tomarFotografiaDescanso()
+                } else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Debes seleccionar por lo menos una fecha',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        toast: true
+                    });
+                }
+            } else {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Revisa la información y vuelve a intentar',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    toast: true
+                });
+            }
+        }
+
+        sendInfoGeneralFormDescanso = (name, url) => {
+
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Guardando información, por favor espere...',
+                showConfirmButton: false,
+                timer: 10000,
+                toast: true
+            });
+
+            var dataDepto = $('#departamento option:selected').data('depto');
+
+            var formData = new FormData(document.getElementById('formInfoFirmarDescanso'));
+            formData.append('img', name);
+            formData.append('url', url);
+            formData.append('depto', dataDepto);
 
             var datos = $.ajax({
-                url: window.location.href + "/actualizar-evento",
-                type: "post",
+                url: "{{ route('guardar.info.firma') }}",
+                type: "POST",
                 dataType: "json",
                 data: formData,
                 cache: false,
                 contentType: false,
-                processData: false
-            });
-
-            datos.done((res) => {
-                if (res.status == true) {
-                    Swal.fire(
-                        'BIEN!',
-                        res.mensaje,
-                        'success'
-                    )
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-                if (res.status == false) {
-                    Swal.fire(
-                        'ERROR!',
-                        res.mensaje,
-                        'error'
-                    )
-                }
-            });
-            datos.fail(() => {
-                toastr.error('ERROR: Hubo un problema al procesar la solicitud');
-            });
-        }
-
-        ObtenerFechaSeleccionada = (date) => {
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var dia = date.getDate();
-            if (month < 10) {
-                month = "0" + month;
-            }
-            if (dia < 10) {
-                dia = "0" + dia;
-            }
-
-            return fecha_calendario = year + "-" + month + "-" + dia;
-        }
-
-        $("input[name=inlineRadioOptions]").change(function() {
-            var valor = $(this).val();
-            switch (valor) {
-                case 'A':
-                    document.getElementById('formulario-agregar-nuevo-registro').hidden = false;
-                    document.getElementById('url-reunion-evento').hidden = true;
-                    break;
-                case 'R':
-                    document.getElementById('formulario-agregar-nuevo-registro').hidden = false;
-                    document.getElementById('url-reunion-evento').hidden = false;
-                    break;
-
-                default:
-                    document.getElementById('formulario-agregar-nuevo-registro').hidden = true;
-                    document.getElementById('url-reunion-evento').hidden = true;
-                    break;
-            }
-        });
-
-        BloquearCalendario = () => {
-            Swal.fire({
-                title: 'Estás seguro de bloquear?',
-                text: "No podrás reversar esta operación!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, bloquear',
-                cancelButtonText: 'No, cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var datos = ConfirmarBloqueo();
-                    datos.done((res) => {
-                        if (res.status == true) {
-                            Swal.fire(
-                                'Bloqueado!',
-                                res.mensaje,
-                                'success'
-                            )
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
-                        }
-                        if (res.status == false) {
-                            Swal.fire(
-                                'ERROR!',
-                                res.mensaje,
-                                'error'
-                            )
-                        }
-                    });
-                    datos.fail(() => {
-                        Swal.fire(
-                            'ERROR!',
-                            'Hubo un problema al procesar la solicitud',
-                            'error'
-                        )
-                    });
-                }
+                processData: false,
             })
-        }
+            datos.done((res) => {
 
-        ConfirmarBloqueo = () => {
-            var datos = $.ajax({
-                type: "POST",
-                url: window.location.href + "/bloquear-eventos",
-                dataType: "json",
-                data: {
-                    evento: '1'
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            return datos;
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: '¡BIEN! Información guardada exitosamente',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    toast: true
+                });
+
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1500);
+            })
         }
     </script>
 @endsection

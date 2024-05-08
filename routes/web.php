@@ -48,12 +48,14 @@ use App\Http\Controllers\apps\intranet\ControllerCargarCartera;
 use App\Http\Controllers\apps\intranet\ControllerDocumentacionIntranet;
 use App\Http\Controllers\apps\intranet\ControllerDominicales;
 use App\Http\Controllers\apps\intranet\ControllerEvaluacionDepartamentos;
+use App\Http\Controllers\apps\intranet\ControllerFirmasDescansos;
 use App\Http\Controllers\apps\intranet\ControllerFlayer;
 use App\Http\Controllers\apps\intranet\ControllerHome;
 use App\Http\Controllers\apps\intranet\ControllerIdeas;
 use App\Http\Controllers\apps\intranet\ControllerInfoReloj;
 use App\Http\Controllers\apps\intranet\ControllerIngresosSalidas;
 use App\Http\Controllers\apps\intranet\ControllerLogistica;
+use App\Http\Controllers\apps\intranet\ControllerPdfDiaDescanso;
 use App\Http\Controllers\apps\intranet\ControllerRecursosHumanos;
 use App\Http\Controllers\apps\intranet\ControllerRegisterFlayer;
 use App\Http\Controllers\apps\intranet\ControllerRegistrarIngresos;
@@ -138,8 +140,13 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
     Route::post('general/notificaciones', [EnviarNotificacion::class, 'index'])->name('intranet.docs.general.not');
 
     //Calendario individual Asesores
-
-    Route::get('calendario/general', [ControllerCalendar::class, 'index'])->name('calendar');
+    Route::group(['prefix' => 'calendario'], function () {
+        Route::get('general/pdf/{id}', [ControllerPdfDiaDescanso::class, 'generarPdfCertificado'])->name("generar.pdf.firma");
+        Route::get('general', [ControllerCalendar::class, 'index'])->name('calendar');
+        Route::post('search-evento', [ControllerCalendar::class, 'searchEvento'])->name('datos.descansodom');
+        Route::post('guardar-foto', [ControllerCalendar::class, 'saveInfoFotoDescanso'])->name('guardar.foto');
+        Route::post('guardar-info-firma', [ControllerCalendar::class, 'saveFormFirmaDescanso'])->name('guardar.info.firma');
+    });
 
     // evaluaciones Regionales
     Route::get('/paginas-para-evaluacion', [ControllerEvaluacionDepartamentos::class, 'formularioEvaluacion'])->name('paginas.evaluacion');
@@ -202,18 +209,21 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
         Route::get('/inasistencias', [ControllerIngresosSalidas::class, 'inasistencias'])->name('inasistencias');
         Route::get('/novedades', [ControllerIngresosSalidas::class, 'novedades'])->name('novedades');
 
-        Route::get('/registrar-novedad', [ControllerIngresosSalidas::class, 'registrarNovedad'])->name('r.novedad');
-        Route::post('/registrar-novedad', [ControllerRegistrarNovedades::class, 'index']);
-        Route::post('/registrar-novedad/consultar', [ControllerRegistrarNovedades::class, 'consultar']);
+        Route::group(['prefix' => 'registrar-novedad'], function () {
+            Route::get('', [ControllerIngresosSalidas::class, 'registrarNovedad'])->name('r.novedad');
+            Route::post('', [ControllerRegistrarNovedades::class, 'index']);
+            Route::post('consultar', [ControllerRegistrarNovedades::class, 'consultar']);
+        });
 
-        Route::get('/dominicales-descansos', [ControllerIngresosSalidas::class, 'dominicales'])->name('dominicales');
-        Route::post('/dominicales-descansos', [ControllerDominicales::class, 'sesionZonas']);
-        Route::post('/dominicales-descansos/bloquear-eventos', [ControllerDominicales::class, 'bloquearEventos']);
-        Route::post('/dominicales-descansos/nuevo-evento', [ControllerDominicales::class, 'agregarNuevoEvento']);
-        Route::post('/dominicales-descansos/actualizar-fecha-evento', [ControllerDominicales::class, 'actualizarFechaEvento']);
-        Route::post('/dominicales-descansos/actualizar-evento', [ControllerDominicales::class, 'actualizarEvento']);
-        Route::post('/dominicales-descansos/eliminar-evento', [ControllerDominicales::class, 'eliminarEvento']);
-
+        Route::group(['prefix' => 'dominicales-descansos'], function () {
+            Route::get('', [ControllerIngresosSalidas::class, 'dominicales'])->name('dominicales');
+            Route::post('', [ControllerDominicales::class, 'sesionZonas']);
+            Route::post('bloquear-eventos', [ControllerDominicales::class, 'bloquearEventos']);
+            Route::post('nuevo-evento', [ControllerDominicales::class, 'agregarNuevoEvento']);
+            Route::post('actualizar-fecha-evento', [ControllerDominicales::class, 'actualizarFechaEvento']);
+            Route::post('actualizar-evento', [ControllerDominicales::class, 'actualizarEvento']);
+            Route::post('eliminar-evento', [ControllerDominicales::class, 'eliminarEvento']);
+        });
 
         Route::get('/exportar-info', [ControllerIngresosSalidas::class, 'exportar'])->name('exportar');
         Route::post('/exportar-info', [ControllerIngresosSalidas::class, 'descargarExcel']);
@@ -229,12 +239,13 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'rrhh'], function () {
 
         Route::get('/general', [ControllerRecursosHumanos::class, 'index'])->name('rrhh');
-        Route::get('/reglamento-interno-de-trabajo', [ControllerRecursosHumanos::class, 'Reglamento'])->name('reglamento.interno');
-
-        Route::post('/reglamento-interno-de-trabajo', [ControllerReglamentoInterno::class, 'index']);
-        Route::post('/reglamento-interno-de-trabajo/foto/{cedula}/{nombre}/{empresa}', [ControllerReglamentoInterno::class, 'guardarFoto']);
-
         Route::get('/reloj-fabrica', [ControllerInfoReloj::class, 'index'])->name('reloj.rrhh');
+
+        Route::group(['prefix' => 'reglamento-interno-de-trabajo'], function () {
+            Route::get('', [ControllerRecursosHumanos::class, 'Reglamento'])->name('reglamento.interno');
+            Route::post('', [ControllerReglamentoInterno::class, 'index']);
+            Route::post('foto/{cedula}/{nombre}/{empresa}', [ControllerReglamentoInterno::class, 'guardarFoto']);
+        });
 
         Route::get('/sst', function () {
             return view('apps.intranet.rrhh.menu_sst');
@@ -247,6 +258,13 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
             Route::post('visualizar-flayer', [ControllerRegisterFlayer::class, 'validateImgFlayer'])->name('validate.flayer');
             Route::post('register-info-flayer', [ControllerRegisterFlayer::class, 'saveInfoViewFlayer'])->name('register.flayer');
             Route::get('download-excel/{month}', [ControllerRegisterFlayer::class, 'ExportInfoFlayer']);
+        });
+
+        Route::group(['prefix' => 'firmas-descansos'], function () {
+            Route::get('', [ControllerFirmasDescansos::class, 'index'])->name('firmas.descansos');
+            Route::post('', [ControllerFirmasDescansos::class, 'searchInfoDescansos'])->name('search.firmas.descansos');
+            Route::get('/detalles/{id}', [ControllerFirmasDescansos::class, 'detalleDelaFirma'])->name('detalles.firmas');
+            Route::get('/export/{fecha_i}/{fecha_f}', [ControllerFirmasDescansos::class, 'export'])->name('export.detalles.firmas');
         });
     });
 

@@ -6,7 +6,7 @@
     bg-danger active
 @endsection
 @section('body')
-    @if (($permiso['dpto'] == Auth::user()->dpto_user && $permiso['permiso'] == Auth::user()->permiso_dpto) || Auth::user()->id == '6401505')
+    @if (($permiso['dpto'] == Auth::user()->dpto_user && $permiso['permiso'] == Auth::user()->permiso_dpto) || Auth::user()->permisos == '4')
         <?php $permiso_edit = 1; ?>
     @else
         <?php $permiso_edit = 0; ?>
