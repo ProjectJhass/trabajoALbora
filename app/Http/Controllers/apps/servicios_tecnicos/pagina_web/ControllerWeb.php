@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps\servicios_tecnicos\pagina_web;
 use App\Http\Controllers\Controller;
 use App\Models\apps\servicios_tecnicos\pagina_web\ModelPaginaWeb;
 use App\Models\apps\servicios_tecnicos\pagina_web\ModelWeb;
+use App\Models\soap\st_ModelConsultas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -13,20 +14,20 @@ class ControllerWeb extends Controller
 {
     function home()
     {
-        return view("pagina_web.home");
+        return view("apps.servicios_tecnicos.pagina_web.home");
     }
 
     function formulario()
     {
 
-        return view('pagina_web.formulario');
+        return view('apps.servicios_tecnicos.pagina_web.formulario');
     }
 
     function enviarEmail($email, $subject, $dataEmail)
     {
         $emails = [$email, 'serviciostecnicos@mueblesalbura.com.co'];
 
-        Mail::send('pagina_web.plantilla_email', ['data' => $dataEmail], function ($mail) use ($emails, $subject) {
+        Mail::send('apps.servicios_tecnicos.pagina_web.plantilla_email', ['data' => $dataEmail], function ($mail) use ($emails, $subject) {
             $mail->bcc($emails);
             $mail->subject($subject);
         });
@@ -162,6 +163,38 @@ class ControllerWeb extends Controller
             self::enviarEmail($email, $subject, $data_email);
             //
             return response()->json(['ticket' => $ticket, 'email' => $email], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        }
+    }
+
+    public function getInfoClientePw(Request $request)
+    {
+        $cedulaU = $request->cedula_usuario;
+        $numContacto = ["contacto" => ""];
+        $nombre_ = ["fullname" => ""];
+        $email_ = ["emailU" => ""];
+        if (ctype_digit($cedulaU) && strlen($cedulaU) > 4 && strlen($cedulaU) < 20) {
+            $info_ = st_ModelConsultas::getInfoCliente($cedulaU);
+            $data_i = [];
+            if (count($info_) > 0) {
+                foreach ($info_ as $key => $value) {
+
+                    $nombre_["fullname"] = trim($value["nombre"]) . " " . trim($value["ap1"]) . " " . trim($value["ap2"]);
+                    $email_["emailU"] = isset($value["email"]) ? trim($value["email"]) : "";
+
+                    if (isset($value['celular']) && !empty($value['celular'])) {
+                        $numContacto["contacto"] = $value['celular'];
+                    } else {
+                        if (isset($value['celular2']) && !empty($value['celular2'])) {
+                            $numContacto["contacto"] = $value['celular2'];
+                        }
+                    }
+                }
+                $data_i = $numContacto + $nombre_ + $email_;
+            } else {
+                $data_i = [];
+            }
+
+            return response()->json(['data' => $data_i], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
     }
 }

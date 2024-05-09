@@ -694,16 +694,21 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
 Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
 });
 
+
+//Servicios técnicos
+
+//Link para acceder desde la web
+Route::group(['prefix' => 'pagina-web'], function () {
+    Route::get('/', [ControllerWeb::class, 'home']);
+    Route::get('/enviar-data', [ControllerWeb::class, 'formulario'])->name('enviar-data');
+    Route::post('/guardar-info', [ControllerWeb::class, 'guardarOst'])->name('guardarOst');
+    Route::post('/consultar_info', [ControllerWeb::class, 'getInfoClientePw'])->name('search.info.cliente');
+});
+
+//Enlaces para acceder como administrador
 Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth'], function () {
 
-    Route::group(['prefix' => 'pagina-web'], function () {
-        Route::get('/', [ControllerWeb::class, 'home']);
-        Route::get('/enviar-data', [ControllerWeb::class, 'formulario'])->name('enviar-data');
-        Route::post('/guardar-info', [ControllerWeb::class, 'guardarOst'])->name('guardarOst');
-    });
-
     Route::group(['prefix' => 'st'], function () {
-
         Route::get('products', [ControllerMaestros::class, 'viewProductsApp']);
 
         Route::get('analytics', [ControllerAnalytics::class, 'home'])->name('analytics');

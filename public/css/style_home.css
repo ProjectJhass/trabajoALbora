@@ -1,0 +1,255 @@
+#header {
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: solid 1px #e7e7e9;
+    height: 80px;
+    background-color: white;
+    width: 98%;
+}
+.logo_Albura {
+    margin-top: 7px;
+    margin-left: 30px;
+    width: 180px;
+    height: 45px;
+    background-image: url("../../../../img/img_log_rojo.png");
+    background-repeat: round;
+    background-size: cover;
+    /* background-size: 100% 100vh; */
+}
+::selection {
+    background: #f36060; /*Color naranja para el fondo*/
+
+    color: #fff; /*Color blanco para el texto seleccionado*/
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+#tarjeta {
+    width: 98%;
+    margin-top: 20px;
+    transition: all 300ms;
+}
+
+.titulo {
+    font-weight: 700;
+
+    color: black;
+}
+
+.descript_form {
+    padding-bottom: 20px;
+}
+
+#contacto {
+    background: rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.option1 {
+    background-image: url("../../../../img/contacta.png");
+    background-repeat: round;
+    background-size: cover;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 10px;
+    border: solid 3px white;
+    border-radius: 50%;
+}
+
+form div input {
+    border: 1px solid rgb(139, 139, 139) !important;
+    background-image: none !important;
+}
+
+form div select {
+    border: 1px solid rgb(139, 139, 139) !important;
+    background-image: none !important;
+}
+
+form div textarea {
+    border: 1px solid rgb(139, 139, 139) !important;
+    background-image: none !important;
+}
+
+.option2 {
+    width: 120px;
+    height: 120px;
+    background-image: url("../../../../img/solicitud.png");
+    background-repeat: round;
+    background-size: cover;
+    margin-bottom: 10px;
+    border: solid 3px white;
+    border-radius: 50%;
+}
+
+#texto {
+    width: 90%;
+}
+.ancla {
+    text-decoration: none !important;
+    color: black;
+    transition: all 100ms;
+}
+
+#menu_informacion {
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+}
+#caja {
+    background-color: whitesmoke;
+    transition: background-color 1s, color 1s;
+    bottom: 30px;
+    width: 50%;
+    cursor: pointer;
+    color: rgb(129, 129, 129);
+}
+
+#caja:hover {
+    /* background-color: rgb(231, 89, 89); */
+    /* background-color: rgb(206, 205, 205); */
+    position: relative;
+    color: black;
+
+    /* color: white; */
+}
+
+#error {
+    visibility: hidden;
+    height: 1;
+}
+
+#ancla {
+    text-decoration: none;
+    font-size: large;
+}
+
+#header-modal {
+    background-color: #c75050;
+    color: white;
+}
+#copiado {
+    display: none;
+    transition: all 300ms;
+}
+
+#guardado {
+    visibility: hidden;
+}
+
+#no_guardado {
+    visibility: hidden;
+}
+
+#header_prob {
+    /* border-top: solid 10px rgb(56, 109, 155); */
+    display: flex;
+    justify-content: center;
+}
+
+.llamar {
+    /*#5f6163*/
+    color: rgb(107, 107, 107);
+    border-radius: 5px;
+    border: none;
+    font-weight: 500;
+    height: 40px;
+    width: 200px;
+    transition: all 300ms;
+}
+
+.llamar:hover {
+    background-color: rgb(107, 107, 107);
+    transition: all 300ms;
+    color: white;
+    width: 220px;
+}
+
+.rueda {
+    border: 10px solid rgb(214, 59, 59);
+    border-radius: 50%;
+    border-left-color: transparent;
+    width: 80px;
+    height: 80px;
+    animation: giro 1s linear infinite;
+}
+
+.rueda_chulo {
+    margin-top: 10px;
+    background-color: rgb(38, 165, 59);
+    transform: rotate(137deg);
+    width: 70px;
+    height: 12px;
+    transition: all 300ms;
+}
+
+.cargador_chulo {
+    background-color: rgb(38, 165, 59);
+    border: 5px solid rgb(38, 165, 59);
+    transform: rotate(45deg);
+    position: relative;
+    right: 12px;
+    top: -8px;
+    width: 31px;
+    transition: all 300ms;
+}
+
+.invalido {
+    border: none !important;
+    border-bottom: 2px solid rgb(236, 80, 80) !important;
+    box-shadow: 0px 0px 0 0.25rem rgba(255, 0, 0, 0.199) !important;
+}
+
+.valido {
+    border: none !important;
+    border-bottom: 2px solid rgb(44, 182, 32) !important;
+}
+
+.valido:focus {
+    border: none !important;
+    border-bottom: 2px solid rgb(44, 182, 32) !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.form-select:focus {
+    box-shadow: none !important;
+}
+
+form div input {
+    border: none !important;
+    border-bottom: 2px solid rgb(236, 80, 80) !important;
+}
+
+form div select {
+    border: none !important;
+    border-bottom: 2px solid rgb(236, 80, 80) !important;
+}
+
+form div textarea {
+    border: none !important;
+    border-bottom: 2px solid rgb(236, 80, 80) !important;
+}
+
+@keyframes giro {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 700px) {
+    #caja {
+        width: 90%;
+    }
+}

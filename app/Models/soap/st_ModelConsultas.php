@@ -88,6 +88,44 @@ class st_ModelConsultas extends Model
         return $consulta_soap;
     }
 
+    protected static function consulta_ws_Infocliente($cedula)
+    {
+        $consulta_soap = 'SELECT TOP(1)
+        f200_id as cedula,
+        f200_nombres as nombre,
+        f200_apellido1 as ap1,
+        f200_apellido2 as ap2,
+        f015_telefono as celular,
+        f015_celular as celular2,
+        f015_email as email
+        FROM t200_mm_terceros
+        INNER JOIN t015_mm_contactos ON(f015_rowid=f200_rowid_contacto)
+        WHERE f200_id="' . $cedula . '"';
+
+        return $consulta_soap;
+    }
+
+    protected static function get_ws_all_products()
+    {
+        $consulta_soap = 'SELECT 
+        f120_id as id,
+        f120_rowid as rowid,
+        f120_descripcion as producto,
+        f121_id_ext1_detalle as ext1,
+        f121_id_ext2_detalle as ext2 
+        FROM t120_mc_items RIGHT JOIN t121_mc_items_extensiones ON(f121_rowid_item=f120_rowid)
+        WHERE f120_id_cia="2" and f120_id_tipo_inv_serv IN ("INV143005","INVMCIACON") ORDER BY producto ASC';
+
+        return $consulta_soap;
+    }
+
+    protected static function consulta_all_productos()
+    {
+        $consulta_soap = 'SELECT f120_descripcion as producto FROM t120_mc_items WHERE f120_id_cia="2"
+        and f120_id_tipo_inv_serv IN ("INV143005","INVMCIACON") ORDER BY producto ASC';
+        return $consulta_soap;
+    }
+
     public static function facturasClientes($cedula, $almacen)
     {
         $parametros_siesa = self::paramentros_ws_siesa(self::consulta_ws_faturas($cedula, $almacen));
@@ -154,30 +192,31 @@ class st_ModelConsultas extends Model
         return isset($data) ? $data : [];
     }
 
-    protected static function get_ws_all_products()
-    {
-        $consulta_soap = 'SELECT 
-        f120_id as id,
-        f120_rowid as rowid,
-        f120_descripcion as producto,
-        f121_id_ext1_detalle as ext1,
-        f121_id_ext2_detalle as ext2 
-        FROM t120_mc_items RIGHT JOIN t121_mc_items_extensiones ON(f121_rowid_item=f120_rowid)
-        WHERE f120_id_cia="2" and f120_id_tipo_inv_serv IN ("INV143005","INVMCIACON") ORDER BY producto ASC';
-
-        return $consulta_soap;
-    }
-
-    protected static function consulta_all_productos()
-    {
-        $consulta_soap = 'SELECT f120_descripcion as producto FROM t120_mc_items WHERE f120_id_cia="2"
-        and f120_id_tipo_inv_serv IN ("INV143005","INVMCIACON") ORDER BY producto ASC';
-        return $consulta_soap;
-    }
-
     public static function allProductosSiesa()
     {
         $parametros_siesa = self::paramentros_ws_siesa(self::get_ws_all_products());
+        $conexion_siesa = self::conexion_ws_siesa($parametros_siesa);
+        $resultado = $conexion_siesa->EjecutarConsultaXML($parametros_siesa);
+
+        $any = @simplexml_load_string($resultado->EjecutarConsultaXMLResult->any);
+
+        if (@is_object($any->NewDataSet->Resultado)) {
+            foreach ($any->NewDataSet->Resultado as $key => $value) {
+                foreach ($value as $campo => $val) {
+                    $valores[(string)$campo] = (string)$val;
+                }
+                unset($valores['ws_id']);
+                $data[] = $valores;
+                $valores = array();
+            }
+        }
+
+        return isset($data) ? $data : [];
+    }
+
+    public static function getInfoCliente($cedula_)
+    {
+        $parametros_siesa = self::paramentros_ws_siesa(self::consulta_ws_Infocliente($cedula_));
         $conexion_siesa = self::conexion_ws_siesa($parametros_siesa);
         $resultado = $conexion_siesa->EjecutarConsultaXML($parametros_siesa);
 

@@ -38,7 +38,7 @@
                                     <div class="col-md-4">
                                         <div class="form-outline mb-4" data-mdb-input-init>
                                             <input name="cedula" type="number" id="cedula" class="form-control is-invalid form-control-lg"
-                                                required autocomplete="off" onkeyup="validarCedula()">
+                                                required autocomplete="off" onkeyup="validarCedula()" onchange="getInfoClienteSt(this.value)">
                                             <label class="form-label" for="username">Cédula</label>
                                         </div>
                                     </div>
@@ -280,7 +280,7 @@
             } else {
                 archivos = [];
                 input.value = "";
-                }
+            }
         });
 
         function previsualizarImg(e, i) {
@@ -327,12 +327,12 @@
                         if (texto) {
                             $('#staticBackdrop').modal("show");
                             let parent_video = document.getElementById("parent-video");
-                    let parent_father = document.getElementById("parent_father");
-          parent_father.removeChild(parent_video);
-          let nuevo_element = document.createElement("div");
-          parent_father.appendChild(nuevo_element);
-          nuevo_element.setAttribute("id", "parent-video");
-          nuevo_element.setAttribute("class","d-flex justify-content-center mt-3 sm");
+                            let parent_father = document.getElementById("parent_father");
+                            parent_father.removeChild(parent_video);
+                            let nuevo_element = document.createElement("div");
+                            parent_father.appendChild(nuevo_element);
+                            nuevo_element.setAttribute("id", "parent-video");
+                            nuevo_element.setAttribute("class", "d-flex justify-content-center mt-3 sm");
 
                             let rueda = document.getElementById("rueda");
                             rueda.classList.remove("rueda");
@@ -535,6 +535,30 @@
             }
 
             return false;
+        }
+
+        getInfoClienteSt = (cedula) => {
+            if (cedula.length > 0) {
+                var datos = $.ajax({
+                    url: "{{ route('search.info.cliente') }}",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        cedula_usuario: cedula
+                    }
+                })
+                datos.done((res) => {
+                    $("#nombre").addClass("active")
+                    $("#nombre").val(res.data.fullname)
+                    $("#email").addClass("active")
+                    $("#email").val(res.data.emailU)
+                    $("#telefono").addClass("active")
+                    $("#telefono").val(res.data.contacto)
+                    validarNombre()
+                    validar_email()
+                    validar_telfono()
+                })
+            }
         }
     </script>
 </footer>

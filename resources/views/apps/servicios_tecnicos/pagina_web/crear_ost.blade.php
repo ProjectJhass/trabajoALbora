@@ -8,10 +8,10 @@
     <title>Servicios Técnicos</title>
     <link rel="stylesheet" href="{{ asset('css/Bootstrap_5.3_css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style_home.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('resource/images/alburac.png') }}" sizes="30">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/alburac.png') }}" sizes="30">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('assets_plugin/vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets_plugin/vendor/css/theme-default.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/theme-default.css') }}" />
 
 </head>
 
