@@ -202,6 +202,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card card-outline card-danger">
+                                    <div class="card-header">
+                                        <strong>Postulaciones web</strong>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <a href="https://app-mueblesalbura.com/albura_nexus/public/login" target="_BLANK">
+                                            <img src="{{ asset('icons/cvweb.png') }}" width="40%" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                         <div class="col-md-3 mb-3">
                             <div class="card card-outline card-danger">
