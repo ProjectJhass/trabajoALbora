@@ -113,12 +113,12 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
-    return redirect(route('login'));
+    return redirect("https://mueblesalbura.com.co");
 });
 
-Route::get('/makehash/{pwd}', function ($pwd) {
+/* Route::get('/makehash/{pwd}', function ($pwd) {
     return Hash::make($pwd);
-});
+}); */
 
 Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIngreso'])->name("registrar.ingreso.asesor");
 
