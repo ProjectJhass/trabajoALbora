@@ -120,20 +120,22 @@
                             <div class="card-title">
                                 <strong>Digitalización</strong>
                             </div>
-                            <div class="card-tools">
-                                <div class="nav-item dropdown">
-                                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                                        <i class="fas fa-cogs" style="color: rgba(180, 180, 180, 0.637)"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="">
-                                        <span class="dropdown-item dropdown-header">Acciones</span>
-                                        <div class="dropdown-divider"></div>
-                                        <a href="{{ route('info.dig.excel') }}" class="dropdown-item">
-                                            <i class="fas fa-upload"></i> Cargar información
+                            @if (Auth::user()->permisos == 4 || (Auth::user()->dpto_user == 2 && Auth::user()->permiso_dpto))
+                                <div class="card-tools">
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                                            <i class="fas fa-cogs" style="color: rgba(180, 180, 180, 0.637)"></i>
                                         </a>
+                                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="">
+                                            <span class="dropdown-item dropdown-header">Acciones</span>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="{{ route('info.dig.excel') }}" class="dropdown-item">
+                                                <i class="fas fa-upload"></i> Cargar información
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ $baseUrl }}/digitalizacion/login/" target="_BLANK">
