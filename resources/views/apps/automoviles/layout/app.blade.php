@@ -49,6 +49,11 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('home') }}">
+                        <i class="fas fa-sign-out-alt"></i> {{ __('Salir') }}
+                    </a>
+                </li>
             </ul>
         </nav>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -92,6 +97,14 @@
                                         <p>Pólizas</p>
                                     </a>
                                 </li>
+                                @if (Auth::user()->permisos == 4)
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.info.autos') }}" class="nav-link @yield('active-admin')">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Cargue información</p>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
                     </ul>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\apps\automoviles\ControllerAdminInfo;
 use App\Http\Controllers\apps\automoviles\ControllerAutomoviles;
 use App\Http\Controllers\apps\automoviles\ControllerComparativo;
 use App\Http\Controllers\apps\automoviles\ControllerComparativoGeneral;
@@ -113,7 +114,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
-    return redirect("https://mueblesalbura.com.co");
+    return redirect(route("login"));
+    #return redirect("https://mueblesalbura.com.co");
 });
 
 /* Route::get('/makehash/{pwd}', function ($pwd) {
@@ -363,11 +365,17 @@ Route::group(['prefix' => 'automoviles', 'middleware' => 'auth'], function () {
     Route::post('/comparativo', [ControllerComparativoGeneral::class, 'index']);
     Route::post('/buscar-informacion-auto', [ControllerComparativo::class, 'informacionAutos'])->name('search.info.auto');
 
-    Route::get('/polizas', [ControllerPolizas::class, 'index'])->name('polizas');
-    Route::post('/polizas', [ControllerPolizas::class, 'actualizar']);
-    Route::post('/polizas/historial', [ControllerPolizas::class, 'historial'])->name('polizas.historial');
+    Route::group(['prefix' => 'polizas'], function () {
+        Route::get('', [ControllerPolizas::class, 'index'])->name('polizas');
+        Route::post('', [ControllerPolizas::class, 'actualizar']);
+        Route::post('historial', [ControllerPolizas::class, 'historial'])->name('polizas.historial');
+        Route::post('actualiar-poliza', [ControllerPolizas::class, 'cargarDocumentacion']);
+    });
 
-    Route::post('/polizas/actualiar-poliza', [ControllerPolizas::class, 'cargarDocumentacion']);
+    Route::group(['prefix' => 'admin'], function () {
+        Route::get('', [ControllerAdminInfo::class, 'index'])->name('admin.info.autos');
+        Route::post('import-excel', [ControllerAdminInfo::class, 'importar'])->name('import.excel');
+    });
 });
 
 Route::group(['prefix' => 'catalogo', 'middleware' => 'auth'], function () {
