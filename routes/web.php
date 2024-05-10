@@ -113,7 +113,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
-    return redirect("https://mueblesalbura.com.co");
+    return redirect(route("login"));
+    #return redirect("https://mueblesalbura.com.co");
 });
 
 /* Route::get('/makehash/{pwd}', function ($pwd) {
