@@ -142,6 +142,7 @@
                         timer: 3000,
                         toast: true,
                     });
+                    document.getElementById("formDataDigitalizacion").reset()
                     document.getElementById("infoCargueExcelDigitalizacion").innerHTML = res.table
                     tableFormatter()
                 }
