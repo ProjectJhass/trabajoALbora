@@ -59,7 +59,7 @@
                             <div class="col-md-4 mt-2">
                                 <div class="card">
                                     <div class="card-body" style="cursor: pointer; color:blue;"
-                                        onclick="buscarInformacionProd('{{ route('title.prods', ['seccion' => $item->nombre_seccion, 'id_seccion' => $item->id_seccion, 'id_producto' => 'PROD_TRABAJAR']) }}')">
+                                        onclick="var url = '{{ route('title.prods', ['seccion' => $item->nombre_seccion, 'id_seccion' => $item->id_seccion, 'id_producto' => 'PROD_TRABAJAR']) }}'; var producto = $('#producto-a-trabajar-fab').val(); if (producto != '') { var url_n = url.replace('PROD_TRABAJAR', producto); window.location.href = url_n;}">
                                         <div id="secciones-fabrica-produccion">
                                             <img src="{{ asset('icons/' . $item->icono) }}" alt="{{ $item->nombre_seccion }}" width="70px">
                                             {{ $item->nombre_seccion }}

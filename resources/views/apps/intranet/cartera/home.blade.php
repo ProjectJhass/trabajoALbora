@@ -117,7 +117,23 @@
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
                         <div class="card-header">
-                            <strong>Digitalización</strong>
+                            <div class="card-title">
+                                <strong>Digitalización</strong>
+                            </div>
+                            <div class="card-tools">
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fas fa-cogs" style="color: rgba(180, 180, 180, 0.637)"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="">
+                                        <span class="dropdown-item dropdown-header">Acciones</span>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="{{ route('info.dig.excel') }}" class="dropdown-item">
+                                            <i class="fas fa-upload"></i> Cargar información
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body text-center">
                             <a href="{{ $baseUrl }}/digitalizacion/login/" target="_BLANK">
@@ -165,7 +181,7 @@
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
                         <div class="card-header">
-                            <strong>Evaluaciòn</strong>
+                            <strong>Evaluación</strong>
                         </div>
                         <div class="col-12 row d-flex justify-content-between">
                             <div class="card-body text-center col-6 p-0 mt-2 mb-3">

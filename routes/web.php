@@ -46,6 +46,7 @@ use App\Http\Controllers\apps\intranet\Bitacora\ControllerBitacoraUsuario;
 use App\Http\Controllers\apps\intranet\Bitacora\ControllerProyectos;
 use App\Http\Controllers\apps\intranet\ControllerCalendar;
 use App\Http\Controllers\apps\intranet\ControllerCargarCartera;
+use App\Http\Controllers\apps\intranet\ControllerCargueDigitalizacion;
 use App\Http\Controllers\apps\intranet\ControllerDocumentacionIntranet;
 use App\Http\Controllers\apps\intranet\ControllerDominicales;
 use App\Http\Controllers\apps\intranet\ControllerEvaluacionDepartamentos;
@@ -201,6 +202,12 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
         Route::get('/paginas-para-referenciar', function () {
             return view('apps.intranet.cartera.referenciar');
         })->name('paginas.referenciar');
+
+        Route::group(['prefix' => 'info'], function () {
+            Route::get("", [ControllerCargueDigitalizacion::class, 'index'])->name("info.dig.excel");
+            Route::post("", [ControllerCargueDigitalizacion::class, 'getInfoExcel'])->name("search.dig.excel");
+            Route::post("/cargar-info", [ControllerCargueDigitalizacion::class, 'uploadInfo'])->name("upload.dig.excel");
+        });
     });
 
 

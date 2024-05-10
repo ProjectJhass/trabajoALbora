@@ -31,7 +31,7 @@ class ControllerAdminInfo extends Controller
         foreach ($datos as $fila) {
             $placa = $fila[0];
             $kilometros = str_replace(",", ".", $fila[1]);
-            if (strtolower($placa) != "placa") {
+            if (strtolower($placa) != "placa" && !empty($placa)) {
                 ModelKmRecorridos::create([
                     'placa' => $placa,
                     'km_recorridos' => $kilometros,

@@ -27,33 +27,37 @@
     </div>
     <section class="content">
         <div class="container-fluid">
-            <div class="card card-outline card-secondary">
-                <div class="card-header">
-                    <h6>Información general</h6>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('import.excel') }}" enctype="multipart/form-data" autocomplete="off" method="post" class="text-center mb-3">
-                        <div class="row mb-4 justify-content-center">
-                            <div class="col-md-5 text-center">
-                                <label for="">Cargue información km recorridos</label>
-                                <input type="file" class="form-control" name="archivo_excel" id="archivo_excel">
-                            </div>
-                            <div class="col-md-3 text-center">
-                                <label for="">Fecha</label>
-                                <input type="date" class="form-control" name="fecha_" id="fecha_">
-                            </div>
+            <div class="container" style="width: 40%">
+                <div class="card card-outline card-secondary">
+                    <div class="card-header">
+                        <h6>Información general</h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('import.excel') }}" enctype="multipart/form-data" autocomplete="off" method="post"
+                            class="text-center mb-3">
+                            <div class="row mb-4 justify-content-center">
+                                <div class="col-md-12 mb-3 text-center">
+                                    <label for="">Cargue información km recorridos</label>
+                                    <input type="file" class="form-control" name="archivo_excel" id="archivo_excel">
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <label for="">Fecha de corte</label>
+                                    <input type="date" class="form-control" name="fecha_" id="fecha_">
+                                </div>
 
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-danger">Cargar información</button>
-                    </form>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-danger">Cargar información</button>
+                        </form>
 
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
+
             <div class="card card-outline card-secondary">
                 <div class="card-header">
                     <h6>Información almacenada</h6>
