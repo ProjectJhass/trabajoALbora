@@ -13,13 +13,6 @@ class ControllerAdminInfo extends Controller
     public function index()
     {
         $info = ModelKmRecorridos::all();
-
-        foreach ($info as $key => $value) {
-            $info_g = ModelKmRecorridos::find($value->id_km);
-            $info_g->km_recorridos = str_replace(",", ".", $info_g->km_recorridos);
-            $info_g->save();
-        }
-
         return view("apps.automoviles.admin.cargueKm", ["info" => $info]);
     }
 
