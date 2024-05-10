@@ -111,6 +111,16 @@
         }
 
         cargarInformacionDigitalizacion = () => {
+
+            Swal.fire({
+                text: "Agregando información...",
+                icon: "info",
+                showConfirmButton: false,
+                position: "top-end",
+                timer: 10000,
+                toast: true,
+            });
+
             var info = new FormData(document.getElementById("formDataDigitalizacion"));
             info.append('valor', 'valor');
             var datos = $.ajax({
