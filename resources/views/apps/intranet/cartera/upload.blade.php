@@ -53,11 +53,8 @@
                         Cargue de información digitalización
                     </div>
                 </div>
-                <div class="card-body" id="infoCargueExcelDigitalizacion">
-
-                </div>
+                <div class="card-body" id="infoCargueExcelDigitalizacion"></div>
             </div>
-
         </div>
     </section>
 @endsection
@@ -68,6 +65,10 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
         mostrarInformacionExcel = () => {
+
+            document.getElementById("infoCargueExcelDigitalizacion").innerHTML =
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div><p class="ml-3">Generando previsualización...</p></div>';
+
             var info = new FormData(document.getElementById("formDataDigitalizacion"));
             info.append('valor', 'valor');
             var datos = $.ajax({
@@ -144,7 +145,6 @@
                     });
                     document.getElementById("formDataDigitalizacion").reset()
                     document.getElementById("infoCargueExcelDigitalizacion").innerHTML = res.table
-                    tableFormatter()
                 }
                 if (res.status == false) {
                     Swal.fire({
