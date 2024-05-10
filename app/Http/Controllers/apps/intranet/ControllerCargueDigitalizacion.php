@@ -51,9 +51,7 @@ class ControllerCargueDigitalizacion extends Controller
                     ]);
                 }
             }
-
-            $table = view("apps.intranet.cartera.table", ["info" => $datos])->render();
-            return response()->json(['status' => true, 'table' => $table, 'mensaje' => 'BIEN! Información cargada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+            return response()->json(['status' => true, 'table' => '', 'mensaje' => 'BIEN! Información cargada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         } else {
             return response()->json(['status' => false, 'table' => '', 'mensaje' => 'ERROR! Debes agregar un archivo .xlsx'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
