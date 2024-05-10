@@ -66,6 +66,18 @@
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
                         <div class="card-header">
+                            <strong>Reloj ingreso</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a href="http://192.168.1.84:6654/reloj-fabrica/login/" target="_BLANK">
+                                <img src="{{ asset('icons/clock_fab.png') }}" width="40%" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
                             <strong>Evaluaciòn</strong>
                         </div>
                         <div class="card-body text-center">
