@@ -22,7 +22,7 @@ class ModelEvaluacionDepartamentos extends Model
 
     public static function getObtenerCoordinadores()
     {
-        $ids = ['24581232', '28554243', '31991990', '42084244', '39584824', '30314322', '30338591'];
+        $ids = ['24581232', '28554243', '31991990', '42084244', '39584824', '30314322', '30338591', '3726391'];
         $coordinadores = DB::table('users')
             ->select('id', 'nombre')
             ->whereIn('id', $ids)

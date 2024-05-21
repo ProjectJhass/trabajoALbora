@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps\cotizador;
 use App\Http\Controllers\Controller;
 use App\Models\apps\cotizador\ModelClientesCrmCot;
 use App\Models\apps\cotizador\ModelInfoSucursales;
+use App\Models\apps\crm_almacenes\ModelInfoLlamadasPendientes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -49,7 +50,7 @@ class ControllerFinalizar extends Controller
                     'estado' => '1'
                 ]);
         } else {
-            ModelClientesCrmCot::create([
+            $data_ = ModelClientesCrmCot::create([
                 'cedula_cliente' => session('cedula_cliente'),
                 'nombre_1' => session('primer_nombre'),
                 'nombre_2' => session('segundo_nombre'),
@@ -75,6 +76,14 @@ class ControllerFinalizar extends Controller
                 'id_cotizacion' => session('IdSession'),
                 'estado' => '1'
             ]);
+            if($data_){
+                $id_cliente = $data_->id_cliente;
+                ModelInfoLlamadasPendientes::create([
+                    'fecha_a_llamar' => date("Y-m-d", strtotime(date('Y-m-d') . "+ 2 days")),
+                    'estado' => 'PENDIENTE',
+                    'id_cliente' => $id_cliente
+                ]);
+            }
         }
 
         return view('apps.cotizador.finalizar');
