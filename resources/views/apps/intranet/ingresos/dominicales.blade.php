@@ -57,6 +57,29 @@
                         </div>
 
                         <div class="card card-outline card-danger">
+                            <div class="card-body">
+                                <div class="form-row align-items-center">
+                                    <div class="col-sm-12 my-1">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Evento</div>
+                                            </div>
+                                            <select name="evento_a_programar" onchange="cambiarInfoColorEvento(this.value)" id="evento_a_programar"
+                                                class="form-control">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="1">Descanso</option>
+                                                <option value="2">Dominical</option>
+                                                <option value="4">Compensatorio mes anterior</option>
+                                                <option value="5">Compensatorio próximo mes</option>
+                                                <option value="6">Compensatorio adelantado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-outline card-danger">
                             <div class="card-header">
                                 <h4 class="card-title">Usuarios agregados</h4>
                                 <div class="card-tools">
@@ -240,7 +263,37 @@
 @endsection
 @section('footer')
     <script>
-        // Función para filtrar asesores
+        cambiarInfoColorEvento = (valor) => {
+            switch (valor) {
+                case '1':
+                    $('.external-event').css('background-color', 'rgb(10, 136, 138)');
+                    $('.external-event').css('border-color', 'rgb(10, 136, 138)');
+                    break;
+                case '2':
+                    $('.external-event').css('background-color', 'rgb(245, 105, 84)');
+                    $('.external-event').css('border-color', 'rgb(245, 105, 84)');
+                    break;
+                case '4':
+                    $('.external-event').css('background-color', 'rgb(255, 193, 7)');
+                    $('.external-event').css('border-color', 'rgb(255, 193, 7)');
+                    break;
+                case '5':
+                    $('.external-event').css('background-color', 'rgb(40, 167, 69)');
+                    $('.external-event').css('border-color', 'rgb(40, 167, 69)');
+                    break;
+                case '6':
+                    $('.external-event').css('background-color', 'rgb(0, 123, 255)');
+                    $('.external-event').css('border-color', 'rgb(0, 123, 255)');
+                    break;
+
+                default:
+                    $('.external-event').css('background-color', 'rgb(10, 136, 138)');
+                    $('.external-event').css('border-color', 'rgb(10, 136, 138)');
+                    break;
+            }
+        }
+    </script>
+    <script>
         function filterEvents() {
             var searchText = document.getElementById('searchInput').value.toLowerCase();
             var events = document.querySelectorAll('.external-event');
@@ -368,7 +421,7 @@
                             fecha_i: fecha_calendario,
                             url: info.event._def.url,
                             color: info.event._def.ui.backgroundColor,
-                            evento: info.event._def.extendedProps.evento,
+                            evento: $("#evento_a_programar").val(),
                             zona: info.event._def.extendedProps.zona
                         },
                         headers: {
@@ -380,7 +433,7 @@
                             if ((info.event._def.ui.backgroundColor) == 'rgb(220, 53, 69)') {
                                 info.draggedEl.parentNode.removeChild(info.draggedEl);
                             }
-                            location.reload();
+                            // location.reload();
                         }
                     });
                     datos.fail(() => {
@@ -415,9 +468,9 @@
 
                         });
                         datos.done((res) => {
-                            if (res.status == true) {
+                            /* if (res.status == true) {
                                 location.reload();
-                            }
+                            } */
                         });
                         datos.fail(() => {
                             Swal.fire(
@@ -562,9 +615,6 @@
                         res.mensaje,
                         'success'
                     )
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
                 }
                 if (res.status == false) {
                     Swal.fire(

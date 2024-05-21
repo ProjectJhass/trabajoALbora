@@ -9,7 +9,7 @@ use App\Http\Controllers\apps\intranet\ControllerIngresosSalidas as vista;
 
 class ControllerDominicales extends Controller
 {
-   
+
     public function sesionZonas(Request $request)
     {
         session(['zona_calendario' => $request->buscar_zona]);
@@ -30,6 +30,8 @@ class ControllerDominicales extends Controller
 
     public function agregarNuevoEvento(Request $request)
     {
+        $evento_ = $request->evento;
+        $evento = empty($evento_) ? 1 : $evento_;
         $data = ([
             'cedula_evento' => $request->has('cedula_u') ? $request->cedula_u : rand(16536, 24857),
             'nombre_evento' => $request->nombre_e,
@@ -37,9 +39,9 @@ class ControllerDominicales extends Controller
             'fecha_f' => date("Y-m-d", strtotime($request->fecha_i . "+ 1 days")),
             'allDay' => '1',
             'url' => $request->url,
-            'color' => $request->color,
-            'border_color' => $request->color,
-            'tipo_evento' => $request->evento,
+            'color' => ModelDominicales::ObtenerColorEvento($evento),
+            'border_color' => ModelDominicales::ObtenerColorEvento($evento),
+            'tipo_evento' => $evento,
             'zona' => $request->zona,
             'bloqueado' => '0'
         ]);
