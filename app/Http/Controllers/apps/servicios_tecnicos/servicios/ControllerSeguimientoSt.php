@@ -52,7 +52,7 @@ class ControllerSeguimientoSt extends Controller
         $proveedor = $info->proveedor;
         $email_cliente = $info->email;
 
-        if (/*$proveedor == 'HAPPY SLEEP'*/ $almacen == 'HAPPYSLEEP') {
+        if (/*$proveedor == 'HAPPY SLEEP'*/$almacen == 'HAPPYSLEEP') {
             $emails = emailsAlmacenes::where('almacen', 'HAPPYSLEEP')->pluck('email')->toArray();
         } else {
             $emails = emailsAlmacenes::whereIn('almacen', [$almacen, 'BODEGA_020'])->pluck('email')->toArray();
@@ -687,6 +687,34 @@ class ControllerSeguimientoSt extends Controller
             return response()->json([], 401, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
         return response()->json([], 401, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function updateOrdenDefinida(Request $request)
+    {
+
+        $evidencia = $request->evidencias_doc_definir;
+        $id_st = $request->id_ost_definir;
+
+        if ($request->hasFile('evidencias_doc_definir')) {
+            $tipo = $evidencia->getClientOriginalExtension();
+            $name_ = str_replace("." . $tipo, "", $evidencia->getClientOriginalName());
+            $nombre = uniqid() . "_" . $evidencia->getClientOriginalName();
+            $tama = filesize($evidencia);
+
+            $evidencia->storeAs('public/evidencias', $nombre);
+            $url_doc = Storage::url("public/evidencias/" . $nombre);
+
+            $info_orden = ModelDefinirOrden::where('id_st', $id_st)->first();
+            $info_orden->nom_doc = $name_;
+            $info_orden->documento = $nombre;
+            $info_orden->tipo = $tipo;
+            $info_orden->tama = $tama;
+            $info_orden->url = $url_doc;
+            $info_orden->save();
+
+            $form = self::timeLineOst($id_st);
+            return response()->json(['form' => $form], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        }
     }
 
     public function updateValoracionFabGerencia(Request $request)

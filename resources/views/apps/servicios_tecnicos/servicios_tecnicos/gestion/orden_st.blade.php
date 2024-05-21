@@ -568,6 +568,28 @@
             })
         }
 
+        formUpdateDefinirOrdenServicio = () => {
+            notificacion("Cargando documento a orden de servicio...", "info", 10000);
+            var formulario = new FormData(document.getElementById('form-update-definir-ost'));
+            formulario.append('valor', 'valor');
+            var datos = $.ajax({
+                url: "{{ route('update.definir.ost') }}",
+                type: "post",
+                dataType: "json",
+                data: formulario,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            datos.done((res) => {
+                notificacion("La orden de servicio ha sido actualizada exitosamente", "success", 3000);
+                document.getElementById('div-form-info-ost').innerHTML = res.form
+            })
+            datos.fail(() => {
+                notificacion("ERROR! Revisa los campos vacios y vuelve a intentarlo", "error", 5000);
+            })
+        }
+
         cargarInfoEvidenciasOstN = () => {
             notificacion("Agregando información de evidencias", "info", 10000);
             var formulario = new FormData(document.getElementById('form-new-evidencias-ost'));

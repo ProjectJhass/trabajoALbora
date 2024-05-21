@@ -271,7 +271,9 @@
                 <div class="card-header">
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <p>Concepto: {{ strtoupper($item->concepto) }}</p>
-                        @if (((Auth::user()->almacen == 'FABRICA' || Auth::user()->almacen == 'PPAL') && Auth::user()->rol == '1' && $item->estado != 1) || Auth::user()->permisos=='4')
+                        @if (
+                            ((Auth::user()->almacen == 'FABRICA' || Auth::user()->almacen == 'PPAL') && Auth::user()->rol == '1' && $item->estado != 1) ||
+                                Auth::user()->permisos == '4')
                             <button class="btn btn-sm btn-success"
                                 onclick="apruebaCartaRespuestaFab('{{ $item->id_respuesta }}','{{ $id_ost }}')"><i
                                     class='bx bx-check'></i></button>
@@ -329,7 +331,17 @@
     </div>
     <div class="offcanvas-body">
         @if (empty($url_def))
-            <p>Aun no se ha realizado la entrega del producto al cliente</p>
+            @if ($info_st->estado == 'Definido')
+                <form id="form-update-definir-ost" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="id_ost_definir" name="id_ost_definir" value="{{ $info_st->id_st }}"
+                            hidden>
+                        <input type="file" class="form-control" id="evidencias_doc_definir" name="evidencias_doc_definir" aria-label="Upload" />
+                        <button class="btn btn-outline-danger" type="button" onclick="formUpdateDefinirOrdenServicio()">Cargar</button>
+                    </div>
+                </form>
+            @endif
+            <p class="mt-4">Aun no se ha realizado la entrega del producto al cliente</p>
         @else
             <iframe src="{{ asset($url_def) }}" frameborder="0" style="width: 100%; height: 620px"></iframe>
         @endif

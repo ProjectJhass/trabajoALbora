@@ -443,7 +443,9 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
     Route::group(['prefix' => 'wood'], function () {
         Route::get('/', [ControllerPlannerWood::class, 'index'])->name('index.wood');
         Route::get('/cortar/{id_corte}', [ControllerPlannerWood::class, 'infoPiezasCorte'])->name('corte.woodmiser');
+        Route::post('/cortar/{id_corte}', [ControllerPlannerWood::class, 'saveInformacionTablasCortes']);
         Route::post('/agregar-troncos', [ControllerPlannerWood::class, 'addTroncoUtilizado'])->name('add.tronco.woodmiser');
+        Route::post('/delete-troncos', [ControllerPlannerWood::class, 'deleteTroncoUtilizado'])->name('delete.tronco.woodmiser');
         Route::post('/agregar-piezas-cortadas', [ControllerPlannerWood::class, 'addPiezasCortadas'])->name('add.piezas.woodmiser');
         Route::post('/search-troncos-wood', [ControllerPlannerWood::class, 'getDataTableCortes'])->name('getDataTables');
         Route::post('/search-obs-wood', [ControllerPlannerWood::class, 'getDataObsCortes'])->name('getObsWood');
@@ -745,6 +747,7 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth'], functio
             Route::post('addValoracionFabrica', [ControllerSeguimientoSt::class, 'addValoracionFabrica'])->name('add.valoracion.fabrica');
             Route::post('searchInfoEstadoSt', [ControllerSeguimientoSt::class, 'searInformacionSolicitudes'])->name('info.estado.ost');
             Route::post('definirOrdenServicio', [ControllerSeguimientoSt::class, 'definirOrdenServicioT'])->name('definir.ost');
+            Route::post('UpdatedefinirOrdenServicio', [ControllerSeguimientoSt::class, 'updateOrdenDefinida'])->name('update.definir.ost');
             Route::post('agregarEvidenciasAdicionales', [ControllerSeguimientoSt::class, 'addEvidenciasSolicitudSt'])->name('add.evid.adic');
             Route::post('updateConceptoFabrica', [ControllerSeguimientoSt::class, 'updateValoracionFabGerencia'])->name('update.concepto.fab');
             Route::get('printFormatoSolicitud/{id_st}', [ControllerFormatosPdf::class, 'GenerarPdfOrdenServicioTec'])->name('print.form.solicitud');
