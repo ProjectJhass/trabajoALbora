@@ -2,11 +2,6 @@
 @section('title')
     Recursos humanos
 @endsection
-@section('rrhh')
-    bg-danger active
-@endsection
-@section('head')
-@endsection
 @section('body')
     <div class="content-header">
         <div class="container-fluid">
@@ -17,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item text-blue">Inicio</li>
-                        <li class="breadcrumb-item active">RRHH</li>
+                        <li class="breadcrumb-item active">Detalles</li>
                     </ol>
                 </div>
             </div>
@@ -75,7 +70,7 @@
                             <input type="text" readonly class="form-control" value="{{ $info->updated_at }}">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="">Observaciones empleado</label>
+                            <label for="">Observaciones generales</label>
                             <textarea class="form-control" readonly cols="30" rows="2">{{ $info->observaciones }}</textarea>
                         </div>
                     </div>

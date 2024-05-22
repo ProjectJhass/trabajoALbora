@@ -95,11 +95,13 @@
                 </div>
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-2">
-                            <button type="button" id="btnAbrirModalFirmarDescanso" onclick="modalFirmarDescansosDom()"
-                                class="btn btn-sm btn-danger">Firmar descanso</button>
+                        <div class="col-md-3">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-sm btn-danger" id="btnAbrirModalFirmarDescanso" onclick="modalFirmarDescansosDom()">Firmar descanso</button>
+                                <a href="{{ route('h.firmas.asesor') }}" type="button" class="btn btn-secondary">Certificados</a>
+                            </div>
                         </div>
-                        <div class="col-md-10 mb-2 text-center">
+                        <div class="col-md-9 mb-2 text-center">
                             <div class="form-group">
                                 <div class="form-check form-check-inline">
                                     <i class="fas fa-stop" style="color: rgb(10, 136, 138);"></i>&nbsp; Descanso
@@ -421,7 +423,14 @@
                                 document.getElementById("btnFirmarDesdeModal").hidden = true
                             } else {
                                 var title = '<span class="badge badge-danger">Fecha sin firmar</span>';
-                                document.getElementById("btnFirmarDesdeModal").hidden = false
+                                var mes_ = (m + 1);
+                                mes_ = mes_ > 9 ? mes_ : "0" + mes_;
+                                var hoy_ = y + "-" + mes_ + "-" + d;
+                                if (info.event._def.extendedProps.fecha_i > hoy_) {
+                                    document.getElementById("btnFirmarDesdeModal").hidden = true
+                                } else {
+                                    document.getElementById("btnFirmarDesdeModal").hidden = false
+                                }
                             }
                             $("#estadoFirmaDominical").html(title)
                         }

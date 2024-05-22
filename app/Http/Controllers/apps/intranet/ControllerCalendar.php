@@ -28,8 +28,8 @@ class ControllerCalendar extends Controller
         $asesor = Auth::user()->id;
         $dominical_ = '<option value="">Seleccionar...</option>';
         $descansos_ = '<option value="">Seleccionar...</option>';
-        $dominicales = ModelEventosDominicales::where("cedula_evento", $asesor)->where("tipo_evento", "2")->whereNull("firmar")->get();
-        $descansos = ModelEventosDominicales::where("cedula_evento", $asesor)->where("tipo_evento", "1")->whereNull("firmar")->get();
+        $dominicales = ModelEventosDominicales::where("cedula_evento", $asesor)->where('fecha_i', '<', date('Y-m-d'))->where("tipo_evento", "2")->whereNull("firmar")->get();
+        $descansos = ModelEventosDominicales::where("cedula_evento", $asesor)->where('fecha_i', '<', date('Y-m-d'))->where("tipo_evento", "1")->whereNull("firmar")->get();
         foreach ($dominicales as $key => $value) {
             $dominical_ .= '<option value="' . $value->id_evento . '" data-fecha="' . $value->fecha_i . '">' . $value->fecha_i . '</option>';
         }
@@ -111,5 +111,27 @@ class ControllerCalendar extends Controller
 
             return response()->json(['status' => false], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
+    }
+
+    public function searchInfo($fecha_i, $fecha_f)
+    {
+        $fecha_f = date("Y-m-d", strtotime($fecha_f . "+ 1 days"));
+        $info_ = ModelFirmasDescansosCompensatorios::whereBetween("created_at", [$fecha_i, $fecha_f])->where("cedula", Auth::user()->id)->get();
+        return view("apps.intranet.rrhh.tables.tableDescanso", ["info" => $info_])->render();
+    }
+
+    public function showHistorial()
+    {
+        $hoy = date("Y-m-d");
+        $table = self::searchInfo($hoy, $hoy);
+        return view("apps.intranet.ingresos.asesor.historial", ["table" => $table]);
+    }
+
+    public function getInfoHistorialAsesor(Request $request)
+    {
+        $fecha_i = $request->fecha_i;
+        $fecha_f = date("Y-m-d", strtotime($request->fecha_f . "+ 1 days"));
+        $table = self::searchInfo($fecha_i, $fecha_f);
+        return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

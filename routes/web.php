@@ -153,6 +153,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
         //Historial firmas generadas y firmadas
         Route::get('historial-firmas-descansos', [ControllerCalendar::class, 'showHistorial'])->name("h.firmas.asesor");
+        Route::post('historial-firmas-asesor', [ControllerCalendar::class, 'getInfoHistorialAsesor'])->name("firmas.asesor.fechas");
     });
 
     // evaluaciones Regionales
