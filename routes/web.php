@@ -127,12 +127,13 @@ Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIng
 
 Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
-    Route::post('/search', [ControllerIdeas::class, 'searchIdea']);
-    Route::post('/uploadfiles', [ControllerIdeas::class, 'uploadFiles']);
-    Route::post('/deletecomment', [ControllerIdeas::class, 'deletecomment']);
-    Route::post('/deleteidea', [ControllerIdeas::class, 'deleteIdea']);
-    Route::post('/enviarComentario', [ControllerIdeas::class, 'enviarComentario']);
-    Route::post('/ideasid', [ControllerIdeas::class, 'mostrarComentarios']);
+    //Seccion de prototipos fábrica
+    Route::post('/search', [ControllerIdeas::class, 'searchIdea'])->name('search.prototipo');
+    Route::post('/uploadfiles', [ControllerIdeas::class, 'uploadFiles'])->name('upload.prototipos');
+    Route::post('/deletecomment', [ControllerIdeas::class, 'deletecomment'])->name('delete.comment.prototipo');
+    Route::post('/deleteidea', [ControllerIdeas::class, 'deleteIdea'])->name('delete.prototipo');
+    Route::post('/enviarComentario', [ControllerIdeas::class, 'enviarComentario'])->name('send.comment.prototipo');
+    Route::post('/ideasid', [ControllerIdeas::class, 'mostrarComentarios'])->name('comentarios.prototipos');
     Route::post('/secciones-ideas', [ControllerIdeas::class, 'ideasRender'])->name("secciones-ideas");
     Route::post('/cambio-seccion', [ControllerIdeas::class, 'changeSection'])->name("cambio-seccion");
     Route::post('/delete-img', [ControllerIdeas::class, 'deleteImg'])->name("delete-img");
@@ -144,11 +145,14 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
     //Calendario individual Asesores
     Route::group(['prefix' => 'calendario'], function () {
-        Route::get('general/pdf/{id}', [ControllerPdfDiaDescanso::class, 'generarPdfCertificado'])->name("generar.pdf.firma");
         Route::get('general', [ControllerCalendar::class, 'index'])->name('calendar');
+        Route::get('general/pdf/{id}', [ControllerPdfDiaDescanso::class, 'generarPdfCertificado'])->name("generar.pdf.firma");
         Route::post('search-evento', [ControllerCalendar::class, 'searchEvento'])->name('datos.descansodom');
         Route::post('guardar-foto', [ControllerCalendar::class, 'saveInfoFotoDescanso'])->name('guardar.foto');
         Route::post('guardar-info-firma', [ControllerCalendar::class, 'saveFormFirmaDescanso'])->name('guardar.info.firma');
+
+        //Historial firmas generadas y firmadas
+        Route::get('historial-firmas-descansos', [ControllerCalendar::class, 'showHistorial'])->name("h.firmas.asesor");
     });
 
     // evaluaciones Regionales
