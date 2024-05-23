@@ -21,7 +21,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h5 class="m-0">Hojas De Vida Maquinas o Herramientas</h5>
+                    <h5 class="m-0">Hoja de vida maquinas o herramientas</h5>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -36,7 +36,7 @@
         <div class="container-fluid">
             <div class="card card-outline card-danger">
                 <div class="card-header">
-                    <strong>Seleccionar / Buscar Maquina o Herramienta </strong>
+                    <strong>Cantidad: <span class="badge badge-danger" id="cantMaquinasfiltro">{{ $cantidad }}</span> </strong>
                 </div>
                 <div class="card-body">
                     <div class="col-md-12 mb-4 d-flex justify-content-center">
@@ -74,6 +74,7 @@
             })
             datos.done((res) => {
                 document.getElementById('infoGeneralMaquinasHv').innerHTML = res.maquinas
+                document.getElementById('cantMaquinasfiltro').innerHTML = res.cantidad
             })
             datos.fail(() => {
                 Swal.fire({

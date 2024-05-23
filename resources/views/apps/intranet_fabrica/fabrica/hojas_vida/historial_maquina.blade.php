@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="{{ asset('css/hojas_de_vida.css') }}">
 @endsection
 @section('fabrica-body')
+    @php
+        $info_g = $historialMaquina->first();
+        $maq = explode('-', $info_g->maquina);
+        $maquina_ = trim($maq[0]) . '-' . trim($maq[1]);
+    @endphp
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -36,57 +41,36 @@
     </div>
 
     <section class="content">
-        <div class="card">
-            <div class="card-header d-flex justify-content-center">
-                <h3 class="card-title"><strong>Maquina o herramienta {{ $referencia }}</strong></h3>
-            </div>
-            <div class="d-flex justify-content-end">
-                <div class="conatiner_button mr-2 ">
-                    <button onclick="mostrarHistorial('{{ route('mostrar.mantenimiento') }}', '{{ $referencia }}')"
-                        class="btn btn-danger mt-2 w-100 shadow" data-toggle="modal" data-target="#staticBackdrop"><i
-                            class="fas fa-stopwatch"></i>&nbsp;Realizados</button>
-                </div>
+        <div class="card card-outline card-danger">
+            <div class="card-header mt-3 d-flex justify-content-center">
+                <h3 class="card-title mb-3"><strong>{{ $maquina_ }}</strong></h3>
             </div>
             <div class="card-body" style="display: block;">
-                <div class="d-flex justify-content-center">
-                    <form class="row col-12" id="filtrarProcedimientos">
-                        @csrf
-                        <input type="hidden" value="{{ $referencia }}" name="referencia">
-                        <div class="form-group col-5">
-                            <label for="exampleFormControlInput1">Fecha Inicial:</label>
-                            <input type="date" class="form-control form-control-sm" id="fechaInicial" name="fechaInicial">
-                        </div>
-                        <div class="form-group col-5">
-                            <label for="exampleFormControlInput1">Fecha Final:</label>
-                            <input type="date" class="form-control form-control-sm" id="fechaFinal" name="fechaFinal">
-                        </div>
-                        <div class="col-1 pt-2">
-                            <button type="button" class="btn btn-danger btn-sm mt-4" onclick="procedimientosPorFechas()"><i
-                                    class="fas fa-search"></i></button>
-                            <a type="button" href="{{ route('historial.maquina', ['referencia' => $referencia]) }}" class="btn btn-danger btn-sm mt-4"><i
-                                    class="fas fa-history"></i></a>
-                        </div>
-                    </form>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger shadow" data-toggle="modal" data-target="#filtroFechasMaquina"><i class="fas fa-filter"></i>
+                        Filtrar</button>
+                    <button onclick="mostrarHistorial('{{ route('mostrar.mantenimiento') }}', '{{ $referencia }}')" class="btn btn-danger shadow"
+                        data-toggle="modal" data-target="#staticBackdrop"><i class="fas fa-stopwatch"></i> Realizados</button>
                 </div>
                 <hr>
                 <div class="row">
                     {{-- procedimientos realizados --}}
-                    <div class="col-12 col-md-12 col-lg-12" id="procedimientos_realizdos">
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="d-flex justify-content-center">
+                            <h4>Mantenimientos o procedimientos realizados</h4>
+                        </div>
                         <div class="row">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-center">
-                                    <h4>Mantenimientos o Procedimientos Realizados</h4>
-                                </div>
+                            <div class="col-12" id="procedimientos_realizdos">
                                 @foreach ($historialMaquina as $historial)
                                     <div class="post">
                                         <div class="user-block">
                                             <img class="img-circle img-bordered-sm" src="{{ asset('img/mantenimiento.png') }}" alt="user image">
                                             <span class="username">
-                                                <a class="text-primary">{{ $historial->solicitud }}</a>
+                                                <div class="text-primary">{{ $historial->solicitud }}</div>
                                             </span>
                                             <span class="description">
-                                                <b>Solicitud:</b> - {{ $historial->fecha_solicitud }} -
-                                                {{ $historial->responsable_s }}
+                                                <b>Responsable: </b>{{ $historial->responsable_s }} <br>
+                                                <b>Fecha: </b>{{ $historial->fecha_solicitud }}
                                             </span>
                                         </div>
                                         <div class="pl-5">
@@ -94,9 +78,9 @@
                                                 <b>Solución</b> <br>
                                                 {{ $historial->respuesta_solicitud }}
                                             </p>
-                                            <span class="description" style="font-size: 13px; margin-top: -3px">
-                                                {{ $historial->fecha_respuesta }} -
-                                                {{ $historial->responsable_respuesta }}
+                                            <span class="description mt-3" style="font-size: 13px;">
+                                                Responsable: {{ $historial->responsable_respuesta }} <br>
+                                                Fecha: {{ $historial->fecha_respuesta }}
                                             </span>
                                         </div>
                                     </div>
@@ -110,8 +94,8 @@
         </div>
 
         {{-- chat comentarios --}}
-        <button id="openChat" class="btn btn-danger  back-to-top" onclick="abrirChat()" style="border-radius: 50%">
-            <i class="fas fa-comment"></i>
+        <button id="openChat" class="btn btn-danger  back-to-top" onclick="abrirChat()">
+            <i class="fas fa-comment"></i> Comentarios
         </button>
 
         <div class="card chat-modal" id="chatModal">
@@ -174,129 +158,165 @@
                 </div>
             </div>
         </div>
-    @endsection
-    @section('scripts')
-        <script>
-            function procedimientosPorFechas() {
-                let formulario = document.getElementById('filtrarProcedimientos');
-                let formData = new FormData(formulario);
-                $.ajax({
-                    url: "{{ route('historial.fechas') }}",
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        $('#procedimientos_realizdos').html(response.historialMaquina);
-                    },
-                    error: function(error) {
-                        Swal.fire({
-                            text: error.responseJSON.mensaje,
-                            icon: "error",
-                            showConfirmButton: false,
-                            position: "top-end",
-                            timer: 5000,
-                            toast: true,
-                        });
-                    }
-                })
+    </div>
 
-            }
-
-            function mostrarHistorial(url, referencia) {
-
-                let fecha_i = document.getElementById("fechaInicial").value;
-                let fecha_f = document.getElementById("fechaFinal").value;
-
-                if (fecha_i != '' && fecha_f != '') {
-
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            referencia: referencia,
-                            fecha_i: fecha_i,
-                            fecha_f: fecha_f
-                        },
-
-                    }).done(function(res) {
-                        if (res) {
-                            let title_ready = "Mantenimientos realizados entre " + fecha_i + " Y " + fecha_f;
-                            document.getElementById('mantenices_ready').innerHTML = title_ready;
-                            let contenidos = document.getElementById("historial_mantenimientos");
-                            contenidos.innerHTML = res.contenido;
-                        }
-                    });
-
-                } else {
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            referencia: referencia,
-                        },
-
-                    }).done(function(res) {
-
-                        if (res) {
-                            let contenidos = document.getElementById("historial_mantenimientos");
-                            contenidos.innerHTML = res.contenido;
-                        }
+    <div class="modal fade" id="filtroFechasMaquina" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Filtrar información por fecha</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="row" id="filtrarProcedimientos">
+                        @csrf
+                        <input type="hidden" value="{{ $referencia }}" name="referencia">
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlInput1">Fecha Inicial:</label>
+                            <input type="date" class="form-control form-control-sm" id="fechaInicial" name="fechaInicial">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlInput1">Fecha Final:</label>
+                            <input type="date" class="form-control form-control-sm" id="fechaFinal" name="fechaFinal">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-danger shadow" onclick="procedimientosPorFechas()"><i class="fas fa-search"></i> Filtrar por
+                        fecha</button>
+                    <a href="{{ route('historial.maquina', ['referencia' => $referencia]) }}" type="button" class="btn btn-danger shadow"><i
+                            class="fas fa-history"></i> Mostrar todo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('scripts')
+    <script>
+        function procedimientosPorFechas() {
+            let formulario = document.getElementById('filtrarProcedimientos');
+            let formData = new FormData(formulario);
+            $.ajax({
+                url: "{{ route('historial.fechas') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $("#filtroFechasMaquina").modal("hide")
+                    formulario.reset()
+                    $('#procedimientos_realizdos').html(response.historialMaquina);
+                },
+                error: function(error) {
+                    Swal.fire({
+                        text: error.responseJSON.mensaje,
+                        icon: "error",
+                        showConfirmButton: false,
+                        position: "top-end",
+                        timer: 5000,
+                        toast: true,
                     });
                 }
-            }
+            })
 
-            function format() {
-                document.getElementById("mantenices_ready").innerHTML = 'Historial de mantenimientos programados.';
-                document.getElementById("fechaInicial").value = '';
-                document.getElementById("fechaFinal").value = '';
-            }
+        }
 
-            function guardarComentario() {
-                let formulario = document.getElementById('agregarComaentarios');
-                let formData = new FormData(formulario);
+        function mostrarHistorial(url, referencia) {
+
+            let fecha_i = document.getElementById("fechaInicial").value;
+            let fecha_f = document.getElementById("fechaFinal").value;
+
+            if (fecha_i != '' && fecha_f != '') {
+
                 $.ajax({
-                    url: "{{ route('guardar.comentario') }}",
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        var nuevoElemento = $('<div>', {
-                            'class': 'direct-chat-text m-0 mb-2',
-                            'id': 'comentario',
-                            'text': response.comentario
-                        });
-                        $('#divComantarios').append(nuevoElemento);
-                        $("#agregarComaentarios")[0].reset();
-                        Swal.fire({
-                            text: "Se agrego correctamente",
-                            icon: "success",
-                            showConfirmButton: false,
-                            position: "top-end",
-                            timer: 5000,
-                            toast: true,
-                        });
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        referencia: referencia,
+                        fecha_i: fecha_i,
+                        fecha_f: fecha_f
                     },
-                    error: function(error) {
-                        console.error(error);
+
+                }).done(function(res) {
+                    if (res) {
+                        let title_ready = "Mantenimientos realizados entre " + fecha_i + " Y " + fecha_f;
+                        document.getElementById('mantenices_ready').innerHTML = title_ready;
+                        let contenidos = document.getElementById("historial_mantenimientos");
+                        contenidos.innerHTML = res.contenido;
+                    }
+                });
+
+            } else {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        referencia: referencia,
+                    },
+
+                }).done(function(res) {
+
+                    if (res) {
+                        let contenidos = document.getElementById("historial_mantenimientos");
+                        contenidos.innerHTML = res.contenido;
                     }
                 });
             }
+        }
 
-            function abrirChat() {
-                var chatModal = document.getElementById('chatModal');
-                if (chatModal.style.display === 'block') {
-                    chatModal.style.display = 'none';
-                } else {
-                    chatModal.style.display = 'block';
+        function format() {
+            document.getElementById("mantenices_ready").innerHTML = 'Historial de mantenimientos programados.';
+            document.getElementById("fechaInicial").value = '';
+            document.getElementById("fechaFinal").value = '';
+        }
+
+        function guardarComentario() {
+            let formulario = document.getElementById('agregarComaentarios');
+            let formData = new FormData(formulario);
+            $.ajax({
+                url: "{{ route('guardar.comentario') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    var nuevoElemento = $('<div>', {
+                        'class': 'direct-chat-text m-0 mb-2',
+                        'id': 'comentario',
+                        'text': response.comentario
+                    });
+                    $('#divComantarios').append(nuevoElemento);
+                    $("#agregarComaentarios")[0].reset();
+                    Swal.fire({
+                        text: "Se agrego correctamente",
+                        icon: "success",
+                        showConfirmButton: false,
+                        position: "top-end",
+                        timer: 5000,
+                        toast: true,
+                    });
+                },
+                error: function(error) {
+                    console.error(error);
                 }
-            }
+            });
+        }
 
-            function cerrarChat() {
-                document.getElementById('chatModal').style.display = 'none';
+        function abrirChat() {
+            var chatModal = document.getElementById('chatModal');
+            if (chatModal.style.display === 'block') {
+                chatModal.style.display = 'none';
+            } else {
+                chatModal.style.display = 'block';
             }
-        </script>
-    @endsection
+        }
+
+        function cerrarChat() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+    </script>
+@endsection

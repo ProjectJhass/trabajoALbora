@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">Fábrica</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home.intranet.fabrica') }}">Fábrica</a></li>
                         <li class="breadcrumb-item active">Encuesta de satisfacción</li>
                     </ol>
                 </div>

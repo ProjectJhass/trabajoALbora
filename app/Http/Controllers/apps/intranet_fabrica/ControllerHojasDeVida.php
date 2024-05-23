@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\apps\intranet_fabrica\ModelComentariosHojasDeVida;
 use App\Models\apps\intranet_fabrica\ModelHojaDeVida;
 use App\Models\apps\intranet_fabrica\ModelMantenimientos;
+use App\Models\apps\intranet_fabrica\ModelSolicitudesMtto;
 use App\Models\apps\intranet_fabrica\orm\ModelHvMaquinas;
+use App\Models\apps\intranet_fabrica\orm\ModelSolicitudesMtto as OrmModelSolicitudesMtto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -21,22 +23,21 @@ class ControllerHojasDeVida extends Controller
     // se mustras las maquinas existentes
     public function hojasDeVida()
     {
-        $info = ModelHvMaquinas::limit(12)->get();
+        $info = ModelHvMaquinas::orderByDesc("created_at")->get();
         $maquinas = self::maquinas($info);
-        return view('apps.intranet_fabrica.fabrica.hojas_vida.hoja_de_vida', ['maquinas' => $maquinas]);
+        return view('apps.intranet_fabrica.fabrica.hojas_vida.hoja_de_vida', ['maquinas' => $maquinas, 'cantidad' => count($info)]);
     }
 
 
     public function buscarMaquinaHojaDeVida(Request $request)
     {
         $valor = $request->valor;
-        if (empty($valor)) {
-            $info = ModelHvMaquinas::limit(12)->get();
-        } else {
-            $info = ModelHvMaquinas::where("referencia", "LIKE", "%$valor%")->orWhere("nombre_maquina", "LIKE", "%$valor%")->get();
-        }
+        $info = ModelHvMaquinas::where("referencia", "LIKE", "%$valor%")
+            ->orWhere("nombre_maquina", "LIKE", "%$valor%")
+            ->orderByDesc("created_at")
+            ->get();
         $maquinas = self::maquinas($info);
-        return response()->json(['status' => true, 'maquinas' => $maquinas], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        return response()->json(['status' => true, 'maquinas' => $maquinas, 'cantidad' => count($info)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
 
@@ -44,7 +45,7 @@ class ControllerHojasDeVida extends Controller
     public function historialMaquina($referencia)
     {
         $maquina = trim($referencia);
-        $historialMaquina = ModelHojaDeVida::ObtenerhistorialMaquina($maquina);
+        $historialMaquina = OrmModelSolicitudesMtto::where("maquina", "LIKE", "%$maquina%")->orderByDesc("fecha_solicitud")->get();
         $comentarios = ModelComentariosHojasDeVida::obtenerComentarios($maquina);
         $carga = ModelMantenimientos::showMantenice($maquina);
         return view('apps.intranet_fabrica.fabrica.hojas_vida.historial_maquina', ['referencia' => $maquina, 'datos' => $carga, 'historialMaquina' => $historialMaquina, 'comentarios' => $comentarios]);
@@ -96,7 +97,9 @@ class ControllerHojasDeVida extends Controller
         $referenciaMaquina = $request->referencia;
         $fechaInicial = date('Y-m-d', strtotime($request->fechaInicial));
         $fechaFinal = date('Y-m-d', strtotime($request->fechaFinal));
-        $historialMaquina = ModelHojaDeVida::ObtenerhistorialPorFecha($referenciaMaquina, $fechaInicial, $fechaFinal);
+
+        $historialMaquina = OrmModelSolicitudesMtto::where("maquina", "LIKE", "%$referenciaMaquina%")
+            ->whereBetween('fecha_solicitud', [$fechaInicial, $fechaFinal])->orderByDesc("fecha_solicitud")->get();
 
         if ($historialMaquina) {
             if (count($historialMaquina) != 0) {
