@@ -23,7 +23,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h5 class="m-0">Historiales no anexados a hoja de vida</h5>
+                    <h5 class="m-0">Mantenimientos programados no adjuntos en HV</h5>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -38,30 +38,18 @@
         <div class="container-fluid">
             <div class="card card-danger card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        Historiales.
-                    </h3>
+                    <div class="card-title">
+                        <h4>Mantenimientos</h4>
+                    </div>
+                    <div class="card-tools">
+                        <input class="form-control border-end-0 border mb-1" id="input_searcher" onkeyup="searcher('{{ route('no.searcher') }}',this.id)"
+                            type="text" placeholder="Filtrar...">
+                    </div>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label for="input_searcher">Búsqueda:</label>
-                            <input class="form-control border-end-0 border mb-1" id="input_searcher"
-                                onkeyup="searcher('{{ route('no.searcher') }}',this.id)" type="text" placeholder="Búsqueda...">
-
-                        </div>
-                        <div class="col-md-3">
-                            <label for="fecha_i">Fecha inicio:</label>
-                            <input type="date" class="form-control" id="fecha_i">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="fecha_f">Fecha final:</label>
-                            <input type="date" class="form-control " id="fecha_f">
-
-                        </div>
-                        <div class="col-md-2">
-                            <button onclick="searchDate('{{ route('search.date') }}')" class="btn btn-danger btn-block" style="margin-top: 2rem"><i class="fas fa-search"></i> Buscar</button>
-                        </div>
+                    <div class="justify-content-between">
+                        <button class="btn btn-danger btn-sm shadow" data-toggle="modal" data-target="#filtroFechasMaquina"><i class="fas fa-filter"></i>
+                            Filtro por fecha</button>
                     </div>
                     <hr>
                     <div id="container_no_anexos"></div>
@@ -69,6 +57,41 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="filtroFechasMaquina" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Filtrar información por fecha</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="row" id="filtrarProcedimientos">
+                        @csrf
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlInput1">Fecha Inicial:</label>
+                            <input type="date" class="form-control form-control-sm" id="fecha_i" name="fecha_i">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlInput1">Fecha Final:</label>
+                            <input type="date" class="form-control form-control-sm" id="fecha_f" name="fecha_f">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-danger shadow" onclick="searchDate('{{ route('search.date') }}')"><i class="fas fa-search"></i>
+                        Filtrar por
+                        fecha</button>
+                    <button type="button" class="btn btn-danger shadow"
+                        onclick="document.getElementById('filtrarProcedimientos').reset(); searchDate('{{ route('search.date') }}')"><i
+                            class="fas fa-search"></i>
+                        Mostrar todos</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -103,6 +126,9 @@
         }
 
         function searchDate(url) {
+
+            $("#filtroFechasMaquina").modal("hide")
+
             let fecha_i = document.getElementById("fecha_i").value;
             let fecha_f = document.getElementById("fecha_f").value;
 

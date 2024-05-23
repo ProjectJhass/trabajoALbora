@@ -171,21 +171,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('maquinas.mantenimiento') }}" class="nav-link @yield('active-gestion-mantenimientos')">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Gestion mantenimientos</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="{{ route('hojas.vida') }}" class="nav-link @yield('hojas-de-vida')">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Hojas de vida</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('no.historial') }}" class="nav-link @yield('active-no-anexos')">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Historial no anexos</p>
+                                        <p>HV máquinas</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -198,6 +186,18 @@
                                     <a href="{{ route('mtto.cerrar') }}" class="nav-link @yield('active-sub-mantenimiento-cerrar')">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Cerrar solicitud Mtto</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('maquinas.mantenimiento') }}" class="nav-link @yield('active-gestion-mantenimientos')">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Programar mttos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('no.historial') }}" class="nav-link @yield('active-no-anexos')">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Otros mttos</p>
                                     </a>
                                 </li>
                             </ul>

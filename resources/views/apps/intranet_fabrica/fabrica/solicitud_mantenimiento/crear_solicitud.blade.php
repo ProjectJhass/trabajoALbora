@@ -38,16 +38,17 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-6 mb-3">
+
                                 <div class="form-group">
-                                    <label>Máquina</label>
-                                    <select class="select2" multiple data-placeholder="Seleccione la máquina" style="width: 100%;"
-                                        name="herramienta_solicitar" id="herramienta_solicitar">
+                                    <label>Producto a trabajar</label>
+                                    <select class="select2" data-placeholder="Seleccione el producto" style="width: 100%;" name="herramienta_solicitar"
+                                        id="herramienta_solicitar">
+                                        <option value=""></option>
                                         @foreach ($herramientas as $key => $val)
-                                            <option value="{{ $val->referencia . '-' . $val->nombre_maquina }}">
-                                                {{ $val->referencia . '-' . $val->nombre_maquina }}</option>
+                                            <option value="{{ trim($val->referencia) . '-' . trim($val->nombre_maquina) }}">
+                                                {{ trim($val->referencia) . '-' . trim($val->nombre_maquina) }}</option>
                                         @endforeach
                                     </select>
-                                    <small style="color: brown">Seleccionar solo una máquina</small>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -89,31 +90,11 @@
 @section('scripts')
     <script>
         $(function() {
-            $('#TableCerrarSolicitudesMtto').DataTable({
-                "oLanguage": {
-                    "sSearch": "Buscar:",
-                    "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
-                    "oPaginate": {
-                        "sPrevious": "Volver",
-                        "sNext": "Siguiente"
-                    },
-                    "sEmptyTable": "No se encontró ningun registro en la base de datos",
-                    "sZeroRecords": "No se encontraron resultados...",
-                    "sLengthMenu": "Mostrar _MENU_ registros"
-                },
-                "order": [
-                    [0, "desc"]
-                ],
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": true,
-                "responsive": false,
-            });
+            $('.select2').select2()
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
         });
-
         BuscarInformacionCerrarSolicitudMtto = (url) => {
             var seccion = $('#nombre_seccion_consultar').val();
             if (seccion.length > 0) {

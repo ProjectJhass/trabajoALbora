@@ -21,10 +21,8 @@ class ControllerMantenimiento extends Controller
 
     public function validarFecha($fecha)
     {
-
         return ($fecha >= Carbon::now()->format('Y-m-d')) ? true : false;
     }
-
 
     public function validateUser()
     {
@@ -33,8 +31,6 @@ class ControllerMantenimiento extends Controller
 
     public function checkState()
     {
-
-        // función que cambia de estado el mantenimiento pasados 6 días
         $fechas = $this->hoy;
         $fecha_min = date("Y-m-d", strtotime($fechas . "- 7 days"));
         $hoy = new DateTime($fechas);
@@ -45,7 +41,6 @@ class ControllerMantenimiento extends Controller
             $fecha_manten = new DateTime($fecha_mantenice);
             $cal = $hoy->diff($fecha_manten)->d;
             if ($fecha_mantenice < $fechas && $cal > 6) {
-
                 ModelMantenimientos::changeStatus($value->id_mantenimiento);
             }
         }
@@ -53,8 +48,6 @@ class ControllerMantenimiento extends Controller
 
     public function getAllMantenices()
     {
-        //self::checkState(); por si se desea cambiar de estado el mantenimiento pasados 6 dias
-
         $datos = ModelMantenimientos::getAllMantenices();
         $mantenimientos = [];
         $self_rol = Auth::user()->rol_user;
@@ -98,7 +91,8 @@ class ControllerMantenimiento extends Controller
         ($self_rol == '1') ? $get_Mantenices = self::getAllMantenices() : $get_Mantenices  = self::getManteniceLess2days();
 
         return
-            view('apps.intranet_fabrica.fabrica.hojas_vida.mantenimiento',
+            view(
+                'apps.intranet_fabrica.fabrica.hojas_vida.mantenimiento',
                 ['data' => $data, 'responsables' => $responsables, 'mantenimientos' => $get_Mantenices, 'hoy' => $fechas, 'rol' => $self_rol, 'user' => $self_nombre]
             );
     }
@@ -108,7 +102,6 @@ class ControllerMantenimiento extends Controller
     {
         $render = self::saveMantenice($request);
         if ($render) {
-
             return response()->json(['status' => true, 'render' => $render], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
     }
@@ -116,7 +109,6 @@ class ControllerMantenimiento extends Controller
 
     public function saveMantenice($request)
     {
-
         $id_maquina = $request->select;
         $responsable = $request->responsable;
         $fecha = $request->calendar;
@@ -188,16 +180,12 @@ class ControllerMantenimiento extends Controller
 
     public function chargeMantenices(Request $request)
     {
-
         $id_mantenimiento = $request->id_mantenimiento;
         $mantenimiento = ModelMantenimientos::getIdMantenice($id_mantenimiento);
 
         if ($mantenimiento) {
-
             $data = [];
-
             foreach ($mantenimiento as $value) {
-
                 array_push($data, [
 
                     'referencia' => $value->referencia,
@@ -216,7 +204,6 @@ class ControllerMantenimiento extends Controller
 
     public function changeMantenices(Request $request)
     {
-
         $id_user = $request->responsable1;
         $calendario = $request->calendar1;
         $observacion = $request->observacion1;
@@ -225,10 +212,8 @@ class ControllerMantenimiento extends Controller
         $nombre_responsable = ModelUsuarios::getNameUser($id_user);
 
         foreach ($nombre_responsable as $value) {
-
             $nombre = $value->nombre;
         }
-
         $data = [
 
             'id_user' => $id_user,
@@ -238,17 +223,14 @@ class ControllerMantenimiento extends Controller
         ];
 
         $insert = ModelMantenimientos::changeMantenice($id_mantenimiento, $data);
-
         if ($insert) {
             $tabla = self::getViewTable();
-
             return response()->json(['render' => $tabla]);
         }
     }
 
     public function getViewTable()
     {
-
         $get_all_mantenice = ModelMantenimientos::getAllMantenices();
         $datos = [];
         $rol_user = Auth::user()->rol_user;
@@ -271,7 +253,6 @@ class ControllerMantenimiento extends Controller
 
             ]);
         }
-
         $hoy = $this->hoy;
         return view('apps.intranet_fabrica.fabrica.hojas_vida.tabla_mantenice', ['mantenimientos' => $datos, 'hoy' => $hoy, 'rol' => $rol_user])->render();
     }
@@ -279,14 +260,10 @@ class ControllerMantenimiento extends Controller
 
     public function deleteMantenices(Request $request)
     {
-
         $id_borrar = $request->id_mantenimiento;
         $borrar = ModelMantenimientos::deleteMantenices($id_borrar);
-
         if ($borrar) {
-
             $tabla = self::getViewTable();
-
             return response()->json(['render' => $tabla]);
         }
     }
@@ -317,11 +294,9 @@ class ControllerMantenimiento extends Controller
 
     public function validarDiaLab($fecha_prog)
     {
-
         $fecha_i = $fecha_prog;
         $fecha_ = date("Y-m-d", strtotime($fecha_prog . "+ 1 days"));
         $fecha_prox_fes = ModelMantenimientos::getfechaProxima($fecha_);
-
         $fecha2 = new DateTime($fecha_prox_fes);
         $fecha1 = new DateTime($fecha_i);
 
@@ -338,20 +313,16 @@ class ControllerMantenimiento extends Controller
     public function getManteniceLess2days()
     {
         $id_user = Auth::user()->id;
-
         $no_dias = ModelMantenimientos::getDiasNoLaborales();
         $hoy1 = $this->hoy;
 
         $fechas_no_laborales = [];
 
         for ($i = 0; $i < count($no_dias); $i++) {
-
             $fechas_no_laborales[$i] = $no_dias[$i]->fecha;
         }
-
         $fecha_max = date("Y-m-d", strtotime($hoy1  . "+ 5 days"));
         $fecha_min = date("Y-m-d", strtotime($hoy1));
-
         $fecha_inicial = self::validacionDate($fecha_min);
         $consulta = ModelMantenimientos::getMantenicesUsers($id_user, $fecha_inicial, $fecha_max);
 
@@ -362,7 +333,6 @@ class ControllerMantenimiento extends Controller
         $data = [];
 
         foreach ($consulta as $value) {
-
             $fecha_m = $value->fecha_mantenimiento;
             $hoy = new DateTime($hoy1);
             $suma_fecha = date("Y-m-d", strtotime($fecha_m . "+ 2 days"));
@@ -383,7 +353,6 @@ class ControllerMantenimiento extends Controller
 
             $diff_dias = new DateTime($suma_fecha);
             $diferencia = $diff_dias->diff($hoy)->d;
-
             array_push($data, [
                 'referencia' => $value->referencia,
                 'nombre_maquina' => $value->nombre_maquina,
@@ -413,8 +382,6 @@ class ControllerMantenimiento extends Controller
         ];
 
         if ($consulta) {
-
-
             return response()->json(['info' => $data], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
     }
@@ -422,20 +389,12 @@ class ControllerMantenimiento extends Controller
 
     public function requestMantenimiento(Request $request)
     {
-
-
         $mantenimiento = $request->mantenimiento;
         $observacion = $request->observacion;
         $hoy = date('Y-m-d');
-
-
-
         $insercion = ModelMantenimientos::requestMantenimiento($mantenimiento, $observacion, $hoy);
-
-
         if ($insercion) {
             $tabla = self::viewTableUser();
-
             return response()->json(["status" => true, 'tabla' => $tabla]);
         }
     }
@@ -445,39 +404,25 @@ class ControllerMantenimiento extends Controller
     {
         $rol_user = Auth::user()->rol_user;
         $get_all_mantenice = self::getManteniceLess2days();
-
-
         $hoy = $this->hoy;
-
         return view('apps.intranet_fabrica.fabrica.hojas_vida.tabla_mantenice', ['mantenimientos' => $get_all_mantenice, 'hoy' => $hoy, 'rol' => $rol_user])->render();
     }
 
 
     public function showMantenice($request)
     {
-
-
         $referencia = $request->referencia;
-
         $referencia2 = trim($referencia);
         $fecha_i = $request->fecha_i;
         $fecha_f = $request->fecha_f;
 
         if (isset($fecha_i) && isset($fecha_f)) {
-
             $consulta = ModelMantenimientos::getMantenicesDates($referencia2, $fecha_i, $fecha_f);
-
-
-
-
             if ($consulta) {
-
                 return view('apps.intranet_fabrica.fabrica.hojas_vida.show_mantenices', ['data' => $consulta])->render();
             }
         } else {
-
             $consulta_toda = ModelMantenimientos::showMantenice($referencia2);
-
             return view('apps.intranet_fabrica.fabrica.hojas_vida.show_mantenices', ['data' => $consulta_toda])->render();
         }
     }
@@ -493,48 +438,35 @@ class ControllerMantenimiento extends Controller
 
     public function showNoHistory()
     {
-
         $consulta = ModelMantenimientos::showNoHistory();
-
         return view('apps.intranet_fabrica.fabrica.hojas_vida.historiales_hdv', ['data' => $consulta]);
     }
 
 
     public function dateMaxJob($fecha_hoy)
     {
-
         $consulta = ModelMantenimientos::getDaysNoJob($fecha_hoy);
     }
 
 
     public function searcher(Request $request)
     {
-
         $vista_render = self::searchers($request);
-
         if ($vista_render) {
-
-
             return response()->json(['render' => $vista_render]);
         }
     }
 
     public function searchers($request)
     {
-
         $buscar = $request->buscar;
-
         if (isset($buscar)) {
-
             $consulta = ModelMantenimientos::searcher($buscar);
         } else {
-
             $consulta = ModelMantenimientos::showNoHistory();
         }
 
         if ($consulta) {
-
-
             return view('apps.intranet_fabrica.fabrica.hojas_vida.no_hdv_table', ['data' => $consulta])->render();
         }
     }
@@ -542,41 +474,27 @@ class ControllerMantenimiento extends Controller
 
     public function searcherDate(Request $request)
     {
-
         $consulta = self::searcherDates($request);
-
-
         if ($consulta) {
-
-
             return response()->json(['render' => $consulta]);
         }
     }
 
     public function searcherDates($request)
     {
-
-
         $rango1 = $request->fecha1;
         $rango2 = $request->fecha2;
-
         $consulta = ModelMantenimientos::searcherDate($rango1, $rango2);
-
         if ($consulta) {
-
             return view('apps.intranet_fabrica.fabrica.hojas_vida.no_hdv_table', ['data' => $consulta])->render();
         }
     }
 
     public function validacionDate($hoyLess2)
     {
-
         $fecha = $hoyLess2;
         $aux = 0;
-
-
         do {
-
             $n_fecha = date("Y-m-d", strtotime($fecha  . "- 1 days"));
             $validar = ModelMantenimientos::getDaysNoJob($n_fecha);
             $fecha = $n_fecha;
