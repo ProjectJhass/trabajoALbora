@@ -84,6 +84,7 @@ use App\Http\Controllers\apps\servicios_tecnicos\analytics\ControllerAnalytics;
 use App\Http\Controllers\apps\servicios_tecnicos\pagina_web\ControllerWeb;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\admin\ControllerInformes;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\admin\ControllerMaestros;
+use App\Http\Controllers\apps\servicios_tecnicos\servicios\ControllerAdmin as ServiciosControllerAdmin;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\ControllerCreateServicio;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\ControllerFormatosPdf;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\ControllerGestionTaller;
@@ -668,6 +669,7 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
     /*Hojas de vida */
     Route::prefix('hojas-de-vida')->group(function () {
         Route::get('/', [ControllerHojasDeVida::class, 'hojasDeVida'])->name('hojas.vida');
+        Route::post('/buscar-maquina', [ControllerHojasDeVida::class, 'buscarMaquinaHojaDeVida'])->name('buscar.hoja.vida');
         Route::get('/maquina/{referencia}', [ControllerHojasDeVida::class, 'historialMaquina'])->name('historial.maquina');
         Route::post('/actualizar-img', [ControllerHojasDeVida::class, 'actualizarImagenMaquina'])->name('actualizar.imagen.maquina');
         Route::post('/guardar-comentario', [ControllerHojasDeVida::class, 'GuardarComentario'])->name('guardar.comentario');
@@ -799,8 +801,8 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth'], functio
         });
 
         Route::group(['prefix' => 'maestros'], function () {
-            Route::get('', [ControllerAdmin::class, 'home'])->name('admin.info');
-            Route::post('', [ControllerAdmin::class, 'createInfo'])->name('create.admin');
+            Route::get('', [ServiciosControllerAdmin::class, 'home'])->name('admin.info');
+            Route::post('', [ServiciosControllerAdmin::class, 'createInfo'])->name('create.admin');
         });
 
         Route::group(['prefix' => 'st_seguimiento'], function () {
