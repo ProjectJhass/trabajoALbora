@@ -2,7 +2,10 @@
 @section('title')
     Solicitudes Mtto
 @endsection
-@section('active-calidad')
+@section('menu-mtto')
+    menu-open
+@endsection
+@section('active-mtto')
     bg-danger active
 @endsection
 @section('hojas-de-vida')

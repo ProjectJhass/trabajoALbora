@@ -46,8 +46,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-3" style="margin-top: 3.1%">
-                                        <button class="btn btn-danger"
-                                            onclick="BuscarInformacionSolicitudMtto('{{ route('consultar.numero') }}')">Consultar información</button>
+                                        <button class="btn btn-danger" onclick="BuscarInformacionSolicitudMtto()">Consultar información</button>
                                     </div>
                                 </div>
                             </div>
@@ -88,6 +87,33 @@
                 "responsive": false,
             });
         });
+
+        BuscarInformacionSolicitudMtto = () => {
+            var numero_solicitud = $('#numero-solicitud-mtto').val();
+            if (numero_solicitud > 0) {
+                var datos = $.ajax({
+                    url: "{{ route('consultar.numero') }}",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id_solicitud: numero_solicitud
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                datos.done((res) => {
+                    if (res.status == true) {
+                        document.getElementById('respuesta-solicitud-mantenimiento').innerHTML = res.data;
+                    }
+                });
+                datos.fail(() => {
+                    toastr.error('Hubo un problema al procesar la solicitud');
+                });
+            } else {
+                toastr.error('ERROR: Selecciona una sección');
+            }
+        }
 
         BuscarInformacionCerrarSolicitudMtto = (url) => {
             var seccion = $('#nombre_seccion_consultar').val();

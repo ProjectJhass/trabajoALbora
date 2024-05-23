@@ -52,8 +52,22 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-success"
+                            <button type="button" class="btn btn-danger"
                                 onclick="AgregarNuevaMaquinaFab('{{ route('agregar.nueva.maq') }}','formulario-registro-nueva-maquina')">Agregar
+                                máquina</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <form id="form-nueva-maquina-archivo" class="was-validated" enctype="multipart/form-data" autocomplete="off" method="post">
+                        @csrf
+                        <label for="">Archivo excel <small>.XLSX</small></label>
+                        <input type="file" class="form-control" name="fileMaquina" id="fileMaquina"><br>
+                        
+                        <center><span><strong>Nota:</strong> Estructura que debe tener el Excel</span><br><img src="{{ asset('img/estructura.png') }}" width="30%" alt=""></center>
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-danger"
+                                onclick="AgregarNuevaMaquinaFab('{{ route('agregar.nueva.maq') }}','form-nueva-maquina-archivo')">Agregar
                                 máquina</button>
                         </div>
                     </form>

@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">Fábrica</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home.intranet.fabrica') }}">Fábrica</a></li>
                         <li class="breadcrumb-item active">hojas de vida</li>
                     </ol>
                 </div>
@@ -49,41 +49,8 @@
                             <input class="inputBox" id="inputBox" type="text" oninput="buscar()" placeholder="Buscar Maquina / Herramienta">
                         </div>
                     </div>
-                    <div class="row d-flex justify-content-between">
-                        @php
-                            $bandera = 0;
-                        @endphp
-                        @foreach ($maquinas as $maquina)
-                            @php
-                                $clase = $bandera <= 17 ? 'd-block' : 'd-none';
-                                $bandera++;
-                            @endphp
-                            <div class="card-maquina {{ $clase }}">
-                                <div>
-                                    <div class="d-flex justify-content-end">
-                                        <a type="button" onclick="abrirModalEditarImagen('{{ $maquina->id_maquina }}')"><i class="fas fa-cog"></i></a>
-                                    </div>
-                                    <div class="card-image">
-                                        @if (!empty($maquina->imagen))
-                                            <img src="{{ asset('img/imgMaquinas/' . $maquina->imagen) }}" alt=""
-                                                id="imgMaquina{{ $maquina->id_maquina }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                        @else
-                                            <img src="{{ asset('img/imgMaquinas/defecto.png') }}" alt="" id="imgMaquina{{ $maquina->id_maquina }}"
-                                                style="width: 100%; height: 100%; object-fit: cover;">
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="category">{{ $maquina->referencia }}</div>
-                                <div class="heading">{{ $maquina->nombre_maquina }}</div>
-                                <div class="author d-flex justify-content-center align-items-end">
-                                    <a href="{{ route('historial.maquina', ['referencia' => trim($maquina->referencia)]) }}"
-                                        class="btn btn-danger btn-sm col-md-12"><i class="fas fa-eye"></i> Ver</a>
-                                </div>
-                                <div>
-
-                                </div>
-                            </div>
-                        @endforeach
+                    <div class="row" id="infoGeneralMaquinasHv">
+                        {!! $maquinas !!}
                     </div>
                 </div>
             </div>
@@ -95,18 +62,29 @@
     @include('apps.intranet_fabrica.fabrica.hojas_vida.modal_editar_imagen')
 
     <script>
-        function buscar() {
+        function buscar() { //buscar.hoja.vida
             var input = document.getElementById('inputBox').value.toLowerCase();
-            var elementos = document.getElementsByClassName('card-maquina');
-            var contadorMostradas = 0;
 
-            for (var i = 0; i < elementos.length; i++) {
-                var contenido = elementos[i].innerText.toLowerCase();
-                var clase = (contenido.includes(input) && contadorMostradas < 18) ? 'd-block' : 'd-none';
-
-                elementos[i].classList = 'card-maquina ' + clase;
-                contadorMostradas += (clase === 'd-block') ? 1 : 0;
-            }
+            var datos = $.ajax({
+                url: "{{ route('buscar.hoja.vida') }}",
+                type: 'POST',
+                data: {
+                    valor: input
+                }
+            })
+            datos.done((res) => {
+                document.getElementById('infoGeneralMaquinasHv').innerHTML = res.maquinas
+            })
+            datos.fail(() => {
+                Swal.fire({
+                    text: "Error de conexión",
+                    icon: "error",
+                    showConfirmButton: false,
+                    position: "top-end",
+                    timer: 5000,
+                    toast: true,
+                });
+            })
         }
 
         function abrirModalEditarImagen(idMaquina) {
