@@ -1,7 +1,7 @@
 @php
     $tipo_ = $tipo == '1' ? 'Impreso' : 'Fallido';
 @endphp
-<table class="table table-bordered">
+<table class="table table-bordered table-hover">
     <thead class="text-center">
         <tr>
             <th>Consecutivo</th>

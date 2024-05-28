@@ -11,46 +11,67 @@
         }
     </style>
 @endsection
+@section('h.printer')
+    active
+@endsection
 @section('body')
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h2>Historial de impresiones</h2>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="fa fa-calendar"></i>
-            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-        </div>
-        <div class="clearfix"></div>
-        <div class="page-body mt-4">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Información general de registro de madera</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <ul class="list-unstyled timeline" id="timeline-printer">
-                        {!! $history !!}
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-4 mt-5 col-lg-4">
+            <div class="row row-cols-1">
+                <div class="overflow-hidden">
+                    <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
+                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="200">
+                            <div class="card-body">
+                                <div class="progress-widget">
+                                    <div class="progress-detail">
+                                        <p class="mb-2">Filtro por fecha</p>
+                                        <div id="reportrange" class="pull-left form-control"
+                                            style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                            <i class="fa fa-calendar"></i>
+                                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="ModalEditarInformacionHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h5 class="card-title">Historial de etiquetas impresas</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5">
+                            <div class="table-responsive border-bottom my-3" id="timeline-printer">
+                                {!! $history !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalEditarInformacionHistory" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" style="display: none;"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title h4" id="exampleModalFullscreenLabel">Consecutivos impresos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="viewEditHistory"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-gray" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -60,7 +81,35 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
+        formatearTable = () => {
+            $('#datatable').DataTable({
+                "oLanguage": {
+                    "sSearch": "Buscar:",
+                    "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
+                    "oPaginate": {
+                        "sPrevious": "Volver",
+                        "sNext": "Siguiente"
+                    },
+                    "sEmptyTable": "No se encontró ningun registro en la base de datos",
+                    "sZeroRecords": "No se encontraron resultados...",
+                    "sLengthMenu": "Mostrar _MENU_ registros"
+                },
+                "order": [
+                    [0, "desc"]
+                ],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": false,
+            });
+        }
+
         $(function() {
+
+            formatearTable()
 
             var start = moment().subtract(29, 'days');
             var end = moment();
@@ -72,6 +121,19 @@
             $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
+                locale: {
+                    format: 'DD/MM/YYYY',
+                    applyLabel: 'Aplicar',
+                    cancelLabel: 'Cancelar',
+                    fromLabel: 'Desde',
+                    toLabel: 'Hasta',
+                    customRangeLabel: 'Personalizado',
+                    daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+                        'Noviembre', 'Diciembre'
+                    ],
+                    firstDay: 1
+                },
                 ranges: {
                     'Hoy': [moment(), moment()],
                     'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -99,6 +161,7 @@
                 })
                 datos.done((res) => {
                     document.getElementById('timeline-printer').innerHTML = res.history
+                    formatearTable()
                 })
 
             });

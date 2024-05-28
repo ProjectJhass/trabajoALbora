@@ -16,6 +16,7 @@ class ModelPiezasPlanificadasCorte extends Model
     protected $fillable = [
         'id',
         'pieza',
+        'calidad',
         'largo',
         'ancho',
         'grueso',

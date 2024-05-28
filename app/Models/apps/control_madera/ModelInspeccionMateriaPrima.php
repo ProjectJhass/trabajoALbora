@@ -23,6 +23,7 @@ class ModelInspeccionMateriaPrima extends Model
         'subproceso',
         'total_bloques',
         'total_pulgadas',
-        'menor_tres_m'
+        'menor_tres_m',
+        'usuario_creacion'
     ];
 }

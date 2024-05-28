@@ -19,6 +19,9 @@ class ModelCortesPlanificados extends Model
         'madera',
         'mueble',
         'cantidad',
+        'pulgadas_solicitadas',
+        'pulgadas_cortadas',
+        'pulgadas_no_utilizadas',
         'planificador',
         'estado'
     ];

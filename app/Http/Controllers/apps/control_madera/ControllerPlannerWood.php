@@ -8,8 +8,10 @@ use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
+use App\Models\apps\control_madera\ModelInfoTablasCortadas;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerPlannerWood extends Controller
 {
@@ -31,8 +33,13 @@ class ControllerPlannerWood extends Controller
         $series = ModelInfoSerie::all();
         $cortes_planificados = ModelCortesPlanificados::find($id_corte);
         $piezas_planificadas = ModelPiezasPlanificadasCorte::where("estado", "Pendiente")->where("id_plan", $id_corte)->get();
+        $val_t = 0;
+        $can_tablas = ModelInfoTablasCortadas::where("id_corte", $id_corte)->get();
+        foreach ($can_tablas as $key => $value) {
+            $val_t += $value->cantidad_tabla;
+        }
         $view = self::renderPiezasInfo($piezas_planificadas);
-        return view("apps.control_madera.app.wood.iniciar_corte.piezas", ['planner' => $cortes_planificados, 'piezas_corte' => $view, 'series' => $series]);
+        return view("apps.control_madera.app.wood.iniciar_corte.piezas", ['planner' => $cortes_planificados, 'piezas_corte' => $view, 'series' => $series, 'cant_tablas' => $val_t]);
     }
 
     public function renderPiezasInfo($piezas)
@@ -45,17 +52,43 @@ class ControllerPlannerWood extends Controller
         $id_pieza = $request->id_pieza;
         $tronco = $request->tronco;
 
+        $info_tronco = ModelConsecutivosMadera::find($tronco);
+
+        if ($info_tronco->estado != "Procesado" && $info_tronco->estado != "Pendiente") {
+
+            $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+            $tronco_db = $info_->troncos_utilizados;
+            $info_->troncos_utilizados = empty($tronco_db) ? $tronco : $tronco_db . "," . $tronco;
+            $info_->save();
+
+            $pulgadas_tronco = $info_tronco->pulgadas;
+            $pulgadas_restantes =  $info_->pulgadas_resta;
+
+            return response()->json(['status' => true, 'tronco' => number_format($tronco), 'pulgadas' => number_format($pulgadas_tronco), 'utilizables' => number_format($pulgadas_restantes)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        }
+    }
+
+    public function deleteTroncoUtilizado(Request $request)
+    {
+        $id_pieza = $request->id_pieza;
+        $tronco = $request->tronco;
+
         $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
         $tronco_db = $info_->troncos_utilizados;
 
-        $info_->troncos_utilizados = empty($tronco_db) ? $tronco : $tronco_db . "," . $tronco;
+        $troncos_all = explode(",", $tronco_db);
+        if (($key = array_search($tronco, $troncos_all)) !== false) {
+            unset($troncos_all[$key]);
+        }
+
+        $troncos_all = array_values($troncos_all);
+        $tronco_db_updated = implode(",", $troncos_all);
+
+        $info_->troncos_utilizados = $tronco_db_updated;
         $info_->save();
 
-        $info_tronco = ModelConsecutivosMadera::find($tronco);
-        $pulgadas_tronco = $info_tronco->pulgadas;
-        $pulgadas_restantes =  $info_->pulgadas_resta;
 
-        return response()->json(['status' => true, 'tronco' => number_format($tronco), 'pulgadas' => number_format($pulgadas_tronco), 'utilizables' => number_format($pulgadas_restantes)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
     public function addPiezasCortadas(Request $request)
@@ -64,7 +97,7 @@ class ControllerPlannerWood extends Controller
         $cantidad_ = $request->cantidad;
 
         $restante = '';
-        $clase = 'red';
+        $clase = 'text-danger';
 
         $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
 
@@ -76,7 +109,7 @@ class ControllerPlannerWood extends Controller
             $restante = $cantidad_total - $cantidad_solicitada;
             $cantidad_total = $cantidad_solicitada;
             $info_->estado = 'Completado';
-            $clase = 'green';
+            $clase = 'text-success';
             self::updateInfoTroncos($info_->troncos, $info_->troncos_utilizados);
         }
 
@@ -107,11 +140,31 @@ class ControllerPlannerWood extends Controller
 
     public function checkStatusPlanCorte($id_plan)
     {
-        $cantidad_piezas = ModelPiezasPlanificadasCorte::where("id_plan", $id_plan)->count();
+        $cantidad_piezas = ModelPiezasPlanificadasCorte::where("id_plan", $id_plan)->get();
         $cantidad_completadas = ModelPiezasPlanificadasCorte::where("estado", "Completado")->where("id_plan", $id_plan)->count();
-        if ($cantidad_piezas == $cantidad_completadas) {
+
+        if (count($cantidad_piezas) == $cantidad_completadas) {
+            $ancho_tabla = 0;
+            $pulgadas_cortadas = 0;
+
+            $tablas_cortadas = ModelInfoTablasCortadas::where("id_corte", $id_plan)->get();
+            foreach ($tablas_cortadas as $key => $value) {
+                $ancho_tabla += $value->ancho_tabla;
+            }
+            $pulgadas_no_utilizadas = round(($ancho_tabla / 2.54) * 0.75);
+
+            foreach ($cantidad_piezas as $key => $val) {
+                $bloques = explode(",", $val->troncos_utilizados);
+                foreach ($bloques as $key => $bloque) {
+                    $info_ = ModelConsecutivosMadera::find($bloque);
+                    $pulgadas_cortadas += $info_->pulgadas;
+                }
+            }
+
             $data_c = ModelCortesPlanificados::find($id_plan);
             $data_c->estado = "Completado";
+            $data_c->pulgadas_cortadas = $pulgadas_cortadas;
+            $data_c->pulgadas_no_utilizadas = $pulgadas_no_utilizadas;
             $data_c->save();
         }
     }
@@ -119,11 +172,14 @@ class ControllerPlannerWood extends Controller
     public function getDataTableCortes(Request $request)
     {
         $id_pieza = $request->id_pieza;
+        $bandera = $request->bandera;
         $dataTable = '<table class="table table-bordered">
         <thead>
             <tr class="text-center">
                 <th>Consecutivo</th>
                 <th>Pulgadas</th>
+                <th>Largo</th>
+                <th>Utilizar</th>
             </tr>
         </thead>
         <tbody class="text-center">';
@@ -133,9 +189,11 @@ class ControllerPlannerWood extends Controller
         foreach ($troncos as $key => $value) {
             $pulgadas_ = ModelConsecutivosMadera::find($value);
             $pulgadas = $pulgadas_->pulgadas;
-            $dataTable .= '<tr>
+            $dataTable .= '<tr id="' . $id_pieza . $bandera . trim($value) . '">
            <td>' . $value . '</td>
            <td>' . number_format($pulgadas) . '</td>
+           <td>' . $pulgadas_->largo . 'm</td>
+           <td><button class="btn btn-sm btn-success" onclick="utilizarTroncoPLan(\'' . trim($value) . '\',\'' . $bandera . '\', \'' . $id_pieza . '\')" ><i class="fas fa-check"></i></button></td>
            </tr>';
         }
         $dataTable .= '</tbody>
@@ -197,5 +255,27 @@ class ControllerPlannerWood extends Controller
         }
 
         return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function saveInformacionTablasCortes(Request $request)
+    {
+        $id_corte = $request->id_corte;
+        $cantidad_tabla = $request->cant_tablas;
+        $ancho = $request->ancho;
+
+        ModelInfoTablasCortadas::create([
+            'cantidad_tabla' => $cantidad_tabla,
+            'ancho_tabla' => $ancho,
+            'id_corte' => $id_corte,
+            'usuario_registro' => Auth::user()->nombre
+        ]);
+
+        $val_t = 0;
+        $can_tablas = ModelInfoTablasCortadas::where("id_corte", $id_corte)->get();
+        foreach ($can_tablas as $key => $value) {
+            $val_t += $value->cantidad_tabla;
+        }
+
+        return response()->json(['status' => true, 'tablas' => $val_t], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

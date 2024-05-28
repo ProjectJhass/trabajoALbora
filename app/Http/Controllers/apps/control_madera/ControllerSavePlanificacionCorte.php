@@ -21,6 +21,8 @@ class ControllerSavePlanificacionCorte extends Controller
 
         $cantidad_piezas = $request->inputs;
 
+        $pulgadas_solicitadas = 0;
+
         $data_ = ModelCortesPlanificados::create([
             'serie' => $serie,
             'madera' => $madera,
@@ -41,7 +43,8 @@ class ControllerSavePlanificacionCorte extends Controller
                     empty($request['cantidad_pieza' . $i]) ||
                     empty($request['largo_bloque' . $i]) ||
                     empty($request['pulgadas_utilizadas' . $i]) ||
-                    empty($request['troncoNum' . $i])
+                    empty($request['troncoNum' . $i]) ||
+                    empty($request['calidad_corte' . $i])
                 ) {
                     $info_insert = ModelCortesPlanificados::find($id_plan);
                     $info_insert->delete();
@@ -50,7 +53,7 @@ class ControllerSavePlanificacionCorte extends Controller
                 }
             }
 
-            ModelConsecutivosMadera::whereNotIn('estado', ['Procesado', 'Pendiente', 'Empezado'])->update(['estado' => 'Activo']);
+            ModelConsecutivosMadera::whereNotIn('estado', ['Procesado', 'Pendiente', 'Empezado', 'En corte'])->update(['estado' => 'Activo']);
 
             for ($i = 1; $i < $cantidad_piezas; $i++) {
 
@@ -58,6 +61,8 @@ class ControllerSavePlanificacionCorte extends Controller
                 $troncos_utilizados  = [];
 
                 $id_pieza = $request['id_pieza_planner' . $i];
+
+                $calidad_corte = $request['calidad_corte' . $i];
 
                 $pieza = $request['name_pieza_planner' . $i];
                 $largo = $request['largo_pieza' . $i];
@@ -69,11 +74,12 @@ class ControllerSavePlanificacionCorte extends Controller
 
                 $largo_bloque = $request['largo_bloque' . $i];
                 $pulgadas_utilizadas = $request['pulgadas_utilizadas' . $i];
+                $pulgadas_solicitadas += $pulgadas_utilizadas;
                 $numero_tronco = $request['troncoNum' . $i];
                 $obs = $request['obs_plan_generado' . $i];
 
-                $troncos_limpios = str_replace(["″","V","P","F"], "", $numero_tronco);
-                $troncos_limpios = explode(",", trim($troncos_limpios));                
+                $troncos_limpios = str_replace(["″", "V", "P", "F"], "", $numero_tronco);
+                $troncos_limpios = explode(",", trim($troncos_limpios));
 
                 foreach ($troncos_limpios as $key => $value) {
                     if (!empty($value)) {
@@ -91,7 +97,7 @@ class ControllerSavePlanificacionCorte extends Controller
                     }
                 }
 
-                ModelConsecutivosMadera::whereIn('id', $troncos_utilizados)->update(['estado' => 'Procesado']);
+                ModelConsecutivosMadera::whereIn('id', $troncos_utilizados)->update(['estado' => 'En corte']);
 
                 $cantidad_favor = ModelCantidadesFavor::where("id_pieza", $id_pieza)->where("estado", "Pendiente")->first();
                 if ($cantidad_favor) {
@@ -110,6 +116,7 @@ class ControllerSavePlanificacionCorte extends Controller
 
 
                 ModelPiezasPlanificadasCorte::create([
+                    'calidad' => $calidad_corte,
                     'pieza' => $pieza,
                     'largo' => $largo,
                     'ancho' => $ancho,
@@ -123,6 +130,10 @@ class ControllerSavePlanificacionCorte extends Controller
                     'id_plan' => $id_plan
                 ]);
             }
+
+            $info_insert = ModelCortesPlanificados::find($id_plan);
+            $info_insert->pulgadas_solicitadas = $pulgadas_solicitadas;
+            $info_insert->save();
 
             return response()->json(['status' => true, 'mensaje' => 'Información almacenada correctamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }

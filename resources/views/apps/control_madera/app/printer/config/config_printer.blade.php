@@ -1,102 +1,95 @@
 @extends('apps.control_madera.plantilla.app')
 @section('head')
 @endsection
+@section('p.config')
+    active
+@endsection
 @section('body')
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h2>Configuración</h2>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <div class="page-body mt-4">
-            <div class="row">
-                <div class="col-md-6 col-sm-6" id="table-impresoras">
+    <div class="row">
+        <div class="col-md-7 mb-3">
+            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h5 class="card-title">Impresoras registradas</h5>
+                    </div>
+                </div>
+                <div class="card-body" id="table-impresoras">
                     {!! $impresoras !!}
                 </div>
-                <div class="col-md-6 col-sm-6 ">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Configuración de impresora</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="card-box">
-                                        <form class="form-label-left input_mask" id="formConfigPrinter" autocomplete="off">
-                                            @csrf
-                                            <div class="form-group row" hidden>
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Id impresora </label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" name="id_impresora" id="id_impresora" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Tipo conexión</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select class="form-control" name="conexion_impresora" onchange="updateFieldsForm(this.value)"
-                                                        id="conexion_impresora">
-                                                        <option value="">Seleccionar...</option>
-                                                        <option value="red">Red</option>
-                                                        <option value="cable">Cable</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Impresora</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select class="form-control" name="tipo_impresora" id="tipo_impresora">
-                                                        <option value="">Seleccionar...</option>
-                                                        <option value="zebra">Zebra</option>
-                                                        <option value="otro">Otro</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Nombre impresora </label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" name="nombre_impresora" id="nombre_impresora" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="combIpImpresora">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">IP impresora</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" name="ip_impresora" id="ip_impresora" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="combPuertoImpresora">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Puerto impresora</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" name="puerto_impresora" id="puerto_impresora" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Estado impresora</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select class="form-control" name="estado_impresora" id="estado_impresora">
-                                                        <option value="">Seleccionar...</option>
-                                                        <option value="1">En uso</option>
-                                                        <option value="0">Inactivo</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="ln_solid"></div>
-                                            <div class="form-group text-center">
-                                                <button class="btn btn-secondary" type="reset">Limpiar</button>
-                                                <button type="button" onclick="updateConfigPrinter()" class="btn btn-success">Actualizar
-                                                    información</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+            </div>
+        </div>
+        <div class="col-md-5 mb-3">
+            <div class="card" data-aos="fade-up" data-aos-delay="400">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h5 class="card-title">Configuración</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-label-left input_mask" id="formConfigPrinter" autocomplete="off">
+                        @csrf
+                        <div class="form-group row" hidden>
+                            <label class="col-form-label col-md-3 col-sm-3 ">Id impresora </label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <input type="text" name="id_impresora" id="id_impresora" class="form-control">
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-3 col-sm-3 ">Conexión</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <select class="form-control" name="conexion_impresora" onchange="updateFieldsForm(this.value)" id="conexion_impresora">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="red">Red</option>
+                                    <option value="cable">Cable</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-3 col-sm-3 ">Impresora</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <select class="form-control" name="tipo_impresora" id="tipo_impresora">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="zebra">Zebra</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-3 col-sm-3 ">Nombre</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <input type="text" name="nombre_impresora" id="nombre_impresora" placeholder="Nombre de la impresora"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="combIpImpresora">
+                            <label class="col-form-label col-md-3 col-sm-3 ">IP</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <input type="text" name="ip_impresora" id="ip_impresora" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="combPuertoImpresora">
+                            <label class="col-form-label col-md-3 col-sm-3 ">Puerto</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <input type="text" name="puerto_impresora" id="puerto_impresora" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-3 col-sm-3 ">Estado</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <select class="form-control" name="estado_impresora" id="estado_impresora">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="1">En uso</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-secondary" type="reset">Limpiar</button>
+                            <button type="button" onclick="updateConfigPrinter()" class="btn btn-success">Actualizar
+                                información</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -104,6 +97,35 @@
 @endsection
 @section('footer')
     <script>
+        $(() => {
+            formatearTable()
+        })
+
+        formatearTable = () => {
+            $('#datatable').DataTable({
+                "oLanguage": {
+                    "sSearch": "Buscar:",
+                    "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
+                    "oPaginate": {
+                        "sPrevious": "Volver",
+                        "sNext": "Siguiente"
+                    },
+                    "sEmptyTable": "No se encontró ningun registro en la base de datos",
+                    "sZeroRecords": "No se encontraron resultados...",
+                    "sLengthMenu": "Mostrar _MENU_ registros"
+                },
+                "order": [
+                    [0, "desc"]
+                ],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+            });
+        }
         updateFieldsForm = (valor) => {
             if (valor == 'cable') {
                 document.getElementById('combIpImpresora').hidden = true

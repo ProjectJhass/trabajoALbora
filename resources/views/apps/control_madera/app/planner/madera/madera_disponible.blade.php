@@ -1,71 +1,53 @@
 @extends('apps.control_madera.plantilla.app')
-@section('header')
+@section('head')
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 @endsection
+@section('p.bloques')
+    active
+@endsection
 @section('body')
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h2>Madera disponible</h2>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <div class="page-body mt-4">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Madera / Troncos disponibles</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header">
+                    <h5>Madera/Bloques disponibles</h5>
                 </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="card-box table-responsive">
-                                <p class="text-muted font-13 m-b-30">
-                                    Los siguientes consecutivos corresponden a los troncos o madera que actualmente están disponibles y que no se han
-                                    procesado por medio de la plataforma
-                                </p>
-                                <table id="datatableMadera" class="table table-striped table-bordered" style="width:100%">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>Consecutivo</th>
-                                            <th>Ancho</th>
-                                            <th>Grueso</th>
-                                            <th>Largo</th>
-                                            <th>Pulgadas</th>
-                                            <th>Tipo de madera</th>
-                                            <th>Responsable impresión</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-center">
-                                        @foreach ($madera as $item)
-                                            <tr>
-                                                <td>{{ $item->id }}</td>
-                                                <td>{{ $item->ancho }}</td>
-                                                <td>{{ $item->grueso }}</td>
-                                                <td>{{ $item->largo }}</td>
-                                                <td>{{ number_format($item->pulgadas) }}</td>
-                                                <td>{{ $item->tipo_madera }}</td>
-                                                <td>{{ $item->usuario_creacion }}</td>
-                                                <td>
-                                                    <select class="form-control" onchange="updateEstadoTroncos(this.value, '{{ $item->id }}')"
-                                                        name="estado-tronco" id="estado-tronco">
-                                                        <option value="Activo" {{ $item->estado == 'Activo' ? 'selected' : '' }}>Activo</option>
-                                                        <option value="Procesado" {{ $item->estado == 'Procesado' ? 'selected' : '' }}>Procesado</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    <table id="datatableMadera" class="table table-hover table-bordered" style="width:100%">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Consecutivo</th>
+                                <th>Ancho</th>
+                                <th>Grueso</th>
+                                <th>Largo</th>
+                                <th>Pulgadas</th>
+                                <th>Tipo de madera</th>
+                                <th>Responsable impresión</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach ($madera as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->ancho }}</td>
+                                    <td>{{ $item->grueso }}</td>
+                                    <td>{{ $item->largo }}</td>
+                                    <td>{{ number_format($item->pulgadas) }}</td>
+                                    <td>{{ $item->tipo_madera }}</td>
+                                    <td>{{ $item->usuario_creacion }}</td>
+                                    <td>
+                                        <select class="form-control" onchange="updateEstadoTroncos(this.value, '{{ $item->id }}')"
+                                            name="estado-tronco" id="estado-tronco">
+                                            <option value="Activo" {{ $item->estado == 'Activo' ? 'selected' : '' }}>Activo</option>
+                                            <option value="Procesado" {{ $item->estado == 'Procesado' ? 'selected' : '' }}>Procesado</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -95,7 +77,7 @@
                 ],
                 "paging": true,
                 "lengthChange": true,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": true,

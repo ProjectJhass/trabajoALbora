@@ -8,74 +8,58 @@
 @endphp
 @foreach ($piezas as $item)
     @php
-        $color = $item->estado == 'Completado' ? 'green' : 'red';
+        $color = $item->estado == 'Completado' ? 'success' : 'danger';
     @endphp
-    <div class="col-md-12">
-        <div class="x_panel">
-            <div class="x_title collapse-link" style="cursor: pointer">
-                <h2 class="red mr-2">{{ $item->pieza }}</h2>
-                <h2 class="mr-2">-</h2>
-                <h2 class="{{ $color }}" id="estadoWood{{ $bandera }}">{{ $item->estado }}</h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a>
-                            <i class="fa fa-chevron-down"></i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content" style="display: none;">
-                <div class="row">
-                    <div class="col-md-1 mb-3">
-                        <div class="form-group">
-                            <label for="">Largo <small>(cm)</small></label>
-                            <input type="text" value="{{ $item->largo }}" readonly class="form-control" style="text-align: center;" />
-                        </div>
-                    </div>
-                    <div class="col-md-1 mb-3">
-                        <div class="form-group">
-                            <label for="">Ancho <small>(cm)</small></label>
-                            <input type="text" value="{{ $item->ancho }}" readonly class="form-control" style="text-align: center;" />
-                        </div>
-                    </div>
-                    <div class="col-md-1 mb-3">
-                        <div class="form-group">
-                            <label for="">Grueso <small>(cm)</small></label>
-                            <input type="text" value="{{ $item->grueso }}" readonly class="form-control" style="text-align: center;" />
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <div class="form-group">
-                            <label for="">Cantidad requerida</label>
-                            <input type="number" id="cantidadRequeridaWood{{ $bandera }}" value="{{ $item->cantidad }}" readonly
-                                class="form-control" style="color: white; background-color: #248c32; text-align: center;" />
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <div class="form-group">
-                            <label for="">Troncos planeados</label>
-                            <button class="btn btn-block btn-warning" onclick="visualizarTroncosPlan('{{ $item->id }}')">Tronco</button>
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <div class="form-group">
-                            <label for="">Troncos utilizados</label>
-                            <button class="btn btn-block btn-danger" onclick="visualizarTroncosUtilizados('{{ $item->id }}')">Tronco</button>
-                        </div>
-                    </div>
-                    <div class="col-md-1 mb-3">
-                        <div class="form-group">
-                            <label for="">Observaciones</label>
-                            <button class="btn btn-block btn-info" onclick="visualizarComentariosPorPieza('{{ $item->id }}')"><i
-                                    class="fa fa-comments"></i></button>
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <div class="form-group">
-                            <label for="">Cantidad actual</label>
-                            <input type="number" readonly value="{{ $item->cantidad_cortada }}" id="cantidadActual{{ $bandera }}" readonly
-                                class="form-control" style="text-align: center;" />
+    <div class="bd-example mb-4">
+        <div class="accordion" id="accordionPlanner{{ $bandera }}">
+            <div class="accordion-item">
+                <h4 class="accordion-header" id="headingPlanner{{ $bandera }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#PlannerM{{ $bandera }}"
+                        aria-expanded="false" aria-controls="PlannerM{{ $bandera }}">
+                        {{ $item->pieza }} - <span class="text-{{ $color }}" id="estadoWood{{ $bandera }}"> {{ $item->estado }}</span>
+                    </button>
+                </h4>
+                <div id="PlannerM{{ $bandera }}" class="accordion-collapse collapse" aria-labelledby="headingPlanner{{ $bandera }}"
+                    data-bs-parent="#accordionPlanner{{ $bandera }}">
+                    <div class="accordion-body">
+
+                        <div class="row text-center">
+                            <div class="col-md-2 mb-3">
+                                <label for="">Calidad</label>
+                                <input type="text" value="{{ $item->calidad }}" readonly class="form-control"
+                                    style="text-align: center; background-color: #ffee00;">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                                <label for="">Largo</label>
+                                <input type="text" value="{{ $item->largo }}" style="text-align: center;" readonly class="form-control">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                                <label for="">Ancho</label>
+                                <input type="text" readonly value="{{ $item->ancho }}" style="text-align: center;"  class="form-control">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                                <label for="">Grueso</label>
+                                <input type="text" readonly value="{{ $item->grueso }}" style="text-align: center;"  class="form-control">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="">Cant. requerida</label>
+                                <input type="text" style="color: white !important; background-color: #248c32; text-align: center;" readonly
+                                    value="{{ $item->cantidad }}" class="form-control">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                                <label for="">Bloques</label><br>
+                                <button class="btn btn-danger"
+                                    onclick="visualizarTroncosUtilizados('{{ $item->id }}')">Bloques</button>
+                            </div>
+                            <div class="col-md-1 mb-3">
+                                <label for="">Comentarios</label><br>
+                                <button class="btn btn-info" onclick="visualizarComentariosPorPieza('{{ $item->id }}')"><i
+                                        class="fa fa-comments"></i></button>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="">Cant. cortada</label>
+                                <input type="text" style="text-align: center;"  readonly value="{{ $item->cantidad_cortada }}" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>

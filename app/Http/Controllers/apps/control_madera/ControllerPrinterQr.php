@@ -367,7 +367,8 @@ class ControllerPrinterQr extends Controller
             'placa' => $placa,
             'conducto' => $salvo_conducto,
             'subproceso' => $subproceso,
-            'total_bloques' => $cantidad_bloques
+            'total_bloques' => $cantidad_bloques,
+            'usuario_creacion' => Auth::user()->nombre
         ]);
 
         if ($response) {
