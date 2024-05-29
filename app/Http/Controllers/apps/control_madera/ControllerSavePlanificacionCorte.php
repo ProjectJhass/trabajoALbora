@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelCantidadesFavor;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
+use App\Models\apps\control_madera\ModelLogs;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,11 @@ class ControllerSavePlanificacionCorte extends Controller
 
         if ($data_) {
             $id_plan = $data_->id;
+
+            ModelLogs::create([
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' ha creado la planificación #' . $id_plan . ' serie ' . $data_->serie . ' madera ' . $data_->madera . ' mueble ' . $data_->mueble . 'cantidad ' . $data_->cantidad
+            ]);
+
             for ($i = 1; $i < $cantidad_piezas; $i++) {
                 if (
                     empty($request['name_pieza_planner' . $i]) ||

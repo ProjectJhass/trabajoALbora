@@ -7,7 +7,9 @@ use App\Models\apps\control_madera\ModelInfoMadera;
 use App\Models\apps\control_madera\ModelInfoMueble;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerCrearNuevasSeries extends Controller
 {
@@ -51,6 +53,10 @@ class ControllerCrearNuevasSeries extends Controller
             $data_i = ModelInfoPiezasMueble::find($id_pieza);
             if ($estado_ == 3) {
                 $data_i->delete();
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la pieza #' . $id_pieza . ' Nombre' . $nombre_
+                ]);
             } else {
                 $data_i->pieza = $nombre_;
                 $data_i->cantidad_pieza = $cantidad_;
@@ -59,6 +65,10 @@ class ControllerCrearNuevasSeries extends Controller
                 $data_i->grueso = $grueso_;
                 $data_i->estado = $estado_;
                 $data_i->save();
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la pieza #' . $id_pieza . ' Nombre' . $nombre_
+                ]);
             }
         }
 
@@ -89,6 +99,11 @@ class ControllerCrearNuevasSeries extends Controller
                 'grueso' => $grueso,
                 'estado' => 1
             ]);
+
+            ModelLogs::create([
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' agregó una nueva pieza Nombre' . $nombre . ' al mueble' . $id_mueble . ' serie' . $id_serie . 'madera' . $id_madera
+            ]);
+
             return response()->json(['status' => true, 'mensaje' => '¡Excelente! Pieza creada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         } else {
             return response()->json(['status' => false, 'mensaje' => 'Debe completar toda la información antes de crear la nueva pieza'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -130,6 +145,10 @@ class ControllerCrearNuevasSeries extends Controller
                     'serie' => $serie,
                     'estado' => 1
                 ]);
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la serie' . $serie
+                ]);
             }
 
             if ($data_serie) {
@@ -146,6 +165,10 @@ class ControllerCrearNuevasSeries extends Controller
                         'id_madera' => $madera,
                         'estado' => 1
                     ]);
+
+                    ModelLogs::create([
+                        'accion' => 'El usuario ' . Auth::user()->nombre . ' creó el mueble' . $mueble
+                    ]);
                 }
 
                 if ($data_mueble) {
@@ -159,7 +182,7 @@ class ControllerCrearNuevasSeries extends Controller
                             $grueso = str_replace(",", ".", $request['grueso' . $i]);
                             $estado = $request['estado' . $i];
 
-                            ModelInfoPiezasMueble::create([
+                            $info_p_ = ModelInfoPiezasMueble::create([
                                 'id_mueble' => $id_mueble,
                                 'id_serie' => $id_serie,
                                 'id_madera' => $madera,
@@ -169,6 +192,10 @@ class ControllerCrearNuevasSeries extends Controller
                                 'ancho' => $ancho,
                                 'grueso' => $grueso,
                                 'estado' => $estado
+                            ]);
+
+                            ModelLogs::create([
+                                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la pieza #' . $info_p_->id . ' pieza' . $nombre
                             ]);
                         }
 
@@ -201,6 +228,9 @@ class ControllerCrearNuevasSeries extends Controller
         $id_serie = request('id_serie');
         $data_serie = ModelInfoSerie::find($id_serie);
         $data_serie->delete();
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la serie #' . $id_serie . ' ' . $data_serie->serie
+        ]);
         return response()->json(['status' => true, 'mensaje' => '¡Excelente! Serie eliminada'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
@@ -209,7 +239,9 @@ class ControllerCrearNuevasSeries extends Controller
         $id_mueble = request('id_mueble');
         $data_mueble = ModelInfoMueble::find($id_mueble);
         $data_mueble->delete();
-
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el mueble #' . $id_mueble . ' ' . $data_mueble->mueble
+        ]);
         return response()->json(['status' => true, 'mensaje' => '¡Excelente! Mueble eliminado correctamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

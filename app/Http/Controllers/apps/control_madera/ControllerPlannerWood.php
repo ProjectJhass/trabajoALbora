@@ -9,6 +9,7 @@ use App\Models\apps\control_madera\ModelCortesPlanificados;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
 use App\Models\apps\control_madera\ModelInfoTablasCortadas;
+use App\Models\apps\control_madera\ModelLogs;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +65,10 @@ class ControllerPlannerWood extends Controller
             $pulgadas_tronco = $info_tronco->pulgadas;
             $pulgadas_restantes =  $info_->pulgadas_resta;
 
+            ModelLogs::create([
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el bloque #' . $tronco . ' para corte en la woodniser'
+            ]);
+
             return response()->json(['status' => true, 'tronco' => number_format($tronco), 'pulgadas' => number_format($pulgadas_tronco), 'utilizables' => number_format($pulgadas_restantes)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
     }
@@ -87,6 +92,9 @@ class ControllerPlannerWood extends Controller
         $info_->troncos_utilizados = $tronco_db_updated;
         $info_->save();
 
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el bloque #' . $tronco . ' utilizado para corte en la woodniser'
+        ]);
 
         return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
@@ -117,6 +125,10 @@ class ControllerPlannerWood extends Controller
         $info_->save();
 
         self::checkStatusPlanCorte($info_->id_plan);
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha cortado #' . $info_->cantidad_cortada . ' piezas para la serie' . $info_->mueble . ' ' . $info_->serie . ' ' . $info_->madera
+        ]);
 
         return response()->json(['status' => true, 'estado' => $info_->estado, 'cantidad' => $info_->cantidad_cortada, 'resta' => $restante, 'clase' => $clase], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
@@ -166,6 +178,10 @@ class ControllerPlannerWood extends Controller
             $data_c->pulgadas_cortadas = $pulgadas_cortadas;
             $data_c->pulgadas_no_utilizadas = $pulgadas_no_utilizadas;
             $data_c->save();
+
+            ModelLogs::create([
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' ha completado el corte #' . $id_plan
+            ]);
         }
     }
 
@@ -275,6 +291,10 @@ class ControllerPlannerWood extends Controller
         foreach ($can_tablas as $key => $value) {
             $val_t += $value->cantidad_tabla;
         }
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha agregado #' . $val_t . ' tablas para el corte #' . $id_corte
+        ]);
 
         return response()->json(['status' => true, 'tablas' => $val_t], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }

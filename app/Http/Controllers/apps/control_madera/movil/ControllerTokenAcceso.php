@@ -5,7 +5,9 @@ namespace App\Http\Controllers\apps\control_madera\movil;
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\api\auth\ModelClaveApi;
 use App\Models\apps\control_madera\api\ModelInfoUrl;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerTokenAcceso extends Controller
 {
@@ -30,6 +32,10 @@ class ControllerTokenAcceso extends Controller
             ]);
         }
 
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la url de acceso móvil'
+        ]);
+
         return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
@@ -44,6 +50,10 @@ class ControllerTokenAcceso extends Controller
 
         $info_ = ModelClaveApi::all();
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' registró un nuevo dispositivo: ' . $movil . ' con el token: ' . $token
+        ]);
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
@@ -61,6 +71,10 @@ class ControllerTokenAcceso extends Controller
         $info_ = ModelClaveApi::all();
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
 
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó el acceso móvil #' . $id_movil . " movil:" . $movil . " con el token: " . $token
+        ]);
+
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
@@ -72,6 +86,10 @@ class ControllerTokenAcceso extends Controller
 
         $info_ = ModelClaveApi::all();
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el acceso móvil: ' . $data_->celular . ' Token: ' . $data_->clave
+        ]);
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }

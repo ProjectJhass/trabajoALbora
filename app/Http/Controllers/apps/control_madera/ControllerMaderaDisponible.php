@@ -4,7 +4,9 @@ namespace App\Http\Controllers\apps\control_madera;
 
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerMaderaDisponible extends Controller
 {
@@ -22,6 +24,10 @@ class ControllerMaderaDisponible extends Controller
         $info_ = ModelConsecutivosMadera::find($id);
         $info_->estado = $estado;
         $info_->save();
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' modificó el estado del bloque #' . $id . ' estado:' . $estado
+        ]);
 
         return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
