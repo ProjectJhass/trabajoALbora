@@ -1,5 +1,5 @@
 @extends('apps.control_madera.plantilla.app')
-@section('wood')
+@section('p.movil')
     active
 @endsection
 @section('body')

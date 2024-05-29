@@ -107,18 +107,6 @@
                                     <span class="item-name">Historial impresiones</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.config')" href="{{ route('config.printer') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Configuración</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.config')" href="{{ route('token.acceso.movil') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Registrar móvil</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -183,6 +171,33 @@
                                 <a class="nav-link " href="../dashboard/index-horizontal.html">
                                     <i class="fas fa-circle" style="font-size: 9px"></i>
                                     <span class="item-name">Crear OP</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#config-app" role="button" aria-expanded="false"
+                            aria-controls="horizontal-menu">
+                            <i class="fas fa-cogs"></i>
+                            <span class="item-name">Configuración</span>
+                            <i class="right-icon">
+                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </i>
+                        </a>
+                        <ul class="sub-nav collapse" id="config-app" data-bs-parent="#sidebar-menu">
+                            <li class="nav-item">
+                                <a class="nav-link @yield('p.config')" href="{{ route('config.printer') }}">
+                                    <i class="fas fa-circle" style="font-size: 9px"></i>
+                                    <span class="item-name">Impresora</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @yield('p.movil')" href="{{ route('token.acceso.movil') }}">
+                                    <i class="fas fa-circle" style="font-size: 9px"></i>
+                                    <span class="item-name">Registrar móvil</span>
                                 </a>
                             </li>
                         </ul>

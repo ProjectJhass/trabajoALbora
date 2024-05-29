@@ -32,7 +32,7 @@ class ControllerUpdateInfoMovil extends Controller
 
                 $info->ancho =  $ancho;
                 $info->grueso =  $grueso;
-                $info->largo  =  $largo;
+                $info->largo  = ($largo / 100);
                 $info->pulgadas = round($pulgadas);
                 $info->estado = "Activo";
                 $info->save();
