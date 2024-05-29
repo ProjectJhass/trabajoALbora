@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Models\apps\control_madera\api\auth;
+namespace App\Models\apps\control_madera\api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ModelClaveApi extends Model
+class ModelInfoUrl extends Model
 {
     use HasFactory;
 
     protected $connection = 'db_control_madera';
 
-    protected $table = 'auth_api';
+    protected $table = 'info_url';
 
     protected $fillable = [
         'id',
-        'clave',
-        'celular'
+        'url'
     ];
 }

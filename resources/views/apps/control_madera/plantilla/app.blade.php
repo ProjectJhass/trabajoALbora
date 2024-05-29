@@ -49,7 +49,7 @@
 </head>
 
 <body class="theme-color-red loaded">
-    <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-pill sidebar-mini">
+    <aside class="sidebar sidebar-default sidebar-base navs-pill sidebar-dark sidebar-mini">
         <div class="sidebar-header d-flex align-items-center justify-content-start">
             <div class="navbar-brand">
                 <div class="logo-main">
@@ -111,6 +111,12 @@
                                 <a class="nav-link @yield('p.config')" href="{{ route('config.printer') }}">
                                     <i class="fas fa-circle" style="font-size: 9px"></i>
                                     <span class="item-name">Configuración</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @yield('p.config')" href="{{ route('token.acceso.movil') }}">
+                                    <i class="fas fa-circle" style="font-size: 9px"></i>
+                                    <span class="item-name">Registrar móvil</span>
                                 </a>
                             </li>
                         </ul>

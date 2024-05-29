@@ -16,6 +16,7 @@ use App\Http\Controllers\apps\control_madera\ControllerPlannerWood;
 use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
 use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
+use App\Http\Controllers\apps\control_madera\movil\ControllerTokenAcceso;
 use App\Http\Controllers\apps\cotizador\ControllerCatalogo;
 use App\Http\Controllers\apps\cotizador\ControllerFinalizar;
 use App\Http\Controllers\apps\cotizador\ControllerGenerarCredito;
@@ -450,6 +451,14 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
                 //Eliminar Serie/Mueble
                 Route::post('/delete-series', [ControllerCrearNuevasSeries::class, 'deleteSerie'])->name('delete.serie.edit');
                 Route::post('/delete-mueble', [ControllerCrearNuevasSeries::class, 'deleteMueble'])->name('delete.mueble.edit');
+            });
+
+            Route::group(['prefix' => 'config'], function () {
+                Route::get('/', [ControllerTokenAcceso::class, 'index'])->name('token.acceso.movil');
+                Route::post('/url', [ControllerTokenAcceso::class, 'urlConnection'])->name('url.acceso.movil');
+                Route::post('/create-movil', [ControllerTokenAcceso::class, 'RegistrarDispositivo'])->name('crear.acceso.movil');
+                Route::post('/editar-movil', [ControllerTokenAcceso::class, 'EditarDispositivo'])->name('editar.acceso.movil');
+                Route::post('/eliminar-movil', [ControllerTokenAcceso::class, 'EliminarDipositivo'])->name('eliminar.acceso.movil');
             });
         });
     });
