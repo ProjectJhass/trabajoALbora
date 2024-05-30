@@ -14,7 +14,7 @@ class ControllerUpdateInfoMovil extends Controller
         $id = $request->id_madera;
         $ancho = $request->ancho;
         $grueso =  $request->grueso;
-        $largo = $request->largo;
+        $largo = ($request->largo / 100);
 
         if (empty($id) || empty($ancho) || empty($grueso) || empty($largo)) {
             return response()->json(['status' => 'error', 'message' => "Completa todos los campos"], 401);
@@ -32,7 +32,7 @@ class ControllerUpdateInfoMovil extends Controller
 
                 $info->ancho =  $ancho;
                 $info->grueso =  $grueso;
-                $info->largo  = ($largo / 100);
+                $info->largo  = $largo;
                 $info->pulgadas = round($pulgadas);
                 $info->estado = "Activo";
                 $info->save();
