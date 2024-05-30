@@ -45,7 +45,7 @@ class ControllerHistorialImpresora extends Controller
     {
         $id = $request->id;
         $query_ = ModelInspeccionMateriaPrima::find($id);
-        $madera = ModelConsecutivosMadera::where("id_info_madera", $id)->orderBy("id")->get();
+        $madera = ModelConsecutivosMadera::where("id_info_madera", $id)->where("estado", "<>", "Pendiente")->orderBy("id")->get();
         $view = view('apps.control_madera.app.printer.history.editInformation', ['control' => $query_, 'madera' => $madera])->render();
         return response()->json(['status' => true, 'view' => $view], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
