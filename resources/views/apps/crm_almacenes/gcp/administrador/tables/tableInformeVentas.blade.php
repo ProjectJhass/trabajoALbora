@@ -263,23 +263,55 @@
                 Productos más cotizados
             </div>
             <div class="card-body">
-                <table class="table table-striped table-bordered table-sm" id="productos-mas-cotizados-al">
+                <table class="table table-striped table-bordered table-sm" id="productos-mas-cotizados">
                     <thead>
                         <tr class="text-center" style="background-color: #c22121; color: white;">
-                            <th>Asesor</th>
-                            <th>Sku</th>
-                            <th>Producto</th>
                             <th>Cantidad</th>
+                            <th>Producto</th>
+                            <th>Sku</th>
                         </tr>
                     </thead>
+
                     <tbody class="text-center">
                         @foreach ($itemsCot as $item => $registros)
                             @foreach ($registros as $registro)
                                 <tr>
-                                    <td class="text-left">{{ $registro['asesor'] }}</td>
-                                    <td>{{ $registro['sku'] }}</td>
-                                    <td class="text-left">{{ $registro['item'] }}</td>
                                     <td>{{ $registro['cantidad'] }}</td>
+                                    <td class="text-left">{{ $registro['item'] }}</td>
+                                    <td>{{ $registro['sku'] }}</td>
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+                        @if(Route::current()->uri() === 'crm_almacenes/administrador/informe-de-ventas/estadisticas')
+
+    <div class="col-md-12 mb-3">
+        <div class="card card-outline card-danger">
+            <div class="card-header">
+                Productos más cotizados por asesor
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered table-sm" id="productos-mas-cotizados-al">
+                    <thead>
+                        <tr class="text-center" style="background-color: #c22121; color: white;">
+                            <th>Asesor</th>
+                            <th>Cantidad</th>
+                            <th>Producto</th>
+                            <th>Sku</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @foreach ($itemsCotAl as $item => $registros)
+                            @foreach ($registros as $registro)
+                                <tr>
+                                    <td>{{ $registro['asesor'] }}</td>
+                                    <td>{{ $registro['cantidad'] }}</td>
+                                    <td class="text-left">{{ $registro['item'] }}</td>
+                                    <td>{{ $registro['sku'] }}</td>
                                 </tr>
                             @endforeach
                         @endforeach
@@ -289,6 +321,35 @@
         </div>
     </div>
 
+     @endif
+     <div class="col-md-12 mb-3">
+        <div class="card card-outline card-danger">
+            <div class="card-header">
+                Productos más cotizados por referencia
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered table-sm" id="productos-mas-cotizados-ref">
+                    <thead>
+                        <tr class="text-center" style="background-color: #c22121; color: white;">
+                            <th>Cantidad</th>
+                            <th>Producto</th>
+                            <th>Sku</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-center">
+                        @foreach ($itemsRef as $item => $registro)
+                                <tr>
+                                    <td>{{ $registro['cantidad'] }}</td>
+                                    <td class="text-left">{{ $registro['item'] }}</td>
+                                    <td>{{ $registro['sku'] }}</td>
+                                </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <div class="col-md-12 mb-3">
         <div class="card card-outline card-danger">
             <div class="card-header">
