@@ -5,7 +5,9 @@ namespace App\Http\Controllers\apps\control_madera;
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelInspeccionMateriaPrima;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerHistorialImpresora extends Controller
 {
@@ -43,7 +45,7 @@ class ControllerHistorialImpresora extends Controller
     {
         $id = $request->id;
         $query_ = ModelInspeccionMateriaPrima::find($id);
-        $madera = ModelConsecutivosMadera::where("id_info_madera", $id)->orderBy("id")->get();
+        $madera = ModelConsecutivosMadera::where("id_info_madera", $id)->where("estado", "<>", "Pendiente")->orderBy("id")->get();
         $view = view('apps.control_madera.app.printer.history.editInformation', ['control' => $query_, 'madera' => $madera])->render();
         return response()->json(['status' => true, 'view' => $view], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
@@ -66,6 +68,11 @@ class ControllerHistorialImpresora extends Controller
                 $data_->conducto  = $conducto_;
                 $data_->subproceso   = $subproceso_;
                 $data_->save();
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la info de impresiones placa:' . $placa_ . ' salvo conducto: ' . $conducto_ . ' subproceso' . $subproceso_
+                ]);
+
                 break;
             case '2':
                 $pulgadas_ = round((($ancho_ * $grueso_) * ($largo_ / 3)));
@@ -79,6 +86,10 @@ class ControllerHistorialImpresora extends Controller
                 $data_madera->largo = $largo_;
                 $data_madera->pulgadas = $pulgadas_;
                 $data_madera->save();
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' modificó las medidas del bloque #' . $id_ . ' ancho:' . $ancho_ . 'grueso' . $grueso_ . ' largo' . $largo_
+                ]);
 
                 $metros_ = $tipo_m == "V" ? 3 : 2;
 

@@ -29,35 +29,86 @@ class ControllerInfoGeneralCortes extends Controller
 
     public function cortesTerminados()
     {
-        $cortes_p = ModelCortesPlanificados::where("estado", "Completado")->orderBy("created_at")->get();
-        return view('apps.control_madera.app.planner.cortes_planificados.planificados', ['estado' => 'Completados', 'cortes' => $cortes_p]);
+        $fecha_i = date("Y-m-d");
+        $fecha_f = date("Y-m-d", strtotime($fecha_i . "+ 1 day"));
+        $cortes_p = ModelCortesPlanificados::where("estado", "Completado")->whereBetween("created_at", [$fecha_i, $fecha_f])->get();
+        $table = view('apps.control_madera.app.planner.cortes_terminados.tables.tableInfo', ['cortes' => $cortes_p])->render();
+        return view('apps.control_madera.app.planner.cortes_terminados.infoGeneral', ['tableCorteTerminado' => $table]);
+    }
+
+    public function filtrarCortesTerminados(Request $request)
+    {
+        $fecha_i = $request->fecha_i;
+        $fecha_f = date("Y-m-d", strtotime($request->fecha_f . "+ 1 day"));
+        $cortes_p = ModelCortesPlanificados::where("estado", "Completado")->whereBetween("created_at", [$fecha_i, $fecha_f])->get();
+        $table = view('apps.control_madera.app.planner.cortes_terminados.tables.tableInfo', ['cortes' => $cortes_p])->render();
+        return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
     public function getinfoTroncosUtilizados(Request $request)
     {
         $id_pieza = $request->id_pieza;
-        $dataTable = '<table class="table table-bordered">
-        <thead>
-            <tr class="text-center">
-                <th>Consecutivo</th>
-                <th>Pulgadas</th>
-            </tr>
-        </thead>
-        <tbody class="text-center">';
         $piezas_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+        $dataTable = '<div class="row">
+                        <div class="col-md-6">
+                            <div class="card-box table-responsive">
+                                <p class="text-muted font-13 m-b-30">
+                                    Bloques planeados
+                                </p>
+                                <table id="datatableMadera" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th>Consecutivo</th>
+                                        <th>Pulgadas</th>
+                                        <th>Largo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">';
+        $troncos = explode(",", $piezas_->troncos);
+        sort($troncos);
+        foreach ($troncos as $key => $value) {
+            $pulgadas_ = ModelConsecutivosMadera::find($value);
+            $pulgadas = $pulgadas_->pulgadas;
+            $dataTable .= '<tr>
+                                        <td>' . $value . '</td>
+                                        <td>' . number_format($pulgadas) . '</td>
+                                        <td>' . $pulgadas_->largo . 'm</td>
+                                        </tr>';
+        }
+        $dataTable .= '</tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-box table-responsive">
+                                <p class="text-muted font-13 m-b-30">
+                                    Bloques utilizados 
+                                </p>
+                                <table id="datatableMadera" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th>Consecutivo</th>
+                                        <th>Pulgadas</th>
+                                        <th>Largo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">';
         $troncos = explode(",", $piezas_->troncos_utilizados);
         sort($troncos);
         foreach ($troncos as $key => $value) {
             $pulgadas_ = ModelConsecutivosMadera::find($value);
             $pulgadas = $pulgadas_->pulgadas;
             $dataTable .= '<tr>
-           <td>' . $value . '</td>
-           <td>' . number_format($pulgadas) . '</td>
-           </tr>';
+                                        <td>' . $value . '</td>
+                                        <td>' . number_format($pulgadas) . '</td>
+                                        <td>' . $pulgadas_->largo . 'm</td>
+                                        </tr>';
         }
         $dataTable .= '</tbody>
-        </table>';
-
+                                </table>
+                            </div>
+                        </div>
+                    </div>';
         return response()->json(['status' => true, 'table' => $dataTable], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

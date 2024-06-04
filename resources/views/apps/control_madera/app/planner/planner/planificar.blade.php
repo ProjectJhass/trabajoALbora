@@ -130,123 +130,97 @@
         }
     </style>
 @endsection
+@section('p.corte')
+    active
+@endsection
 @section('body')
     <div class="loader-wrapper">
         <div class="loader"></div>
         <div class="loader-section section-left"></div>
         <div class="loader-section section-right"></div>
     </div>
-
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h2>Planificación</h2>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <div class="page-body mt-4">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Información a planear</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="card-box">
-                                        <form class="form-label-left input_mask" id="formInfoPlanificacionMadera" autocomplete="off">
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-group row">
-                                                        <label class="col-form-label col-md-3 col-sm-3 ">Serie </label>
-                                                        <div class="col-md-9 col-sm-9 ">
-                                                            <select name="serie_planner" id="serie_planner" onchange="searchInfoMadera(this.value)"
-                                                                class="form-control">
-                                                                <option value="">Seleccionar...</option>
-                                                                @foreach ($series as $item)
-                                                                    <option value="{{ $item->id_serie }}">{{ $item->serie }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-group row">
-                                                        <label class="col-form-label col-sm-3 ">Madera </label>
-                                                        <div class="col-md-9 col-sm-9 ">
-                                                            <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)"
-                                                                disabled class="form-control">
-                                                                <option value="">Seleccionar...</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-group row">
-                                                        <label class="col-form-label col-sm-3">Mueble </label>
-                                                        <div class="col-md-9 col-sm-9 ">
-                                                            <select name="mueble_planner" onchange="insertCantidadChange(this.value)" id="mueble_planner"
-                                                                class="form-control" disabled>
-                                                                <option value="">Seleccionar...</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-group row">
-                                                        <label class="col-form-label col-md-3 col-sm-3">Cantidad </label>
-                                                        <div class="col-md-9 col-sm-9 ">
-                                                            <input type="number" name="cantidad_planner" id="cantidad_planner" class="form-control"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ln_solid"></div>
-                                            <div class="form-group text-center">
-                                                <button class="btn btn-secondary" onclick="limpiarCampos()" id="btnResetPlanner"
-                                                    type="reset">Limpiar</button>
-                                                <button type="button" onclick="planificarCorteMadera()" id="btnCreateplanMadera" disabled
-                                                    class="btn btn-danger">Crear
-                                                    planificación</button>
-                                            </div>
-                                        </form>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-header d-flex justify-content-between flex-wrap">
+                    <div class="header-title">
+                        <h4 class="card-title mb-0">Planificación</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-label-left input_mask" id="formInfoPlanificacionMadera" autocomplete="off">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-3 col-sm-3 ">Serie </label>
+                                    <div class="col-md-9 col-sm-9 ">
+                                        <select name="serie_planner" id="serie_planner" onchange="searchInfoMadera(this.value)" class="form-control">
+                                            <option value="">Seleccionar...</option>
+                                            @foreach ($series as $item)
+                                                <option value="{{ $item->id_serie }}">{{ $item->serie }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3 ">Madera </label>
+                                    <div class="col-md-9 col-sm-9 ">
+                                        <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)" disabled
+                                            class="form-control">
+                                            <option value="">Seleccionar...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Mueble </label>
+                                    <div class="col-md-9 col-sm-9 ">
+                                        <select name="mueble_planner" onchange="insertCantidadChange(this.value)" id="mueble_planner" class="form-control"
+                                            disabled>
+                                            <option value="">Seleccionar...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-3 col-sm-3">Cantidad </label>
+                                    <div class="col-md-9 col-sm-9 ">
+                                        <input type="number" name="cantidad_planner" id="cantidad_planner" class="form-control" disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="ln_solid"></div>
+                        <div class="form-group text-center">
+                            <button type="button" class="btn btn-secondary" onclick="limpiarCampos()" id="btnResetPlanner" type="reset">Limpiar</button>
+                            <button type="button" onclick="planificarCorteMadera()" id="btnCreateplanMadera" disabled class="btn btn-danger">Crear
+                                planificación</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Plan generado</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" data-aos="fade-up" data-aos-delay="400">
+                <div class="card-header">
+                    <h6>Plan generado</h6>
+                </div>
+                <div class="card-body">
+                    <form id="form-infoGenerada-planner" autocomplete="off">
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box" id="plan-generado-corte-madera"></div>
+                            </div>
                         </div>
-                        <div class="x_content">
-                            <form id="form-infoGenerada-planner" autocomplete="off">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="card-box" id="plan-generado-corte-madera"></div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -260,7 +234,6 @@
         });
 
         clickInputSelect = (id) => {
-            //alert(id)
             document.getElementById('troncos' + id).click();
         }
 
@@ -288,7 +261,7 @@
 
         troncoSeleccionado = (id, valor) => {
             $('#troncos' + id).val('')
-            $('#troncos_selected' + id).append('<span class="badge badge-pill badge-secondary" style="cursor:pointer" id="' + id + valor +
+            $('#troncos_selected' + id).append('<span class="badge badge-pill bg-secondary" style="cursor:pointer" id="' + id + valor +
                 '" onclick="deleteTronco(\'' + id + '\',\'' + valor + '\')" >' + valor + '</span>\t')
             var text = infoInput(id)
             var text = text.replace(/^,/, '');
@@ -335,8 +308,8 @@
             datos.done((res) => {
                 document.getElementById('troncos' + id).innerHTML = res.options
             })
-        }       
-        
+        }
+
         insertCantidadChange = (valor) => {
             if (valor.length > 0) {
                 $('#btnCreateplanMadera').prop('disabled', false)
@@ -374,39 +347,50 @@
         }
 
         consultarPulgadasRequeridas = (id, valor) => {
-            var ancho = $('#ancho_pieza' + id).val()
-            var grueso = $('#grueso_pieza' + id).val()
-            var unidades = $('#cantidad_pieza' + id).val()
-            var pulgadas_utilizar = Math.round(((ancho * grueso * unidades * valor * 1.13) / 1550));
-            $('#pulgadas_utilizadas' + id).val(pulgadas_utilizar)
+            if (valor.length > 0) {
+                var ancho = $('#ancho_pieza' + id).val()
+                var grueso = $('#grueso_pieza' + id).val()
+                var unidades = $('#cantidad_pieza' + id).val()
+                var troncos_select = $('#troncoNum' + id).val()
+                var id_madera = $('#madera_planner').val()
+                document.getElementById('troncos_selected' + id).innerHTML = "Buscando troncos..."
 
-            buscarTroncosObjetivos(id, pulgadas_utilizar)
-
-        }
-
-        buscarTroncosObjetivos = (id, pulgadas) => {
-            var troncos_select = $('#troncoNum' + id).val()
-            document.getElementById('troncos_selected' + id).innerHTML = "Buscando troncos..."
-
-            var datos = $.ajax({
-                url: "{{ route('search.info.troncos') }}",
-                type: "post",
-                dataType: "json",
-                data: {
-                    id,
-                    pulgadas,
-                    troncos: troncos_select
-                }
-            });
-            datos.done((res) => {
-                document.getElementById('troncos_selected' + id).innerHTML = res.span
-                document.getElementById('troncos' + id).innerHTML = res.pulgadas
-                document.getElementById('sumPulg' + id).innerHTML = res.sum_p
-                $('#troncoNum' + id).val(res.ids)
-            })
-            datos.fail(() => {
-                notificacion("No hay troncos disponibles", "error", 5000);
-            })
+                var datos = $.ajax({
+                    url: "{{ route('search.info.troncos') }}",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id,
+                        troncos: troncos_select,
+                        rangoBloque: valor,
+                        ancho,
+                        grueso,
+                        cantidad: unidades,
+                        id_madera
+                    }
+                });
+                datos.done((res) => {
+                    document.getElementById('troncos_selected' + id).innerHTML = res.span
+                    document.getElementById('troncos' + id).innerHTML = res.pulgadas
+                    document.getElementById('sumPulg' + id).innerHTML = res.sum_p
+                    $('#pulgadas_utilizadas' + id).val(res.pulgadas_utilizar)
+                    $('#troncoNum' + id).val(res.ids)
+                    if (res.span == "¡Seleccionar manualmente!") {
+                        setTimeout(() => {
+                            document.getElementById('troncos_selected' + id).innerHTML = ""
+                        }, 2000);
+                    }
+                })
+                datos.fail(() => {
+                    notificacion("No hay bloques disponibles", "error", 5000);
+                })
+            } else {
+                document.getElementById('troncos_selected' + id).innerHTML = ""
+                document.getElementById('troncos' + id).innerHTML = ""
+                document.getElementById('sumPulg' + id).innerHTML = ""
+                $('#pulgadas_utilizadas' + id).val("")
+                $('#troncoNum' + id).val("")
+            }
         }
 
 

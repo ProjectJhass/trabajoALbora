@@ -16,6 +16,7 @@ use App\Http\Controllers\apps\control_madera\ControllerPlannerWood;
 use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
 use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
+use App\Http\Controllers\apps\control_madera\movil\ControllerTokenAcceso;
 use App\Http\Controllers\apps\cotizador\ControllerCatalogo;
 use App\Http\Controllers\apps\cotizador\ControllerFinalizar;
 use App\Http\Controllers\apps\cotizador\ControllerGenerarCredito;
@@ -436,9 +437,29 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
             Route::get('/cortes-pendientes', [ControllerInfoGeneralCortes::class, 'index'])->name('cortes.madera.planner');
             Route::get('/piezas-planificadas/{id_corte}', [ControllerInfoGeneralCortes::class, 'piezasPlanificadas'])->name('info.piezas.c.planner');
             Route::get('/cortes-completados', [ControllerInfoGeneralCortes::class, 'cortesTerminados'])->name('cortes.madera.completado');
-            Route::get('/crear-series', [ControllerCrearNuevasSeries::class, 'getView'])->name('create.series');
+            Route::post('/cortes-completados', [ControllerInfoGeneralCortes::class, 'filtrarCortesTerminados'])->name('search.madera.completado');
             Route::get('/madera-disponible', [ControllerMaderaDisponible::class, 'index'])->name('madera.disponible.cortes');
             Route::post('/madera-disponible', [ControllerMaderaDisponible::class, 'updateEstadoMadera'])->name('update.madera.estado');
+
+            Route::group(['prefix' => 'crear-series'], function () {
+                Route::get('/', [ControllerCrearNuevasSeries::class, 'getView'])->name('create.series');
+                Route::post('/', [ControllerCrearNuevasSeries::class, 'getInfoPiezasMadera'])->name('get.info.p.series');
+                Route::post('/update', [ControllerCrearNuevasSeries::class, 'updateInfoPiezasSelected'])->name('update.info.p.series');
+                Route::post('/create-pieza', [ControllerCrearNuevasSeries::class, 'agregarInfoNuevaPieza'])->name('create.info.p.series');
+                Route::get('/crear', [ControllerCrearNuevasSeries::class, 'crearNuevaSerie'])->name('crear.serie.piezas');
+                Route::post('/crear', [ControllerCrearNuevasSeries::class, 'crearInfoNuevaSerie'])->name('crear.info.serie.piezas');
+                //Eliminar Serie/Mueble
+                Route::post('/delete-series', [ControllerCrearNuevasSeries::class, 'deleteSerie'])->name('delete.serie.edit');
+                Route::post('/delete-mueble', [ControllerCrearNuevasSeries::class, 'deleteMueble'])->name('delete.mueble.edit');
+            });
+
+            Route::group(['prefix' => 'config'], function () {
+                Route::get('/', [ControllerTokenAcceso::class, 'index'])->name('token.acceso.movil');
+                Route::post('/url', [ControllerTokenAcceso::class, 'urlConnection'])->name('url.acceso.movil');
+                Route::post('/create-movil', [ControllerTokenAcceso::class, 'RegistrarDispositivo'])->name('crear.acceso.movil');
+                Route::post('/editar-movil', [ControllerTokenAcceso::class, 'EditarDispositivo'])->name('editar.acceso.movil');
+                Route::post('/eliminar-movil', [ControllerTokenAcceso::class, 'EliminarDipositivo'])->name('eliminar.acceso.movil');
+            });
         });
     });
 

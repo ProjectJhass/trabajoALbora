@@ -14,7 +14,7 @@ class ControllerUpdateSettings extends Controller
         $id = $request->id_madera;
         $ancho = $request->ancho;
         $grueso =  $request->grueso;
-        $largo = $request->largo;
+        $largo = ($request->largo / 100);
 
         if (empty($id) || empty($ancho) || empty($grueso) || empty($largo)) {
             return response()->json(['status' => 'error', 'message' => "Completa todos los campos"], 401);

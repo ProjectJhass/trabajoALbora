@@ -15,6 +15,7 @@ class ModelClaveApi extends Model
 
     protected $fillable = [
         'id',
-        'clave'
+        'clave',
+        'celular'
     ];
 }

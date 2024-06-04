@@ -9,45 +9,49 @@
         }
     </style>
 @endsection
+@section('p.corte.proceso')
+    active
+@endsection
 @section('body')
-    <div class="">
-        <div class="clearfix"></div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Información planeada</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content" id="infoGeneralCortesSeries">
-                        {!! $series_cortes !!}                        
-                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-header">
+                    <h5>Series</h5>
+                </div>
+                <div class="card-body">
+                    {!! $series_cortes !!}
                 </div>
             </div>
         </div>
-        <div class="row" id="piezas-planificadas-corte">
-            {!! $piezas_series_planeadas !!}
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header">
+                    <h5>Piezas</h5>
+                </div>
+                <div class="card-body">
+                    {!! $piezas_series_planeadas !!}
+                </div>
+            </div>
         </div>
     </div>
+
 
     {{-- Modal para visualizar los troncos planificados en el corte de madera. --}}
 
     <div class="modal fade" id="modalVisualizarTroncosPlanificados" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="exampleModalLabel">Consecutivos de troncos</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Consecutivos de bloques</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="listaTroncosPlanificados"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -55,19 +59,17 @@
 
     {{-- Modal para visualizar los comentarios realizados para el corte --}}
     <div class="modal fade" id="modalObservacionesPiezasWood" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Observaciones para el corte</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <h6 class="mt-3 mr-3 ml-3 mb-3" id="observacionesWoodPieza"></h6>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ControllerSearchMadera extends Controller
 {
-    public function findCombinations($id, $pulgadas)
+    public function findCombinations($id, $pulgadas, $bloques, $id_madera)
     {
         $span = '';
         $ids = '';
@@ -19,7 +19,7 @@ class ControllerSearchMadera extends Controller
         $resultado = array();
         $sum_pulgadas = 0;
 
-        $records = ModelConsecutivosMadera::where('estado', 'Activo')->orderBy('pulgadas', 'asc')->get();
+        $records = ModelConsecutivosMadera::where('estado', 'Activo')->where("id_info_madera", $id_madera)->whereIn('largo', $bloques)->orderBy('pulgadas', 'asc')->get();
 
         // Encuentra las combinaciones que suman el total deseado
         $this->findCombinationUtil($records, $target, [], $combinations, $found);
@@ -37,13 +37,11 @@ class ControllerSearchMadera extends Controller
             }
 
             foreach ($resultado as $key => $value) {
-                $span .= '<span class="badge badge-pill badge-secondary" style="cursor:pointer" id="' . $id . $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . '" onclick="deleteTronco(' . $id . ',\'' . $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . '\')" >' . $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . '</span>';
-                // $span .= '<span class="badge badge-pill badge-secondary" style="cursor:pointer" id="' . $id . number_format($value) . '" onclick="deleteTronco(' . $id . ',' . number_format($value) . ')" >' . number_format($value) . '″</span>\t';
+                $span .= '<span class="badge badge-pill bg-secondary" style="cursor:pointer" id="' . $id . $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . '" onclick="deleteTronco(' . $id . ',\'' . $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . '\')" >' . $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . '</span>';
                 $ids .= $value['id'] . ' - ' . number_format($value['pulgada']) . '″ ' . $value['madera'] . ',';
                 $sum_pulgadas += number_format($value['pulgada']);
             }
             ModelConsecutivosMadera::whereIn('id', $combinations[0]['id'])->update(['estado' => 'En uso']);
-            //$ids = implode(",", $combinations[0]['id']);
         }
 
         return ([$span, $ids, $sum_pulgadas]);
@@ -88,8 +86,29 @@ class ControllerSearchMadera extends Controller
     public function search(Request $request)
     {
         $id_ = $request->id;
-        $pulgadas = $request->pulgadas;
+        $rango_bloques = $request->rangoBloque;
         $troncos = $request->troncos;
+        $ancho = $request->ancho;
+        $grueso = $request->grueso;
+        $cantidad_ = $request->cantidad;
+        $id_madera = $request->id_madera;
+
+        $bandera = 0;
+        $sum_bloques = 0;
+        $bloques_ = [];
+
+        $info_bloques = explode("-", $rango_bloques);
+        $bloque_inferior = ($info_bloques[0] * 100);
+        $bloque_superior = ($info_bloques[1] * 100);
+
+        for ($i = $bloque_inferior; $i <= $bloque_superior; $i++) {
+            $sum_bloques += $i;
+            array_push($bloques_, ($i / 100));
+            $bandera++;
+        }
+
+        $promedio_bloque = round($sum_bloques / $bandera);
+        $pulgadas_a_utilizar = round(($ancho * $grueso * $cantidad_ * $promedio_bloque * 1.13) / 1550);
 
         if (!empty($troncos)) {
 
@@ -108,15 +127,15 @@ class ControllerSearchMadera extends Controller
         }
 
         $form_ = '<option value=""></option>';
-        $response = self::findCombinations($id_, $pulgadas);
-        $troncos = ModelConsecutivosMadera::where('estado', 'Activo')->orderBy('pulgadas', 'asc')->get();
+        $response = self::findCombinations($id_, $pulgadas_a_utilizar, $bloques_, $id_madera);
+        $troncos = ModelConsecutivosMadera::where('estado', 'Activo')->where("id_info_madera", $id_madera)->whereIn('largo', $bloques_)->orderBy('pulgadas', 'asc')->get();
         foreach ($troncos as $key => $value) {
-            $form_ .= '<option value="' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '">' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '</option>';
+            $form_ .= '<option value="' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '">' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . ' - L' . $value->largo . 'm</option>';
         }
 
         $span_ = empty($response[0]) ? '¡Seleccionar manualmente!' : $response[0];
 
-        return response()->json(['span' => $span_, 'ids' => $response[1], 'pulgadas' => $form_, 'sum_p' => $response[2]], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        return response()->json(['pulgadas_utilizar' => $pulgadas_a_utilizar, 'span' => $span_, 'ids' => $response[1], 'pulgadas' => $form_, 'sum_p' => $response[2]], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
     public function changeEstadoTroco(Request $request)

@@ -1,162 +1,163 @@
 @extends('apps.control_madera.plantilla.app')
+@section('printer')
+    active
+@endsection
 @section('body')
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h2>Imprimir códigos QR</h2>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="row row-cols-1">
+                <div class="overflow-hidden d-slider1">
+                    <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline justify-content-center">
+                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="400">
+                            <div class="card-body">
+                                <div class="progress-widget">
+                                    <div id="circle-progress-02" class="text-center circle-progress-01 circle-progress circle-progress-info"
+                                        data-min-value="0" data-max-value="100" data-value="80" data-type="percent">
+                                        <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z" />
+                                        </svg>
+                                    </div>
+                                    <div class="progress-detail">
+                                        <p class="mb-2">Cantidad impresos</p>
+                                        <h4 id="cantidad_impresiones_correctas" class="counter" style="cursor: pointer"
+                                            onclick="ConsultarImpresiones('1')" data-cantidadTrue="0">
+                                            0
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="500">
+                            <div class="card-body">
+                                <div class="progress-widget">
+                                    <div id="circle-progress-03" class="text-center circle-progress-01 circle-progress circle-progress-primary"
+                                        data-min-value="0" data-max-value="100" data-value="70" data-type="percent">
+                                        <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z" />
+                                        </svg>
+                                    </div>
+                                    <div class="progress-detail">
+                                        <p class="mb-2">Cantidad fallidos</p>
+                                        <h4 id="cantidad_impresiones_fallidas" class="counter" style="cursor: pointer" onclick="ConsultarImpresiones('2')"
+                                            data-cantidadFalse="0">
+                                            0
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class="clearfix"></div>
-        <div class="page-body mt-4">
-            <div class="row">
-                <div class="col-md-7 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">
-                                Información para imprimir QR's
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <form class="form-label-left input_mask" id="form-print-info-marquillas-qr" autocomplete="off">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">N° Bloques *</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <input type="number" onkeyup="$('#txt_cantidad_print').val(this.value)" name="txt_cantidad_bloques"
-                                                    id="txt_cantidad_bloques" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">N° Stickers *</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <input type="number" style="background-color: #e3e3e3;" name="txt_cantidad_print" id="txt_cantidad_print"
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">Madera *</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <select name="txt_tipo_madera" id="txt_tipo_madera" class="form-control">
-                                                    <option value=""></option>
-                                                    @foreach ($madera as $item)
-                                                        <option value="<?php echo $item->id_madera; ?>"><?php echo $item->nombre_madera; ?></option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">Subproceso *</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <input type="text" name="subproceso" id="subproceso" onkeyup="this.value=this.value.toUpperCase()"
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">Vehículo *</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <select name="tipo_vehiculo" id="tipo_vehiculo" class="form-control">
-                                                    <option value=""></option>
-                                                    <option value="SENCILLO">SENCILLO</option>
-                                                    <option value="DOBLE TROQUE">DOBLE TROQUE</option>
-                                                    <option value="CUATRO MANOS">CUATRO MANOS</option>
-                                                    <option value="MULA">MULA</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">Placa</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <input type="text" name="txt_placa" onkeyup="this.value=this.value.toUpperCase()" id="txt_placa"
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">S. Conducto</label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <input type="text" name="txt_salvo_conducto" onkeyup="this.value=this.value.toUpperCase()"
-                                                    id="txt_salvo_conducto" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                                <div class="form-group text-center">
-                                    <button type="button" onclick="btnPrintInfoQr()" class="btn btn-success">Imprimir consecutivos</button>
-                                </div>
-                            </form>
-                        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 mb-3">
+            <div class="card" data-aos="fade-up" data-aos-delay="400">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h6 class="card-title">Estación de etiquetado</h6>
                     </div>
                 </div>
-                <div class="col-md-5 mb-3">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    Cantidad procesados
+                <div class="card-body">
+                    <form class="form-label-left input_mask" id="form-print-info-marquillas-qr" autocomplete="off">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label>N° Bloques *</label>
+                                <input type="number" onkeyup="$('#txt_cantidad_print').val(this.value)" name="txt_cantidad_bloques"
+                                    id="txt_cantidad_bloques" class="form-control">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label class="">N° Stickers *</label>
+                                    <input type="number" style="background-color: #e3e3e3;" name="txt_cantidad_print" id="txt_cantidad_print"
+                                        class="form-control">
                                 </div>
-                                <div class="card-body text-center">
-                                    <h1 id="cantidad_impresiones_correctas" style="cursor: pointer" onclick="ConsultarImpresiones('1')"
-                                        data-cantidadTrue="0">0</h1>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Madera *</label>
+                                    <select name="txt_tipo_madera" id="txt_tipo_madera" class="form-control">
+                                        <option value="">Seleccionar...</option>
+                                        @foreach ($madera as $item)
+                                            <option value="<?php echo $item->id_madera; ?>"><?php echo $item->nombre_madera; ?></option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Subproceso *</label>
+                                    <input type="text" name="subproceso" id="subproceso" onkeyup="this.value=this.value.toUpperCase()"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Vehículo *</label>
+                                    <select name="tipo_vehiculo" id="tipo_vehiculo" class="form-control">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="SENCILLO">SENCILLO</option>
+                                        <option value="DOBLE TROQUE">DOBLE TROQUE</option>
+                                        <option value="CUATRO MANOS">CUATRO MANOS</option>
+                                        <option value="MULA">MULA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Placa</label>
+                                    <input type="text" name="txt_placa" onkeyup="this.value=this.value.toUpperCase()" id="txt_placa"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>S. Conducto</label>
+                                    <input type="text" name="txt_salvo_conducto" onkeyup="this.value=this.value.toUpperCase()"
+                                        id="txt_salvo_conducto" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="button" onclick="btnPrintInfoQr()" class="btn btn-success">Imprimir consecutivos</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    Cantidad fallidos
-                                </div>
-                                <div class="card-body text-center">
-                                    <h1 id="cantidad_impresiones_fallidas" style="cursor: pointer" onclick="ConsultarImpresiones('2')"
-                                        data-cantidadFalse="0">0</h1>
-                                </div>
-                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 mb-3">
+            <div class="card" data-aos="fade-up" data-aos-delay="500">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h6 class="card-title">Información impresora</h6>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-3 col-sm-3 ">Impresora </label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <input type="text" class="form-control" readonly="readonly" value="{{ $impresora->nombre }}">
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            Información impresora
+                    @if ($conexion == 'red')
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-3 col-sm-3 ">IP impresora</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <input type="text" class="form-control" readonly="readonly" value="{{ $impresora->ip }}">
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-3 col-sm-3 ">Nombre impresora </label>
-                                <div class="col-md-9 col-sm-9 ">
-                                    <input type="text" class="form-control" readonly="readonly" value="{{ $impresora->nombre }}">
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-3 col-sm-3 ">Puerto</label>
+                            <div class="col-md-9 col-sm-9 ">
+                                <input type="text" class="form-control" readonly="readonly" value="{{ $impresora->puerto }}">
                             </div>
-                            @if ($conexion == 'red')
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-3 col-sm-3 ">IP impresora</label>
-                                    <div class="col-md-9 col-sm-9 ">
-                                        <input type="text" class="form-control" readonly="readonly" value="{{ $impresora->ip }}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-3 col-sm-3 ">Puerto</label>
-                                    <div class="col-md-9 col-sm-9 ">
-                                        <input type="text" class="form-control" readonly="readonly" value="{{ $impresora->puerto }}">
-                                    </div>
-                                </div>
-                            @endif
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-3 col-sm-3 ">Estado impresora</label>
-                                <div class="col-md-9 col-sm-9 ">
-                                    <input type="text" id="info-impresora-red" class="form-control" readonly="readonly"
-                                        value="{{ $estado }}">
-                                </div>
-                            </div>
+                        </div>
+                    @endif
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-3 col-sm-3 ">Estado</label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <input type="text" id="info-impresora-red" class="form-control" readonly="readonly" value="{{ $estado }}">
                         </div>
                     </div>
                 </div>
@@ -164,19 +165,18 @@
         </div>
     </div>
 
+
     <div class="modal fade" id="modalInfoHistoryPrinted" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Información general <span id="titlePrinted"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="mensajeBody">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

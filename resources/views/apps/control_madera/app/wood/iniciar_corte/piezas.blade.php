@@ -9,59 +9,47 @@
         }
     </style>
 @endsection
+@section('wood')
+    active
+@endsection
 @section('body')
-    <div class="">
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Información a planear</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card-box">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-md-3 col-sm-3 "><strong>Mueble</strong></label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" value="{{ $planner->mueble }}" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-sm-3 "><strong>Serie</strong></label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" value="{{ $planner->serie }}" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-sm-3"><strong>Madera</strong></label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" value="{{ $planner->madera }}" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="form-group row">
-                                                <label class="col-form-label col-md-3 col-sm-3"><strong>Cantidad</strong></label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" value="{{ $planner->cantidad }}" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Serie</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3 "><strong>Mueble</strong></label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" value="{{ $planner->mueble }}" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3 "><strong>Serie</strong></label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" value="{{ $planner->serie }}" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3"><strong>Madera</strong></label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" value="{{ $planner->madera }}" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3"><strong>Cantidad</strong></label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" value="{{ $planner->cantidad }}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -69,8 +57,19 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="piezas-planificadas-corte-wood">
-            {!! $piezas_corte !!}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Lista de piesas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="piezas-planificadas-corte-wood">
+                        {!! $piezas_corte !!}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -79,15 +78,13 @@
     <div class="modal fade" id="modalVisualizarTroncosPlanificados" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="exampleModalLabel">Consecutivos de troncos</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Consecutivos de bloques</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="listaTroncosPlanificados"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -97,17 +94,15 @@
     <div class="modal fade" id="modalObservacionesPiezasWood" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Observaciones para el corte</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <h6 class="mt-3 mr-3 ml-3 mb-3" id="observacionesWoodPieza"></h6>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -119,9 +114,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Agregar Piezas a otra serie</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -146,7 +139,7 @@
                                         <div class="form-group row">
                                             <label class="col-form-label col-sm-3 ">Madera </label>
                                             <div class="col-md-9 col-sm-9 ">
-                                                <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)" disabled
+                                                <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)" readonly
                                                     class="form-control" required>
                                                     <option value="">Seleccionar...</option>
                                                 </select>
@@ -158,7 +151,7 @@
                                             <label class="col-form-label col-sm-3">Mueble </label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <select name="mueble_planner" onchange="buscarInformacionPiezasActualizar()" id="mueble_planner"
-                                                    class="form-control" required disabled>
+                                                    class="form-control" required readonly>
                                                     <option value="">Seleccionar...</option>
                                                 </select>
                                             </div>
@@ -172,13 +165,48 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <a href="#" class="btn-flotante" onclick="$('#modalNuevasPiezasWood').modal('show')">+ Madera</a>
+    {{-- Modal para registrar las tablas que salieron del corte de la serie --}}
+    <div class="modal fade" id="modalRegistroTablasWood" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar tablas de la serie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row p-5">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label><strong>Cantidad</strong></label>
+                                <input type="number" class="form-control" style="text-align: center" name="AddtablaWood" id="AddtablaWood">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label><strong>Ancho </strong>- Centímetros</label>
+                                <input type="number" class="form-control" style="text-align: center" name="AddAnchoWood" id="AddAnchoWood">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h6>Tablas agregadas: <span id="cantTablasSerie">{{ $cant_tablas }}</span></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" onclick="saveTablasCortesWood()">Agregar registro tabla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalRegistroTablasWood').modal('show')">+ Madera</a>
 @endsection
 @section('footer')
     <script src="{{ asset('plugins/pnotify/dist/pnotify.js') }}"></script>
@@ -189,9 +217,6 @@
             if (elemento) {
                 elemento.parentNode.removeChild(elemento);
             }
-            $('#troncos_utilizados_wood' + id).append('<span class="badge badge-pill badge-secondary" style="cursor:pointer" id="T' + id + valor +
-                '" onclick="deleteTroncoWood(\'' + id + '\',\'' + valor + '\',\'' + id_pieza + '\')" >' + valor + '</span>\t')
-            $("#troncoWood" + id).val('')
             var datos = $.ajax({
                 url: "{{ route('add.tronco.woodmiser') }}",
                 type: "post",
@@ -206,10 +231,18 @@
                     title: 'Pulgadas: ' + res.pulgadas,
                     text: 'Tronco: ' + res.tronco,
                     hide: false,
-                    type: 'info',
+                    type: 'success',
                     styling: 'bootstrap3',
-                    addclass: 'dark',
+                    addclass: 'info',
                 })
+
+                $('#troncos_utilizados_wood' + id).append('<span class="badge badge-pill bg-secondary" style="cursor:pointer" id="T' + id +
+                    valor +
+                    '" onclick="deleteTroncoWood(\'' + id + '\',\'' + valor + '\',\'' + id_pieza + '\')" >' + valor + '</span>\t')
+                $("#troncoWood" + id).val('')
+            })
+            datos.fail(() => {
+                notificacion("¡ERROR! Este bloque ya fue utilizado, utiliza otro", "error", 6000)
             })
         }
 
@@ -224,19 +257,31 @@
                 }
             });
             datos.done(function(response) {
+                if (response.estado == "Completado") {
+                    notificacion("¡Excelente! Cantidad de la pieza completada", "success", 3000)
+                }
                 $("#cantidadActual" + id).val(response.cantidad)
                 $("#agregarPiezasNuevas" + id).val(response.resta)
                 $("#estadoWood" + id).text(response.estado)
-                $("#estadoWood" + id).removeClass("red")
+                $("#estadoWood" + id).removeClass("text-danger")
                 $("#estadoWood" + id).addClass(response.clase)
             })
         }
 
         deleteTroncoWood = (id, valor, id_pieza) => {
             document.getElementById("T" + id + valor).remove()
+            var datos = $.ajax({
+                url: "{{ route('delete.tronco.woodmiser') }}",
+                type: "post",
+                dataType: "json",
+                data: {
+                    id_pieza,
+                    tronco: valor
+                }
+            });
         }
 
-        visualizarTroncosPlan = (id_pieza) => {
+        visualizarTroncosPlan = (id_pieza, bandera) => {
             $("#modalVisualizarTroncosPlanificados").modal("show")
 
             var datos = $.ajax({
@@ -244,12 +289,26 @@
                 type: "post",
                 dataType: "json",
                 data: {
-                    id_pieza
+                    id_pieza,
+                    bandera
                 }
             });
             datos.done(function(response) {
                 document.getElementById("listaTroncosPlanificados").innerHTML = response.table
+                validarTroncoUtilizado(id_pieza, bandera)
             })
+        }
+
+        validarTroncoUtilizado = (id_pieza, bandera) => {
+            var spans = $('#troncos_utilizados_wood' + bandera + ' span');
+            spans.each(function() {
+                $('#' + id_pieza + bandera + $(this).text()).remove();
+            });
+        }
+
+        utilizarTroncoPLan = (consecutivo, bandera, id_corte) => {
+            $("#modalVisualizarTroncosPlanificados").modal("hide")
+            troncosUtilizadosWood(consecutivo, bandera, id_corte)
         }
 
         visualizarComentariosPorPieza = (id_pieza) => {
@@ -308,6 +367,29 @@
                 $("#madera_planner").val('')
                 $("#mueble_planner").val('')
                 document.getElementById('formPiezasAsignacionCantidadFavor').innerHTML = ''
+            })
+        }
+
+        saveTablasCortesWood = () => {
+            var cant_tablas = $("#AddtablaWood").val()
+            var ancho = $("#AddAnchoWood").val()
+
+            var datos = $.ajax({
+                url: window.location.href,
+                type: "post",
+                dataType: "json",
+                data: {
+                    cant_tablas,
+                    ancho
+                }
+            });
+            datos.done(function(res) {
+                if (res.status == true) {
+                    notificacion("¡Excelente! Tabla agregada con éxito", "success", 3000)
+                    document.getElementById('cantTablasSerie').innerHTML = res.tablas
+                    $("#AddtablaWood").val('')
+                    $("#AddAnchoWood").val('')
+                }
             })
         }
     </script>

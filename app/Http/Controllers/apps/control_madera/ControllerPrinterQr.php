@@ -9,6 +9,7 @@ use App\Models\apps\control_madera\ModelInfoMadera;
 use App\Models\apps\control_madera\ModelInfoMaquilla;
 use App\Models\apps\control_madera\ModelInfoPrinter;
 use App\Models\apps\control_madera\ModelInspeccionMateriaPrima;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -367,7 +368,8 @@ class ControllerPrinterQr extends Controller
             'placa' => $placa,
             'conducto' => $salvo_conducto,
             'subproceso' => $subproceso,
-            'total_bloques' => $cantidad_bloques
+            'total_bloques' => $cantidad_bloques,
+            'usuario_creacion' => Auth::user()->nombre
         ]);
 
         if ($response) {
@@ -425,6 +427,10 @@ class ControllerPrinterQr extends Controller
             ModelConsecutivosFallidos::where('id_impresion', $id_madera)->where('consecutivo', $consecutivo_)->first()->delete();
         }
 
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo_
+        ]);
+
         $printed_pages = 0;
         $error_printed = 0;
 
@@ -467,6 +473,10 @@ class ControllerPrinterQr extends Controller
     {
         //Consecutivo impreso
         $consecutivo = $request->consecutivo;
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo
+        ]);
 
         //Validar existencia de consecutivo impreso
         $data_val = ModelConsecutivosMadera::find($consecutivo);
