@@ -47,7 +47,7 @@ class ControllerPdfCotizacion extends Controller
 
         $cuotas = (session('cuotas_plan_cotizador') == 1) ? 'CO' : session('cuotas_plan_cotizador') . "F";
         $porc_dsto = ($cuotas == 'CO') ? '0.3' : '0.2';
-        $vigencia = date("Y-m-d", strtotime(date('Y-m-d') . "+ 15 days"));
+        $vigencia = date("Y-m-d", strtotime(date('Y-m-d') . "+ 8 days"));
         $productos = self::obtenerProductosCotizados(session('IdSession'));
 
         $info_sucursales = ModelInfoSucursales::where('co', Auth::user()->sucursal)->first();
@@ -203,7 +203,7 @@ class ControllerPdfCotizacion extends Controller
         $pdf->Cell(15, 13, utf8_decode("Vigencia Hasta  "), 0);
         $pdf->SetFont('Arial', '', 7);
         $pdf->Cell(10, 10, '', 0);
-        $pdf->Cell(15, 13, utf8_decode($vigencia . " ( 15 días )"), 0);
+        $pdf->Cell(15, 13, utf8_decode($vigencia . " ( 8 días )"), 0);
 
         $pdf->Ln(2);
         $pdf->SetFont('Arial', '', 7);
