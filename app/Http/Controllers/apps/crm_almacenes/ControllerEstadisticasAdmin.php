@@ -324,7 +324,7 @@ class ControllerEstadisticasAdmin extends Controller
         $number_pattern = '/(V\d+|\d+)/';  //Patrón de busqueda de números enteros solos, y seguidos de una V
         foreach ($cotizaciones as $index => $cotizacion) {
             foreach ($cotizacion as $subIndex => $elemento) {
-                $element = preg_replace($number_pattern, "", $elemento['item']); // Devuelve el nombre del producto sin números (eliminá el patrón encontrado en la string)
+                $element = $elemento['item']; // Devuelve el nombre del producto sin números (eliminá el patrón encontrado en la string)
                 $sku = $elemento['sku'];
                 $cantidad = $elemento['cantidad'];
 
@@ -333,6 +333,7 @@ class ControllerEstadisticasAdmin extends Controller
                 $colorEncontrado = self::filtrarElementosPorColores($element, $colores); // Devuelve los elementos los cuales contienen un color (para eliminarlo)
 
                 if ($filtradoEncontrado) { // Si se desea filtrar:
+                    $element = preg_replace($number_pattern, "", $elemento['item']);
                     if ($colorEncontrado) {
                         $element = explode(" ", $element);
                         $keys = [];
@@ -354,8 +355,7 @@ class ControllerEstadisticasAdmin extends Controller
                     $dataInfo[$index][$subIndex]['sku'] = $sku;
                     $dataInfo[$index][$subIndex]['cantidad'] = $cantidad;
                 }
-                if (isset($save[$index]) && isset($save[$index][$subIndex]) && !in_array($elemento, $save[$index][$subIndex]))
-                {
+                if (isset($save[$index]) && isset($save[$index][$subIndex]) && !in_array($elemento, $save[$index][$subIndex])) {
                     //Si el elemento actual ya fue filtrado, no hacer nada
                 } else { // De lo contrario, retornar cadena con las 3 primeras palabras de la cadena original
                     $element_exploded = explode(" ", $element);

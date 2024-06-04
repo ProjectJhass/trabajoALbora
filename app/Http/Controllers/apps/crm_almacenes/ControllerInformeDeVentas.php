@@ -258,7 +258,7 @@ class ControllerInformeDeVentas extends Controller
         $number_pattern = '/(V\d+|\d+)/';  //Patrón de busqueda de números enteros solos, y seguidos de una V
         foreach ($cotizaciones as $index => $cotizacion) {
             foreach ($cotizacion as $subIndex => $elemento) {
-                $element = preg_replace($number_pattern, "", $elemento['item']); // Devuelve el nombre del producto sin números (eliminá el patrón encontrado en la string)
+                $element = $elemento['item']; // Devuelve el nombre del producto sin números (eliminá el patrón encontrado en la string)
                 $sku = $elemento['sku'];
                 $cantidad = $elemento['cantidad'];
 
@@ -267,6 +267,7 @@ class ControllerInformeDeVentas extends Controller
                 $colorEncontrado = self::filtrarElementosPorColores($element, $colores); // Devuelve los elementos los cuales contienen un color (para eliminarlo)
 
                 if ($filtradoEncontrado) { // Si se desea filtrar:
+                    $element = preg_replace($number_pattern, "", $elemento['item']);
                     if ($colorEncontrado) {
                         $element = explode(" ", $element);
                         $keys = [];
