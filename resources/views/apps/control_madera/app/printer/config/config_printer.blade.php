@@ -7,7 +7,7 @@
 @section('body')
     <div class="row">
         <div class="col-md-7 mb-3">
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header">
                     <div class="header-title">
                         <h5 class="card-title">Impresoras registradas</h5>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-md-5 mb-3">
-            <div class="card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="400">
                 <div class="card-header">
                     <div class="header-title">
                         <h5 class="card-title">Configuración</h5>

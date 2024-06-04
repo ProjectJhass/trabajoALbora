@@ -141,7 +141,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="200">
                 <div class="card-header d-flex justify-content-between flex-wrap">
                     <div class="header-title">
                         <h4 class="card-title mb-0">Planificación</h4>
@@ -208,7 +208,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="400">
                 <div class="card-header">
                     <h6>Plan generado</h6>
                 </div>

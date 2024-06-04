@@ -15,7 +15,7 @@
 @section('body')
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card alert-top">
                 <div class="card-header">
                     <h5>Serie</h5>
                 </div>
@@ -60,7 +60,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card alert-top alert-danger">
                 <div class="card-header">
                     <h5>Lista de piesas</h5>
                 </div>

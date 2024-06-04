@@ -36,6 +36,14 @@ class ControllerInfoGeneralCortes extends Controller
         return view('apps.control_madera.app.planner.cortes_terminados.infoGeneral', ['tableCorteTerminado' => $table]);
     }
 
+    public function piezasTerminadas(Request $request)
+    {
+        $id_corte = $request->id_corte;
+        $cortes_planificados = ModelCortesPlanificados::find($id_corte);
+        $piezas_planificadas = ModelPiezasPlanificadasCorte::where("id_plan", $id_corte)->get();
+        return view('apps.control_madera.app.planner.cortes_terminados.infoCortesTerminados', ['planner' => $cortes_planificados, 'piezas' => $piezas_planificadas]);
+    }
+
     public function filtrarCortesTerminados(Request $request)
     {
         $fecha_i = $request->fecha_i;

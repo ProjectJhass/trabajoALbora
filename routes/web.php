@@ -437,6 +437,7 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
             Route::get('/cortes-pendientes', [ControllerInfoGeneralCortes::class, 'index'])->name('cortes.madera.planner');
             Route::get('/piezas-planificadas/{id_corte}', [ControllerInfoGeneralCortes::class, 'piezasPlanificadas'])->name('info.piezas.c.planner');
             Route::get('/cortes-completados', [ControllerInfoGeneralCortes::class, 'cortesTerminados'])->name('cortes.madera.completado');
+            Route::get('/cortes-completados/{id_corte}', [ControllerInfoGeneralCortes::class, 'piezasTerminadas'])->name('info.piezas.c.terminado');
             Route::post('/cortes-completados', [ControllerInfoGeneralCortes::class, 'filtrarCortesTerminados'])->name('search.madera.completado');
             Route::get('/madera-disponible', [ControllerMaderaDisponible::class, 'index'])->name('madera.disponible.cortes');
             Route::post('/madera-disponible', [ControllerMaderaDisponible::class, 'updateEstadoMadera'])->name('update.madera.estado');

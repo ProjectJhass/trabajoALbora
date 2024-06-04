@@ -141,7 +141,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="200">
                 <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
                     <div class="header-title">
                         <h4 class="card-title mb-0">Editar información</h4>
@@ -210,7 +210,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="400">
                 <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
                     <h6 class="card-title">Piezas de la serie</h6>
                     <div class="card-tools" id="btnAddNewFila" data-bs-toggle="modal" data-bs-target="#modalAgregarPiezaSerie" hidden

@@ -20,7 +20,7 @@
             <div class="row row-cols-1">
                 <div class="overflow-hidden">
                     <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
-                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="200">
+                        <li class="swiper-slide card card-slide alert-top" data-aos="fade-up" data-aos-delay="200">
                             <div class="card-body">
                                 <div class="progress-widget">
                                     <div class="progress-detail">
@@ -42,7 +42,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
                         <h5 class="card-title">Historial de etiquetas impresas</h5>
