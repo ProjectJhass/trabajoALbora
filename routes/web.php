@@ -220,10 +220,15 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'ingresos-y-salidas'], function () {
         Route::get('/estadisticas', [ControllerIngresosSalidas::class, 'index'])->name('estadisticas');
+        Route::post('/estadisticas', [ControllerIngresosSalidas::class, 'actualizarEstadisticas'])->name('search.estadisticas');
         Route::get('/ingresos-diarios', [ControllerIngresosSalidas::class, 'ingresos'])->name('i.diarios');
+        Route::post('/ingresos-diarios', [ControllerIngresosSalidas::class, 'searchInfoIngresos'])->name('search.diarios');
         Route::get('/llegadas-tarde', [ControllerIngresosSalidas::class, 'tarde'])->name('l.tarde');
+        Route::post('/llegadas-tarde', [ControllerIngresosSalidas::class, 'searchLlegadasTarde'])->name('search.tarde');
         Route::get('/inasistencias', [ControllerIngresosSalidas::class, 'inasistencias'])->name('inasistencias');
+        Route::post('/inasistencias', [ControllerIngresosSalidas::class, 'searchInfoInasistencias'])->name('search.inasistencias');
         Route::get('/novedades', [ControllerIngresosSalidas::class, 'novedades'])->name('novedades');
+        Route::post('/novedades', [ControllerIngresosSalidas::class, 'getInfoNovedades'])->name('search.novedades');
 
         Route::group(['prefix' => 'registrar-novedad'], function () {
             Route::get('', [ControllerIngresosSalidas::class, 'registrarNovedad'])->name('r.novedad');

@@ -37,9 +37,9 @@ class ModelIngresosSalidas extends Model
             ->count();
     }
 
-    public static function ObtenerCantidadEmpleados()
+    public static function ObtenerCantidadEmpleados($sucursal)
     {
-        return DB::table('users')->where('ingreso_personal', '1')->count();
+        return DB::table('users')->where('ingreso_personal', '1')->where('sucursal', $sucursal)->where('estado', 1)->count();
     }
 
     public static function ObtenerListadoEmpleadosIngreso()
@@ -47,7 +47,7 @@ class ModelIngresosSalidas extends Model
         return DB::table('users')
             ->select(['id', 'nombre'])
             ->where('ingreso_personal', '1')
-            ->where("zona","<>","0")
+            ->where("zona", "<>", "0")
             ->where('estado', '1')
             ->orderBy('nombre')
             ->get();
@@ -87,6 +87,7 @@ class ModelIngresosSalidas extends Model
             ->select(['u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
             ->whereBetween('r.fecha_registro', ([$fecha_i, $fecha_f]))
             ->where('r.co', $co)
+            ->where('u.estado', 1)
             ->get();
     }
 
@@ -97,6 +98,7 @@ class ModelIngresosSalidas extends Model
             ->select(['u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
             ->whereBetween('r.fecha_registro', ([$fecha_i, $fecha_f]))
             ->where('r.co', $co)
+            ->where('u.estado', 1)
             ->where('r.hora_ingreso', '>', $hora_i)
             ->get();
     }

@@ -55,40 +55,23 @@
                             <option value="028">028 - Pereira</option>
                             <option value="036">036 - Cali</option>
                         </select>
-                        <input type="text" class="form-control float-right" value="{{ $fecha_i . ' / ' . $fecha_f }}" name="fechas_estadisticas"
-                            id="fechas_estadisticas">
-                        <button class="btn btn-success" type="button" onclick="ValidarSesionesEstadisticas()">Consultar</button>
+                        <input type="text" class="form-control float-right" value="{{ date('Y-m-d') . ' / ' . date('Y-m-d') }}"
+                            name="fechas_estadisticas" id="fechas_estadisticas">
+                        <button class="btn btn-success" type="button" onclick="consultarInfoInasistencias()">Consultar</button>
                     </div>
                 </div>
             </div>
             <div class="card card-outline card-secondary">
                 <div class="card-header">
-                    Inasistencias
+                    <div class="card-title">
+                        Inasistencias
+                    </div>
+                    <div class="card-tools">
+                        <div class="mb-2 d-flex justify-content-center" id="botonDescargarExcel"></div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="mb-2 d-flex justify-content-center" id="botonDescargarExcel"></div>
-                    <table class="table table-bordered table-sm" id="UsuariosInasistencias">
-                        <thead>
-                            <tr class="text-center">
-                                <th>#</th>
-                                <th>Cédula</th>
-                                <th>Nombre</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center" style="font-size: 14px">
-                            <?php $n = 0; ?>
-                            @foreach ($info as $item)
-                                <?php $n++; ?>
-                                <tr>
-                                    <td>{{ $n }}</td>
-                                    <td class="text-left">{{ $item['cedula'] }}</td>
-                                    <td class="text-left">{{ $item['nombre'] }}</td>
-                                    <td>{{ $item['fecha'] }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card-body" id="tableInfoInasistencias">
+                    {!! $table !!}
                 </div>
             </div>
         </div>
@@ -104,7 +87,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/w/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-html5-1.5.6/datatables.min.js"></script>
     <script>
         $(function() {
-            $('#centro_de_operacion').val('{{ $co_ }}');
             $('#fechas_estadisticas').daterangepicker({
                 "locale": {
                     "format": "YYYY-MM-DD",
@@ -140,6 +122,12 @@
                     "firstDay": 0
                 }
             });
+
+            tableFormatter()
+
+        });
+
+        tableFormatter = () => {
             $('#UsuariosInasistencias').DataTable({
                 "oLanguage": {
                     "sSearch": "Buscar:",
@@ -165,8 +153,36 @@
                     text: 'Descargar Excel',
                 }],
             });
+        }
 
+        consultarInfoInasistencias = () => {
+            var dateRangePicker = $('#fechas_estadisticas').data('daterangepicker');
+            if (dateRangePicker.startDate && dateRangePicker.endDate) {
+                var fecha_i = dateRangePicker.startDate.format('YYYY-MM-DD');
+                var fecha_f = dateRangePicker.endDate.format('YYYY-MM-DD');
+                var co = $('#centro_de_operacion').val()
 
-        });
+                var datos = $.ajax({
+                    type: "POST",
+                    url: "{{ route('search.inasistencias') }}",
+                    dataType: "json",
+                    data: {
+                        fecha_i,
+                        fecha_f,
+                        co
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                datos.done((res) => {
+                    if (res.status == true) {
+                        document.getElementById('tableInfoInasistencias').innerHTML = res.table
+                        tableFormatter()
+                    }
+                })
+            }
+
+        }
     </script>
 @endsection
