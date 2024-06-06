@@ -272,7 +272,7 @@
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <p>Concepto: {{ strtoupper($item->concepto) }}</p>
                         @if (
-                            ((Auth::user()->almacen == 'FABRICA' || Auth::user()->almacen == 'PPAL') && Auth::user()->rol == '1' && $item->estado != 1) ||
+                            ((Auth::user()->almacen =='SERVICIO TECNICO FAB' || Auth::user()->almacen == 'FABRICA' || Auth::user()->almacen == 'PPAL') && Auth::user()->rol == '1' && $item->estado != 1) ||
                                 Auth::user()->permisos == '4')
                             <button class="btn btn-sm btn-success"
                                 onclick="apruebaCartaRespuestaFab('{{ $item->id_respuesta }}','{{ $id_ost }}')"><i
