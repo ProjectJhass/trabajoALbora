@@ -22,6 +22,7 @@ class ModelAutomoviles extends Model
         'imagen',
         'soat',
         'ambiental',
-        'riesgo'
+        'riesgo',
+        'estado'
     ];
 }

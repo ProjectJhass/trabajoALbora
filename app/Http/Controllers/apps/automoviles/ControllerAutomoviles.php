@@ -16,7 +16,7 @@ class ControllerAutomoviles extends Controller
     {
         session()->forget(['fecha_info_i', 'fecha_info_f']);
 
-        $autos = ModelAutomoviles::all();
+        $autos = ModelAutomoviles::where('estado', '<>', '0')->get();
         return view('apps.automoviles.automoviles.autos', ['autos' => $autos]);
     }
 
@@ -75,7 +75,7 @@ class ControllerAutomoviles extends Controller
             $year_b = date("Y", strtotime($fecha_inicial));
 
             $km_mes = 0;
-            $info_km_ = ModelKmRecorridos::where('placa', $info_auto->placa)->whereYear('fecha', $year_b)->whereMonth('fecha',$mes_b)->get();
+            $info_km_ = ModelKmRecorridos::where('placa', $info_auto->placa)->whereYear('fecha', $year_b)->whereMonth('fecha', $mes_b)->get();
             foreach ($info_km_ as $key => $value) {
                 $km_mes += str_replace(",", ".", $value->km_recorridos);
             }
