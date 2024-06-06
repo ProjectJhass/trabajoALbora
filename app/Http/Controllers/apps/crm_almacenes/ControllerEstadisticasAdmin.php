@@ -24,26 +24,26 @@ class ControllerEstadisticasAdmin extends Controller
         if (empty($asesor)) {
             $info_clientes = self::getInfoClientes($fechaInicio, $fechaFin, '');
             $info_presupuesto = self::getInfoPresupuesto($fechaInicio, $fechaFin, '');
-
+            $items_cotizados_referencia  = self::getInfoProductosCotizadosPorReferencia('', $fechaInicio, $fechaFin);
             $resultados = self::getInfoProductosAdquiridos($info_presupuesto);
             $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
             $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
             $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, '');
-
+            $items_cotizados_al = self::getInfoProductosCotizadosAl('', $fechaInicio, $fechaFin);
             $items_cotizados = self::getInfoProductosCotizados('', $fechaInicio, $fechaFin);
         } else {
             $info_clientes = self::getInfoClientes($fechaInicio, $fechaFin, $asesor);
             $info_presupuesto = self::getInfoPresupuesto($fechaInicio, $fechaFin, $asesor);
-
             $resultados = self::getInfoProductosAdquiridos($info_presupuesto);
             $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
             $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
             $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, $asesor);
-
+            $items_cotizados_al = self::getInfoProductosCotizadosAl($info_ase->nombre, $fechaInicio, $fechaFin);
             $items_cotizados = self::getInfoProductosCotizados($info_ase->nombre, $fechaInicio, $fechaFin);
+            $items_cotizados_referencia  = self::getInfoProductosCotizadosPorReferencia($info_ase->nombre, $fechaInicio, $fechaFin);
         }
 
-        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados])->render();
+        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados, 'itemsCotAl' => $items_cotizados_al, 'itemsRef' => $items_cotizados_referencia])->render();
         return response()->json(['status' => true, 'estadisticas' => $estadisticas], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
@@ -59,11 +59,11 @@ class ControllerEstadisticasAdmin extends Controller
         $resultados = self::getInfoProductosAdquiridos($info_presupuesto);
         $ventas_por_asesor_ciudad = self::getInfoCiudades($info_clientes);
         $ventas_medio_pago = self::getInfoMediosPago($info_clientes);
-
+        $items_cotizados_al = self::getInfoProductosCotizadosAl('', $fechaInicio, $fechaFin);
         $items_cotizados = self::getInfoProductosCotizados('', $fechaInicio, $fechaFin);
-
+        $items_cotizados_referencia  = self::getInfoProductosCotizadosPorReferencia('', $fechaInicio, $fechaFin);
         $cotizaciones = self::getInfoCotizaciones($fechaInicio, $fechaFin, '');
-        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados])->render();
+        $estadisticas = view('apps.crm_almacenes.gcp.administrador.tables.tableInformeVentas', ['info' => $info_clientes, 'presupuesto' => $info_presupuesto, 'products' => $resultados, 'ciudades' => $ventas_por_asesor_ciudad, 'medios' => $ventas_medio_pago, 'cotizaciones' => $cotizaciones, 'itemsCot' => $items_cotizados, 'itemsCotAl' => $items_cotizados_al, 'itemsRef' => $items_cotizados_referencia])->render();
 
         return view('apps.crm_almacenes.gcp.administrador.estadisticas', ['sucursales' => $almacenes, 'estadisticas' => $estadisticas]);
     }
@@ -232,7 +232,45 @@ class ControllerEstadisticasAdmin extends Controller
         return $ventas_por_asesor_ciudad;
     }
 
-    public function getInfoProductosCotizados($asesor, $fecha_i, $fecha_f)
+    public function getInfoProductosCotizados($asesor, $fecha_i, $fecha_f, $limit = 50)
+    {
+
+        if (empty($asesor)) {
+            $data = ModelItemsCotizadosCrm::select('sku', 'producto', DB::raw('COUNT(sku) as cantidad'))
+                ->whereBetween('cotizaciones.fecha', [$fecha_i, $fecha_f])
+                ->groupBy('producto', 'sku',)
+                ->orderByDesc('sku')
+                ->limit($limit)
+                ->get();
+        } else {
+            $data = ModelItemsCotizadosCrm::select('asesor', 'sku', 'producto', DB::raw('COUNT(sku) as cantidad'))
+                ->whereBetween('cotizaciones.fecha', [$fecha_i, $fecha_f])
+                ->where('cotizaciones.asesor', $asesor)
+                ->groupBy('asesor', 'producto', 'sku',)
+                ->orderBy('asesor')
+                ->orderByDesc('sku')
+                ->limit($limit)
+                ->get();
+        }
+
+
+        $data_info = [];
+
+        foreach ($data as $value) {
+            $nombre = $value->asesor;
+
+            if (!isset($data_info[$nombre])) {
+                $data_info[$nombre] = [];
+            }
+            $data_info[$nombre][] = [
+                'cantidad' => $value->cantidad,
+                'item' => $value->producto,
+                'sku' => $value->sku,
+            ];
+        }
+        return $data_info;
+    }
+    public function getInfoProductosCotizadosAl($asesor, $fecha_i, $fecha_f)
     {
         if (empty($asesor)) {
             $data = ModelItemsCotizadosCrm::join('users as u', 'u.nombre', '=', 'cotizaciones.asesor')
@@ -274,5 +312,101 @@ class ControllerEstadisticasAdmin extends Controller
             }
         }
         return $data_info;
+    }
+
+    public function getInfoProductosCotizadosPorReferencia($asesor, $fecha_i, $fecha_f)
+    {
+
+        $colores = ["/", ".", "BLANC", "NEGR", "TURQUESA", "BEIGE", "GRIS", "AZUL", "GUYABA", "PINO", "CHOCOLATE", "CELESTE", "MARRON", "NUEZ", "MENTA", "CORAL", "NATURA", "MOSTAZA", "NATU", "MARF", "ROSA", "TAUPE", "SAND", "CARAM", "ZAREM", "FLOR", "CARLOTA", "ANTARTIDA", "MELANI", "PLAT", "TEXA", "MIEL", "VERD", "GRAFITO", "ARENA", "ALUMINIO"];
+        $cotizaciones = self::getInfoProductosCotizados($asesor, $fecha_i, $fecha_f);
+        $save = [];
+        $dataInfo = [];
+        $number_pattern = '/(V\d+|\d+)/';  //Patrón de busqueda de números enteros solos, y seguidos de una V
+        foreach ($cotizaciones as $index => $cotizacion) {
+            foreach ($cotizacion as $subIndex => $elemento) {
+                $element = $elemento['item']; // Devuelve el nombre del producto sin números (eliminá el patrón encontrado en la string)
+                $sku = $elemento['sku'];
+                $cantidad = $elemento['cantidad'];
+
+                $filtradoEncontrado = self::filtrarElementosPorPalabrasClave($element); // Devuelve los elementos que se desean filtrar
+
+                $colorEncontrado = self::filtrarElementosPorColores($element, $colores); // Devuelve los elementos los cuales contienen un color (para eliminarlo)
+
+                if ($filtradoEncontrado) { // Si se desea filtrar:
+                    $element = preg_replace($number_pattern, "", $elemento['item']);
+                    if ($colorEncontrado) {
+                        $element = explode(" ", $element);
+                        $keys = [];
+                        foreach ($element as $index => $word) {
+                            foreach ($colores as $color) {
+                                if (strpos($word, $color) !== false) {
+                                    $keys[$color][] = $index;
+                                    unset($element[$index]); // Eliminar el color encontrado
+                                }
+                            }
+                        }
+                        if (!empty($keys)) {
+                            $element = implode(" ", $element);
+                        }
+                    }
+                } else { // Si no se desea aplicar filtro (accesorios):
+                    $save[$index][$subIndex] = $elemento;
+                    $dataInfo[$index][$subIndex]['item'] = $element;
+                    $dataInfo[$index][$subIndex]['sku'] = $sku;
+                    $dataInfo[$index][$subIndex]['cantidad'] = $cantidad;
+                }
+                if (isset($save[$index]) && isset($save[$index][$subIndex]) && !in_array($elemento, $save[$index][$subIndex])) {
+                    //Si el elemento actual ya fue filtrado, no hacer nada
+                } else { // De lo contrario, retornar cadena con las 3 primeras palabras de la cadena original
+                    $element_exploded = explode(" ", $element);
+                    array_splice($element_exploded, 3, count($element_exploded) - 1);
+                    $element_imploded = implode(" ", $element_exploded);
+                    $dataInfo[$index][$subIndex]['item'] = $element_imploded;
+                    $dataInfo[$index][$subIndex]['sku'] = $sku;
+                    $dataInfo[$index][$subIndex]['cantidad'] = $cantidad;
+                }
+            }
+        }
+        return self::filtrarYSumarCantidades($dataInfo);
+    }
+    function filtrarYSumarCantidades($dataInfo)
+    {
+        $elementosUnicos = array();
+        foreach ($dataInfo as $data) {
+            foreach ($data as $info) {
+                $item = $info['item'];
+                $cantidad = $info['cantidad'];
+                $sku = $info['sku'];
+                if (array_key_exists($item, $elementosUnicos)) {
+                    $elementosUnicos[$item]['cantidad'] += $cantidad;
+                } else {
+                    $elementosUnicos[$item] = array(
+                        'item' => $item,
+                        'cantidad' => $cantidad,
+                        'sku' => $sku
+                    );
+                }
+            }
+        }
+        return $elementosUnicos;
+    }
+    function filtrarElementosPorPalabrasClave($elemento)
+    {
+        $filtrados = ["CAMA", "COLCHÓN", "CAMANIDO", "COMEDOR", "MESA", "SILLA", "BASE CAMA", "CABECERO", "SALA", "SOFA"];
+        foreach ($filtrados as $filtro) {
+            if (str_contains($elemento, $filtro)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    function filtrarElementosPorColores($elemento, $colores)
+    {
+        foreach ($colores as $color) {
+            if (str_contains($elemento, $color)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
