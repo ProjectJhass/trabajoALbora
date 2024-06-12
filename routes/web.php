@@ -100,6 +100,7 @@ use App\Http\Controllers\apps\servicios_tecnicos\servicios\fabrica\ControllerSeg
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\plantilla\ControllerAlmacenes;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\pw\ControllerAdminInfoPw;
 use App\Http\Controllers\apps\servicios_tecnicos\ws\ControllerConexionWs;
+use App\Http\Controllers\PruebaOP;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -406,7 +407,10 @@ Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function (
 
 Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middleware' => 'checkPermisosMadera'], function () {
 
+    
+
     Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
+    Route::get('pruebaOP', [PruebaOP::class, 'index']);
 
     Route::group(['prefix' => 'printer'], function () {
         Route::get('', [ControllerPrinterQr::class, 'index'])->name('printer');
