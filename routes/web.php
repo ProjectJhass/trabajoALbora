@@ -404,7 +404,7 @@ Route::group(['prefix' => 'catalogo', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function () {
 });
 
-Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middleware' => 'checkPermisosMadera'], function () {
 
     Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
 

@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'maderaApi' => \App\Http\Middleware\accesoAutorizadoMadera::class,
         'checkSesion'=> \App\Http\Middleware\CheckLogin::class,
         'checkPermisosServicios'=> \App\Http\Middleware\CheckAccesoServicios::class,
+        'checkPermisosMadera'=> \App\Http\Middleware\CheckAccesoMadera::class,
     ];
 }
