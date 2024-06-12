@@ -38,8 +38,14 @@
             }, 1000);
         </script>
     @endif
+
     <section class="content">
         <div class="container-fluid">
+            @if (session('message'))
+                <div class="alert alert-danger">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
@@ -76,8 +82,7 @@
                                 <strong>Memos Servicios técnicos</strong>
                             </div>
                             <div class="card-body text-center">
-                                <a
-                                    href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
+                                <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
                                     <img src="{{ asset('icons/apoyo-tecnico.png') }}" width="40%" alt="">
                                 </a>
                             </div>
@@ -168,14 +173,14 @@
                         <div class="row col-8">
                             <form>
                                 <div class="d-flex flex-row text-center d-flex justify-content-evenly">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito1"
-                                        name="digito" maxlength="1" oninput="limitarInput(this, 2)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito2"
-                                        name="digito" maxlength="1" oninput="limitarInput(this, 3)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito3"
-                                        name="digito" maxlength="1" oninput="limitarInput(this, 4)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito4"
-                                        name="digito" maxlength="1" oninput="limitarInput(this)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito1" name="digito"
+                                        maxlength="1" oninput="limitarInput(this, 2)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito2" name="digito"
+                                        maxlength="1" oninput="limitarInput(this, 3)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito3" name="digito"
+                                        maxlength="1" oninput="limitarInput(this, 4)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito4" name="digito"
+                                        maxlength="1" oninput="limitarInput(this)" placeholder="-">
                                 </div>
                             </form>
                         </div>

@@ -92,7 +92,7 @@ class ControllerUsuarios extends Controller
         $nombre = $request->nombre;
         $data = ModelUsersIntranet::find($cedula);
         $dptos = ModelUsuariosIntranet::ObtenerDepartamentos();
-        $almacen = infoAlmacenes::where('estado', '1')->get();
+        $almacen = infoAlmacenes::all();
         return view(
             'apps.intranet.usuarios.crearInfo',
             ['cedula' => $cedula, 'nombre' => $nombre, 'data' => $data, 'dptos' => $dptos, 'almacen' => $almacen]
@@ -121,6 +121,7 @@ class ControllerUsuarios extends Controller
         $rol_st = $request->rol_st;
         $fotografia = $request->file("fotografia");
         $rol_fab = $request->rol_fab;
+        $permiso_madera = $request->control_madera;
         $inhabilitar = $request->inhabilitar;
         $estado = $request->estado;
 
@@ -154,6 +155,7 @@ class ControllerUsuarios extends Controller
                 $info_user->ruta_foto = $url_doc;
             }
             $info_user->rol_user = $rol_fab;
+            $info_user->permiso_madera = $permiso_madera;
             $info_user->inhabilitar = $inhabilitar;
             $info_user->save();
 

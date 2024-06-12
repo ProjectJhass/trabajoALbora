@@ -13,7 +13,8 @@
                 <h4 class="accordion-header" id="headingWood{{ $bandera }}">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWood{{ $bandera }}"
                         aria-expanded="true" aria-controls="collapseWood{{ $bandera }}">
-                        {{ $item->pieza }} - <span class="text-danger" id="estadoWood{{ $bandera }}">{{ $item->estado }}</span>
+                        {{ $item->pieza }} - <span class=" {{ $item->estado == 'Completado' ? 'text-success' : 'text-danger' }}"
+                            id="estadoWood{{ $bandera }}">{{ $item->estado }}</span>
                     </button>
                 </h4>
                 <div id="collapseWood{{ $bandera }}" class="accordion-collapse collapse" aria-labelledby="headingWood{{ $bandera }}"
@@ -71,7 +72,7 @@
                                     <label for="">Bloque a utilizar</label>
                                     <input type="number" name="troncoWood{{ $bandera }}" id="troncoWood{{ $bandera }}"
                                         onchange="troncosUtilizadosWood(this.value,'{{ $bandera }}', '{{ $item->id }}')"
-                                        class="form-control" autocomplete="off" style="text-align: center;" />
+                                        class="form-control is-invalid" autocomplete="off" style="text-align: center;" />
                                     <div id="troncos_utilizados_wood{{ $bandera }}">
                                         @php
                                             $info_t = explode(',', $item->troncos_utilizados);
@@ -95,7 +96,7 @@
                                     <label for="">Agregar piezas</label>
                                     <input type="number" id="agregarPiezasNuevas{{ $bandera }}"
                                         onchange="agregarSeguimientoWood(this.value, '{{ $bandera }}', '{{ $item->id }}')"
-                                        autocomplete="off" class="form-control" style="text-align: center;" />
+                                        autocomplete="off" class="form-control is-invalid" style="text-align: center;" />
                                 </div>
                             </div>
                         </div>

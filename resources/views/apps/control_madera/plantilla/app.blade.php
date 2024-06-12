@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{ asset('estilos/assets/css/customizer.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('estilos/assets/css/rtl.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/pnotify/dist/pnotify.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/pnotify/dist/pnotify.buttons.css') }}">
     <style>
         .right_col {
             min-height: 50rem !important;
@@ -82,132 +84,151 @@
                             <span class="mini-icon">-</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#estacion-etiquetado" role="button" aria-expanded="false"
-                            aria-controls="horizontal-menu">
-                            <i class="fas fa-tags"></i>
-                            <span class="item-name">Etiquetas</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse" id="estacion-etiquetado" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link @yield('printer')" href="{{ route('printer') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Impresora</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('h.printer')" href="{{ route('history.printer') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Historial impresiones</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#planificador-madera" role="button" aria-expanded="false"
-                            aria-controls="horizontal-menu">
-                            <i class="fas fa-pencil-ruler"></i>
-                            <span class="item-name">Planificación</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse" id="planificador-madera" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.corte')" href="{{ route('new.planner.day') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Planificar corte</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.corte.proceso')" href="{{ route('cortes.madera.planner') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Planificación en proceso</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.corte.terminado')" href="{{ route('cortes.madera.completado') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Planificación terminada</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.bloques')" href="{{ route('madera.disponible.cortes') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Bloques disponibles</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.edit.serie')" href="{{ route('create.series') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Editar serie</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#crear-op-siesa" role="button" aria-expanded="false"
-                            aria-controls="horizontal-menu">
-                            <i class="fas fa-tv"></i>
-                            <span class="item-name">SIESA</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse" id="crear-op-siesa" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/index-horizontal.html">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Crear OP</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#config-app" role="button" aria-expanded="false"
-                            aria-controls="horizontal-menu">
-                            <i class="fas fa-cogs"></i>
-                            <span class="item-name">Configuración</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse" id="config-app" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.config')" href="{{ route('config.printer') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Impresora</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @yield('p.movil')" href="{{ route('token.acceso.movil') }}">
-                                    <i class="fas fa-circle" style="font-size: 9px"></i>
-                                    <span class="item-name">Registrar móvil</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('wood')" aria-current="page" href="{{ route('index.wood') }}">
-                            <i class="fas fa-shapes"></i>
-                            <span class="item-name">Cortes pendientes</span>
-                        </a>
-                    </li>
+                    @if (Auth::user()->permisos == '4' ||
+                            Auth::user()->permiso_madera == '1' ||
+                            Auth::user()->permiso_madera == '2' ||
+                            Auth::user()->permiso_madera == '4')
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#estacion-etiquetado" role="button" aria-expanded="false"
+                                aria-controls="horizontal-menu">
+                                <i class="fas fa-tags"></i>
+                                <span class="item-name">Etiquetas</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse" id="estacion-etiquetado" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('printer')" href="{{ route('printer') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Impresora</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('h.printer')" href="{{ route('history.printer') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Historial impresiones</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    @if (Auth::user()->permisos == '4' ||
+                            Auth::user()->permiso_madera == '1' ||
+                            Auth::user()->permiso_madera == '2' ||
+                            Auth::user()->permiso_madera == '5')
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#planificador-madera" role="button" aria-expanded="false"
+                                aria-controls="horizontal-menu">
+                                <i class="fas fa-pencil-ruler"></i>
+                                <span class="item-name">Planificación</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse" id="planificador-madera" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.corte')" href="{{ route('new.planner.day') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Planificar corte</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.corte.proceso')" href="{{ route('cortes.madera.planner') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Planificación en proceso</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.corte.terminado')" href="{{ route('cortes.madera.completado') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Planificación terminada</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.bloques')" href="{{ route('madera.disponible.cortes') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Bloques disponibles</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.edit.serie')" href="{{ route('create.series') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Editar serie</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    @if (Auth::user()->permisos == '4' || Auth::user()->permiso_madera == '1')
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#crear-op-siesa" role="button" aria-expanded="false"
+                                aria-controls="horizontal-menu">
+                                <i class="fas fa-tv"></i>
+                                <span class="item-name">SIESA</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse" id="crear-op-siesa" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link " href="../dashboard/index-horizontal.html">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Crear OP</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    @if (Auth::user()->permisos == '4' || Auth::user()->permiso_madera == '1' || Auth::user()->permiso_madera == '4')
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#config-app" role="button" aria-expanded="false"
+                                aria-controls="horizontal-menu">
+                                <i class="fas fa-cogs"></i>
+                                <span class="item-name">Configuración</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse" id="config-app" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.config')" href="{{ route('config.printer') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Impresora</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('p.movil')" href="{{ route('token.acceso.movil') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Registrar móvil</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    @if (Auth::user()->permisos == '4' ||
+                            Auth::user()->permiso_madera == '1' ||
+                            Auth::user()->permiso_madera == '2' ||
+                            Auth::user()->permiso_madera == '3')
+                        <li class="nav-item">
+                            <a class="nav-link @yield('wood')" aria-current="page" href="{{ route('index.wood') }}">
+                                <i class="fas fa-shapes"></i>
+                                <span class="item-name">Cortes pendientes</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -270,7 +291,7 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="../dashboard/auth/sign-in.html">Salir</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('home') }}">Salir</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -327,6 +348,8 @@
     <script src="{{ asset('estilos/assets/vendor/aos/dist/aos.js') }}"></script>
     <script src="{{ asset('estilos/assets/js/hope-ui.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('plugins/pnotify/dist/pnotify.js') }}"></script>
+    <script src="{{ asset('plugins/pnotify/dist/pnotify.buttons.js') }}"></script>
 
     @yield('footer')
     <script>

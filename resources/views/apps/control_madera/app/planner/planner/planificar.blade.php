@@ -146,6 +146,8 @@
                     <div class="header-title">
                         <h4 class="card-title mb-0">Planificación</h4>
                     </div>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalPlanificarCorteTablas"><i
+                            class="fas fa-check-circle"></i> Planificar corte de tablas</button>
                 </div>
                 <div class="card-body">
                     <form class="form-label-left input_mask" id="formInfoPlanificacionMadera" autocomplete="off">
@@ -197,7 +199,8 @@
                         </div>
                         <div class="ln_solid"></div>
                         <div class="form-group text-center">
-                            <button type="button" class="btn btn-secondary" onclick="limpiarCampos()" id="btnResetPlanner" type="reset">Limpiar</button>
+                            <button type="button" class="btn btn-secondary" onclick="limpiarCampos()" id="btnResetPlanner"
+                                type="reset">Limpiar</button>
                             <button type="button" onclick="planificarCorteMadera()" id="btnCreateplanMadera" disabled class="btn btn-danger">Crear
                                 planificación</button>
                         </div>
@@ -221,6 +224,40 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal para planificar cortes de tablas --}}
+    <div class="modal fade" id="modalPlanificarCorteTablas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Planificar corte de tablas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCorteTablasWood" method="post" class="was-validated">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="">Cantidad a cortar</label>
+                                    <input type="number" class="form-control" name="cantidad_tablas" id="cantidad_tablas">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="">Grosor</label>
+                                    <input type="text" class="form-control" value="19mm" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="planearCorteTabla()">Crear plan corte de tablas</button>
                 </div>
             </div>
         </div>
@@ -436,6 +473,28 @@
             datos.fail(() => {
                 notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
                 document.querySelector('body').classList.add("loaded")
+            })
+        }
+
+        planearCorteTabla = () => {
+            notificacion("Creando plan corte de tabla...", "info", 10000);
+            var formulario = new FormData(document.getElementById('formCorteTablasWood'));
+            formulario.append('valor', 'valor');
+            var datos = $.ajax({
+                url: "{{ route('save.planner.tabla') }}",
+                type: "post",
+                dataType: "json",
+                data: formulario,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            datos.done((res) => {
+                notificacion(res.mensaje, "success", 5000)
+                $('#cantidad_tablas').val('')
+            })
+            datos.fail(() => {
+                notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
             })
         }
     </script>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
+use App\Models\apps\control_madera\ModelPlannerTabla;
 use Illuminate\Http\Request;
 
 class ControllerInfoGeneralCortes extends Controller
@@ -48,8 +49,20 @@ class ControllerInfoGeneralCortes extends Controller
     {
         $fecha_i = $request->fecha_i;
         $fecha_f = date("Y-m-d", strtotime($request->fecha_f . "+ 1 day"));
-        $cortes_p = ModelCortesPlanificados::where("estado", "Completado")->whereBetween("created_at", [$fecha_i, $fecha_f])->get();
-        $table = view('apps.control_madera.app.planner.cortes_terminados.tables.tableInfo', ['cortes' => $cortes_p])->render();
+        $reporte = $request->reporte;
+
+        switch ($reporte) {
+            case 'series':
+                $cortes_p = ModelCortesPlanificados::where("estado", "Completado")->whereBetween("created_at", [$fecha_i, $fecha_f])->get();
+                $table = view('apps.control_madera.app.planner.cortes_terminados.tables.tableInfo', ['cortes' => $cortes_p])->render();
+                break;
+            case 'tablas':
+                $tablas_p = ModelPlannerTabla::where("estado", "Terminado")->whereBetween("created_at", [$fecha_i, $fecha_f])->get();
+                $table = view('apps.control_madera.app.planner.cortes_terminados.tables.corteTabla', ['info' => $tablas_p])->render();
+                break;
+        }
+
+
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 

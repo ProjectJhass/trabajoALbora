@@ -12,6 +12,7 @@ use App\Http\Controllers\apps\control_madera\ControllerHistorialImpresora;
 use App\Http\Controllers\apps\control_madera\ControllerInfoGeneralCortes;
 use App\Http\Controllers\apps\control_madera\ControllerMaderaDisponible;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerMadera;
+use App\Http\Controllers\apps\control_madera\ControllerPlannerTabla;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerWood;
 use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
@@ -127,7 +128,7 @@ Route::get('/', function () {
 
 Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIngreso'])->name("registrar.ingreso.asesor");
 
-Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'checkSesion'], function () {
 
     //Seccion de prototipos fábrica
     Route::post('/search', [ControllerIdeas::class, 'searchIdea'])->name('search.prototipo');
@@ -437,6 +438,14 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
         Route::post('search-troncos', [ControllerSearchMadera::class, 'search'])->name('search.info.troncos');
         Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
 
+        //Planear Corte de tablas
+        Route::post('planner-corte-tabla', [ControllerPlannerTabla::class, 'saveInfoCorteTabla'])->name('save.planner.tabla');
+        Route::get('info-corte-tabla/{id}', [ControllerPlannerTabla::class, 'formInfoCorteTabla'])->name('get.planner.tabla');
+        Route::post('info-corte-tabla/{id}', [ControllerPlannerTabla::class, 'saveInfoCorteTablas'])->name('save.tabla.cortada');
+        //Actualizar corte de tablas
+        Route::post('searchInfo-bloque-tabla', [ControllerPlannerTabla::class, 'troncosUtilizarTablas'])->name('search.bloque.tabla');
+        Route::post('delete-bloque-tabla', [ControllerPlannerTabla::class, 'actualizarBloquesUtilizados'])->name('delete.bloque.tabla');
+
         Route::group(['prefix' => 'admin'], function () {
             Route::post('/search-troncos-utilizados', [ControllerInfoGeneralCortes::class, 'getinfoTroncosUtilizados'])->name('get.info.troncos.utili');
             Route::get('/cortes-pendientes', [ControllerInfoGeneralCortes::class, 'index'])->name('cortes.madera.planner');
@@ -446,6 +455,9 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
             Route::post('/cortes-completados', [ControllerInfoGeneralCortes::class, 'filtrarCortesTerminados'])->name('search.madera.completado');
             Route::get('/madera-disponible', [ControllerMaderaDisponible::class, 'index'])->name('madera.disponible.cortes');
             Route::post('/madera-disponible', [ControllerMaderaDisponible::class, 'updateEstadoMadera'])->name('update.madera.estado');
+
+            //Corte de tabla terminado
+            Route::get('/cortes-tabla-completado/{id_corte}', [ControllerPlannerTabla::class, 'getInfoTablasTerminadas'])->name('info.table.completado');
 
             Route::group(['prefix' => 'crear-series'], function () {
                 Route::get('/', [ControllerCrearNuevasSeries::class, 'getView'])->name('create.series');
@@ -757,7 +769,7 @@ Route::group(['prefix' => 'pagina-web'], function () {
 });
 
 //Enlaces para acceder como administrador
-Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middleware' => 'checkPermisosServicios'], function () {
 
     Route::group(['prefix' => 'st'], function () {
         Route::get('products', [ControllerMaestros::class, 'viewProductsApp']);
