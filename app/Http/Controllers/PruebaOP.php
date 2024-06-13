@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\apps\control_madera\ModelCortesPlanificados;
+use App\Models\soap\ModelSoap;
 use App\Models\soap\st_CrearOP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class PruebaOP extends Controller
     {
         $notas = "Prueba desde app";
         $linea2 = self::linea2Madera($notas);
-        $linea3 = self::linea3Madera();
+        $linea3 = self::linea3Madera(255, 940);
 
         return st_CrearOP::ejecutarConsultaWs($linea2, $linea3);
     }
@@ -26,8 +27,6 @@ class PruebaOP extends Controller
         $ced_ = strlen(Auth::user()->id);
         $user_creacion = Auth::user()->id . str_repeat(" ", (15 - $ced_));
 
-        //Consulta a la orden de servicio y se captura la info
-        $ost_info = ModelCortesPlanificados::find(17);
         //Proveedor
         $proveedor = "";
         $proveedor = substr($proveedor, 0, 30);
@@ -99,16 +98,12 @@ class PruebaOP extends Controller
             . $f850_consec_docto_pv;
     }
 
-    public function linea3Madera()
+    public function linea3Madera($cantidad_, $tipoOp)
     {
-        //Consulta a la orden de servicio y se captura la info
-        $ost_info = ModelCortesPlanificados::find(17);
         //$item
-        $item = "940";
+        $item = $tipoOp;
         $item_ = str_repeat("0", (7 - strlen($item))) . $item;
 
-        //Cantidad
-        $cantidad_ = !empty($ost_info->pulgadas_cortadas) ? trim(($ost_info->pulgadas_cortadas-$ost_info->pulgadas_no_utilizadas)) : 1;
         $cantidad_ = $cantidad_ > 0 ? $cantidad_ : 1;
         $cantidad_planeada = str_repeat("0", (15 - strlen($cantidad_))) . $cantidad_;
         $cantidad_planeada = $cantidad_planeada.".0000";
@@ -164,5 +159,11 @@ class PruebaOP extends Controller
             . $f851_id_lote
             . $f851_notas
             . $f851_id_bodega;
+    }
+
+
+    public function consultaOPS(){
+        $info = ModelSoap::ObtenerTodasOPs();
+        print_r($info);
     }
 }

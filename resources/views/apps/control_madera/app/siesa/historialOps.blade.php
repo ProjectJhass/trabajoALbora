@@ -4,49 +4,27 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
-@section('p.corte.terminado')
+@section('ops.siesa')
     active
 @endsection
 @section('body')
-    <div class="row mt-4 justify-content-center">
-        <div class="col-md-5 mt-5 col-lg-4">
-            <div class="overflow-hidden">
-                <ul class="mb-2 swiper-wrapper list-inline">
-                    <li class="swiper-slide card alert-top card-slide" data-aos="fade-up" data-aos-delay="200">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <p class="mb-2">Fecha</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <div id="dateRangePlanner" class="pull-left form-control"
-                                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                                <i class="fa fa-calendar"></i>
-                                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <p class="mb-2">Reporte</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <select name="txtTipoReporteCorte" id="txtTipoReporteCorte" onchange="buscarInformacionCortes()"
-                                                class="form-control">
-                                                <option value="series">Corte de series</option>
-                                                <option value="tablas">Corte de tablas</option>
-                                            </select>
-                                        </div>
-                                    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-lg-4">
+            <div class="row row-cols-1">
+                <div class="overflow-hidden">
+                    <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
+                        <li class="swiper-slide card alert-top card-slide" data-aos="fade-up" data-aos-delay="200">
+                            <div class="card-body">
+                                <p class="mb-2">Filtro por fecha</p>
+                                <div id="dateRangePlanner" class="pull-left form-control"
+                                    style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -54,10 +32,10 @@
         <div class="col-md-12">
             <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header">
-                    <h5>Cortes terminados</h5>
+                    <h5>Historial</h5>
                 </div>
-                <div class="card-body table-responsive" id="infoGeneralTableCortesTerminados">
-                    {!! $tableCorteTerminado !!}
+                <div class="card-body table-responsive" id="infoGeneralOpCreadaSiesa">
+                    {!! $table !!}
                 </div>
             </div>
         </div>
@@ -122,24 +100,22 @@
             var reporte = $('#txtTipoReporteCorte').val()
 
             var datos = $.ajax({
-                url: "{{ route('search.madera.completado') }}",
+                url: "{{ route('search.historial.op.siesa') }}",
                 type: "post",
                 dataType: "json",
                 data: {
                     fecha_i,
-                    fecha_f,
-                    reporte
+                    fecha_f
                 }
             })
             datos.done((res) => {
-                document.getElementById('infoGeneralTableCortesTerminados').innerHTML = res.table
+                document.getElementById('infoGeneralOpCreadaSiesa').innerHTML = res.table
                 formatterTable()
             })
-
         }
 
         formatterTable = () => {
-            $('#datatableMadera').DataTable({
+            $('#tableInfoOpCreada').DataTable({
                 "oLanguage": {
                     "sSearch": "Buscar:",
                     "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
@@ -151,9 +127,6 @@
                     "sZeroRecords": "No se encontraron resultados...",
                     "sLengthMenu": "Mostrar _MENU_ registros"
                 },
-                "order": [
-                    [0, "desc"]
-                ],
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,

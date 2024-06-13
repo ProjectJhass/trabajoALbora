@@ -9,12 +9,14 @@ use App\Http\Controllers\apps\automoviles\ControllerProveedores;
 use App\Http\Controllers\apps\control_madera\ControllerCrearNuevasSeries;
 use App\Http\Controllers\apps\control_madera\ControllerFabricaMadera;
 use App\Http\Controllers\apps\control_madera\ControllerHistorialImpresora;
+use App\Http\Controllers\apps\control_madera\ControllerHistorialSiesa;
 use App\Http\Controllers\apps\control_madera\ControllerInfoGeneralCortes;
 use App\Http\Controllers\apps\control_madera\ControllerMaderaDisponible;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerMadera;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerTabla;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerWood;
 use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
+use App\Http\Controllers\apps\control_madera\ControllerProcedimientosSiesa;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
 use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
 use App\Http\Controllers\apps\control_madera\movil\ControllerTokenAcceso;
@@ -407,10 +409,9 @@ Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function (
 
 Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middleware' => 'checkPermisosMadera'], function () {
 
-    
-
     Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
-    Route::get('pruebaOP', [PruebaOP::class, 'index']);
+    //Route::get('pruebaOP', [PruebaOP::class, 'index']);
+    Route::get('pruebaOP', [PruebaOP::class, 'consultaOPS']);
 
     Route::group(['prefix' => 'printer'], function () {
         Route::get('', [ControllerPrinterQr::class, 'index'])->name('printer');
@@ -486,7 +487,15 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
     });
 
     Route::group(['prefix' => 'siesa'], function () {
-        // Route::get('', [ControllerFabricaMadera::class, 'home']);
+        Route::get('', [ControllerProcedimientosSiesa::class, 'index'])->name('index.op.siesa');
+        Route::get('codigos-siesa', [ControllerProcedimientosSiesa::class, 'getInfocodigos'])->name('c.codigos.siesa');
+        Route::post('crear-codigos-siesa', [ControllerProcedimientosSiesa::class, 'crearInfoCodigos'])->name('crear.codigos.siesa');
+        Route::post('search-codigos-siesa', [ControllerProcedimientosSiesa::class, 'searchInfoTodoPlanificacion'])->name('search.codigos.siesa');
+        Route::post('search-info-codigos-siesa', [ControllerProcedimientosSiesa::class, 'searchInfoPlanificacionValor'])->name('search.info.codigos.siesa');
+        Route::post('crear-op-siesa', [ControllerProcedimientosSiesa::class, 'crearInformacionOpSiesa'])->name('crear.info.op.siesa');
+        //Historial OPs creadas Siesa
+        Route::get('/historial-op-siesa', [ControllerHistorialSiesa::class, 'index'])->name('historial.op.siesa');
+        Route::post('/historial-op-siesa', [ControllerHistorialSiesa::class, 'getInfoRangoFecha'])->name('search.historial.op.siesa');
     });
 
     Route::group(['prefix' => 'wood'], function () {

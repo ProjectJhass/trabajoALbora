@@ -22,15 +22,11 @@
                     <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
                         <li class="swiper-slide card card-slide alert-top" data-aos="fade-up" data-aos-delay="200">
                             <div class="card-body">
-                                <div class="progress-widget">
-                                    <div class="progress-detail">
-                                        <p class="mb-2">Filtro por fecha</p>
-                                        <div id="reportrange" class="pull-left form-control"
-                                            style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                            <i class="fa fa-calendar"></i>
-                                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                                        </div>
-                                    </div>
+                                <p class="mb-2">Filtro por fecha</p>
+                                <div id="reportrange" class="pull-left form-control"
+                                    style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                                 </div>
                             </div>
                         </li>
@@ -115,7 +111,7 @@
             var end = moment();
 
             function cb(start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                $('#reportrange span').html(start.format('YYYY-MM-D') + ' hasta ' + end.format('YYYY-MM-D'));
             }
 
             $('#reportrange').daterangepicker({

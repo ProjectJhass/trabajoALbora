@@ -21,7 +21,13 @@ class ModelCortesPlanificados extends Model
         'cantidad',
         'pulgadas_solicitadas',
         'pulgadas_cortadas',
+        'op_creada_p1',
+        'consecutivo_op_p1',
+        'creacion_op_p1',
         'pulgadas_no_utilizadas',
+        'op_creada_p2',
+        'consecutivo_op_p2',
+        'creacion_op_p2',
         'planificador',
         'estado'
     ];

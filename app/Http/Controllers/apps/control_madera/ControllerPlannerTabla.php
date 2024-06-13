@@ -27,6 +27,7 @@ class ControllerPlannerTabla extends Controller
                 'pulgadas_solicitadas' => round(((($cantidad * ($medidas / 10)) / 2.54) * 0.75)),
                 'planificador' => $planificador,
                 'cantidad_cortada' => '0',
+                'op_creada' => 'No',
                 'estado' => "Pendiente"
             ]);
 

@@ -24,6 +24,9 @@ class ModelPlannerTabla extends Model
         'pulgadas_cortadas',
         'bloques_utilizados',
         'cortador',
+        'op_creada',
+        'consecutivo_op',
+        'usuario_creacion_op',
         'estado'
     ];
 }

@@ -41,6 +41,14 @@
             color: rgb(0, 0, 0) !important;
         }
 
+        select {
+            color: rgb(0, 0, 0) !important;
+        }
+
+        textarea {
+            color: rgb(0, 0, 0) !important;
+        }
+
         @media (max-width: 768px) {
             .sidebar .sidebar-header {
                 justify-content: flex-end !important;
@@ -181,9 +189,21 @@
                             </a>
                             <ul class="sub-nav collapse" id="crear-op-siesa" data-bs-parent="#sidebar-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link " href="../dashboard/index-horizontal.html">
+                                    <a class="nav-link @yield('op.siesa')" href="{{ route('index.op.siesa') }}">
                                         <i class="fas fa-circle" style="font-size: 9px"></i>
                                         <span class="item-name">Crear OP</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('ops.siesa')" href="{{ route('historial.op.siesa') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">OPs creadas</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('codigos.siesa')" href="{{ route('c.codigos.siesa') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">Códigos Siesa</span>
                                     </a>
                                 </li>
                             </ul>
