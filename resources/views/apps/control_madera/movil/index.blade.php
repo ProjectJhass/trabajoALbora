@@ -5,7 +5,7 @@
 @section('body')
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="200">
                 <div class="card-header">
                     <h5>Url de conexión</h5>
                 </div>
@@ -23,7 +23,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header">
                     <h5>Dispositivos registrados</h5>
                 </div>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="400">
                 <div class="card-header">
                     <h5>Registrar dispositivos</h5>
                 </div>

@@ -15,7 +15,7 @@
 @section('body')
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="200">
                 <div class="card-header">
                     <h5>Series</h5>
                 </div>
@@ -28,7 +28,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header">
                     <h5>Piezas</h5>
                 </div>

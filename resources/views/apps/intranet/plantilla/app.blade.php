@@ -256,12 +256,12 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
                                         </a>
                                         <ul class="nav nav-treeview">
                                             @if (Auth::user()->permisos == '4' || in_array(Auth::user()->id, $permiso_general))
-                                                <li class="nav-item">
+                                                {{-- <li class="nav-item">
                                                     <a href="{{ route('estadisticas') }}" class="nav-link @yield('estadisticas')">
                                                         <i class="far fa-circle nav-icon"></i>
                                                         <p>Estadísticas</p>
                                                     </a>
-                                                </li>
+                                                </li> --}}
                                                 <li class="nav-item">
                                                     <a href="{{ route('i.diarios') }}" class="nav-link @yield('diarios')">
                                                         <i class="far fa-circle nav-icon"></i>

@@ -9,32 +9,50 @@
 @endsection
 @section('body')
     <div class="row mt-4 justify-content-center">
-        <div class="col-md-4 mt-5 col-lg-4">
-            <div class="row row-cols-1">
-                <div class="overflow-hidden">
-                    <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
-                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="200">
-                            <div class="card-body">
-                                <div class="progress-widget">
-                                    <div class="progress-detail">
-                                        <p class="mb-2">Filtro por fecha</p>
-                                        <div id="dateRangePlanner" class="pull-left form-control"
-                                            style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                            <i class="fa fa-calendar"></i>
-                                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+        <div class="col-md-5 mt-5 col-lg-4">
+            <div class="overflow-hidden">
+                <ul class="mb-2 swiper-wrapper list-inline">
+                    <li class="swiper-slide card alert-top card-slide" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p class="mb-2">Fecha</p>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div id="dateRangePlanner" class="pull-left form-control"
+                                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                                <i class="fa fa-calendar"></i>
+                                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p class="mb-2">Reporte</p>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <select name="txtTipoReporteCorte" id="txtTipoReporteCorte" onchange="buscarInformacionCortes()"
+                                                class="form-control">
+                                                <option value="series">Corte de series</option>
+                                                <option value="tablas">Corte de tablas</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header">
                     <h5>Cortes terminados</h5>
                 </div>
@@ -62,7 +80,7 @@
             moment.locale('es');
 
             function cb(start, end) {
-                $('#dateRangePlanner span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                $('#dateRangePlanner span').html(start.format('YYYY-MM-D') + ' hasta ' + end.format('YYYY-MM-D'));
             }
 
             $('#dateRangePlanner').daterangepicker({
@@ -94,25 +112,31 @@
             cb(start, end);
 
             $('#dateRangePlanner').on('apply.daterangepicker', function(ev, picker) {
-                var fecha_i = picker.startDate.format('YYYY-MM-DD')
-                var fecha_f = picker.endDate.format('YYYY-MM-DD')
-
-                var datos = $.ajax({
-                    url: "{{ route('search.madera.completado') }}",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        fecha_i,
-                        fecha_f
-                    }
-                })
-                datos.done((res) => {
-                    document.getElementById('infoGeneralTableCortesTerminados').innerHTML = res.table
-                    formatterTable()
-                })
-
+                buscarInformacionCortes()
             });
         });
+
+        buscarInformacionCortes = () => {
+            var fecha_i = $('#dateRangePlanner').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            var fecha_f = $('#dateRangePlanner').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            var reporte = $('#txtTipoReporteCorte').val()
+
+            var datos = $.ajax({
+                url: "{{ route('search.madera.completado') }}",
+                type: "post",
+                dataType: "json",
+                data: {
+                    fecha_i,
+                    fecha_f,
+                    reporte
+                }
+            })
+            datos.done((res) => {
+                document.getElementById('infoGeneralTableCortesTerminados').innerHTML = res.table
+                formatterTable()
+            })
+
+        }
 
         formatterTable = () => {
             $('#datatableMadera').DataTable({

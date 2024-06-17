@@ -219,6 +219,17 @@
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
+                                <label for="">Permiso control madera</label>
+                                <select class="form-control" name="control_madera" id="control_madera" required>
+                                    <option value=""></option>
+                                    <option value="1" {{ $data->permiso_madera == '1' ? 'selected' : '' }}>Administrador</option>
+                                    <option value="2" {{ $data->permiso_madera == '2' ? 'selected' : '' }}>Auditor</option>
+                                    <option value="3" {{ $data->permiso_madera == '3' ? 'selected' : '' }}>Cortador</option>
+                                    <option value="4" {{ $data->permiso_madera == '4' ? 'selected' : '' }}>Impresor</option>
+                                    <option value="5" {{ $data->permiso_madera == '5' ? 'selected' : '' }}>Planificador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="">Inhabilitar automaticamente</label>
                                 <select name="inhabilitar" id="inhabilitar" class="form-control" required>
                                     <option value=""></option>

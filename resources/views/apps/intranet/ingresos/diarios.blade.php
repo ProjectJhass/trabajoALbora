@@ -55,8 +55,9 @@
                             <option value="028">028 - Pereira</option>
                             <option value="036">036 - Cali</option>
                         </select>
-                        <input type="text" class="form-control float-right" value="{{ $fecha_i . ' / ' . $fecha_f }}" name="fechas_estadisticas" id="fechas_estadisticas">
-                        <button class="btn btn-success" type="button" onclick="ValidarSesionesEstadisticas()">Consultar</button>
+                        <input type="text" class="form-control float-right" value="{{ date('Y-m-d') . ' / ' . date('Y-m-d') }}"
+                            name="fechas_estadisticas" id="fechas_estadisticas">
+                        <button class="btn btn-success" type="button" onclick="consultarInfoIngresosDiarios()">Consultar</button>
                     </div>
                 </div>
             </div>
@@ -64,37 +65,8 @@
                 <div class="card-header">
                     Ingresos diarios
                 </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-sm" id="UsuariosIngresosDiarios">
-                        <thead>
-                            <tr class="text-center">
-                                <th>#</th>
-                                <th>Cédula</th>
-                                <th>Nombre</th>
-                                <th>Fecha</th>
-                                <th>Hora ingreso</th>
-                                <th>Hora salida</th>
-                                <th>Hora re-ingreso</th>
-                                <th>Hora re-salida</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center" style="font-size: 14px">
-                            <?php $n = 0; ?>
-                            @foreach ($info as $item)
-                                <?php $n++; ?>
-                                <tr>
-                                    <td>{{ $n }}</td>
-                                    <td class="text-left">{{ $item->id }}</td>
-                                    <td class="text-left">{{ $item->nombre }}</td>
-                                    <td>{{ $item->fecha_registro }}</td>
-                                    <td>{{ $item->hora_ingreso }}</td>
-                                    <td>{{ $item->hora_salida }}</td>
-                                    <td>{{ $item->hora_reingreso }}</td>
-                                    <td>{{ $item->hora_salida_reingreso }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card-body" id="infoTablesIngresosDiarios">
+                    {!! $table !!}
                 </div>
             </div>
         </div>
@@ -107,7 +79,6 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
         $(function() {
-            $('#centro_de_operacion').val('{{ $co_ }}');
             $('#fechas_estadisticas').daterangepicker({
                 "locale": {
                     "format": "YYYY-MM-DD",
@@ -143,6 +114,10 @@
                     "firstDay": 0
                 }
             });
+            tableFormatter()
+        });
+
+        tableFormatter = () => {
             $('#UsuariosIngresosDiarios').DataTable({
                 "oLanguage": {
                     "sSearch": "Buscar:",
@@ -166,6 +141,36 @@
                 "autoWidth": true,
                 "responsive": false,
             });
-        });
+        }
+
+        consultarInfoIngresosDiarios = () => {
+            var dateRangePicker = $('#fechas_estadisticas').data('daterangepicker');
+            if (dateRangePicker.startDate && dateRangePicker.endDate) {
+                var fecha_i = dateRangePicker.startDate.format('YYYY-MM-DD');
+                var fecha_f = dateRangePicker.endDate.format('YYYY-MM-DD');
+                var co = $('#centro_de_operacion').val()
+
+                var datos = $.ajax({
+                    type: "POST",
+                    url: "{{ route('search.diarios') }}",
+                    dataType: "json",
+                    data: {
+                        fecha_i,
+                        fecha_f,
+                        co
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                datos.done((res) => {
+                    if (res.status == true) {
+                        document.getElementById('infoTablesIngresosDiarios').innerHTML = res.table
+                        tableFormatter()
+                    }
+                })
+            }
+
+        }
     </script>
 @endsection

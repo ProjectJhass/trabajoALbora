@@ -12,7 +12,7 @@ class ControllerPolizas extends Controller
 {
     public function index()
     {
-        $autos = ModelAutomoviles::all();
+        $autos = ModelAutomoviles::where('estado', '<>', '0')->get();
         return view('apps.automoviles.automoviles.polizas', ['autos' => $autos]);
     }
 

@@ -1,7 +1,5 @@
 @extends('apps.control_madera.plantilla.app')
 @section('head')
-    <link rel="stylesheet" href="{{ asset('plugins/pnotify/dist/pnotify.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/pnotify/dist/pnotify.buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/botonFlotante.css') }}">
     <style>
         .ui-pnotify-fade-normal {
@@ -15,7 +13,7 @@
 @section('body')
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card alert-top">
                 <div class="card-header">
                     <h5>Serie</h5>
                 </div>
@@ -60,7 +58,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card alert-top alert-danger">
                 <div class="card-header">
                     <h5>Lista de piesas</h5>
                 </div>
@@ -184,13 +182,13 @@
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
                                 <label><strong>Cantidad</strong></label>
-                                <input type="number" class="form-control" style="text-align: center" name="AddtablaWood" id="AddtablaWood">
+                                <input type="number" class="form-control is-invalid" style="text-align: center" name="AddtablaWood" id="AddtablaWood">
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
                                 <label><strong>Ancho </strong>- Centímetros</label>
-                                <input type="number" class="form-control" style="text-align: center" name="AddAnchoWood" id="AddAnchoWood">
+                                <input type="number" class="form-control is-invalid" style="text-align: center" name="AddAnchoWood" id="AddAnchoWood">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -209,8 +207,6 @@
     <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalRegistroTablasWood').modal('show')">+ Madera</a>
 @endsection
 @section('footer')
-    <script src="{{ asset('plugins/pnotify/dist/pnotify.js') }}"></script>
-    <script src="{{ asset('plugins/pnotify/dist/pnotify.buttons.js') }}"></script>
     <script>
         troncosUtilizadosWood = (valor, id, id_pieza) => {
             var elemento = document.querySelector(".ui-pnotify-fade-normal");

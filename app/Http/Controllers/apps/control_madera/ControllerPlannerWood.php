@@ -11,6 +11,7 @@ use App\Models\apps\control_madera\ModelInfoSerie;
 use App\Models\apps\control_madera\ModelInfoTablasCortadas;
 use App\Models\apps\control_madera\ModelLogs;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
+use App\Models\apps\control_madera\ModelPlannerTabla;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,8 +20,10 @@ class ControllerPlannerWood extends Controller
     public function index()
     {
         $cortes_p = ModelCortesPlanificados::where("estado", "Pendiente")->orderBy("created_at")->get();
+        $tablas_p = ModelPlannerTabla::where("estado", "Pendiente")->orderBy("created_at")->get();
         $view = self::renderCortes($cortes_p);
-        return view("apps.control_madera.app.wood.cortes", ["cortes" => $view]);
+        $tablas = view('apps.control_madera.app.wood.tableCorteTabla', ['info' => $tablas_p])->render();
+        return view("apps.control_madera.app.wood.cortes", ["cortes" => $view, 'tablas' => $tablas]);
     }
 
     public function renderCortes($cortes)
@@ -33,7 +36,7 @@ class ControllerPlannerWood extends Controller
         $id_corte = $request->id_corte;
         $series = ModelInfoSerie::all();
         $cortes_planificados = ModelCortesPlanificados::find($id_corte);
-        $piezas_planificadas = ModelPiezasPlanificadasCorte::where("estado", "Pendiente")->where("id_plan", $id_corte)->get();
+        $piezas_planificadas = ModelPiezasPlanificadasCorte::where("id_plan", $id_corte)->get();
         $val_t = 0;
         $can_tablas = ModelInfoTablasCortadas::where("id_corte", $id_corte)->get();
         foreach ($can_tablas as $key => $value) {
@@ -114,8 +117,8 @@ class ControllerPlannerWood extends Controller
 
         $cantidad_total = $cantidad_cortada + $cantidad_;
         if ($cantidad_total >= $cantidad_solicitada) {
-            $restante = $cantidad_total - $cantidad_solicitada;
-            $cantidad_total = $cantidad_solicitada;
+            // $restante = $cantidad_total - $cantidad_solicitada;
+            // $cantidad_total = $cantidad_solicitada;
             $info_->estado = 'Completado';
             $clase = 'text-success';
             self::updateInfoTroncos($info_->troncos, $info_->troncos_utilizados);
@@ -146,7 +149,7 @@ class ControllerPlannerWood extends Controller
             }
         }
 
-        ModelConsecutivosMadera::whereIn('id', $troncos_no_utilizados_array)->update(["estado" => "Activo"]);
+        ModelConsecutivosMadera::whereIn('id', $troncos_no_utilizados_array)->where('estado', 'En corte')->update(["estado" => "Activo"]);
         ModelConsecutivosMadera::whereIn('id', $troncos_2)->update(["estado" => "Procesado"]);
     }
 

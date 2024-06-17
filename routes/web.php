@@ -9,11 +9,14 @@ use App\Http\Controllers\apps\automoviles\ControllerProveedores;
 use App\Http\Controllers\apps\control_madera\ControllerCrearNuevasSeries;
 use App\Http\Controllers\apps\control_madera\ControllerFabricaMadera;
 use App\Http\Controllers\apps\control_madera\ControllerHistorialImpresora;
+use App\Http\Controllers\apps\control_madera\ControllerHistorialSiesa;
 use App\Http\Controllers\apps\control_madera\ControllerInfoGeneralCortes;
 use App\Http\Controllers\apps\control_madera\ControllerMaderaDisponible;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerMadera;
+use App\Http\Controllers\apps\control_madera\ControllerPlannerTabla;
 use App\Http\Controllers\apps\control_madera\ControllerPlannerWood;
 use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
+use App\Http\Controllers\apps\control_madera\ControllerProcedimientosSiesa;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
 use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
 use App\Http\Controllers\apps\cotizador\ControllerCatalogo;
@@ -98,6 +101,7 @@ use App\Http\Controllers\apps\servicios_tecnicos\servicios\fabrica\ControllerSeg
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\plantilla\ControllerAlmacenes;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\pw\ControllerAdminInfoPw;
 use App\Http\Controllers\apps\servicios_tecnicos\ws\ControllerConexionWs;
+use App\Http\Controllers\PruebaOP;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -126,7 +130,7 @@ Route::get('/', function () {
 
 Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIngreso'])->name("registrar.ingreso.asesor");
 
-Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'checkSesion'], function () {
 
     //Seccion de prototipos fábrica
     Route::post('/search', [ControllerIdeas::class, 'searchIdea'])->name('search.prototipo');
@@ -219,10 +223,15 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'ingresos-y-salidas'], function () {
         Route::get('/estadisticas', [ControllerIngresosSalidas::class, 'index'])->name('estadisticas');
+        Route::post('/estadisticas', [ControllerIngresosSalidas::class, 'actualizarEstadisticas'])->name('search.estadisticas');
         Route::get('/ingresos-diarios', [ControllerIngresosSalidas::class, 'ingresos'])->name('i.diarios');
+        Route::post('/ingresos-diarios', [ControllerIngresosSalidas::class, 'searchInfoIngresos'])->name('search.diarios');
         Route::get('/llegadas-tarde', [ControllerIngresosSalidas::class, 'tarde'])->name('l.tarde');
+        Route::post('/llegadas-tarde', [ControllerIngresosSalidas::class, 'searchLlegadasTarde'])->name('search.tarde');
         Route::get('/inasistencias', [ControllerIngresosSalidas::class, 'inasistencias'])->name('inasistencias');
+        Route::post('/inasistencias', [ControllerIngresosSalidas::class, 'searchInfoInasistencias'])->name('search.inasistencias');
         Route::get('/novedades', [ControllerIngresosSalidas::class, 'novedades'])->name('novedades');
+        Route::post('/novedades', [ControllerIngresosSalidas::class, 'getInfoNovedades'])->name('search.novedades');
 
         Route::group(['prefix' => 'registrar-novedad'], function () {
             Route::get('', [ControllerIngresosSalidas::class, 'registrarNovedad'])->name('r.novedad');
@@ -397,9 +406,11 @@ Route::group(['prefix' => 'catalogo', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function () {
 });
 
-Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middleware' => 'checkPermisosMadera'], function () {
 
     Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
+    //Route::get('pruebaOP', [PruebaOP::class, 'index']);
+    Route::get('pruebaOP', [PruebaOP::class, 'consultaOPS']);
 
     Route::group(['prefix' => 'printer'], function () {
         Route::get('', [ControllerPrinterQr::class, 'index'])->name('printer');
@@ -431,19 +442,59 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth'], function
         Route::post('search-troncos', [ControllerSearchMadera::class, 'search'])->name('search.info.troncos');
         Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
 
+        //Planear Corte de tablas
+        Route::post('planner-corte-tabla', [ControllerPlannerTabla::class, 'saveInfoCorteTabla'])->name('save.planner.tabla');
+        Route::get('info-corte-tabla/{id}', [ControllerPlannerTabla::class, 'formInfoCorteTabla'])->name('get.planner.tabla');
+        Route::post('info-corte-tabla/{id}', [ControllerPlannerTabla::class, 'saveInfoCorteTablas'])->name('save.tabla.cortada');
+        //Actualizar corte de tablas
+        Route::post('searchInfo-bloque-tabla', [ControllerPlannerTabla::class, 'troncosUtilizarTablas'])->name('search.bloque.tabla');
+        Route::post('delete-bloque-tabla', [ControllerPlannerTabla::class, 'actualizarBloquesUtilizados'])->name('delete.bloque.tabla');
+
         Route::group(['prefix' => 'admin'], function () {
             Route::post('/search-troncos-utilizados', [ControllerInfoGeneralCortes::class, 'getinfoTroncosUtilizados'])->name('get.info.troncos.utili');
             Route::get('/cortes-pendientes', [ControllerInfoGeneralCortes::class, 'index'])->name('cortes.madera.planner');
             Route::get('/piezas-planificadas/{id_corte}', [ControllerInfoGeneralCortes::class, 'piezasPlanificadas'])->name('info.piezas.c.planner');
             Route::get('/cortes-completados', [ControllerInfoGeneralCortes::class, 'cortesTerminados'])->name('cortes.madera.completado');
-            Route::get('/crear-series', [ControllerCrearNuevasSeries::class, 'getView'])->name('create.series');
+            Route::get('/cortes-completados/{id_corte}', [ControllerInfoGeneralCortes::class, 'piezasTerminadas'])->name('info.piezas.c.terminado');
+            Route::post('/cortes-completados', [ControllerInfoGeneralCortes::class, 'filtrarCortesTerminados'])->name('search.madera.completado');
             Route::get('/madera-disponible', [ControllerMaderaDisponible::class, 'index'])->name('madera.disponible.cortes');
             Route::post('/madera-disponible', [ControllerMaderaDisponible::class, 'updateEstadoMadera'])->name('update.madera.estado');
+
+            //Corte de tabla terminado
+            Route::get('/cortes-tabla-completado/{id_corte}', [ControllerPlannerTabla::class, 'getInfoTablasTerminadas'])->name('info.table.completado');
+
+            Route::group(['prefix' => 'crear-series'], function () {
+                Route::get('/', [ControllerCrearNuevasSeries::class, 'getView'])->name('create.series');
+                Route::post('/', [ControllerCrearNuevasSeries::class, 'getInfoPiezasMadera'])->name('get.info.p.series');
+                Route::post('/update', [ControllerCrearNuevasSeries::class, 'updateInfoPiezasSelected'])->name('update.info.p.series');
+                Route::post('/create-pieza', [ControllerCrearNuevasSeries::class, 'agregarInfoNuevaPieza'])->name('create.info.p.series');
+                Route::get('/crear', [ControllerCrearNuevasSeries::class, 'crearNuevaSerie'])->name('crear.serie.piezas');
+                Route::post('/crear', [ControllerCrearNuevasSeries::class, 'crearInfoNuevaSerie'])->name('crear.info.serie.piezas');
+                //Eliminar Serie/Mueble
+                Route::post('/delete-series', [ControllerCrearNuevasSeries::class, 'deleteSerie'])->name('delete.serie.edit');
+                Route::post('/delete-mueble', [ControllerCrearNuevasSeries::class, 'deleteMueble'])->name('delete.mueble.edit');
+            });
+
+            Route::group(['prefix' => 'config'], function () {
+                Route::get('/', [ControllerTokenAcceso::class, 'index'])->name('token.acceso.movil');
+                Route::post('/url', [ControllerTokenAcceso::class, 'urlConnection'])->name('url.acceso.movil');
+                Route::post('/create-movil', [ControllerTokenAcceso::class, 'RegistrarDispositivo'])->name('crear.acceso.movil');
+                Route::post('/editar-movil', [ControllerTokenAcceso::class, 'EditarDispositivo'])->name('editar.acceso.movil');
+                Route::post('/eliminar-movil', [ControllerTokenAcceso::class, 'EliminarDipositivo'])->name('eliminar.acceso.movil');
+            });
         });
     });
 
     Route::group(['prefix' => 'siesa'], function () {
-        // Route::get('', [ControllerFabricaMadera::class, 'home']);
+        Route::get('', [ControllerProcedimientosSiesa::class, 'index'])->name('index.op.siesa');
+        Route::get('codigos-siesa', [ControllerProcedimientosSiesa::class, 'getInfocodigos'])->name('c.codigos.siesa');
+        Route::post('crear-codigos-siesa', [ControllerProcedimientosSiesa::class, 'crearInfoCodigos'])->name('crear.codigos.siesa');
+        Route::post('search-codigos-siesa', [ControllerProcedimientosSiesa::class, 'searchInfoTodoPlanificacion'])->name('search.codigos.siesa');
+        Route::post('search-info-codigos-siesa', [ControllerProcedimientosSiesa::class, 'searchInfoPlanificacionValor'])->name('search.info.codigos.siesa');
+        Route::post('crear-op-siesa', [ControllerProcedimientosSiesa::class, 'crearInformacionOpSiesa'])->name('crear.info.op.siesa');
+        //Historial OPs creadas Siesa
+        Route::get('/historial-op-siesa', [ControllerHistorialSiesa::class, 'index'])->name('historial.op.siesa');
+        Route::post('/historial-op-siesa', [ControllerHistorialSiesa::class, 'getInfoRangoFecha'])->name('search.historial.op.siesa');
     });
 
     Route::group(['prefix' => 'wood'], function () {
@@ -730,7 +781,7 @@ Route::group(['prefix' => 'pagina-web'], function () {
 });
 
 //Enlaces para acceder como administrador
-Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middleware' => 'checkPermisosServicios'], function () {
 
     Route::group(['prefix' => 'st'], function () {
         Route::get('products', [ControllerMaestros::class, 'viewProductsApp']);

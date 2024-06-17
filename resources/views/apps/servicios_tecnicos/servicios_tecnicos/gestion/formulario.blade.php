@@ -81,10 +81,21 @@
                             <li>
                                 <div class="dropdown-divider"></div>
                             </li>
-                            <li><a class="dropdown-item" id="close{{ $id_ost }}" href="javascript:void(0);"
-                                    onclick="modalDefinirOrdenServicio('{{ $id_ost }}')">Definir/Cerrar orden de
-                                    servicio</a>
-                            </li>
+                            @if ($info_st->proceso == 'Servicio tecnico' && $info_st->estado == 'En devolucion')
+                                <li><a class="dropdown-item" id="close{{ $id_ost }}" href="javascript:void(0);"
+                                        onclick="modalDefinirOrdenServicio('{{ $id_ost }}')">Definir/Cerrar orden de
+                                        servicio</a>
+                                </li>
+                            @endif
+                            @php
+                                $array_ = ['SERVICIO TECNICO FAB', 'SERVICIO TECNICO', 'HAPPYSLEEP', 'PPAL'];
+                            @endphp
+                            @if (in_array(Auth::user()->almacen, $array_) && $info_st->estado != 'En devolucion')
+                                <li><a class="dropdown-item" id="close{{ $id_ost }}" href="javascript:void(0);"
+                                        onclick="modalDefinirOrdenServicio('{{ $id_ost }}')">Definir/Cerrar orden de
+                                        servicio</a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -272,7 +283,9 @@
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <p>Concepto: {{ strtoupper($item->concepto) }}</p>
                         @if (
-                            ((Auth::user()->almacen == 'FABRICA' || Auth::user()->almacen == 'PPAL') && Auth::user()->rol == '1' && $item->estado != 1) ||
+                            ((Auth::user()->almacen == 'SERVICIO TECNICO FAB' || Auth::user()->almacen == 'FABRICA' || Auth::user()->almacen == 'PPAL') &&
+                                Auth::user()->rol == '1' &&
+                                $item->estado != 1) ||
                                 Auth::user()->permisos == '4')
                             <button class="btn btn-sm btn-success"
                                 onclick="apruebaCartaRespuestaFab('{{ $item->id_respuesta }}','{{ $id_ost }}')"><i
@@ -336,7 +349,8 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="id_ost_definir" name="id_ost_definir" value="{{ $info_st->id_st }}"
                             hidden>
-                        <input type="file" class="form-control" id="evidencias_doc_definir" name="evidencias_doc_definir" aria-label="Upload" />
+                        <input type="file" class="form-control" id="evidencias_doc_definir" name="evidencias_doc_definir"
+                            aria-label="Upload" />
                         <button class="btn btn-outline-danger" type="button" onclick="formUpdateDefinirOrdenServicio()">Cargar</button>
                     </div>
                 </form>

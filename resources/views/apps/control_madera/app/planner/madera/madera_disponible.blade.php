@@ -9,7 +9,7 @@
 @section('body')
     <div class="row">
         <div class="col-md-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-header">
                     <h5>Madera/Bloques disponibles</h5>
                 </div>

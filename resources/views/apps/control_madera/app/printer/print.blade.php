@@ -8,7 +8,7 @@
             <div class="row row-cols-1">
                 <div class="overflow-hidden d-slider1">
                     <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline justify-content-center">
-                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="400">
+                        <li class="swiper-slide card card-slide alert-top" data-aos="fade-up" data-aos-delay="400">
                             <div class="card-body">
                                 <div class="progress-widget">
                                     <div id="circle-progress-02" class="text-center circle-progress-01 circle-progress circle-progress-info"
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="500">
+                        <li class="swiper-slide card card-slide alert-top" data-aos="fade-up" data-aos-delay="500">
                             <div class="card-body">
                                 <div class="progress-widget">
                                     <div id="circle-progress-03" class="text-center circle-progress-01 circle-progress circle-progress-primary"
@@ -53,7 +53,7 @@
     </div>
     <div class="row">
         <div class="col-md-7 mb-3">
-            <div class="card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="400">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
                         <h6 class="card-title">Estación de etiquetado</h6>
@@ -127,7 +127,7 @@
             </div>
         </div>
         <div class="col-md-5 mb-3">
-            <div class="card" data-aos="fade-up" data-aos-delay="500">
+            <div class="card alert-top" data-aos="fade-up" data-aos-delay="500">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
                         <h6 class="card-title">Información impresora</h6>
@@ -164,7 +164,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="modalInfoHistoryPrinted" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

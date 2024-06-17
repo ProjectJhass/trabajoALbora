@@ -19,7 +19,7 @@
                 <td>{{ $item->planificador }}</td>
                 <td>{{ $item->created_at }}</td>
                 <td>{{ $item->updated_at }}</td>
-                <td><a href="{{ route('info.piezas.c.planner', ['id_corte' => $item->id]) }}" class="btn btn-primary btn-sm">Ver</a>
+                <td><a href="{{ route('info.piezas.c.terminado', ['id_corte' => $item->id]) }}" target="_BLANK" class="btn btn-primary btn-sm">Ver</a>
                 </td>
             </tr>
         @endforeach

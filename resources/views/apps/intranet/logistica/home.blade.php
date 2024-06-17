@@ -38,8 +38,14 @@
             }, 1000);
         </script>
     @endif
+
     <section class="content">
         <div class="container-fluid">
+            @if (session('message'))
+                <div class="alert alert-danger">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
@@ -52,6 +58,19 @@
                                     <img src="{{ asset('icons/servicios1.png') }}" width="40%" alt="">
                                 </a>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
+                            <strong>Memos Servicios técnicos</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
+                                <img src="{{ asset('icons/apoyo-tecnico.png') }}" width="40%" alt="">
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -70,19 +89,7 @@
                             </div>
                         </div>
                     @endif
-                    <div class="col-md-3 mb-3">
-                        <div class="card card-outline card-danger">
-                            <div class="card-header">
-                                <strong>Memos Servicios técnicos</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <a
-                                    href="{{ route('intranet.memorandos.areas', ['seccion' => 'logistica', 'memo' => 'memorandos-servicios-tecnicos']) }}">
-                                    <img src="{{ asset('icons/apoyo-tecnico.png') }}" width="40%" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+
                     @if (Auth::user()->empresa != 'HAPPY SLEEP')
                         <div class="col-md-3 mb-3">
                             <div class="card card-outline card-danger">

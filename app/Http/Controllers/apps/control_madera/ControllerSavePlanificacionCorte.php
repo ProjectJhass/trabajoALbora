@@ -30,6 +30,8 @@ class ControllerSavePlanificacionCorte extends Controller
             'mueble' => $mueble,
             'cantidad' => $cantidad,
             'planificador' => Auth::user()->nombre,
+            'op_creada_p1' => 'No',
+            'op_creada_p2' => 'No',
             'estado' => 'Pendiente'
         ]);
 

@@ -51,8 +51,9 @@
                             <option value="028">028 - Pereira</option>
                             <option value="036">036 - Cali</option>
                         </select>
-                        <input type="text" class="form-control float-right" value="{{ $fecha_i . ' / ' . $fecha_f }}" name="fechas_estadisticas" id="fechas_estadisticas">
-                        <button class="btn btn-success" type="button" onclick="ValidarSesionesEstadisticas()">Consultar</button>
+                        <input type="text" class="form-control float-right" value="{{ date('Y-m-d') . ' / ' . date('Y-m-d') }}"
+                            name="fechas_estadisticas" id="fechas_estadisticas">
+                        <button class="btn btn-success" type="button" onclick="consultarInfoNovedades()">Consultar</button>
                     </div>
                 </div>
             </div>
@@ -60,70 +61,15 @@
                 <div class="card-header">
                     Novedades de usuarios
                 </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-sm">
-                        <thead>
-                            <tr class="text-center">
-                                <th>#</th>
-                                <th>Cédula</th>
-                                <th>Nombre</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $ban_1 = 0; ?>
-                            @foreach ($info as $item)
-                                <?php $ban_1++; ?>
-                                <tr data-widget="expandable-table" aria-expanded="false">
-                                    <td>{{ $ban_1 }}</td>
-                                    <td>{{ $item['cedula'] }}</td>
-                                    <td>{{ $item['nombre'] }}</td>
-                                </tr>
-                                <tr class="expandable-body">
-                                    <td colspan="4">
-                                        <p>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>#</th>
-                                                    <th>Novedad</th>
-                                                    <th>Fecha</th>
-                                                    <th>Hora Ingreso</th>
-                                                    <th>Hora Salida</th>
-                                                    <th>Hora re-ingreso</th>
-                                                    <th>Hora salida</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $ban_2 = 0; ?>
-                                                @foreach ($item['novedades'] as $value)
-                                                    <?php $ban_2++; ?>
-                                                    <tr>
-                                                        <td>{{ $ban_2 }}</td>
-                                                        <td><?php echo $value['novedad_usuario']; ?></td>
-                                                        <td>{{ $value['fecha_novedad'] }}</td>
-                                                        <td>{{ $value['hora_ingreso'] }}</td>
-                                                        <td>{{ $value['hora_salida'] }}</td>
-                                                        <td>{{ $value['hora_reingreso'] }}</td>
-                                                        <td>{{ $value['hora_salida_reingreso'] }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        </p>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card-body" id="infoGeneralNovedadesC">
+                    {!! $table !!}
                 </div>
             </div>
-
         </div>
     </section>
 @endsection
 @section('footer')
     <script>
-        $('#centro_de_operacion').val('{{ $co_ }}');
         $('#fechas_estadisticas').daterangepicker({
             "locale": {
                 "format": "YYYY-MM-DD",
@@ -159,5 +105,33 @@
                 "firstDay": 0
             }
         });
+
+        consultarInfoNovedades = () => {
+            var dateRangePicker = $('#fechas_estadisticas').data('daterangepicker');
+            if (dateRangePicker.startDate && dateRangePicker.endDate) {
+                var fecha_i = dateRangePicker.startDate.format('YYYY-MM-DD');
+                var fecha_f = dateRangePicker.endDate.format('YYYY-MM-DD');
+                var co = $('#centro_de_operacion').val()
+
+                var datos = $.ajax({
+                    type: "POST",
+                    url: "{{ route('search.novedades') }}",
+                    dataType: "json",
+                    data: {
+                        fecha_i,
+                        fecha_f,
+                        co
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                datos.done((res) => {
+                    if (res.status == true) {
+                        document.getElementById('infoGeneralNovedadesC').innerHTML = res.table
+                    }
+                })
+            }
+        }
     </script>
 @endsection

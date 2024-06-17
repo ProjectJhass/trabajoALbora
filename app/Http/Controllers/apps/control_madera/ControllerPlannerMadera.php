@@ -157,9 +157,9 @@ class ControllerPlannerMadera extends Controller
                                 </div>
                                 <div class="col-md-1 mb-3">
                                     <div class="form-group">
-                                        <label for="">Cant requerida</label>
-                                        <input type="text" hidden class="form-control" value="' . $cantidad_requerida_r . '" name="cantidad_pieza_r' . $ban . '" style="color: white; background-color: #248c32; text-align: center;" id="cantidad_pieza_r' . $ban . '">
-                                        <input type="text" class="form-control" value="' . $cantidad_requerida . '" name="cantidad_pieza' . $ban . '" style="color: white; background-color: #248c32; text-align: center;" id="cantidad_pieza' . $ban . '">
+                                        <label for="">Cantidad</label>
+                                        <input type="text" hidden class="form-control" value="' . $cantidad_requerida_r . '" name="cantidad_pieza_r' . $ban . '" style="color: white !important; background-color: #248c32; text-align: center;" id="cantidad_pieza_r' . $ban . '">
+                                        <input type="text" class="form-control" value="' . $cantidad_requerida . '" name="cantidad_pieza' . $ban . '" style="color: white !important; background-color: #248c32; text-align: center;" id="cantidad_pieza' . $ban . '">
                                         <span>A favor: ' . $cantidad_fav . '</span>
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@ class ControllerPlannerMadera extends Controller
                                 </div>
                                 <div class="col-md-1 mb-3">
                                     <div class="form-group">
-                                        <label for="">Pulgadas total</label>
+                                        <label for="">Pulgadas</label>
                                         <input type="text" class="form-control" onchange="buscarTroncosObjetivos(\'' . $ban . '\',this.value)" style="background-color: #e3e3e3; text-align: center;" name="pulgadas_utilizadas' . $ban . '" id="pulgadas_utilizadas' . $ban . '">
                                         <span>Suma: <span class="badge badge-pill bg-danger" id="sumPulg' . $ban . '">0</span></span>
                                     </div>

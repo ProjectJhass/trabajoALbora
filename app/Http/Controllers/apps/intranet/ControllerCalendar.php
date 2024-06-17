@@ -29,7 +29,7 @@ class ControllerCalendar extends Controller
         $dominical_ = '<option value="">Seleccionar...</option>';
         $descansos_ = '<option value="">Seleccionar...</option>';
         $dominicales = ModelEventosDominicales::where("cedula_evento", $asesor)->where('fecha_i', '<', date('Y-m-d'))->where("tipo_evento", "2")->whereNull("firmar")->get();
-        $descansos = ModelEventosDominicales::where("cedula_evento", $asesor)->where('fecha_i', '<', date('Y-m-d'))->where("tipo_evento", "1")->whereNull("firmar")->get();
+        $descansos = ModelEventosDominicales::where("cedula_evento", $asesor)->where('fecha_i', '<', date('Y-m-d'))->whereIn("tipo_evento", ['1','4','5','6'])->whereNull("firmar")->get();
         foreach ($dominicales as $key => $value) {
             $dominical_ .= '<option value="' . $value->id_evento . '" data-fecha="' . $value->fecha_i . '">' . $value->fecha_i . '</option>';
         }

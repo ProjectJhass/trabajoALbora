@@ -31,6 +31,8 @@ class ModelUsersIntranet extends Model
         'empresa',
         'rol',
         'ruta_foto',
-        'rol_user'
+        'rol_user',
+        'permiso_madera',
+        'inhabilitar'
     ];
 }
