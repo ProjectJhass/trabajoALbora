@@ -19,7 +19,6 @@ use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
 use App\Http\Controllers\apps\control_madera\ControllerProcedimientosSiesa;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
 use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
-use App\Http\Controllers\apps\control_madera\movil\ControllerTokenAcceso;
 use App\Http\Controllers\apps\cotizador\ControllerCatalogo;
 use App\Http\Controllers\apps\cotizador\ControllerFinalizar;
 use App\Http\Controllers\apps\cotizador\ControllerGenerarCredito;
@@ -786,9 +785,13 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middlew
 
     Route::group(['prefix' => 'st'], function () {
         Route::get('products', [ControllerMaestros::class, 'viewProductsApp']);
-
         Route::get('analytics', [ControllerAnalytics::class, 'home'])->name('analytics');
+        Route::get('analytics/odts/{odt}', [ControllerAnalytics::class, 'getODT'])->name('analytics.search.odts');
+        Route::post('analytics/exportar-tiempos-respuesta', [ControllerAnalytics::class, 'exportTiemposRespuesta'])->name('analytics.export.tiempos.respuesta.st');
+        Route::post('analytics/exportar-causales', [ControllerAnalytics::class, 'exportCausales'])->name('analytics.export.causales.st');
         Route::post('analytics', [ControllerAnalytics::class, 'searchinfo'])->name('analytics.search');
+        Route::post('analytics/orden', [ControllerAnalytics::class, 'obtenerOrdenesST'])->name('search.orden.st');
+        Route::post('analytics/graph', [ControllerAnalytics::class, 'obtenerGraficaODT'])->name('search.graph.st');
 
         Route::post('search-ost', [ControllerSearchSt::class, 'search'])->name('search.ost');
         Route::post('search-co', [ControllerAlmacenes::class, 'ObtenerInfoAlmacenes'])->name('search.co');
