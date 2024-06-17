@@ -1,5 +1,8 @@
 @extends('apps.servicios_tecnicos.plantilla.app')
 @section('head')
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="./../../css/tiempos_respuesta.css">
 @endsection
 @section('analytics')
     active
@@ -13,8 +16,8 @@
                         <h5 class="m-0 me-2">Items</h5>
                     </div>
                     <div class="text-center">
-                        <select name="" id="" class="btn btn-sm btn-outline-primary" onchange="actualizarInfoGrafica('1', this.value)"
-                            type="button">
+                        <select name="" id="" class="btn btn-sm btn-outline-primary"
+                            onchange="actualizarInfoGrafica('1', this.value)" type="button">
                             <option value="{{ date('Y') }}">{{ date('Y') }}</option>
                             <?php for ($i = 2019; $i < date('Y') + 1; $i++) { ?>
                             <option value="{{ $i }}">{{ $i }}</option>
@@ -41,7 +44,8 @@
                             @if ($contador < 5)
                                 <li class="d-flex mb-4 pb-1">
                                     <div class="avatar flex-shrink-0 me-3">
-                                        <span class="avatar-initial rounded bg-label-secondary"><i class="bx bx-cart-alt"></i></span>
+                                        <span class="avatar-initial rounded bg-label-secondary"><i
+                                                class="bx bx-cart-alt"></i></span>
                                     </div>
                                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                         <div class="me-2">
@@ -65,8 +69,8 @@
                         <h5 class="m-0 me-2">Variaciones en el año</h5>
                     </div>
                     <div class="text-center">
-                        <select name="" id="" class="btn btn-sm btn-outline-primary" onchange="actualizarInfoGrafica('2', this.value)"
-                            type="button">
+                        <select name="" id="" class="btn btn-sm btn-outline-primary"
+                            onchange="actualizarInfoGrafica('2', this.value)" type="button">
                             <option value="{{ date('Y') }}">{{ date('Y') }}</option>
                             <?php for ($i = 2019; $i < date('Y') + 1; $i++) { ?>
                             <option value="{{ $i }}">{{ $i }}</option>
@@ -79,7 +83,7 @@
                         <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
                             <div class="d-flex p-4 pt-3">
                                 <div class="avatar flex-shrink-0 me-3">
-                                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" />
+                                    <img src="../../assets/img/icons/unicons/wallet.png" alt="User" />
                                 </div>
                                 <div>
                                     <small class="text-muted d-block">Total servicios técnicos</small>
@@ -99,10 +103,93 @@
                 </div>
             </div>
         </div>
+        <div class="col-md mb-3">
+            <div class="card h-100 mt-4">
+                <div class="card-header graph-header">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <h5>Informe de causalidades</h5>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-success text-nowrap" data-bs-toggle="popover"
+                        data-bs-offset="0,14" data-bs-placement="top" data-bs-html="true"
+                        data-bs-content="
+                            <form action='{{ route('analytics.export.causales.st') }}' method='post'>
+                                <div class='d-flex justify-content-center'><button type='submit' class='btn btn-sm btn-success'>Exportar</button></div>"
+                        title="Exportar Excel">
+                        <i class="bx bxs-file-export"></i>
+                    </button>
+                </div>
+                <div class="card-body" id="tableCausalidades">
+                    @php
+                        echo $causalidades_graph;
+                    @endphp
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card h-100 mt-4">
+                <div class="card-header graph-header">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <h5>Tiempos de respuesta por etapas</h5>
+                    </div>
+                    <div id="inputContainer">
+                        <input name="searchInputGraph" type="text" id="searchInputGraph" class="form-control border-0"
+                            placeholder="Buscar Orden..." required autocomplete="off">
+                    </div>
+                    <button type="button" class="btn btn-sm btn-success text-nowrap" data-bs-toggle="popover"
+                        data-bs-offset="0,14" data-bs-placement="top" data-bs-html="true"
+                        data-bs-content="
+                            <form action='{{ route('analytics.export.tiempos.respuesta.st') }}' method='post'>
+                                <div class='d-flex justify-content-center'><button type='submit' class='btn btn-sm btn-success'>Exportar</button></div>"
+                        title="Exportar Excel">
+                        <i class="bx bxs-file-export"></i>
+                    </button>
+                </div>
+                <div class="steps-container" id="graphTiemposRespuesta">
+                    @php
+                        echo $tiempos_graph;
+                    @endphp
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column p-4 text-center">
+                        <div class="h-100 border rounded">
+                            <div id="inputContainer">
+                                <input name="searchInput" type="number" id="searchInput" class="form-control border-0"
+                                    placeholder="Buscar Orden..." required autocomplete="off">
+                                <img id="sorting_icon" src="./../../assets/img/icons/unicons/sort-vertical.png"
+                                    alt="" srcset="">
+                            </div>
+                            <div class="list-container ">
+                                <ul id="list" class="list-group">
+                                    @foreach ($odts as $key)
+                                        <li class="item "> {{ $key['id_st'] }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body " id="infoTiemposRespuesta">
+                        @php
+                            echo $tiempos_table;
+                        @endphp
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @section('footer')
+    <script src="{{ asset('assets/js/ui-popover.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="https://unpkg.com/@popperjs/core@^2.0.0"></script>
+    <script src="./../../js/tiempos_respuesta.js"></script>
     <script>
+        $(document).ready(function() {
+            setupTable();
+            loadGraph();
+        })
         $(() => {
             var array_1 = @json($js);
             var array_2 = @json($periodico);
@@ -281,7 +368,9 @@
                         }
                     },
                     xaxis: {
-                        categories: ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                        categories: ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov',
+                            'Dic'
+                        ],
                         axisBorder: {
                             show: false
                         },
@@ -334,6 +423,62 @@
                         break;
                 }
             })
+        }
+        buscarOrdenST = (co) => {
+            var datos = $.ajax({
+                url: "{{ route('search.orden.st') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    co
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            datos.done((res) => {
+                if (res.status == true) {
+                    document.getElementById('infoTiemposRespuesta').innerHTML = res.table;
+                    setupTable();
+                }
+            });
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Hubo un problema al procesar la solicitud',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            });
+        }
+        buscarGraficaODT = (co) => {
+            var datos = $.ajax({
+                url: "{{ route('search.graph.st') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    co
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            datos.done((res) => {
+                if (res.status == true) {
+                    document.getElementById('graphTiemposRespuesta').innerHTML = res.graph;
+                    loadGraph();
+                }
+            });
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Hubo un problema al procesar la solicitud',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            });
         }
     </script>
 @endsection
