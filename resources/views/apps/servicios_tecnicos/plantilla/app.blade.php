@@ -33,7 +33,7 @@
                 <div class="app-brand demo">
                     <div class="app-brand-link">
                         <span class="app-brand-logo demo">
-                            <img src="https://app-mueblesalbura.com/app/public/img/img_log_rojo.png" width="7%" alt="">
+                            <img src="{{ asset('img/img_log_rojo.png') }}" width="7%" alt="">
                         </span>
                     </div>
 
