@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('itemsActivos', [ItemsActivosSiesa::class, 'index']);
+Route::get('itemsActivosS', [ItemsActivosSiesa::class, 'all']);
 Route::post('itemInfo', [ItemsActivosSiesa::class, 'ObtenerPrecioProductoBuscado']);
 
 Route::group(['prefix' => 'madera', 'middleware' => 'maderaApi'], function () {

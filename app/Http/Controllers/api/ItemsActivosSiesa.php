@@ -4,10 +4,15 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\soap\cotizador_consultas;
+use App\Models\soap\intranet\ModelConsultasWs;
 use Illuminate\Http\Request;
 
 class ItemsActivosSiesa extends Controller
 {
+    public function all(){
+        return ModelConsultasWs::Allinformacion();
+    }
+
     public function index(){
         $productos = cotizador_consultas::productosCotizadorWS();
         return response()->json(['status' => true, 'productos' => $productos], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
