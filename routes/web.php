@@ -19,6 +19,7 @@ use App\Http\Controllers\apps\control_madera\ControllerPrinterQr;
 use App\Http\Controllers\apps\control_madera\ControllerProcedimientosSiesa;
 use App\Http\Controllers\apps\control_madera\ControllerSavePlanificacionCorte;
 use App\Http\Controllers\apps\control_madera\ControllerSearchMadera;
+use App\Http\Controllers\apps\control_madera\movil\ControllerTokenAcceso;
 use App\Http\Controllers\apps\cotizador\ControllerCatalogo;
 use App\Http\Controllers\apps\cotizador\ControllerFinalizar;
 use App\Http\Controllers\apps\cotizador\ControllerGenerarCredito;
