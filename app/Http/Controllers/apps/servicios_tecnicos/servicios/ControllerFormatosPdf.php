@@ -115,7 +115,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 21.00505 versión No. 1, revisado el 13 de febrero de 2021."), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 23.08088 versión No. 1, revisado el 29 de diciembre 2023."), 0, 'J');
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 12);
         $pdf->Cell(10, 10, '', 0);
@@ -225,7 +225,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 21.00505 versión No. 1, revisado el 13 de febrero de 2021."), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 23.08088 versión No. 1, revisado el 29 de diciembre 2023."), 0, 'J');
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 12);
         $pdf->Cell(10, 10, '', 0);
@@ -337,7 +337,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 21.00505 versión No. 1, revisado el 13 de febrero de 2021."), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 23.08088 versión No. 1, revisado el 29 de diciembre 2023."), 0, 'J');
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 12);
         $pdf->Cell(10, 10, '', 0);
@@ -684,7 +684,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 21.00505 versión No. 1, revisado el 13 de febrero de 2021."), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 23.08088 versión No. 1, revisado el 29 de diciembre 2023."), 0, 'J');
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 12);
         $pdf->Cell(10, 10, '', 0);
@@ -790,7 +790,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 21.00505 versión No. 1, revisado el 13 de febrero de 2021."), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode("Para Muebles Albura SAS el profesionalismo define nuestra forma de trabajo, es por eso que todos nuestros procesos confiables se encuentran regulados por la norma ISO 9001-2015 supervisado por Bureau Veritas con el número de certificación CO 23.08088 versión No. 1, revisado el 29 de diciembre 2023."), 0, 'J');
         $pdf->Ln(3);
         $pdf->SetFont('Arial', '', 12);
         $pdf->Cell(10, 10, '', 0);
