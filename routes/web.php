@@ -84,6 +84,11 @@ use App\Http\Controllers\apps\intranet_fabrica\ControllerSolicitudesMtto;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerUsuarios as Intranet_fabricaControllerUsuarios;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerUsuariosEncuesta;
 use App\Http\Controllers\apps\intranet_fabrica\DocumentacionTecnica;
+use App\Http\Controllers\apps\nexus\ControllerEntrevistas;
+use App\Http\Controllers\apps\nexus\ControllerHomeNexus;
+use App\Http\Controllers\apps\nexus\ControllerInfoModulos;
+use App\Http\Controllers\apps\nexus\ControllerManualFunciones;
+use App\Http\Controllers\apps\nexus\ControllerUsuariosNexus;
 use App\Http\Controllers\apps\servicios_tecnicos\analytics\ControllerAnalytics;
 use App\Http\Controllers\apps\servicios_tecnicos\pagina_web\ControllerWeb;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\admin\ControllerInformes;
@@ -768,6 +773,40 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
 });
 
 Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
+
+    Route::group(['prefix' => 'perfil'], function () {
+        Route::get('', [ControllerHomeNexus::class, 'index'])->name('home.nexus');
+        Route::post('getInfo-seccion', [ControllerHomeNexus::class, 'getInfoSeccionUsuario'])->name('search.seccion.nexus');
+    });
+
+    Route::group(['prefix' => 'usuarios'], function () {
+        Route::get('', [ControllerUsuariosNexus::class, 'usuarios'])->name('usuarios.nexus');
+        Route::get('crear-info', [ControllerUsuariosNexus::class, 'crearInfo'])->name('crear.info.nexus');
+        Route::post('search-ciudad', [ControllerUsuariosNexus::class, 'buscarCiudad'])->name('search.ciudad.nexus');
+        Route::post('search-user', [ControllerUsuariosNexus::class, 'buscarNombreUsuario'])->name('search.user.nexus');
+        Route::post('search-areas', [ControllerUsuariosNexus::class, 'buscarAreas'])->name('search.areas.nexus');
+        Route::post('search-cargos', [ControllerUsuariosNexus::class, 'buscarCargosAreas'])->name('search.cargos.nexus');
+        Route::post('crear-info-user', [ControllerUsuariosNexus::class, 'crearInformacionUsuariosNexus'])->name('crear.users.nexus');
+    });
+
+    Route::group(['prefix' => 'modulos'], function () {
+        Route::get('', [ControllerInfoModulos::class, 'index'])->name('modulos.nexus');
+        Route::get('info-cargos/{id_area}', [ControllerInfoModulos::class, 'infoCargos'])->name('cargos.modulos.nexus');
+        Route::get('info-modulos/{id_cargo}', [ControllerInfoModulos::class, 'infoModulos'])->name('info.modulos.nexus');
+        Route::get('info-temas/{id_modulo}', [ControllerInfoModulos::class, 'infoTemasCapacitacion'])->name('info.temas.nexus');
+        Route::get('contenido-tema/{id_tema}', [ControllerInfoModulos::class, 'getContenidoTemaCapacitacion'])->name('contenido.tema.nexus');
+    });
+
+    Route::group(['prefix' => 'manual-de-funciones'], function () {
+        Route::get('', [ControllerManualFunciones::class, 'index'])->name('registros.manual.nexus');
+        Route::get('crear', [ControllerManualFunciones::class, 'formulario'])->name('form.manual.nexus');
+        Route::post('crear', [ControllerManualFunciones::class, 'crearManualFuncionesNexus'])->name('crear.manual.nexus');
+        Route::get('editar/{id_manual}', [ControllerManualFunciones::class, 'editarManual'])->name('editar.manual.nexus');
+    });
+
+    Route::group(['prefix' => 'entrevistas'], function () {
+        Route::get('crear', [ControllerEntrevistas::class, 'crearEntrevista'])->name('crear.entrevista');
+    });
 });
 
 
