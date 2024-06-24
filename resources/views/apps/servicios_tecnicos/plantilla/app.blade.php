@@ -149,7 +149,7 @@
                         </li>
                     @endif
                     <li class="menu-item @yield('pqrs')">
-                        <a href="https://app-mueblesalbura.com/pqrs_fabrica/formulario/" target="_BLANK" class="menu-link">
+                        <a href="{{ route('pqrs.nueva') }}" target="_BLANK" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-collection"></i>
                             <div data-i18n="Basic">PQRS</div>
                         </a>
