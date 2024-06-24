@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ModelFlayer extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'imagen',
         'url',

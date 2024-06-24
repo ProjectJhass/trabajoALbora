@@ -27,7 +27,8 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.css"
         integrity="sha512-ClXpwbczwauhl7XC16/EFu3grIlYTpqTYOwqwAi7rNSqxmTqCpE8VS3ovG+qi61GoxSLnuomxzFXDNcPV1hvCQ==" crossorigin="anonymous"
         referrerpolicy="no-referrer" />
-
+        <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     @php
         $baseUrl = env('APP_BASE_URL', 'http://localhost');
     @endphp
@@ -332,6 +333,16 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
                                 </a>
                             </li>
                         </ul>
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <li class="nav-item">
+                                <a href="{{ route('sagrilaft') }}" class="nav-link @yield('sagrilaft')">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Sagrilaft/PTEE
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                         @if (Auth::user()->dpto_user != '8')
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                                 <li class="nav-item">
@@ -443,7 +454,7 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
-    {{-- <script src="{{ asset('dist/js/demo.js') }}"></script> --}}
+    <script src="{{ asset('dist/js/demo.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('plugins/fullcalendar/main.js') }}"></script>
@@ -451,6 +462,11 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
     <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/inputmask/jquery.inputmask.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+
     <script src="{{ asset('js/index.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"
         integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous"

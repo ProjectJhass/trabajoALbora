@@ -9,7 +9,8 @@
     <link rel="shortcut icon" href="{{ asset('img/alburac.png') }}" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }} ">
-    <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }} ">
+    <link rel="stylesheet"
+        href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/jqvmap/jqvmap.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }} ">
@@ -24,16 +25,19 @@
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     @yield('tables-bootstrap-css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: rgb(201, 0, 0)">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light"
+            style="background-color: rgb(201, 0, 0)">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white;" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link" style="color: white;" data-widget="pushmenu" href="#" role="button"><i
+                            class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <span class="nav-link text-white">FÁBRICA MUEBLES ALBURA S.A.S</span>
@@ -55,7 +59,8 @@
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <li class="nav-item">
                             <a href="{{ route('home.intranet.fabrica') }}" class="nav-link @yield('active-inicio')">
                                 <i class="nav-icon fas fa-user"></i>
@@ -65,7 +70,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="https://app-mueblesalbura.com/Albura-Nexus/login/" target="_BLANK" class="nav-link">
+                            <a href="https://app-mueblesalbura.com/Albura-Nexus/login/" target="_BLANK"
+                                class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>
                                     Albura Nexus
@@ -90,13 +96,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('documentacion.tec.fab') }}" class="nav-link @yield('active-sub-doc')">
+                                    <a href="{{ route('documentacion.tec.fab') }}"
+                                        class="nav-link @yield('active-sub-doc')">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Documentación técnica</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="http://192.168.1.84:6654/reloj-fabrica/login/" target="_BLANK" class="nav-link">
+                                    <a href="http://192.168.1.84:6654/reloj-fabrica/login/" target="_BLANK"
+                                        class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Reloj Albura</p>
                                     </a>
@@ -108,7 +116,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="https://app-mueblesalbura.com/RELOJ_BOVEL/menushornos.php" target="_BLANK" class="nav-link">
+                                    <a href="https://app-mueblesalbura.com/RELOJ_BOVEL/menushornos.php"
+                                        target="_BLANK" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Control de hornos</p>
                                     </a>
@@ -124,8 +133,8 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                <li class="nav-item @yield('menu-pqrs')">
+                                    <a href="#" class="nav-link @yield('active-pqrs')">
                                         <i class="nav-icon far fa-comment-dots"></i>
                                         <p>
                                             P.Q.R.S
@@ -134,21 +143,36 @@
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
-                                            <a href="https://app-mueblesalbura.com/pqrs_fabrica/formulario/" target="_BLANK" class="nav-link">
-                                                <i class="fab fa-wpforms nav-icon"></i>
-                                                <p>Formulario</p>
+                                            <a href="{{ route('pqrs.pendientes') }}"
+                                                class="nav-link @yield('active-sub-pendientes')">
+                                                <i class="nav-icon fas fa-paste"></i>
+                                                <p>Solicitudes pendientes</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="https://app-mueblesalbura.com/pqrs_fabrica/login/" target="_BLANK" class="nav-link">
-                                                <i class="fas fa-code-branch nav-icon"></i>
-                                                <p>Responder solicitud</p>
+                                            <a href="{{ route('pqrs.realizadas') }}"
+                                                class="nav-link @yield('active-sub-realizadas')">
+                                                <i class="nav-icon fas fa-solid fa-check"></i>
+                                                <p>Solicitudes realizadas</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('pqrs.todas') }}" class="nav-link @yield('active-sub-todas')">
+                                                <i class="nav-icon fas fa-solid fa-inbox"></i>
+                                                <p>Todas las solicitudes</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('pqrs.nueva') }}" class="nav-link @yield('active-sub-nueva')">
+                                                <i class="nav-icon fas fa-regular fa-file"></i>
+                                                <p>Generar una solicitud</p>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('encuesta.satisfaccion.fab') }}" class="nav-link @yield('active-sub-encuesta')">
+                                    <a href="{{ route('encuesta.satisfaccion.fab') }}"
+                                        class="nav-link @yield('active-sub-encuesta')">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Encuesta satisfacción</p>
                                     </a>
@@ -189,7 +213,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('maquinas.mantenimiento') }}" class="nav-link @yield('active-gestion-mantenimientos')">
+                                    <a href="{{ route('maquinas.mantenimiento') }}"
+                                        class="nav-link @yield('active-gestion-mantenimientos')">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Programar mttos</p>
                                     </a>
@@ -213,19 +238,22 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ route('usuarios.fabrica') }}" class="nav-link @yield('active-sub-usuarios')">
+                                        <a href="{{ route('usuarios.fabrica') }}"
+                                            class="nav-link @yield('active-sub-usuarios')">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Usuarios</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ route('listado.usuarios') }}" class="nav-link @yield('active-sub-user-encuesta')">
+                                        <a href="{{ route('listado.usuarios') }}"
+                                            class="nav-link @yield('active-sub-user-encuesta')">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Usuarios encuesta</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ route('referencia.producto') }}" class="nav-link @yield('active-sub-referencias')">
+                                        <a href="{{ route('referencia.producto') }}"
+                                            class="nav-link @yield('active-sub-referencias')">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Agregar referencia</p>
                                         </a>
@@ -261,6 +289,7 @@
 </body>
 <footer>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }} "></script>
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }} "></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }} "></script>
     <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }} "></script>
     <script src="{{ asset('plugins/chart.js/Chart.min.js') }} "></script>
@@ -276,6 +305,11 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{asset('/js/pqrs_tables.js')}}"></script>
     @yield('scripts')
 </footer>
 
