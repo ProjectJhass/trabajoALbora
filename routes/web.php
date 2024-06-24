@@ -83,6 +83,7 @@ use App\Http\Controllers\apps\intranet_fabrica\ControllerSolicitudesMtto;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerUsuarios as Intranet_fabricaControllerUsuarios;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerUsuariosEncuesta;
 use App\Http\Controllers\apps\intranet_fabrica\DocumentacionTecnica;
+use App\Http\Controllers\apps\intranet_fabrica\ControllerPQRS;
 use App\Http\Controllers\apps\servicios_tecnicos\analytics\ControllerAnalytics;
 use App\Http\Controllers\apps\servicios_tecnicos\pagina_web\ControllerWeb;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\admin\ControllerInformes;
@@ -286,12 +287,23 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
 
         Route::group(['prefix' => 'firmas-descansos'], function () {
             Route::get('', [ControllerFirmasDescansos::class, 'index'])->name('firmas.descansos');
+            Route::get('', [ControllerFirmasDescansos::class, 'index'])->name('firmas.descansos');
             Route::post('', [ControllerFirmasDescansos::class, 'searchInfoDescansos'])->name('search.firmas.descansos');
             Route::get('/detalles/{id}', [ControllerFirmasDescansos::class, 'detalleDelaFirma'])->name('detalles.firmas');
             Route::get('/export/{fecha_i}/{fecha_f}', [ControllerFirmasDescansos::class, 'export'])->name('export.detalles.firmas');
         });
     });
-
+    Route::group(['prefix' => 'sagrilaft'], function () {
+        Route::get('', [ControllerFlayer::class, 'index'])->name('sagrilaft');
+        Route::group(['prefix' => 'flayer'], function () {
+            Route::get('', [ControllerFlayer::class, 'home'])->name('flayer');
+            Route::post('', [ControllerFlayer::class, 'updateImgFlayer']);
+            Route::post('search', [ControllerFlayer::class, 'searchInfoFlayer']);
+            Route::post('visualizar-flayer', [ControllerRegisterFlayer::class, 'validateImgFlayer'])->name('validate.flayer');
+            Route::post('register-info-flayer', [ControllerRegisterFlayer::class, 'saveInfoViewFlayer'])->name('register.flayer');
+            Route::get('download-excel/{month}', [ControllerRegisterFlayer::class, 'ExportInfoFlayer']);
+        });
+    });
     Route::group(['prefix' => 'auditoria'], function () {
         Route::get('/general', function () {
             return view('apps.intranet.auditoria.home');
@@ -764,7 +776,17 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
     Route::post('/agregar-imagenes-fab', [ControllerCarrucel::class, 'AgregarImagenes'])->name('add.imagenes');
     Route::post('/activar-imagenes-fab', [ControllerCarrucel::class, 'ActivarImagenes'])->name('activar.imagenes');
     Route::post('/eliminar-img-carrucel', [ControllerCarrucel::class, 'EliminarImagenes'])->name('eliminar.img.carrucel');
+
+    /*Rutas para PQRS*/
+    Route::get('/pqrs', [ControllerPQRS::class, 'index'])->name('pqrs.pendientes');
+    Route::get('/pqrs/realizadas', [ControllerPQRS::class, 'realizadas'])->name('pqrs.realizadas');
+    Route::get('/pqrs/todas', [ControllerPQRS::class, 'todas'])->name('pqrs.todas');
+    Route::get('/detalle-solicitud/{id}', [ControllerPQRS::class, 'showDetalleSolicitud'])->name('show.detalle.pqrs');
+    Route::post('/detalle-solicitud/{id}', [ControllerPQRS::class, 'responderSolicitud'])->name('responder.pqrs.sol');
+    // Route::post('/pqrs-responder-solicitud', [ControllerPQRS::class, 'responderSolicitud'])->name('pqrs.responder.solicitud');
 });
+Route::post('/pqrs-add-nueva', [ControllerPQRS::class, 'agregarNueva'])->name('pqrs.add.nueva');
+Route::get('/formulario-registro-pqrs', [ControllerPQRS::class, 'nueva'])->name('pqrs.nueva'); // quitar layout
 
 Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
 });
