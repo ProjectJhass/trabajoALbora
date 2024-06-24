@@ -42,7 +42,7 @@
                             <strong>Memorandos</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sagrilaft/PTEE', 'memo' => 'memorandos-sagrilaft/PTEE']) }}">
+                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sagrilaft', 'memo' => 'memorandos-sagrilaft']) }}">
                                 <img src="{{ asset('icons/book.png') }}" width="40%" alt="">
                             </a>
                         </div>
