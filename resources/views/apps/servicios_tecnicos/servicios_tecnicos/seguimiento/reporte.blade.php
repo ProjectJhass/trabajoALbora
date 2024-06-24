@@ -19,7 +19,7 @@
                             <div class='col-md-12 mb-3'>
                                 <label for='co_new_ost'>Centro de experiencia</label>
                                 <select class='form-control' name='id_co_new_ost' id='id_co_new_ost'>
-                                </select>                                
+                                </select>
                             </div>
                             <div class='col-md-12'>
                                 <label for=''>Desde:</label>

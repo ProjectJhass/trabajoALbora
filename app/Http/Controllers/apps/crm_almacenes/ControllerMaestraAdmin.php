@@ -10,6 +10,7 @@ use App\Models\apps\crm_almacenes\ModelInfoLlamadasPendientes;
 use App\Models\apps\crm_almacenes\ModelInfoOrigenClientes;
 use App\Models\apps\crm_almacenes\ModelInfoSucursales;
 use App\Models\apps\crm_almacenes\ModelVentasEfectivasCrm;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ControllerMaestraAdmin extends Controller
@@ -41,7 +42,7 @@ class ControllerMaestraAdmin extends Controller
 
     public function ObtenerAsesoresC(Request $request)
     {
-        $info = ModelInfoAsesores::where('sucursal', $request->co)->where('estado', '1')->get();
+        $info = User::where('sucursal', $request->co)->where('estado', '1')->get();
         $data = '<option value="">Seleccionar...</option>';
         foreach ($info as $key => $value) {
             $data .= '<option value="' . $value->id . '" data-nombre="' . $value->nombre . '">' . $value->nombre . '</option>';

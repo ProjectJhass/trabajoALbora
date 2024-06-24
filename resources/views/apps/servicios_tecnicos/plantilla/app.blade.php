@@ -33,7 +33,7 @@
                 <div class="app-brand demo">
                     <div class="app-brand-link">
                         <span class="app-brand-logo demo">
-                            <img src="https://app-mueblesalbura.com/app/public/img/img_log_rojo.png" width="7%" alt="">
+                            <img src="{{ asset('img/img_log_rojo.png') }}" width="7%" alt="">
                         </span>
                     </div>
 
@@ -306,7 +306,7 @@
                     <form id="form-update-foto" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="">Nueva fotografía <small>Estilo cuadrado</small></label>
+                                <label for="file_foto_user">Nueva fotografía <small>Estilo cuadrado</small></label>
                                 <input type="file" class="form-control" name="file_foto_user" id="file_foto_user">
                             </div>
                         </div>

@@ -223,18 +223,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="card card-outline card-danger">
-                                <div class="card-header">
-                                    <strong>Flayer - SAGRILAFT/PTEE</strong>
-                                </div>
-                                <div class="card-body text-center">
-                                    <a href="{{ route('flayer') }}">
-                                        <img src="{{ asset('icons/actualizar-datos.png') }}" width="40%" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     @endif
                     <div class="col-md-3 mb-3">
                         <div class="card card-outline card-danger">
