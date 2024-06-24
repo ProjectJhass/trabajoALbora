@@ -117,7 +117,7 @@ class ControllerPQRS extends Controller
     }
     public static function notificarSolicitudCreada($email, $subject, $dataEmail, $view)
     {
-        $emails = [$email, 'web.developer@mueblesalbura.com.co', 'albura.development@gmail.com'];
+        $emails = [$email, 'viviana.romero@mueblesalbura.com.co', 'diana.mora@mueblesalbura.com.co', 'sgc@mueblesalbura.com.co'];
         return self::enviarEmail($emails, $subject, $dataEmail, $view);
     }
     public static function responderSolicitud(Request $request)
