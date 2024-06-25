@@ -15,7 +15,7 @@
                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalAgregarConsecutivos"><i class="fas fa-tags"></i>
                         Agregar etiquetas</button>
                 </div>
-                <div class="card-body" id="table-etiquetas-en-custodia">
+                <div class="card-body table-responsive" id="table-etiquetas-en-custodia">
                     {!! $table !!}
                 </div>
             </div>
