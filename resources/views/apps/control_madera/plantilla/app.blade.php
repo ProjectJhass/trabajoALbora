@@ -121,6 +121,12 @@
                                         <span class="item-name">Historial impresiones</span>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('custodia')" href="{{ route('etiquetas.custodia') }}">
+                                        <i class="fas fa-circle" style="font-size: 9px"></i>
+                                        <span class="item-name">QR's en custodia</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     @endif

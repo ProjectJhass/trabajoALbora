@@ -26,7 +26,8 @@ class ControllerMaderaDisponible extends Controller
         $info_->save();
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' modificó el estado del bloque #' . $id . ' estado:' . $estado
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' modificó el estado del bloque #' . $id . ' nuevo estado: ' . $estado,
+            'usuario' => Auth::user()->nombre
         ]);
 
         return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

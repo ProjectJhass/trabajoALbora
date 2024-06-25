@@ -9,7 +9,7 @@
                 <div class="card-header">
 
                 </div>
-                <div class="card-body" id="infoGeneralCodigosSiesa">
+                <div class="card-body table-responsive" id="infoGeneralCodigosSiesa">
                     {!! $infoCodigos !!}
                 </div>
             </div>

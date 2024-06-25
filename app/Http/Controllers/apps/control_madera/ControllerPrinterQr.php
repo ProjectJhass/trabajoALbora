@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps\control_madera;
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosFallidos;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelEtiquetasEnCustodia;
 use App\Models\apps\control_madera\ModelInfoMadera;
 use App\Models\apps\control_madera\ModelInfoMaquilla;
 use App\Models\apps\control_madera\ModelInfoPrinter;
@@ -19,6 +20,7 @@ class ControllerPrinterQr extends Controller
 {
     public function index()
     {
+        $custodia = ModelEtiquetasEnCustodia::where("estado", "Sin procesar")->get();
         $data = ModelInfoPrinter::where('estado', '1')->get();
         $madera = ModelInfoMadera::where('estado', '1')->get();
         $info = $data->first();
@@ -30,7 +32,17 @@ class ControllerPrinterQr extends Controller
             $estado = 'Impresora por cable';
         }
 
-        return view('apps.control_madera.app.printer.print', ['impresora' => $info, 'conexion' => $conexion, 'estado' => $estado, 'madera' => $madera]);
+        $impresas = self::getInfoImpresiones();
+
+        return view('apps.control_madera.app.printer.print', ['impresora' => $info, 'conexion' => $conexion, 'estado' => $estado, 'madera' => $madera, 'custodia' => $custodia, 'historyPrint' => $impresas]);
+    }
+
+    public function getInfoImpresiones()
+    {
+        $hoy = date('Y-m-d');
+        $hoy_ = date('Y-m-d', strtotime(date("Y-m-d") . " + 1 day"));
+        $info = ModelInspeccionMateriaPrima::whereBetween("created_at", [$hoy, $hoy_])->get();
+        return view("apps.control_madera.app.printer.impresionesRealizadas", ["data" => $info])->render();
     }
 
     //Configuración y registrar nueva impresora en red
@@ -337,10 +349,7 @@ class ControllerPrinterQr extends Controller
         $vehiculo = $request->tipo_vehiculo;
         $placa = $request->txt_placa;
         $salvo_conducto = $request->txt_salvo_conducto;
-
-        if (empty($cantidad_bloques) || empty($cantidad_marquillas) || empty($tipo_madera) || empty($subproceso) || empty($vehiculo)) {
-            return response()->json(['status' => false, 'mensaje' => 'Debe llenar los campos obligatorios *', 'impresora' => 'Impresora en línea'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
-        }
+        $consecutivo_ = $request->consecutivo;
 
         if ($cantidad_bloques != $cantidad_marquillas) {
             return response()->json(['status' => false, 'mensaje' => 'La cantidad de bloques y marquillas debe ser el mismo', 'impresora' => 'Impresora en línea'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -357,31 +366,78 @@ class ControllerPrinterQr extends Controller
         $conexion_ = $impresora->conexion;
         $tipo_ = $impresora->impresora;
 
-        $madera_ = ModelInfoMadera::find($tipo_madera);
-        $nombre_madera = $madera_->nombre_madera;
-        $incial_madera = substr($nombre_madera, 0, 1);
+        if (empty($consecutivo_)) {
 
-        $response = ModelInspeccionMateriaPrima::create([
-            'id_madera' => $tipo_madera,
-            'madera' => $nombre_madera,
-            'tipo_vehiculo' => $vehiculo,
-            'placa' => $placa,
-            'conducto' => $salvo_conducto,
-            'subproceso' => $subproceso,
-            'total_bloques' => $cantidad_bloques,
-            'usuario_creacion' => Auth::user()->nombre
-        ]);
+            if (empty($cantidad_bloques) || empty($cantidad_marquillas) || empty($tipo_madera) || empty($subproceso) || empty($vehiculo)) {
+                return response()->json(['status' => false, 'mensaje' => 'Debe llenar los campos obligatorios *', 'impresora' => 'Impresora en línea'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+            }
+
+            $madera_ = ModelInfoMadera::find($tipo_madera);
+            $nombre_madera = $madera_->nombre_madera;
+            $incial_madera = substr($nombre_madera, 0, 1);
+
+            $response = ModelInspeccionMateriaPrima::create([
+                'id_madera' => $tipo_madera,
+                'madera' => $nombre_madera,
+                'tipo_vehiculo' => $vehiculo,
+                'placa' => $placa,
+                'conducto' => $salvo_conducto,
+                'subproceso' => $subproceso,
+                'total_bloques' => $cantidad_bloques,
+                'usuario_creacion' => Auth::user()->nombre
+            ]);
+
+            $id_insert = $response->id;
+        } else {
+            $info_p = ModelInspeccionMateriaPrima::find($consecutivo_);
+            $response = true;
+            $id_insert = $consecutivo_;
+
+            $cantidad_db = $info_p->total_bloques;
+            $info_p->total_bloques = $cantidad_db + $cantidad_bloques;
+            $info_p->save();
+
+            $madera_ = ModelInfoMadera::find($info_p->id_madera);
+            $nombre_madera = $madera_->nombre_madera;
+            $incial_madera = substr($nombre_madera, 0, 1);
+        }
 
         if ($response) {
-            $id_insert = $response->id;
-
             if ($conexion_ == 'red') {
                 $info_printer = self::printInformacion($cantidad_marquillas, $id_insert, $incial_madera);
             } else {
                 $info_printer = self::printerUSB($cantidad_marquillas, $nombre_print, $id_insert, $incial_madera, $tipo_);
             }
 
-            return response()->json(['status' => true, 'impresas' => $info_printer[0], 'fallidas' => $info_printer[1], 'impresora' => $info_printer[2], 'id_printed' => $id_insert], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+            $etiquetas_impresas = $info_printer[0];
+
+            if (isset($request->etiquetas_custodia)) {
+                $cantidad_c = $request->cant_etiquetas_custodia;
+
+                $info_ = ModelEtiquetasEnCustodia::where("estado", "Sin procesar")->get();
+                foreach ($info_ as $key => $value) {
+                    $id_consecutivo = $value->id_consecutivo;
+                    $info_consec = ModelConsecutivosMadera::find($id_consecutivo);
+                    $info_consec->id_info_madera = $id_insert;
+                    $info_consec->tipo_madera = $incial_madera;
+                    $info_consec->usuario_creacion = Auth::user()->nombre;
+                    $info_consec->estado = "Pendiente";
+                    $info_consec->save();
+                    ModelEtiquetasEnCustodia::where("estado", "Sin procesar")->where("id", $value->id)->update(['id_nueva_imp' => $id_insert, 'estado' => 'Procesado']);
+                }
+
+                $info_madera_p = ModelInspeccionMateriaPrima::find($id_insert);
+                $cantidad_db = $info_madera_p->total_bloques;
+                $info_madera_p->total_bloques = $cantidad_db + $cantidad_c;
+                $info_madera_p->save();
+
+                $etiquetas_impresas = $etiquetas_impresas + $cantidad_c;
+            }
+
+            $print_qr = new ControllerPrinterQr();
+            $table = $print_qr->getInfoImpresiones();
+
+            return response()->json(['status' => true, 'impresas' => $etiquetas_impresas, 'fallidas' => $info_printer[1], 'impresora' => $info_printer[2], 'id_printed' => $id_insert, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
 
         return response()->json('', 401);
@@ -428,7 +484,8 @@ class ControllerPrinterQr extends Controller
         }
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo_
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo_,
+            'usuario' => Auth::user()->nombre
         ]);
 
         $printed_pages = 0;
@@ -475,7 +532,8 @@ class ControllerPrinterQr extends Controller
         $consecutivo = $request->consecutivo;
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo,
+            'usuario' => Auth::user()->nombre
         ]);
 
         //Validar existencia de consecutivo impreso

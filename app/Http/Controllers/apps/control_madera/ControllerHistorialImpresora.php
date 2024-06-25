@@ -70,7 +70,8 @@ class ControllerHistorialImpresora extends Controller
                 $data_->save();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la info de impresiones placa:' . $placa_ . ' salvo conducto: ' . $conducto_ . ' subproceso' . $subproceso_
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la info de impresiones placa: ' . $placa_ . ' salvo conducto: ' . $conducto_ . ' subproceso: ' . $subproceso_,
+                    'usuario' => Auth::user()->nombre
                 ]);
 
                 break;
@@ -88,7 +89,8 @@ class ControllerHistorialImpresora extends Controller
                 $data_madera->save();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' modificó las medidas del bloque #' . $id_ . ' ancho:' . $ancho_ . 'grueso' . $grueso_ . ' largo' . $largo_
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' modificó las medidas del bloque #' . $id_ . ' ancho: ' . $ancho_ . 'grueso: ' . $grueso_ . ' largo: ' . $largo_,
+                    'usuario' => Auth::user()->nombre
                 ]);
 
                 $metros_ = $tipo_m == "V" ? 3 : 2;
