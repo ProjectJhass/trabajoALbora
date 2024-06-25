@@ -55,7 +55,7 @@ class ControllerCrearNuevasSeries extends Controller
                 $data_i->delete();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la pieza #' . $id_pieza . ' Nombre' . $nombre_
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la pieza # ' . $id_pieza . ' Nombre: ' . $nombre_
                 ]);
             } else {
                 $data_i->pieza = $nombre_;
@@ -67,7 +67,7 @@ class ControllerCrearNuevasSeries extends Controller
                 $data_i->save();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la pieza #' . $id_pieza . ' Nombre' . $nombre_
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la pieza # ' . $id_pieza . ' Nombre: ' . $nombre_
                 ]);
             }
         }
@@ -101,7 +101,7 @@ class ControllerCrearNuevasSeries extends Controller
             ]);
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' agregó una nueva pieza Nombre' . $nombre . ' al mueble' . $id_mueble . ' serie' . $id_serie . 'madera' . $id_madera
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' agregó una nueva pieza Nombre: ' . $nombre . ' al mueble: ' . $id_mueble . ' serie: ' . $id_serie . ' madera: ' . $id_madera
             ]);
 
             return response()->json(['status' => true, 'mensaje' => '¡Excelente! Pieza creada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -147,7 +147,7 @@ class ControllerCrearNuevasSeries extends Controller
                 ]);
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la serie' . $serie
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la serie: ' . $serie
                 ]);
             }
 
@@ -167,7 +167,7 @@ class ControllerCrearNuevasSeries extends Controller
                     ]);
 
                     ModelLogs::create([
-                        'accion' => 'El usuario ' . Auth::user()->nombre . ' creó el mueble' . $mueble
+                        'accion' => 'El usuario ' . Auth::user()->nombre . ' creó el mueble: ' . $mueble
                     ]);
                 }
 
@@ -195,7 +195,7 @@ class ControllerCrearNuevasSeries extends Controller
                             ]);
 
                             ModelLogs::create([
-                                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la pieza #' . $info_p_->id . ' pieza' . $nombre
+                                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la pieza #' . $info_p_->id . ' pieza: ' . $nombre
                             ]);
                         }
 

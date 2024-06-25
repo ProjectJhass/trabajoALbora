@@ -32,6 +32,11 @@ class ControllerPlannerTabla extends Controller
             ]);
 
             if ($request) {
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó una planificación de corte de tablas por una cantidad de: ' . $cantidad
+                ]);
+
                 return response()->json(['status' => true, 'mensaje' => 'La planificación de corte de tabla fue creada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
             }
 

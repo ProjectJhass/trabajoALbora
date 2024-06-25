@@ -118,6 +118,15 @@
                                         id="txt_salvo_conducto" class="form-control">
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input type="number" class="form-control" name="cant_etiquetas_custodia" id="cant_etiquetas_custodia">
+                                    <input class="form-check-input" type="checkbox" name="etiquetas_custodia" id="etiquetas_custodia">
+                                    <label class="form-check-label" for="etiquetas_custodia">
+                                        Utilizar etiquetas custodiadas
+                                    </label>
+                                </div>
+                            </div>
                             <div class="form-group text-center">
                                 <button type="button" onclick="btnPrintInfoQr()" class="btn btn-success">Imprimir consecutivos</button>
                             </div>
@@ -162,6 +171,16 @@
                     </div>
                 </div>
             </div>
+            <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="600">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h6>Impresiones realizadas hoy</h6>
+                    </div>
+                </div>
+                <div class="card-body" id="tableInfoImpresionesRealizadas">
+                    {!! $historyPrint !!}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -180,15 +199,116 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalInfoConsecutivosEnCustodia" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Consecutivos en custodia</h5>
+                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <td>#</td>
+                                <td>Consecutivo</td>
+                                <td>Usuario responsable</td>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach ($custodia as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->id_consecutivo }}</td>
+                                    <td>{{ $item->usuario_a_cargo }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" onclick="utilizarImprimirEtiquetas()">Utilizar e imprimir más</button>
+                    <button type="button" class="btn btn-success" onclick="utilizarEtiquetasCustodia()">Solo utilizar estas etiquetas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalInfoConsecutivosCustodia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Información adicional</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formUtilizarInfoCustodia" method="post" class="was-validated">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Madera *</label>
+                                    <select name="txt_tipo_madera" id="txt_tipo_madera" class="form-control" required>
+                                        <option value="">Seleccionar...</option>
+                                        @foreach ($madera as $item)
+                                            <option value="<?php echo $item->id_madera; ?>"><?php echo $item->nombre_madera; ?></option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Subproceso *</label>
+                                    <input type="text" name="subproceso" id="subproceso" onkeyup="this.value=this.value.toUpperCase()"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label>Vehículo *</label>
+                                    <select name="tipo_vehiculo" id="tipo_vehiculo" class="form-control" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="SENCILLO">SENCILLO</option>
+                                        <option value="DOBLE TROQUE">DOBLE TROQUE</option>
+                                        <option value="CUATRO MANOS">CUATRO MANOS</option>
+                                        <option value="MULA">MULA</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="utilizarInformacionConsecutivos()">Utilizar consecutivos</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('footer')
+    @if (count($custodia) > 0)
+        <script>
+            $(document).ready(function() {
+                $("#modalInfoConsecutivosEnCustodia").modal("show")
+                $("#cant_etiquetas_custodia").val("{{ count($custodia) }}")
+            })
+        </script>
+    @endif
     <script>
         btnPrintInfoQr = () => {
             var cantidad = $('#txt_cantidad_print').val()
             if (cantidad > 0) {
+                var consecutivo = "";
+                $('input[name="impresion_realizada"]').each(function() {
+                    if ($(this).is(':checked')) {
+                        consecutivo = $(this).val();
+                    }
+                });
 
                 var formulario = new FormData(document.getElementById('form-print-info-marquillas-qr'));
-
+                formulario.append('consecutivo', consecutivo);
                 var datos = $.ajax({
                     url: "{{ route('print.info.qr') }}",
                     type: "post",
@@ -211,6 +331,7 @@
                         $('#cantidad_impresiones_fallidas').attr("data-cantidadFalse", res.id_printed)
                         $('#info-impresora-red').val(res.impresora)
                         document.getElementById('form-print-info-marquillas-qr').reset()
+                        document.getElementById('tableInfoImpresionesRealizadas').innerHTML = res.table
                     }
                     if (res.status == false) {
                         $('#info-impresora-red').val(res.impresora)
@@ -247,6 +368,40 @@
             datos.done((res) => {
                 document.getElementById('mensajeBody').innerHTML = res.mensaje
             })
+        }
+
+        utilizarEtiquetasCustodia = () => {
+            $("#modalInfoConsecutivosCustodia").modal("show")
+        }
+
+        utilizarInformacionConsecutivos = () => {
+            notificacion("Utilizando consecutivos...", "info", 6000);
+            var formulario = new FormData(document.getElementById('formUtilizarInfoCustodia'));
+            var datos = $.ajax({
+                url: "{{ route('utilizar.qr.custodia') }}",
+                type: "post",
+                dataType: "json",
+                data: formulario,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            datos.done((res) => {
+                notificacion(res.mensaje, "success", 3000);
+                document.getElementById('tableInfoImpresionesRealizadas').innerHTML = res.table
+                $("#modalInfoConsecutivosCustodia").modal("hide")
+                $("#modalInfoConsecutivosEnCustodia").modal("hide")
+            })
+            datos.fail(() => {
+                notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
+            })
+        }
+
+        utilizarImprimirEtiquetas = () => {
+            $("#etiquetas_custodia").attr("checked", true)
+            var cantidad_custodia = $("#cant_etiquetas_custodia").val()
+            $("#cantidad_impresiones_correctas").text(cantidad_custodia)
+            $("#modalInfoConsecutivosEnCustodia").modal("hide")
         }
     </script>
 @endsection

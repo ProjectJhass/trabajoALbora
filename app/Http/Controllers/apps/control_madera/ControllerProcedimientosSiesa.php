@@ -43,13 +43,13 @@ class ControllerProcedimientosSiesa extends Controller
                 $info_c->save();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Actualizó el registro #' . $id . ' del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Actualizó la tabla codigos_siesa con número de registro #' . $id . ' del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
                 ]);
             } else {
                 $info_c->delete();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Eliminó el registro #' . $id . ' del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Eliminó el registro #' . $id . ' de la tabla codigos_siesa del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
                 ]);
             }
         } else {
@@ -60,7 +60,7 @@ class ControllerProcedimientosSiesa extends Controller
             ]);
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó el registro #' . $response->id . ' y el código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó en la tabla codigos_siesa el registro #' . $response->id . ' y el código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
             ]);
         }
 
@@ -238,6 +238,10 @@ class ControllerProcedimientosSiesa extends Controller
                 'codigo_item' => $codigo_siesa,
                 'planificador' => Auth::user()->nombre,
                 'consecutivo_op' => $consecutivo_doc
+            ]);
+
+            ModelLogs::create([
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó una orden de producción en SIESA con el número de consecutivo #' . $consecutivo_doc
             ]);
 
             return response()->json(['status' => true, 'mensaje' => '¡Excelente! Orden de producción creada con el consecutivo #' . $consecutivo_doc], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

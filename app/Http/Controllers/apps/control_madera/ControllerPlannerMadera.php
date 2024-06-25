@@ -8,7 +8,9 @@ use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelInfoMueble;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerPlannerMadera extends Controller
 {
@@ -212,6 +214,11 @@ class ControllerPlannerMadera extends Controller
         } else {
             $form_ .= 'No hay información para esta serie, intenta con una diferente';
         }
+
+        ModelLogs::create([
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' generó una nueva planificación para corte de serie'
+        ]);
+
         return response()->json(['status' => true, 'planilla' => $form_], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

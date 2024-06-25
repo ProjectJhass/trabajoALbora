@@ -39,7 +39,7 @@ class ControllerSavePlanificacionCorte extends Controller
             $id_plan = $data_->id;
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' ha creado la planificación #' . $id_plan . ' serie ' . $data_->serie . ' madera ' . $data_->madera . ' mueble ' . $data_->mueble . 'cantidad ' . $data_->cantidad
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' ha creado la planificación #' . $id_plan . ' serie: ' . $data_->serie . ' madera: ' . $data_->madera . ' mueble: ' . $data_->mueble . 'cantidad: ' . $data_->cantidad
             ]);
 
             for ($i = 1; $i < $cantidad_piezas; $i++) {
@@ -121,7 +121,6 @@ class ControllerSavePlanificacionCorte extends Controller
                     }
                     $cantidad_favor->save();
                 }
-
 
                 ModelPiezasPlanificadasCorte::create([
                     'calidad' => $calidad_corte,

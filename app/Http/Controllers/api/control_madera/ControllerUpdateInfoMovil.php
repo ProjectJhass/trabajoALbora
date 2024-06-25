@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\control_madera;
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelInspeccionMateriaPrima;
+use App\Models\apps\control_madera\ModelLogs;
 use Illuminate\Http\Request;
 
 class ControllerUpdateInfoMovil extends Controller
@@ -14,7 +15,7 @@ class ControllerUpdateInfoMovil extends Controller
         $id = $request->id_madera;
         $ancho = $request->ancho;
         $grueso =  $request->grueso;
-        $largo = ($request->largo / 100);
+        $largo = $request->largo;
         $usuario = $request->usuario;
 
         if (empty($id) || empty($ancho) || empty($grueso) || empty($largo)) {
@@ -57,6 +58,10 @@ class ControllerUpdateInfoMovil extends Controller
                     $data_inspeccion->menor_tres_m = $procentaje;
                     $data_inspeccion->save();
                 }
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . $usuario . ' actualizó el consecutivo del bloque #' . $id . ' con las medidas, Ancho: ' . $ancho . ' Grueso: ' . $grueso . ' Largo: ' . $largo . ' pulgadas: ' . $pulgadas
+                ]);
 
                 return response()->json([
                     'status' => true,

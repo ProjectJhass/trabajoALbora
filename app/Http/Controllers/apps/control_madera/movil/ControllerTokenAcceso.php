@@ -72,7 +72,7 @@ class ControllerTokenAcceso extends Controller
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó el acceso móvil #' . $id_movil . " movil:" . $movil . " con el token: " . $token
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó el acceso móvil #' . $id_movil . " movil: " . $movil . " con el token: " . $token
         ]);
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
