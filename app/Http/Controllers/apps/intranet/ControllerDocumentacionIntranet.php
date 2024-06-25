@@ -19,6 +19,7 @@ class ControllerDocumentacionIntranet extends Controller
             'cartera' => (['dpto' => '2', 'permiso' => '1']),
             'ventas' => (['dpto' => '3', 'permiso' => '1']),
             'rrhh' => (['dpto' => '4', 'permiso' => '1']),
+            'sagrilaft' => (['dpto' => '4', 'permiso' => '1']),
             'auditoria' => (['dpto' => '5', 'permiso' => '1']),
             'contabilidad' => (['dpto' => '6', 'permiso' => '1']),
             'sistemas' => (['dpto' => '7', 'permiso' => '1']),
