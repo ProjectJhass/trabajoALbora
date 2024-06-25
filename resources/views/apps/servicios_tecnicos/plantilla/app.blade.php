@@ -306,8 +306,8 @@
                     <form id="form-update-foto" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="file_foto_user">Nueva fotografía <small>Estilo cuadrado</small></label>
-                                <input type="file" class="form-control" name="file_foto_user" id="file_foto_user">
+                                <label for="fotografia">Nueva fotografía <small>Estilo cuadrado</small></label>
+                                <input type="file" class="form-control" name="fotografia" id="fotografia">
                             </div>
                         </div>
                         <button type="button" class="btn btn-success btn-sm mt-3" onclick="updateFotografia()">Actualizar</button>

@@ -15,6 +15,7 @@ use App\Models\apps\servicios_tecnicos\servicios\infoAlmacenes;
 use App\Models\soap\intranet\ModelConsultasWs;
 use App\Models\soap\ModelSoap;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -241,5 +242,21 @@ class ControllerUsuarios extends Controller
         } else {
             return response()->json(['status' => false], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
+    }
+
+    public function updateFoto(Request $request){
+        $fotografia = $request->file("fotografia");
+        $info_ = ModelUsersIntranet::find(Auth::user()->id);
+
+        if ($fotografia != null) {
+            $nombre_doc = $fotografia->getClientOriginalName();
+            $nombre_ = uniqid() . "_" . $nombre_doc;
+            $fotografia->storeAs('public/perfil/', $nombre_);
+            $url_doc = Storage::url("perfil/" . $nombre_);
+            $info_->ruta_foto = $url_doc;
+            $info_->save();
+        }
+
+        return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }
