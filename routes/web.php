@@ -7,6 +7,7 @@ use App\Http\Controllers\apps\automoviles\ControllerComparativoGeneral;
 use App\Http\Controllers\apps\automoviles\ControllerPolizas;
 use App\Http\Controllers\apps\automoviles\ControllerProveedores;
 use App\Http\Controllers\apps\control_madera\ControllerCrearNuevasSeries;
+use App\Http\Controllers\apps\control_madera\ControllerEtiquetasCustodia;
 use App\Http\Controllers\apps\control_madera\ControllerFabricaMadera;
 use App\Http\Controllers\apps\control_madera\ControllerHistorialImpresora;
 use App\Http\Controllers\apps\control_madera\ControllerHistorialSiesa;
@@ -427,14 +428,14 @@ Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function (
 Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middleware' => 'checkPermisosMadera'], function () {
 
     Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
-    //Route::get('pruebaOP', [PruebaOP::class, 'index']);
-    Route::get('pruebaOP', [PruebaOP::class, 'consultaOPS']);
 
     Route::group(['prefix' => 'printer'], function () {
         Route::get('', [ControllerPrinterQr::class, 'index'])->name('printer');
         Route::post('', [ControllerPrinterQr::class, 'generateQRCode'])->name('print.info.qr');
         Route::post('/search_printed', [ControllerPrinterQr::class, 'printedHistory'])->name('search.printed');
         Route::post('/reprinter-info', [ControllerPrinterQr::class, 'infoRePrinterCodigoQr'])->name('info.reprinted');
+        //Utilizar consecutivos en custodia
+        Route::post('/utilizar-qr-custodia', [ControllerEtiquetasCustodia::class, 'utilizarConsecutivosCustodia'])->name('utilizar.qr.custodia');
 
         Route::group(['prefix' => 'history'], function () {
             Route::get('', [ControllerHistorialImpresora::class, 'index'])->name('history.printer');
@@ -442,6 +443,11 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
             Route::post('/search_history', [ControllerHistorialImpresora::class, 'searchInfoHistory'])->name('search.history.printer');
             Route::post('/edit-history', [ControllerHistorialImpresora::class, 'editInfoHistory'])->name('edit.history.printed');
             Route::post('/edit-info-history', [ControllerHistorialImpresora::class, 'editHistoryPrinted'])->name('edit.info.printed');
+        });
+
+        Route::group(['prefix' => 'custodia'], function () {
+            Route::get('', [ControllerEtiquetasCustodia::class, 'index'])->name('etiquetas.custodia');
+            Route::post('agregar', [ControllerEtiquetasCustodia::class, 'agregarConsecutivos'])->name('add.etiquetas.custodia');
         });
 
         Route::group(['prefix' => 'config'], function () {
