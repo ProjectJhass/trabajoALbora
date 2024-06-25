@@ -535,7 +535,7 @@ Route::group(['prefix' => 'cotizador', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'cotizador'], function () {
         Route::get('/retomar/{id_retomar}', [ControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion');
-        Route::post('/consultar-cedula', [ControllerRetomarCotizacion::class, 'ObtenerInformacionUltimasCotizaciones'])->name('search.info.cliente');
+        Route::post('/consultar-cedula', [ControllerRetomarCotizacion::class, 'ObtenerInformacionUltimasCotizaciones'])->name('search.info.cliente.cotizador');
         Route::get('/catalogo', [ControllerCatalogo::class, 'index'])->name('catalogo.cotizador');
     });
 

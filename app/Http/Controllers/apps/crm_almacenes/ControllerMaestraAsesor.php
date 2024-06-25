@@ -51,8 +51,8 @@ class ControllerMaestraAsesor extends Controller
                 ->orderByDesc('created_at')
                 ->get();
         } else {
-            $columna = $tipo_cliente == 5 ? "estado" : "tipo_cliente";
-            $valor = $tipo_cliente == 5 ? "2" : $tipo_cliente;
+            $columna = ($tipo_cliente == 5 || $tipo_cliente == 6) ? "estado" : "tipo_cliente";
+            $valor = $tipo_cliente == 5 ? "2" : ($tipo_cliente == 6 ? "6" : $tipo_cliente);
 
             $info_clientes = ModelClientesCRM::with([
                 'llamadasPendientes',

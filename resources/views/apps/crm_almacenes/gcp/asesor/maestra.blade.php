@@ -88,6 +88,7 @@
                             <option value="2">PROSPECTOS</option>
                             <option value="3">EFECTIVOS</option>
                             <option value="5">PREFERENCIAL</option>
+                            <option value="6">PRE-APROBADO</option>
                         </select>
                     </form>
                 </div>

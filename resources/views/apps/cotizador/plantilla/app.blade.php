@@ -278,7 +278,7 @@
                 loandingPanel()
 
                 var datos = $.ajax({
-                    url: "{{ route('search.info.cliente') }}",
+                    url: "{{ route('search.info.cliente.cotizador') }}",
                     type: "POST",
                     dataType: "json",
                     data: {
