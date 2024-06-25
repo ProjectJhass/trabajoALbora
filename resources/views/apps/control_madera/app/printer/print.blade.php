@@ -118,7 +118,7 @@
                                         id="txt_salvo_conducto" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-3" hidden>
                                 <div class="form-check">
                                     <input type="number" class="form-control" name="cant_etiquetas_custodia" id="cant_etiquetas_custodia">
                                     <input class="form-check-input" type="checkbox" name="etiquetas_custodia" id="etiquetas_custodia">
