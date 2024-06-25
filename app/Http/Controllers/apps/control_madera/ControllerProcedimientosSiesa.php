@@ -43,13 +43,15 @@ class ControllerProcedimientosSiesa extends Controller
                 $info_c->save();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Actualizó la tabla codigos_siesa con número de registro #' . $id . ' del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Actualizó la tabla codigos_siesa con número de registro #' . $id . ' del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre,
+                    'usuario' => Auth::user()->nombre
                 ]);
             } else {
                 $info_c->delete();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Eliminó el registro #' . $id . ' de la tabla codigos_siesa del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' Eliminó el registro #' . $id . ' de la tabla codigos_siesa del código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre,
+                    'usuario' => Auth::user()->nombre
                 ]);
             }
         } else {
@@ -60,7 +62,8 @@ class ControllerProcedimientosSiesa extends Controller
             ]);
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó en la tabla codigos_siesa el registro #' . $response->id . ' y el código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó en la tabla codigos_siesa el registro #' . $response->id . ' y el código de SIESA ' . $codigo . ' que hace referencia a ' . $nombre,
+                'usuario' => Auth::user()->nombre
             ]);
         }
 
@@ -241,7 +244,8 @@ class ControllerProcedimientosSiesa extends Controller
             ]);
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó una orden de producción en SIESA con el número de consecutivo #' . $consecutivo_doc
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó una orden de producción en SIESA con el número de consecutivo #' . $consecutivo_doc,
+                'usuario' => Auth::user()->nombre
             ]);
 
             return response()->json(['status' => true, 'mensaje' => '¡Excelente! Orden de producción creada con el consecutivo #' . $consecutivo_doc], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

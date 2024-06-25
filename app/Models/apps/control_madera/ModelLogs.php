@@ -15,6 +15,7 @@ class ModelLogs extends Model
 
     protected $fillable = [
         'id',
-        'accion'
+        'accion',
+        'usuario'
     ];
 }

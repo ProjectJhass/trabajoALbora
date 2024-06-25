@@ -61,7 +61,8 @@ class ControllerEtiquetasCustodia extends Controller
                     $info_->save();
 
                     ModelLogs::create([
-                        'accion' => 'El usuario ' . Auth::user()->nombre . ' Agregó el consecutivo #' . $id_consecutivo . ' a etiquetas en custodia el usuario a cargo de las etiquetas es: ' . $usuario
+                        'accion' => 'El usuario ' . Auth::user()->nombre . ' Agregó el consecutivo #' . $id_consecutivo . ' a etiquetas en custodia el usuario a cargo de las etiquetas es: ' . $usuario,
+                        'usuario' => Auth::user()->nombre
                     ]);
                 }
             }
@@ -133,7 +134,8 @@ class ControllerEtiquetasCustodia extends Controller
                     ModelEtiquetasEnCustodia::where("estado", "Sin procesar")->where("id", $value->id)->update(['id_nueva_imp' => $id_insert, 'estado' => 'Procesado']);
 
                     ModelLogs::create([
-                        'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el consecutivo #' . $id_consecutivo . ' de las etiquetas en custodia el nuevo id de impresion es: ' . $id_insert
+                        'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el consecutivo #' . $id_consecutivo . ' de las etiquetas en custodia el nuevo id de impresion es: ' . $id_insert,
+                        'usuario' => Auth::user()->nombre
                     ]);
                 }
 

@@ -60,7 +60,8 @@ class ControllerUpdateInfoMovil extends Controller
                 }
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . $usuario . ' actualizó el consecutivo del bloque #' . $id . ' con las medidas, Ancho: ' . $ancho . ' Grueso: ' . $grueso . ' Largo: ' . $largo . ' pulgadas: ' . $pulgadas
+                    'accion' => 'El usuario ' . $usuario . ' actualizó el consecutivo del bloque #' . $id . ' con las medidas, Ancho: ' . $ancho . ' Grueso: ' . $grueso . ' Largo: ' . $largo . ' pulgadas: ' . $pulgadas,
+                    'usuario' => $usuario
                 ]);
 
                 return response()->json([

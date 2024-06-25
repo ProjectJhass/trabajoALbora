@@ -33,7 +33,8 @@ class ControllerTokenAcceso extends Controller
         }
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la url de acceso móvil'
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la url de acceso móvil',
+            'usuario' => Auth::user()->nombre
         ]);
 
         return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -52,7 +53,8 @@ class ControllerTokenAcceso extends Controller
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' registró un nuevo dispositivo: ' . $movil . ' con el token: ' . $token
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' registró un nuevo dispositivo: ' . $movil . ' con el token: ' . $token,
+            'usuario' => Auth::user()->nombre
         ]);
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -72,7 +74,8 @@ class ControllerTokenAcceso extends Controller
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó el acceso móvil #' . $id_movil . " movil: " . $movil . " con el token: " . $token
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó el acceso móvil #' . $id_movil . " movil: " . $movil . " con el token: " . $token,
+            'usuario' => Auth::user()->nombre
         ]);
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -88,7 +91,8 @@ class ControllerTokenAcceso extends Controller
         $table = view('apps.control_madera.movil.table', ['moviles' => $info_])->render();
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el acceso móvil: ' . $data_->celular . ' Token: ' . $data_->clave
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el acceso móvil: ' . $data_->celular . ' Token: ' . $data_->clave,
+            'usuario' => Auth::user()->nombre
         ]);
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

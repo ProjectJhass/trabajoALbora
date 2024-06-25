@@ -55,7 +55,8 @@ class ControllerCrearNuevasSeries extends Controller
                 $data_i->delete();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la pieza # ' . $id_pieza . ' Nombre: ' . $nombre_
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la pieza # ' . $id_pieza . ' Nombre: ' . $nombre_,
+                    'usuario' => Auth::user()->nombre
                 ]);
             } else {
                 $data_i->pieza = $nombre_;
@@ -67,7 +68,8 @@ class ControllerCrearNuevasSeries extends Controller
                 $data_i->save();
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la pieza # ' . $id_pieza . ' Nombre: ' . $nombre_
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' actualizó la pieza # ' . $id_pieza . ' Nombre: ' . $nombre_,
+                    'usuario' => Auth::user()->nombre
                 ]);
             }
         }
@@ -101,7 +103,8 @@ class ControllerCrearNuevasSeries extends Controller
             ]);
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' agregó una nueva pieza Nombre: ' . $nombre . ' al mueble: ' . $id_mueble . ' serie: ' . $id_serie . ' madera: ' . $id_madera
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' agregó una nueva pieza Nombre: ' . $nombre . ' al mueble: ' . $id_mueble . ' serie: ' . $id_serie . ' madera: ' . $id_madera,
+                'usuario' => Auth::user()->nombre
             ]);
 
             return response()->json(['status' => true, 'mensaje' => '¡Excelente! Pieza creada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -147,7 +150,8 @@ class ControllerCrearNuevasSeries extends Controller
                 ]);
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la serie: ' . $serie
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la serie: ' . $serie,
+                    'usuario' => Auth::user()->nombre
                 ]);
             }
 
@@ -167,7 +171,8 @@ class ControllerCrearNuevasSeries extends Controller
                     ]);
 
                     ModelLogs::create([
-                        'accion' => 'El usuario ' . Auth::user()->nombre . ' creó el mueble: ' . $mueble
+                        'accion' => 'El usuario ' . Auth::user()->nombre . ' creó el mueble: ' . $mueble,
+                        'usuario' => Auth::user()->nombre
                     ]);
                 }
 
@@ -195,7 +200,8 @@ class ControllerCrearNuevasSeries extends Controller
                             ]);
 
                             ModelLogs::create([
-                                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la pieza #' . $info_p_->id . ' pieza: ' . $nombre
+                                'accion' => 'El usuario ' . Auth::user()->nombre . ' creó la pieza #' . $info_p_->id . ' pieza: ' . $nombre,
+                                'usuario' => Auth::user()->nombre
                             ]);
                         }
 
@@ -229,7 +235,8 @@ class ControllerCrearNuevasSeries extends Controller
         $data_serie = ModelInfoSerie::find($id_serie);
         $data_serie->delete();
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la serie #' . $id_serie . ' ' . $data_serie->serie
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó la serie #' . $id_serie . ' ' . $data_serie->serie,
+            'usuario' => Auth::user()->nombre
         ]);
         return response()->json(['status' => true, 'mensaje' => '¡Excelente! Serie eliminada'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
@@ -240,7 +247,8 @@ class ControllerCrearNuevasSeries extends Controller
         $data_mueble = ModelInfoMueble::find($id_mueble);
         $data_mueble->delete();
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el mueble #' . $id_mueble . ' ' . $data_mueble->mueble
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el mueble #' . $id_mueble . ' ' . $data_mueble->mueble,
+            'usuario' => Auth::user()->nombre
         ]);
         return response()->json(['status' => true, 'mensaje' => '¡Excelente! Mueble eliminado correctamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }

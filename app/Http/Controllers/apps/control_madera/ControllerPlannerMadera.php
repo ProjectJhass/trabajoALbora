@@ -216,7 +216,8 @@ class ControllerPlannerMadera extends Controller
         }
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' generó una nueva planificación para corte de serie'
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' generó una nueva planificación para corte de serie',
+            'usuario' => Auth::user()->nombre
         ]);
 
         return response()->json(['status' => true, 'planilla' => $form_], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

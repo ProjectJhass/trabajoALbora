@@ -34,7 +34,8 @@ class ControllerPlannerTabla extends Controller
             if ($request) {
 
                 ModelLogs::create([
-                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó una planificación de corte de tablas por una cantidad de: ' . $cantidad
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' creó una planificación de corte de tablas por una cantidad de: ' . $cantidad,
+                    'usuario' => Auth::user()->nombre
                 ]);
 
                 return response()->json(['status' => true, 'mensaje' => 'La planificación de corte de tabla fue creada exitosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -103,7 +104,8 @@ class ControllerPlannerTabla extends Controller
             $info_c->save();
 
             ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el bloque #' . $id_bloque . ' para corte de tabla en la woodniser'
+                'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el bloque #' . $id_bloque . ' para corte de tabla en la woodniser',
+                'usuario' => Auth::user()->nombre
             ]);
 
             $info_corte = ModelPlannerTabla::find($id_corte);
@@ -137,7 +139,8 @@ class ControllerPlannerTabla extends Controller
         $info_corte->save();
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el bloque #' . $id_bloque . ' utilizado para corte de tablas en la woodniser'
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el bloque #' . $id_bloque . ' utilizado para corte de tablas en la woodniser',
+            'usuario' => Auth::user()->nombre
         ]);
 
         $info_bloque = ModelConsecutivosMadera::find($id_bloque);

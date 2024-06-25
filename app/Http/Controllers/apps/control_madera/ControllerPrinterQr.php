@@ -484,7 +484,8 @@ class ControllerPrinterQr extends Controller
         }
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo_
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo_,
+            'usuario' => Auth::user()->nombre
         ]);
 
         $printed_pages = 0;
@@ -531,7 +532,8 @@ class ControllerPrinterQr extends Controller
         $consecutivo = $request->consecutivo;
 
         ModelLogs::create([
-            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo
+            'accion' => 'El usuario ' . Auth::user()->nombre . ' ha re-impreso el consecutivo del bloque #' . $consecutivo,
+            'usuario' => Auth::user()->nombre
         ]);
 
         //Validar existencia de consecutivo impreso
