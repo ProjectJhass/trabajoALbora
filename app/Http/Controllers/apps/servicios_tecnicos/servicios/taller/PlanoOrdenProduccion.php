@@ -24,12 +24,12 @@ class PlanoOrdenProduccion extends Controller
         $ost_info = ModelNuevaSolicitud::find($st);
         
         //Almacen
-        $almacen_st = $ost_info->almacen;
+        $almacen_st = trim($ost_info->almacen);
         $almacen  = substr($almacen_st, 0, 30);
         $ref1 = $almacen . str_repeat(" ", (30 - strlen($almacen)));
 
         //Tipo de servicio
-        $tipo_servicio_st = $ost_info->tipo_servicio;
+        $tipo_servicio_st = trim($ost_info->tipo_servicio);
         $tipo_servicio  = substr($tipo_servicio_st, 0, 30);
         $ref2 = $tipo_servicio . str_repeat(" ", (30 - strlen($almacen)));
 
@@ -40,8 +40,8 @@ class PlanoOrdenProduccion extends Controller
 
         //Notas
         $notas_i = trim(str_replace($word_i, $word_f, $notas));
-        $notas_i = substr($notas_i, 0, 2000);
-        $notas_ = $notas_i . str_repeat(" ", (2000 - strlen($notas_i)));
+        $notas_in = substr($notas_i, 0, 2000);
+        $notas_ = $notas_in . str_repeat(" ", (2000 - strlen($notas_in)));
 
         $F_NUMERO_REG = '0000002';
         $F_TIPO_REG = '0850';
