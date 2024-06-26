@@ -57,7 +57,7 @@ class ControllerNuevaSolicitud extends Controller
             }
         }
 
-        if($tipo_st_!="ALMACEN" && $tipo_st_!="BODEGA"){
+        if ($tipo_st_ != "ALMACEN" && $tipo_st_ != "BODEGA") {
             $seg_ = new ControllerSeguimiento();
             $seg_->updateSeguimiento($id_insert, 2);
             $seg_->agregarSeguimiento($id_insert, 3);
@@ -156,7 +156,7 @@ class ControllerNuevaSolicitud extends Controller
         $proceso = 'Servicio tecnico';
         $estado = 'Creado';
 
-        if($tipo_st_=="ALMACEN" || $tipo_st_=="BODEGA"){
+        if ($tipo_st_ == "ALMACEN" || $tipo_st_ == "BODEGA") {
             $respuesta_st = 'Valoracion';
             $proceso = 'Taller';
             $estado = 'Por ingresar';
@@ -167,7 +167,7 @@ class ControllerNuevaSolicitud extends Controller
             'ced_asesor' => Auth::user()->id,
             'asesor' => Auth::user()->nombre,
             'almacen' => $almacen,
-            'tipo_servicio'=>$tipo_st_,
+            'tipo_servicio' => $tipo_st_,
             'cedula' => $request->cedula_st,
             'nombre' => $nombre_,
             'celular' => $request->celular_st,
@@ -206,7 +206,7 @@ class ControllerNuevaSolicitud extends Controller
         if ($response) {
             $seg_ = new ControllerSeguimiento();
 
-            if($tipo_st_=="ALMACEN" || $tipo_st_=="BODEGA"){
+            if ($tipo_st_ == "ALMACEN" || $tipo_st_ == "BODEGA") {
                 $seg_->agregarSeguimiento($id_insert, 1);
                 $seg_->updateSeguimiento($id_insert, 1);
                 $seg_->agregarSeguimiento($id_insert, 2);
@@ -227,5 +227,17 @@ class ControllerNuevaSolicitud extends Controller
         }
 
         return response()->json([], 401, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function getInfoEmailAlmacen(Request $request)
+    {
+        $id_co = $request->co;
+        $info = infoAlmacenes::where("numero", $id_co)->first();
+        if ($info) {
+            $email_ =  $info->email_info;
+        } else {
+            $email_ = "";
+        }
+        return response()->json(['status' => true, 'email' => $email_], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

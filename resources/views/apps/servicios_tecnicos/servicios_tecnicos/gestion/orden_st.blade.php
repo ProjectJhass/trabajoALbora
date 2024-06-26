@@ -668,7 +668,7 @@
             })
         }
 
-        modalIngresarOstTaller = (id_st, accion, articulo, almacen) => {
+        modalIngresarOstTaller = (id_st, accion, articulo, tipo_servicio) => {
             var $ordenTallerElement = $('#orden_taller_id');
             var articulo_ = articulo.toLowerCase();
             var mostrarOrdenTaller = articulo_.includes("colchon") || articulo_.includes("protec") || articulo_.includes("almoha");
@@ -677,7 +677,7 @@
                 $ordenTallerElement.prop('hidden', !mostrarOrdenTaller);
                 document.getElementById('dataEnvioTercerosSt').hidden = false;
 
-                if (almacen == "HAPPYSLEEP") {
+                if (tipo_servicio != "CLIENTE") {
                     document.getElementById("div_concepto_valoracion_hs").hidden = false;
                 } else {
                     document.getElementById("div_concepto_valoracion_hs").hidden = true;

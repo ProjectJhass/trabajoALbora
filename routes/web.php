@@ -894,6 +894,7 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middlew
             Route::get('', [ControllerCreateServicio::class, 'home'])->name('new.ost');
             Route::get('pagina-web/{ticket?}', [ControllerCreateServicio::class, 'infoPagWeb'])->name('new.ost.pw');
             Route::post('', [ControllerNuevaSolicitud::class, 'crearNuevaSolicitud'])->name('form.create.ost');
+            Route::post('/buscar-email', [ControllerNuevaSolicitud::class, 'getInfoEmailAlmacen'])->name('find.email.form.create.ost');
         });
         Route::group(['prefix' => '/formatos'], function () {
             Route::get('/{id_st}', [ControllerFormatosPdf::class, 'createDocument'])->name('format.hs');

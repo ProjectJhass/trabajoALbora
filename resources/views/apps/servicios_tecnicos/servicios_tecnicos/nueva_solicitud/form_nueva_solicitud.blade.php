@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <select name="proveedor_st" id="proveedor_st" class="form-control" required>
+                        <select name="proveedor_st" id="proveedor_st" onchange="validarProveedorForm(this.value)" class="form-control" required>
                             <option value=""></option>
                             <option value="MUEBLES ALBURA">MUEBLES ALBURA SAS</option>
                             <option value="HAPPY SLEEP">HAPPY SLEEP SAS</option>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <select name="txt_tipo_st" id="txt_tipo_st" class="form-control" required>
+                        <select name="txt_tipo_st" id="txt_tipo_st" onchange="validarTipoStForm(this.value)" class="form-control" required>
                             <option value=""></option>
                             <option value="CLIENTE">CLIENTE</option>
                             <option value="ALMACEN">ALMACEN</option>

@@ -68,14 +68,14 @@
                             @endif
                             @if ($info_st->proceso == 'Taller' && $info_st->estado == 'Por ingresar')
                                 <li><a class="dropdown-item" id="updateValFab{{ $id_ost }}" href="javascript:void(0);"
-                                        onclick="modalIngresarOstTaller('{{ $id_ost }}', '1-ingreso','{{ trim($info_st->articulo) }}', '{{ $info_st->almacen }}')">Actualizar
+                                        onclick="modalIngresarOstTaller('{{ $id_ost }}', '1-ingreso','{{ trim($info_st->articulo) }}', '{{ $info_st->tipo_servicio }}')">Actualizar
                                         ingreso a taller</a></li>
                             @endif
                             @if ($info_st->proceso == 'Taller' && $info_st->estado == 'En reparacion')
                                 <li><a class="dropdown-item" id="updateValFab{{ $id_ost }}" href="javascript:void(0);"
                                         onclick="modalSeguimientoReparacionSt('{{ $id_ost }}')">Agregar seguimiento de taller</a></li>
                                 <li><a class="dropdown-item" id="updateValFab{{ $id_ost }}" href="javascript:void(0);"
-                                        onclick="modalIngresarOstTaller('{{ $id_ost }}', '{{ $info_t->orden_taller }}-salida','{{ trim($info_st->articulo) }}', '{{ $info_st->almacen }}')">Actualizar
+                                        onclick="modalIngresarOstTaller('{{ $id_ost }}', '{{ $info_t->orden_taller }}-salida','{{ trim($info_st->articulo) }}', '{{ $info_st->tipo_servicio }}')">Actualizar
                                         salida de taller</a></li>
                             @endif
                             <li>

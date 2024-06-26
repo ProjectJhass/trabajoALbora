@@ -19,6 +19,7 @@ class infoAlmacenes extends Model
         'id_co',
         'numero',
         'almacen',
+        'email_info',
         'estado'
     ];
 }

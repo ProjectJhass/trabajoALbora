@@ -43,6 +43,92 @@
             $('#ext2').val(ext2)
         }
 
+        validarProveedorForm = (valor) => {
+            switch (valor) {
+                case "HAPPY SLEEP":
+                    $("#co_new_ost").val("999")
+                    break;
+                case "HOTEL ABADIA":
+                    $("#co_new_ost").val("051")
+                    break;
+                case "HOTEL SONESTA":
+                    $("#co_new_ost").val("052")
+                    break;
+                case "TERCEROS":
+                    $("#co_new_ost").val("053")
+                    break;
+            }
+        }
+
+        validarTipoStForm = (valor) => {
+
+            var co = $("#co_new_ost").val()
+
+            switch (valor) {
+                case "CLIENTE":
+                    $("#cedula_st").val("")
+                    $("#nombre_st").val("")
+                    $("#celular_st").val("")
+                    $("#email_st").val("")
+                    $("#direccion_st").val("")
+                    $("#barrio_st").val("")
+                    $("#ciudad_st").val("")
+                    break;
+                case "ALMACEN":
+                    if (co == "999") {
+                        $("#cedula_st").val("")
+                        $("#nombre_st").val("")
+                        $("#celular_st").val("")
+                        $("#email_st").val("")
+                        $("#direccion_st").val("")
+                        $("#barrio_st").val("")
+                        $("#ciudad_st").val("")
+                    } else {
+                        buscarInfoEmailSt(co)
+                        $("#cedula_st").val("800009732")
+                        $("#nombre_st").val("MUEBLES ALBURA SAS")
+                        $("#celular_st").val("")
+                        $("#direccion_st").val("")
+                        $("#barrio_st").val("")
+                        $("#ciudad_st").val("")
+                    }
+                    break;
+                case "BODEGA":
+                    if (co == "999") {
+                        $("#cedula_st").val("890003838")
+                        $("#nombre_st").val("COLCHONES HAPPY SLEEP SAS")
+                        $("#celular_st").val("3116356431")
+                        $("#email_st").val("logistica@happysleep.com.co")
+                        $("#direccion_st").val("KM 1 VIA EL EDEN")
+                        $("#barrio_st").val("FRENTE AL BARRIO ARRAYANES")
+                        $("#ciudad_st").val("ARMENIA")
+                    } else {
+                        $("#cedula_st").val("800009732")
+                        $("#nombre_st").val("MUEBLES ALBURA SAS")
+                        $("#celular_st").val("3183569509")
+                        $("#email_st").val("bodega.ppal@mueblesalbura.com.co")
+                        $("#direccion_st").val("CARRERA 16 A N 10 - 42")
+                        $("#barrio_st").val("LA POPA")
+                        $("#ciudad_st").val("DOSQUEBRADAS")
+                    }
+                    break;
+            }
+        }
+
+        buscarInfoEmailSt = (co) => {
+            var datos = $.ajax({
+                url: "{{ route('find.email.form.create.ost') }}",
+                type: "post",
+                dataType: "json",
+                data: {
+                    co
+                }
+            });
+            datos.done((res) => {
+                $("#email_st").val(res.email)
+            })
+        }
+
         CrearNuevaSolicitudST = () => {
             notificacion("Guardando información de la orden de servicio", "info", 10000);
             var formulario = new FormData(document.getElementById('form-send-new-ost'));
