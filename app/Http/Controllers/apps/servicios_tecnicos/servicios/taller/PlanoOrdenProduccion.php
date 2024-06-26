@@ -31,7 +31,7 @@ class PlanoOrdenProduccion extends Controller
         //Tipo de servicio
         $tipo_servicio_st = trim($ost_info->tipo_servicio);
         $tipo_servicio  = substr($tipo_servicio_st, 0, 30);
-        $ref2 = $tipo_servicio . str_repeat(" ", (30 - strlen($almacen)));
+        $ref2 = $tipo_servicio . str_repeat(" ", (30 - strlen($tipo_servicio)));
 
         //concepto fabrica
         $valoracion_st = $ost_info->respuesta_st;
