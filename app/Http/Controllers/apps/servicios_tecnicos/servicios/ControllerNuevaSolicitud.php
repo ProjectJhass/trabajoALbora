@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\File;
 
 class ControllerNuevaSolicitud extends Controller
 {
-    public function addEvidenciasSt($id_insert, $imagenes, $comentario, $responsable, $fecha, $cobrable)
+    public function addEvidenciasSt($id_insert, $imagenes, $comentario, $responsable, $fecha, $tipo_st_)
     {
 
         $extensions = (['png', 'jpg', 'jpeg', 'tiff', 'webp', 'mp4']);
@@ -57,7 +57,7 @@ class ControllerNuevaSolicitud extends Controller
             }
         }
 
-        if (empty($cobrable) || $cobrable != 'Cobrable') {
+        if($tipo_st_!="ALMACEN" && $tipo_st_!="BODEGA"){
             $seg_ = new ControllerSeguimiento();
             $seg_->updateSeguimiento($id_insert, 2);
             $seg_->agregarSeguimiento($id_insert, 3);
@@ -133,7 +133,7 @@ class ControllerNuevaSolicitud extends Controller
         $nombre_ = $request->nombre_st;
         $email_user = $request->email_st;
         $cantidad_item = $request->cantidad_item;
-        $cobrable_b = $request->cobrable_b;
+        $tipo_st_ = $request->txt_tipo_st;
 
         if (!self::validarEmail($email_user)) {
             return response()->json([], 401, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -156,8 +156,8 @@ class ControllerNuevaSolicitud extends Controller
         $proceso = 'Servicio tecnico';
         $estado = 'Creado';
 
-        if (!empty($cobrable_b) && $cobrable_b == 'Cobrable') {
-            $respuesta_st = 'Cobrable';
+        if($tipo_st_=="ALMACEN" || $tipo_st_=="BODEGA"){
+            $respuesta_st = 'Valoracion';
             $proceso = 'Taller';
             $estado = 'Por ingresar';
         }
@@ -167,6 +167,7 @@ class ControllerNuevaSolicitud extends Controller
             'ced_asesor' => Auth::user()->id,
             'asesor' => Auth::user()->nombre,
             'almacen' => $almacen,
+            'tipo_servicio'=>$tipo_st_,
             'cedula' => $request->cedula_st,
             'nombre' => $nombre_,
             'celular' => $request->celular_st,
@@ -199,13 +200,13 @@ class ControllerNuevaSolicitud extends Controller
         }
 
         if ($request->hasFile('evidencias_st')) {
-            self::addEvidenciasSt($id_insert, $request->file('evidencias_st'), 'Cliente envió las evidencias al momento de realizar la solicitud', Auth::user()->nombre, date('Y-m-d'), $cobrable_b);
+            self::addEvidenciasSt($id_insert, $request->file('evidencias_st'), 'Cliente envió las evidencias al momento de realizar la solicitud', Auth::user()->nombre, date('Y-m-d'), $tipo_st_);
         }
 
         if ($response) {
             $seg_ = new ControllerSeguimiento();
 
-            if ($respuesta_st == 'Cobrable') {
+            if($tipo_st_=="ALMACEN" || $tipo_st_=="BODEGA"){
                 $seg_->agregarSeguimiento($id_insert, 1);
                 $seg_->updateSeguimiento($id_insert, 1);
                 $seg_->agregarSeguimiento($id_insert, 2);

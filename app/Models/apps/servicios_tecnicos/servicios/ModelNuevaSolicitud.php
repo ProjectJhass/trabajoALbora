@@ -21,6 +21,7 @@ class ModelNuevaSolicitud extends Model
         'ced_asesor',
         'asesor',
         'almacen',
+        'tipo_servicio',
         'cedula',
         'nombre',
         'celular',

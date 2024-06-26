@@ -116,6 +116,7 @@
                                     <option value="">Seleccionar...</option>
                                     <option value="1">Oportunidad</option>
                                     <option value="2">Prospecto</option>
+                                    <option value="6">Pre-aprobado</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">

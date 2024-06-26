@@ -132,6 +132,7 @@
                 </div>
                 <div class="col-md-12 mt-3">
                     <p class="mb-1"><strong><i>Usuario creación: </strong> {{ $item->asesor }}</i></p>
+                    <p class="mb-1"><strong>Tipo de servicio: </strong><span class="badge rounded-pill bg-label-danger">{{ $item->tipo_servicio }}</span></p>
                 </div>
             </div>
         </div>

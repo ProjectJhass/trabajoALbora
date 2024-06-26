@@ -71,9 +71,11 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <select name="cobrable_b" id="cobrable_b" class="form-control">
+                        <select name="txt_tipo_st" id="txt_tipo_st" class="form-control" required>
                             <option value=""></option>
-                            <option value="Cobrable">COBRABLE - BODEGA</option>
+                            <option value="CLIENTE">CLIENTE</option>
+                            <option value="ALMACEN">ALMACEN</option>
+                            <option value="BODEGA">BODEGA</option>
                         </select>
                         <label for="proveedor_st">Tipo ST</label>
                     </div>

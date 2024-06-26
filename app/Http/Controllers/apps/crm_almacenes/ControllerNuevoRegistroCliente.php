@@ -42,6 +42,15 @@ class ControllerNuevoRegistroCliente extends Controller
             && !empty($request->observaciones)
         ) {
 
+            $tipo_cliente = $request->tipo_c;
+            if($tipo_cliente==6){
+                $tipo_c = "1";
+                $estado = "6";
+            }else{
+                $tipo_c = $tipo_cliente;;
+                $estado = "1";  
+            }
+
             $info_ = ModelClientesCRM::create([
                 'cedula_cliente' => $request->cedula_cliente,
                 'nombre_1' => $request->primer_nombre,
@@ -63,10 +72,10 @@ class ControllerNuevoRegistroCliente extends Controller
                 'fecha_registro' => date('Y-m-d'),
                 'prioridad' => '1',
                 'origen' => $request->origen,
-                'tipo_cliente' => $request->tipo_c,
+                'tipo_cliente' => $tipo_c,
                 'cedula_asesor' => Auth::user()->id,
                 'id_cotizacion' => ModelGenerarHash::make(),
-                'estado' => '1',
+                'estado' => $estado,
             ]);
 
             if ($info_) {
