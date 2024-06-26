@@ -420,10 +420,10 @@
         }
 
         ConsultarInformacionAsesor = (id_asesor, nombre) => {
-
             loandingPanel()
-
             var co_s = $('#almacen_co').val()
+            var tipo_cliente = $("#tipo_cliente_asesor").val()
+
             var datos = $.ajax({
                 url: "{{ route('info.general.asesor.m') }}",
                 type: "POST",
@@ -431,7 +431,8 @@
                 data: {
                     id_asesor,
                     co_s,
-                    nombre
+                    nombre,
+                    tipo_cliente
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

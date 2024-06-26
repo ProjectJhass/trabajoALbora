@@ -18,13 +18,30 @@ class ControllerMaestraAdmin extends Controller
     public function informacionAsesor(Request $request)
     {
         $id_asesor = $request->id_asesor;
-        
-        $info_clientes = ModelClientesCRM::with([
-            'llamadasPendientes',
-            'itemsCotizados'
-        ])->where('cedula_asesor', $id_asesor)
-            ->orderByDesc('created_at')
-            ->get();
+        $tipo_cliente = $request->tipo_cliente;
+
+        if ($tipo_cliente == 0) {
+
+            $info_clientes = ModelClientesCRM::with([
+                'llamadasPendientes',
+                'itemsCotizados'
+            ])->where('cedula_asesor', $id_asesor)
+                ->orderByDesc('created_at')
+                ->get();
+                
+        }else{
+
+            $columna = ($tipo_cliente == 5 || $tipo_cliente == 6) ? "estado" : "tipo_cliente";
+            $valor = $tipo_cliente == 5 ? "2" : ($tipo_cliente == 6 ? "6" : $tipo_cliente);
+
+            $info_clientes = ModelClientesCRM::with([
+                'llamadasPendientes',
+                'itemsCotizados'
+            ])->where('cedula_asesor', $id_asesor)
+                ->where($columna, $valor)
+                ->orderByDesc('created_at')
+                ->get();
+        }      
 
         $table = view('apps.crm_almacenes.gcp.administrador.tables.tableMaestraAdmin', ['clientes' => $info_clientes])->render();
 

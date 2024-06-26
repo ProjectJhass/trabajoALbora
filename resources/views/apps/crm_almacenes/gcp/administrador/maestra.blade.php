@@ -49,9 +49,8 @@
     </section>
     <section class="content">
         <div class="container-fluid">
-            <div class="row mb-3">
-                <div class="col-md-2"></div>
-                <div class="col-md-4">
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">Almacen</div>
@@ -72,6 +71,21 @@
                         <select class="form-control" name="asesor_co" id="asesor_co"
                             onchange="ConsultarInformacionAsesor(this.value, this.options[this.selectedIndex].dataset.nombre)">
                             <option value="" data-nombre="">Seleccionar...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Tipo</div>
+                        </div>
+                        <select class="form-control" onchange="BuscarInformacionTipo()" name="tipo_cliente_asesor" id="tipo_cliente_asesor">
+                            <option value="0">TODOS</option>
+                            <option value="1">OPORTUNIDAD</option>
+                            <option value="2">PROSPECTOS</option>
+                            <option value="3">EFECTIVOS</option>
+                            <option value="5">PREFERENCIAL</option>
+                            <option value="6">PRE-APROBADO</option>
                         </select>
                     </div>
                 </div>
@@ -590,5 +604,10 @@
         $(document).ready(function() {
             $('.select2').select2();
         });
+
+        BuscarInformacionTipo = () => {
+            var asesor = $("#asesor_co").val()
+            ConsultarInformacionAsesor(asesor, "ALBURA")
+        }
     </script>
 @endsection
