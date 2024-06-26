@@ -145,13 +145,14 @@ class ControllerGestionTaller extends Controller
                         }
                     } else {
                         if (!empty($responsable) && !empty($estado_articulo)) {
+
+                            if (!empty($request->concepto_valoracion_hs)) {
+                                $ost->respuesta_st = $request->concepto_valoracion_hs;
+                                $ost->save();
+                            }
+
                             $ws = self::createInfoSiesa($id_st, $estado_articulo);
                             if (is_bool($ws) === true && $ws === true) {
-
-                                if (!empty($request->concepto_valoracion_hs)) {
-                                    $ost->respuesta_st = $request->concepto_valoracion_hs;
-                                    $ost->save();
-                                }
 
                                 $response = ModelDatosIngresoTaller::create([
                                     'observaciones_ingreso' => $estado_articulo,
