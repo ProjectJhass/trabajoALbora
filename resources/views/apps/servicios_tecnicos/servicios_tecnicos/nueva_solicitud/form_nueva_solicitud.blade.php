@@ -36,7 +36,8 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <select name="proveedor_st" id="proveedor_st" onchange="validarProveedorForm(this.value)" class="form-control" required>
+                        <select name="proveedor_st" id="proveedor_st" onchange="validarProveedorForm(this.value)"
+                            class="form-control" required>
                             <option value=""></option>
                             <option value="MUEBLES ALBURA">MUEBLES ALBURA SAS</option>
                             <option value="HAPPY SLEEP">HAPPY SLEEP SAS</option>
@@ -50,8 +51,8 @@
                 <div class="col-md-4 mb-3">
                     @if (!empty($co_exp))
                         <div class="form-floating">
-                            <input type="text" class="form-control" value="{{ $co_exp }}" id="co_new_ost" name="co_new_ost"
-                                aria-describedby="floatingInputHelp" required />
+                            <input type="text" class="form-control" value="{{ $co_exp }}" id="co_new_ost"
+                                name="co_new_ost" aria-describedby="floatingInputHelp" required />
                             <label for="nombre_st">Centro de experiencia</label>
                         </div>
                     @else
@@ -64,16 +65,17 @@
                 </div>
                 <div class="col-md-4 mb-3" hidden>
                     <div class="form-floating">
-                        <input type="text" class="form-control" value="{{ $info['ticket'] }}" id="ticket_pw" name="ticket_pw"
-                            aria-describedby="floatingInputHelp"/>
+                        <input type="text" class="form-control" value="{{ $info['ticket'] }}" id="ticket_pw"
+                            name="ticket_pw" aria-describedby="floatingInputHelp" />
                         <label for="nombre_st">Ticket</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <select name="txt_tipo_st" id="txt_tipo_st" onchange="validarTipoStForm(this.value)" class="form-control" required>
+                        <select name="txt_tipo_st" id="txt_tipo_st" onchange="validarTipoStForm(this.value)"
+                            class="form-control" required>
                             <option value=""></option>
-                            <option value="CLIENTE">CLIENTE</option>
+                            <option value="CLIENTE" {{ !empty($co_exp) ? 'selected' : '' }}>CLIENTE</option>
                             <option value="ALMACEN">ALMACEN</option>
                             <option value="BODEGA">BODEGA</option>
                         </select>
@@ -84,51 +86,56 @@
             <div class="row mb-4">
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <input type="number" class="form-control" value="{{ $info['cedula'] }}" id="cedula_st" name="cedula_st"
-                            aria-describedby="floatingInputHelp" required />
+                        <input type="number" class="form-control" value="{{ $info['cedula'] }}" id="cedula_st"
+                            name="cedula_st" aria-describedby="floatingInputHelp" required />
                         <label for="cedula_st">Cédula</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control" value="{{ $info['nombre'] }}" onkeyup="this.value=this.value.toUpperCase()"
-                            id="nombre_st" name="nombre_st" aria-describedby="floatingInputHelp" required />
+                        <input type="text" class="form-control" value="{{ $info['nombre'] }}"
+                            onkeyup="this.value=this.value.toUpperCase()" id="nombre_st" name="nombre_st"
+                            aria-describedby="floatingInputHelp" required />
                         <label for="nombre_st">Nombre</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control" value="{{ $info['celular'] }}" id="celular_st" name="celular_st"
-                            aria-describedby="floatingInputHelp" required />
+                        <input type="text" class="form-control" value="{{ $info['celular'] }}" id="celular_st"
+                            name="celular_st" aria-describedby="floatingInputHelp" required />
                         <label for="celular_st">Número de contacto</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <input type="email" class="form-control" onkeyup="this.value=this.value.toLowerCase()" value="{{ $info['correo'] }}"
-                            id="email_st" name="email_st" aria-describedby="floatingInputHelp" required />
+                        <input type="email" class="form-control" onkeyup="this.value=this.value.toLowerCase()"
+                            value="{{ $info['correo'] }}" id="email_st" name="email_st"
+                            aria-describedby="floatingInputHelp" required />
                         <label for="email_st">Email</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control" value="{{ $info['direccion'] }}" onkeyup="this.value=this.value.toUpperCase()"
-                            id="direccion_st" name="direccion_st" aria-describedby="floatingInputHelp" required />
+                        <input type="text" class="form-control" value="{{ $info['direccion'] }}"
+                            onkeyup="this.value=this.value.toUpperCase()" id="direccion_st" name="direccion_st"
+                            aria-describedby="floatingInputHelp" required />
                         <label for="direccion_st">Dirección</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control" value="{{ $info['barrio'] }}" onkeyup="this.value=this.value.toUpperCase()"
-                            id="barrio_st" name="barrio_st" aria-describedby="floatingInputHelp" required />
+                        <input type="text" class="form-control" value="{{ $info['barrio'] }}"
+                            onkeyup="this.value=this.value.toUpperCase()" id="barrio_st" name="barrio_st"
+                            aria-describedby="floatingInputHelp" required />
                         <label for="barrio_st">Barrio</label>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="input-group">
                         <div class="form-floating">
-                            <input type="text" class="form-control" value="{{ $info['ciudad'] }}" onkeyup="this.value=this.value.toUpperCase()"
-                                id="ciudad_st" name="ciudad_st" aria-describedby="floatingInputHelp" required />
+                            <input type="text" class="form-control" value="{{ $info['ciudad'] }}"
+                                onkeyup="this.value=this.value.toUpperCase()" id="ciudad_st" name="ciudad_st"
+                                aria-describedby="floatingInputHelp" required />
                             <label for="ciudad_st">Ciudad</label>
                         </div>
                         <div class="form-floating">
@@ -148,29 +155,34 @@
                 </div>
                 <div class="col-md-7 mb-3">
 
-                    <input type="text" class="form-control" hidden value="{{ $info['id_item'] }}" name="id_item" id="id_item">
-                    <input type="text" class="form-control" hidden value="{{ $info['ext1'] }}" name="ext1" id="ext1">
-                    <input type="text" class="form-control" hidden value="{{ $info['ext2'] }}" name="ext2" id="ext2">
+                    <input type="text" class="form-control" hidden value="{{ $info['id_item'] }}" name="id_item"
+                        id="id_item">
+                    <input type="text" class="form-control" hidden value="{{ $info['ext1'] }}" name="ext1"
+                        id="ext1">
+                    <input type="text" class="form-control" hidden value="{{ $info['ext2'] }}" name="ext2"
+                        id="ext2">
 
                     @if (!empty($co_exp) && !empty($info['articulo']))
                         <div class="form-floating">
-                            <input type="text" class="form-control" value="{{ base64_decode($info['articulo']) }}" id="articulo_st" name="articulo_st"
+                            <input type="text" class="form-control"
+                                value="{{ base64_decode($info['articulo']) }}" id="articulo_st" name="articulo_st"
                                 aria-describedby="floatingInputHelp" required />
                             <label for="articulo_st">Artículo</label>
                         </div>
                     @else
                         <div class="form-floating">
                             <label for=""></label>
-                            <select class="form-control articulo_st" onchange="updateInfoProduct(this)" name="articulo_st" id="articulo_st"
-                                data-placeholder="Articulo" required>
+                            <select class="form-control articulo_st" onchange="updateInfoProduct(this)"
+                                name="articulo_st" id="articulo_st" data-placeholder="Articulo" required>
                                 <option value=""></option>
                                 @foreach ($products as $item)
                                     @php
                                         $ext1 = isset($item['ext1']) ? $item['ext1'] : '';
                                         $ext2 = isset($item['ext2']) ? $item['ext2'] : '';
                                     @endphp
-                                    <option data-id_item="{{ $item['id'] }}" data-ext1="{{ $ext1 }}" data-ext2="{{ $ext2 }}"
-                                        value="{{ trim($item['producto']) }}">{{ trim($item['producto']) }}</option>
+                                    <option data-id_item="{{ $item['id'] }}" data-ext1="{{ $ext1 }}"
+                                        data-ext2="{{ $ext2 }}" value="{{ trim($item['producto']) }}">
+                                        {{ trim($item['producto']) }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -178,8 +190,8 @@
                 </div>
                 <div class="col-md-1 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control text-center" id="cantidad_item" name="cantidad_item"
-                            aria-describedby="floatingInputHelp" />
+                        <input type="text" class="form-control text-center" id="cantidad_item"
+                            name="cantidad_item" aria-describedby="floatingInputHelp" />
                         <label for="barrio_st">Cantidad</label>
                     </div>
                 </div>
@@ -192,8 +204,8 @@
                             <label for="factura_st">N° Factura</label>
                         </div>
                         <div class="form-floating">
-                            <input type="date" class="form-control" value="{{ $info['fecha_factura'] }}" id="fecha_factura"
-                                name="fecha_factura" aria-describedby="floatingInputHelp" />
+                            <input type="date" class="form-control" value="{{ $info['fecha_factura'] }}"
+                                id="fecha_factura" name="fecha_factura" aria-describedby="floatingInputHelp" />
                             <label for="fecha_factura">Fecha factura</label>
                         </div>
                     </div>
@@ -207,8 +219,8 @@
                             <label for="remision_st">N° remisión</label>
                         </div>
                         <div class="form-floating">
-                            <input type="date" class="form-control" value="{{ $info['fecha_remision'] }}" id="fecha_remision"
-                                name="fecha_remision" aria-describedby="floatingInputHelp" />
+                            <input type="date" class="form-control" value="{{ $info['fecha_remision'] }}"
+                                id="fecha_remision" name="fecha_remision" aria-describedby="floatingInputHelp" />
                             <label for="">Fecha remisión</label>
                         </div>
                     </div>
@@ -225,7 +237,8 @@
                     </div>
                 </div>
                 <div class="col-md-12 mb-4">
-                    <select class="form-control" id="causales_st" name="causales_st[]" data-placeholder="Seleccionar causales..." multiple>
+                    <select class="form-control" id="causales_st" name="causales_st[]"
+                        data-placeholder="Seleccionar causales..." multiple>
                         @foreach ($causales as $item)
                             <option value="{{ $item->descripcion }}">{{ $item->descripcion }}</option>
                         @endforeach
@@ -257,17 +270,22 @@
             </center>
 
             <div class="col-lg-3 col-md-6" id="offcanvas-info-ev">
-                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom"
+                    aria-labelledby="offcanvasBottomLabel">
                     <div class="offcanvas-header">
-                        <h5 id="offcanvasBottomLabel" class="offcanvas-title">Agregar evidencias <span class="tf-icons bx bx-camera me-1"></span> /
+                        <h5 id="offcanvasBottomLabel" class="offcanvas-title">Agregar evidencias <span
+                                class="tf-icons bx bx-camera me-1"></span> /
                             <span class="tf-icons bx bxs-camera-movie me-1"></span>
                         </h5>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <input type="file" class="form-control" multiple name="evidencias_st[]" id="evidencias_st">
+                        <input type="file" class="form-control" multiple name="evidencias_st[]"
+                            id="evidencias_st">
                         <hr>
-                        <button type="button" class="btn rounded-pill btn-outline-danger" onclick="$('#evidencias_st').val('')">
+                        <button type="button" class="btn rounded-pill btn-outline-danger"
+                            onclick="$('#evidencias_st').val('')">
                             <span class="tf-icons bx bx-camera me-1"></span>Eliminar evidencias cargadas
                         </button>
                     </div>
