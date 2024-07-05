@@ -115,9 +115,26 @@ class ControllerPlannerWood extends Controller
         $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
 
         $cantidad_solicitada = $info_->cantidad;
-        $cantidad_cortada = $info_->cantidad_cortada;
 
+        //Validamos la tolerancia de las piezas cortadas
+        $tolerancia = round($cantidad_solicitada * 0.1);
+        //Rango de cortes admitidos según la tolerancia
+        $rango_i = round($cantidad_solicitada - $tolerancia);
+        //Tolerancia superior
+        $rango_s = round($cantidad_solicitada + $tolerancia);
+
+        //Cantidad actualmente cortada
+        $cantidad_cortada = $info_->cantidad_cortada;
+        //Cantidad ingresada por usuario
         $cantidad_total = $cantidad_cortada + $cantidad_;
+
+        if ($cantidad_total > $rango_s) {
+            return response()->json(['status' => false, 'mensaje' => 'ERROR: Está superando la tolerancia exigida, ingresa un valor inferior'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        }
+
+        
+
+
         if ($cantidad_total >= $cantidad_solicitada) {
             // $restante = $cantidad_total - $cantidad_solicitada;
             // $cantidad_total = $cantidad_solicitada;

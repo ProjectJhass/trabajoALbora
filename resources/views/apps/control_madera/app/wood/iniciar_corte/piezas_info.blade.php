@@ -24,8 +24,11 @@
                             <div class="col-md-1 mb-3">
                                 <div class="form-group">
                                     <label for="">Calidad</label>
+                                    @php
+                                        $color_b = $item->calidad == 'Excelente' ? '#ffee00' : '#0cdfe6;';
+                                    @endphp
                                     <input type="text" value="{{ $item->calidad }}" readonly class="form-control"
-                                        style="text-align: center; background-color: #ffee00;" />
+                                        style="text-align: center; background-color: {{ $color_b }}" />
                                 </div>
                             </div>
                             <div class="col-md-1 mb-3">
@@ -57,7 +60,7 @@
                                 <div class="form-group">
                                     <label for="">Bloques</label>
                                     <button class="btn btn-block btn-danger"
-                                        onclick="visualizarTroncosPlan('{{ $item->id }}', '{{ $bandera }}')">Tronco</button>
+                                        onclick="visualizarTroncosPlan('{{ $item->id }}', '{{ $bandera }}')">Bloque</button>
                                 </div>
                             </div>
                             <div class="col-md-1 mb-3">

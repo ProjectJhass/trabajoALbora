@@ -111,53 +111,55 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar Piezas a otra serie</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar piezas a otra serie</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">Serie </label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <select name="serie_planner" id="serie_planner" onchange="searchInfoMadera(this.value)"
-                                                    class="form-control" required>
-                                                    <option value="">Seleccionar...</option>
-                                                    @foreach ($series as $item)
-                                                        <option value="{{ $item->id_serie }}">{{ $item->serie }}</option>
-                                                    @endforeach
-                                                </select>
+                                <form class="was-validated">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-md-3 col-sm-3 ">Serie </label>
+                                                <div class="col-md-9 col-sm-9 ">
+                                                    <select name="serie_planner" id="serie_planner" onchange="searchInfoMadera(this.value)"
+                                                        class="form-control" required>
+                                                        <option value="">Seleccionar...</option>
+                                                        @foreach ($series as $item)
+                                                            <option value="{{ $item->id_serie }}">{{ $item->serie }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-sm-3 ">Madera </label>
+                                                <div class="col-md-9 col-sm-9 ">
+                                                    <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)"
+                                                        class="form-control" required>
+                                                        <option value="">Seleccionar...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-sm-3">Mueble </label>
+                                                <div class="col-md-9 col-sm-9 ">
+                                                    <select name="mueble_planner" onchange="buscarInformacionPiezasActualizar()" id="mueble_planner"
+                                                        class="form-control" required>
+                                                        <option value="">Seleccionar...</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-sm-3 ">Madera </label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)" readonly
-                                                    class="form-control" required>
-                                                    <option value="">Seleccionar...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-sm-3">Mueble </label>
-                                            <div class="col-md-9 col-sm-9 ">
-                                                <select name="mueble_planner" onchange="buscarInformacionPiezasActualizar()" id="mueble_planner"
-                                                    class="form-control" required readonly>
-                                                    <option value="">Seleccionar...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                                 <div class="ln_solid"></div>
-                                <form id="formPiezasAsignacionCantidadFavor"></form>
+                                <form id="formPiezasAsignacionCantidadFavor" class="was-validated"></form>
                             </div>
                         </div>
                     </div>
@@ -182,13 +184,15 @@
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
                                 <label><strong>Cantidad</strong></label>
-                                <input type="number" class="form-control is-invalid" style="text-align: center" name="AddtablaWood" id="AddtablaWood">
+                                <input type="number" class="form-control is-invalid" style="text-align: center" name="AddtablaWood"
+                                    id="AddtablaWood">
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
                                 <label><strong>Ancho </strong>- Centímetros</label>
-                                <input type="number" class="form-control is-invalid" style="text-align: center" name="AddAnchoWood" id="AddAnchoWood">
+                                <input type="number" class="form-control is-invalid" style="text-align: center" name="AddAnchoWood"
+                                    id="AddAnchoWood">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -203,8 +207,11 @@
             </div>
         </div>
     </div>
-
-    <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalRegistroTablasWood').modal('show')">+ Madera</a>
+    @if (str_contains('Vaquera', $planner->madera))
+        <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalRegistroTablasWood').modal('show')">+ Madera</a>
+    @else
+        <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalNuevasPiezasWood').modal('show')">+ Madera</a>
+    @endif
 @endsection
 @section('footer')
     <script>
@@ -253,14 +260,19 @@
                 }
             });
             datos.done(function(response) {
-                if (response.estado == "Completado") {
-                    notificacion("¡Excelente! Cantidad de la pieza completada", "success", 3000)
+                if (response.status == true) {
+                    if (response.estado == "Completado") {
+                        notificacion("¡Excelente! Cantidad de la pieza completada", "success", 3000)
+                    }
+                    $("#cantidadActual" + id).val(response.cantidad)
+                    $("#agregarPiezasNuevas" + id).val(response.resta)
+                    $("#estadoWood" + id).text(response.estado)
+                    $("#estadoWood" + id).removeClass("text-danger")
+                    $("#estadoWood" + id).addClass(response.clase)
                 }
-                $("#cantidadActual" + id).val(response.cantidad)
-                $("#agregarPiezasNuevas" + id).val(response.resta)
-                $("#estadoWood" + id).text(response.estado)
-                $("#estadoWood" + id).removeClass("text-danger")
-                $("#estadoWood" + id).addClass(response.clase)
+                if (response.status == false) {
+                    notificacion(response.mensaje, "error", 5000)
+                }
             })
         }
 

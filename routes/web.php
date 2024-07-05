@@ -31,6 +31,10 @@ use App\Http\Controllers\apps\cotizador\ControllerPdfFogade;
 use App\Http\Controllers\apps\cotizador\ControllerRetomarCotizacion;
 use App\Http\Controllers\apps\cotizador\ControllerValidarProductos;
 use App\Http\Controllers\apps\cotizador\session\session;
+use App\Http\Controllers\apps\cotizador_pruebas\ControllerGenerarLiquidador;
+use App\Http\Controllers\apps\cotizador_pruebas\ControllerPanel as Cotizador_pruebasControllerPanel;
+use App\Http\Controllers\apps\cotizador_pruebas\ControllerPdfCotizacion as Cotizador_pruebasControllerPdfCotizacion;
+use App\Http\Controllers\apps\cotizador_pruebas\ControllerRetomarCotizacion as Cotizador_pruebasControllerRetomarCotizacion;
 use App\Http\Controllers\apps\crm_almacenes\ControllerClientesEfectivos;
 use App\Http\Controllers\apps\crm_almacenes\ControllerCrearTerceroSiesa;
 use App\Http\Controllers\apps\crm_almacenes\ControllerCumpleClientes;
@@ -91,6 +95,7 @@ use App\Http\Controllers\apps\nexus\ControllerInfoModulos;
 use App\Http\Controllers\apps\nexus\ControllerManualFunciones;
 use App\Http\Controllers\apps\nexus\ControllerUsuariosNexus;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerPQRS;
+use App\Http\Controllers\apps\nexus\ControllerEmitirConceptoEntrevista;
 use App\Http\Controllers\apps\servicios_tecnicos\analytics\ControllerAnalytics;
 use App\Http\Controllers\apps\servicios_tecnicos\pagina_web\ControllerWeb;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\admin\ControllerInformes;
@@ -535,6 +540,44 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
     });
 });
 
+//Cotizador de pruebas
+
+Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'lista_precios'], function () {
+        Route::get('/retomar/{id_retomar}', [Cotizador_pruebasControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion.pruebas');
+        Route::post('/consultar-cedula', [Cotizador_pruebasControllerRetomarCotizacion::class, 'getCotizacionesCliente'])->name('retomar.info.cliente.p');
+        Route::get('/catalogo', [ControllerCatalogo::class, 'index'])->name('catalogo.cotizador');
+    });
+
+    Route::group(['prefix' => 'panel'], function () {
+        Route::get('/lista-de-precios/{origen?}', [Cotizador_pruebasControllerPanel::class, 'panel'])->name('lista.precios.pruebas');
+        Route::post('/agregar-producto', [Cotizador_pruebasControllerPanel::class, 'AgregarProducto'])->name('add.new.product.pruebas');
+        Route::get('/nueva-cotizacion', [Cotizador_pruebasControllerPanel::class, 'GenerarNuevaCotizacion'])->name('precios.nueva.cotizacion.pruebas');
+    });
+
+    Route::group(['prefix' => 'liquidador'], function () {
+        Route::get('/cotizacion', [ControllerGenerarLiquidador::class, 'index'])->name('liquidar.cotizacion.pruebas');
+        Route::post('/cotizacion', [ControllerValidarProductos::class, 'index']);
+
+        Route::post('/eliminar', [ControllerGenerarLiquidador::class, 'eliminar'])->name("eliminar.item.cot.pruebas");
+        Route::post('/actualizar', [ControllerGenerarLiquidador::class, 'actualizar'])->name("actualizar.producto.pruebas");
+        Route::post('/validar-informacion', [ControllerGenerarLiquidador::class, 'ValidarDatosCotizacion'])->name("datos.cotizacion.pruebas");
+        Route::post('/generar-cotizacion', [ControllerGenerarLiquidador::class, 'agregarInformacionCotizacionCRM'])->name("agregar.crm.cotizacion");
+    });
+
+    Route::group(['prefix' => 'finalizar'], function () {
+        Route::get('/menu', [ControllerFinalizar::class, 'index'])->name("finalizar.cotizacion.pruebas");
+        Route::get('/pdf/{cliente}', [Cotizador_pruebasControllerPdfCotizacion::class, 'GenerarPdfCotizacion'])->name('generar.pdf.cotizacion.pruebas');
+        Route::get('/whatsapp', [ControllerFinalizar::class, 'WhatsApp'])->name("enviar.whatsapp.cotizacion.pruebas");
+        Route::post('/email', [ControllerFinalizar::class, 'Email'])->name("enviar.correo.cotizacion.pruebas");
+        Route::get('/fogade', [ControllerPdfFogade::class, 'GenerarDocumentoFogade'])->name("generar.pdf.fogade");
+        Route::get('/credito', [ControllerGenerarCredito::class, 'GenerarSolicitudCredito'])->name("generar.solicitud.credito");
+    });
+});
+
+
+//Cotizador real
+
 Route::group(['prefix' => 'cotizador', 'middleware' => 'auth'], function () {
 
     Route::get('check-session', [session::class, 'checkSession']);
@@ -834,6 +877,13 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'entrevistas'], function () {
         Route::get('crear', [ControllerEntrevistas::class, 'crearEntrevista'])->name('crear.entrevista');
+        Route::post('validar-info', [ControllerEntrevistas::class, 'validarInformacion'])->name('validar.info.entrevista');
+        Route::post('almacenar-info', [ControllerEntrevistas::class, 'crearInfoEntrevista'])->name('almacenar.info.entrevista');
+
+        Route::group(['prefix' => 'revision'], function () {
+            Route::get('', [ControllerEmitirConceptoEntrevista::class, 'index'])->name('concepto.entrevista');
+            Route::get('concepto/{id}', [ControllerEmitirConceptoEntrevista::class, 'emitirConcepto'])->name('emitirConcepto.entrevista');
+        });
     });
 });
 
