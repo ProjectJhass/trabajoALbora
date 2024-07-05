@@ -171,18 +171,6 @@
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
                         <div class="card-header">
-                            <strong>Cotizador</strong>
-                        </div>
-                        <div class="card-body text-center">
-                            <a href="{{ route('lista.precios.pruebas', ['origen' => '1']) }}">
-                                <img src="{{ asset('icons/bext.png') }}" width="40%" alt="">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card card-outline card-danger">
-                        <div class="card-header">
                             <strong>Páginas para referenciar</strong>
                         </div>
                         <div class="card-body text-center">
