@@ -13,55 +13,54 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 
 class ExportInfoTiemposRespuestaSt implements FromCollection, WithHeadings, WithTitle, WithColumnWidths
 {
-    protected $orden_servicio;
-    public function __construct($orden_servicio)
+    private $fecha_i;
+    private $fecha_f;
+    private $fechaActual;
+    private $fechaFinMesActual;
+    public function __construct($fecha_i = null, $fecha_f = null)
     {
-        $this->orden_servicio = $orden_servicio;
+        $this->fechaActual = date('Y-m-01');
+        $this->fechaFinMesActual = date('Y-m-t');
+        $this->fecha_i = $fecha_i;
+        $this->fecha_f = $fecha_f;
     }
 
     public function collection()
     {
-        if (empty($this->orden_servicio)) {
-            $data_ = ModelHistorialSeguimiento::select(
-                'historial_seguimiento.id_st',
-                DB::raw("MAX(servicios_tecnicos.cedula) AS cedula"),
-                DB::raw("MAX(servicios_tecnicos.nombre) AS nombre"),
-                DB::raw("MAX(servicios_tecnicos.created_at) AS fecha"),
-                DB::raw("MAX(servicios_tecnicos.almacen) AS almacen"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Creación' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Creación"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Visita/Evidencias' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Visita_Evidencias"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Valoracion' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Valoracion"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Recogida' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Recogida"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Ingreso taller' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Ingreso_taller"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Salida taller' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Salida_taller"),
-                DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Entrega mercancía' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at)), ' dias') ELSE NULL END) AS Entrega_mercancía")
-            )
-                ->leftJoin('etapas_servicos', 'historial_seguimiento.id_proceso', '=', 'etapas_servicos.id')
-                ->leftJoin('servicios_tecnicos', 'historial_seguimiento.id_St', '=', 'servicios_tecnicos.id_st')
-                ->where('servicios_tecnicos.respuesta_st', '<>', 'Cobrable')
-                ->groupBy('historial_seguimiento.id_st')
-                ->orderByDesc('historial_seguimiento.id_st')
-                ->get();
+
+        $query = ModelHistorialSeguimiento::select(
+            'historial_seguimiento.id_st',
+            DB::raw("MAX(servicios_tecnicos.cedula) AS cedula"),
+            DB::raw("MAX(servicios_tecnicos.nombre) AS nombre"),
+            DB::raw("MAX(servicios_tecnicos.created_at) AS fecha"),
+            DB::raw("MAX(servicios_tecnicos.almacen) AS almacen"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Creación' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Creación"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Visita/Evidencias' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Visita_Evidencias"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Valoracion' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Valoracion"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Recogida' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Recogida"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Ingreso taller' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Ingreso_taller"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Salida taller' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0, 1, DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Salida_taller"),
+            DB::raw("MAX(CASE WHEN etapas_servicos.etapa = 'Entrega mercancía' THEN CONCAT(IF(DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) = 0,1,DATEDIFF(historial_seguimiento.updated_at,historial_seguimiento.created_at) - (SELECT  COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.created_at and historial_seguimiento.updated_at)), ' dias') ELSE NULL END) AS Entrega_mercancía")
+        )
+            ->leftJoin('etapas_servicos', 'historial_seguimiento.id_proceso', '=', 'etapas_servicos.id')
+            ->leftJoin('servicios_tecnicos', 'historial_seguimiento.id_St', '=', 'servicios_tecnicos.id_st')
+            ->where('servicios_tecnicos.respuesta_st', '<>', 'Cobrable')
+            ->groupBy('historial_seguimiento.id_st')
+            ->orderByDesc('historial_seguimiento.id_st');
+
+
+        if (!empty($this->fecha_i) && !empty($this->fecha_f)) {
+            $query->whereBetween('servicios_tecnicos.created_at', [$this->fecha_i, $this->fecha_f]);
+        } else if (!empty($this->fecha_i)) {
+            $query->where('servicios_tecnicos.created_at', '>=', $this->fecha_i);
+        } else if (!empty($this->fecha_f)) {
+            $query->where('servicios_tecnicos.created_at', '<=', $this->fecha_f);
         } else {
-            $data_ = ModelHistorialSeguimiento::select(
-                'historial_seguimiento.id_st',
-                'etapas_servicos.id',
-                'etapas_servicos.etapa',
-                'etapas_servicos.dias',
-                'servicios_tecnicos.almacen',
-                'historial_seguimiento.created_at',
-                DB::raw('DATEDIFF(historial_seguimiento.updated_at, historial_seguimiento.created_at) as diferencia')
-            )
-                ->join('etapas_servicos', 'historial_seguimiento.id_proceso', '=', 'etapas_servicos.id')
-                ->join('servicios_tecnicos', 'servicios_tecnicos.id_st', '=', 'historial_seguimiento.id_st')
-                ->leftJoin('crear_ost_web', 'servicios_tecnicos.id_st', '=', 'crear_ost_web.num_ost')
-                ->where('servicios_tecnicos.respuesta_st', '<>', 'Cobrable')
-                ->orderByDesc('historial_seguimiento.id_st')
-                ->where('historial_seguimiento.id_st', 'like', "%{$this->orden_servicio}%")
-                ->orWhere('servicios_tecnicos.cedula', 'like', "%{$this->orden_servicio}%")
-                ->orWhere('crear_ost_web.n_ticket', 'like', "%{$this->orden_servicio}%")
-                ->get();
+            $query->whereBetween('servicios_tecnicos.created_at', [$this->fechaActual, $this->fechaFinMesActual]);
         }
+
+        $data_ = $query->get();
+
         return $data_;
     }
 
@@ -96,13 +95,13 @@ class ExportInfoTiemposRespuestaSt implements FromCollection, WithHeadings, With
             'C' => 40,  // Nombre
             'D' => 20,   // Fecha
             'E' => 20,   // Almacen
-            'F' => 20,   // Creación
-            'G' => 15,   // Visita
-            'H' => 20,   // Valoracion
-            'I' => 15,   // Recogida
-            'J' => 20,   // Ingreso Taller
-            'K' => 20,   // Salida Taller
-            'L' => 25,   // Entrega Mercancia
+            'F' => 10,   // Creación
+            'G' => 10,   // Visita
+            'H' => 10,   // Valoracion
+            'I' => 10,   // Recogida
+            'J' => 15,   // Ingreso Taller
+            'K' => 15,   // Salida Taller
+            'L' => 20,   // Entrega Mercancia
         ];
     }
 }
