@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <div id="productsCotizadosAlbura"><?php echo $tblProducts; ?></div>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('lista.precios') }}" type="button" class="btn btn-sm btn-danger">Lista de precios</a>
+                                <a href="{{ route('lista.precios.pruebas') }}" type="button" class="btn btn-sm btn-danger">Lista de precios</a>
                                 {{-- <button type="button" class="btn btn-sm btn-success" id="btn-activar-dsto-add"
                                     onclick="habilitarCampoDstoAdd();">Descuento adicional</button> --}}
                             </div>
