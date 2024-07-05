@@ -63,8 +63,8 @@
                     </div>
                     <div class="card">
                         <div class="card-body" id="imgCreativoPtee">
-                                <a href="{{ asset($img->url) }}" target="_BLANK">
-                                    <img src="{{ asset($img->url) }}" width="100%" alt="">
+                                <a href="{{ isset($img->url)?asset($img->url):'#' }}" target="_BLANK">
+                                    <img src="{{ isset($img->url)?asset($img->url):'' }}" width="100%" alt="">
                                 </a>
                         </div>
                     </div>

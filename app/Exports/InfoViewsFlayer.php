@@ -20,9 +20,12 @@ class InfoViewsFlayer implements FromCollection, WithHeadings
      */
     public function collection()
     {
+        $year = date("Y", strtotime($this->month));
+        $month = date("m", strtotime($this->month));
+
         return ModelInfoFlayer::select(['id', 'cedula', 'nombre', 'fecha', 'estado'])
-            ->whereDate('created_at', '>=', $this->month . '-01')
-            ->whereDate('created_at', '<=', $this->month . '-31')
+        ->whereYear("created_at", $year)
+        ->whereMonth("created_at", $month)
             ->get();
     }
 
