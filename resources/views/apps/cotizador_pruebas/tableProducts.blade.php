@@ -6,7 +6,7 @@
             <th>Cant.</th>
             <th>Precio/U</th>
             <th>Valor total</th>
-            <th>Dsto normal</th>
+            <th>Dsto</th>
             <th>Dsto adicional</th>
             <th>Vlr descontado</th>
             <th>Total a pagar</th>

@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="">Descuento normal</label>
+                    <label for="">Descuento</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">$</span>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="">Nuevo valor</label>
+                    <label for="">Cuota inicial</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">$</span>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 mb-3" id="txtValorRestaCredito" hidden>
-                    <label for="">Valor a pagar de contado</label>
+                    <label for="">Valor cuota inicial</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">$</span>

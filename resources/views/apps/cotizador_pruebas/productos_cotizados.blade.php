@@ -265,6 +265,15 @@
                                         <input type="email" value="{{ isset($cliente->email) ? $cliente->email : '' }}" class="form-control"
                                             name="correo_credito" id="correo_credito" required>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">Valor a financiar</span>
+                                            </div>
+                                            <input type="text" name="txt_financiar_credito" id="txt_financiar_credito" readonly
+                                                class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -301,6 +310,12 @@
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
+        $(document).ready(() => {
+            StylesTableCotizacion();
+            var format = new Intl.NumberFormat();
+            $("#txt_financiar_credito").val("$ " + format.format($("#total_a_pagar").val()))
+        });
+
         obtenerCiudadesCoti = (id) => {
             if (id.length > 0) {
                 $('#depto').removeClass('is-invalid')
@@ -348,11 +363,6 @@
                 });
             }
         }
-
-        $(document).ready(() => {
-            StylesTableCotizacion();
-        });
-
         StylesTableCotizacion = () => {
             $("#productos-liquidador-albura").DataTable({
                 oLanguage: {
@@ -704,13 +714,15 @@
                 document.getElementById('txtValorFinanciar').hidden = false;
                 document.getElementById('txtValorRestaCredito').hidden = false;
                 var valor_resta = valor_pagar - valor_financiar;
-                $("#valor_nuevo_financiar").val(formatter.format(valor_financiar));
-                $("#valor_resta_financiar").val(formatter.format(valor_resta));
+                $("#valor_nuevo_financiar").val(formatter.format(valor_resta));
+                $("#valor_resta_financiar").val(formatter.format(valor_financiar));
+                $("#txt_financiar_credito").val("$ " + formatter.format(valor_resta))
             } else {
                 document.getElementById('txtValorFinanciar').hidden = true;
                 document.getElementById('txtValorRestaCredito').hidden = true;
                 $("#valor_nuevo_financiar").val("");
                 $("#valor_resta_financiar").val("");
+                $("#txt_financiar_credito").val("$ " + formatter.format(total_pagar))
             }
         }
 
