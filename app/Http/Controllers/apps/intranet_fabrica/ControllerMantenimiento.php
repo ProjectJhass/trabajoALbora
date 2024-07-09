@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps\intranet_fabrica;
 use App\Http\Controllers\Controller;
 use App\Models\apps\intranet_fabrica\ModelMantenimientos;
 use App\Models\apps\intranet_fabrica\ModelUsuarios;
+use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ class ControllerMantenimiento extends Controller
     public function viewMantenices()
     {
         $datos = ModelMantenimientos::getMaquinas();
-        $responsables = ModelUsuarios::ObtenerTodosLosUsuarios();
+        $responsables = User::where("estado","1")->get();
         $self_rol = Auth::user()->rol_user;
         $self_nombre = Auth::user()->nombre;
         $fechas = $this->hoy;

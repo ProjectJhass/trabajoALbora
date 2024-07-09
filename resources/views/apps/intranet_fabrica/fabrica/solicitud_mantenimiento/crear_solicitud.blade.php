@@ -41,12 +41,12 @@
 
                                 <div class="form-group">
                                     <label>Producto a trabajar</label>
-                                    <select class="select2" data-placeholder="Seleccione el producto" style="width: 100%;" name="herramienta_solicitar"
-                                        id="herramienta_solicitar">
+                                    <select class="select2" data-placeholder="Seleccione el producto" style="width: 100%;"
+                                        name="herramienta_solicitar" id="herramienta_solicitar">
                                         <option value=""></option>
                                         @foreach ($herramientas as $key => $val)
-                                            <option value="{{ trim($val->referencia) . '-' . trim($val->nombre_maquina) }}">
-                                                {{ trim($val->referencia) . '-' . trim($val->nombre_maquina) }}</option>
+                                            <option value="{{ trim($val->referencia . '-' . $val->nombre_maquina) }}">
+                                                {{ trim($val->referencia . '-' . $val->nombre_maquina) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -54,10 +54,12 @@
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="">Sección</label>
-                                    <select name="nombre_seccion_solicitar" id="nombre_seccion_solicitar" class="form-control">
+                                    <select name="nombre_seccion_solicitar" id="nombre_seccion_solicitar"
+                                        class="form-control">
                                         <option value="">Seleccionar...</option>
                                         @foreach ($secciones as $key => $value)
-                                            <option value="{{ $value->nombre_seccion }}">{{ $value->nombre_seccion }}</option>
+                                            <option value="{{ $value->nombre_seccion }}">{{ $value->nombre_seccion }}
+                                            </option>
                                         @endforeach
                                         <option value="CORTE Y COSTURA">CORTE Y COSTURA</option>
                                     </select>
@@ -73,13 +75,13 @@
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="">Responsable</label>
-                                    <input type="text" class="form-control" name="responsable_solicitud" id="responsable_solicitud"
-                                        placeholder="Nombre responsable de la solicitud">
+                                    <input type="text" class="form-control" name="responsable_solicitud"
+                                        id="responsable_solicitud" placeholder="Nombre responsable de la solicitud">
                                 </div>
                             </div>
                         </div>
                         <button type="button" class="btn btn-danger" id="ValidarSolicitudMantenimiento"
-                            onclick="ValidarSolicitudMantenimientoNew('formulario-generar-solicitud-mantenimiento','{{ route('generar.solicitud.mtto') }}')">Generar
+                            onclick="crearNuevaSolicitudMttoFab()">Generar
                             solicitud de mantenimiento</button>
                     </form>
                 </div>
@@ -95,6 +97,7 @@
                 theme: 'bootstrap4'
             })
         });
+
         BuscarInformacionCerrarSolicitudMtto = (url) => {
             var seccion = $('#nombre_seccion_consultar').val();
             if (seccion.length > 0) {
@@ -111,7 +114,8 @@
                 });
                 datos.done((res) => {
                     if (res.status == true) {
-                        document.getElementById('respuesta-cerrar-solicitud-mantenimiento').innerHTML = res.data;
+                        document.getElementById('respuesta-cerrar-solicitud-mantenimiento').innerHTML = res
+                        .data;
                     }
                 });
                 datos.fail(() => {
@@ -180,6 +184,30 @@
             } else {
                 toastr.error('Error al procesar la solicitud');
             }
+        }
+
+        crearNuevaSolicitudMttoFab=()=>{
+            toastr.info('Creando nueva solicitud de mantenimiento...');
+
+            var formulario = new FormData(document.getElementById('formulario-generar-solicitud-mantenimiento'));
+            formulario.append('valor', 'valor');
+            var datos = $.ajax({
+                url: "{{ route('generar.solicitud.mtto') }}",
+                type: "post",
+                dataType: "json",
+                data: formulario,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            datos.done((res) => {
+                toastr.success('¡EXCELENTE! Solicitud de mantenimiento creada');
+                $('#herramienta_solicitar').val(null).trigger('change');
+                document.getElementById('formulario-generar-solicitud-mantenimiento').reset()
+            })
+            datos.fail(() => {
+                toastr.error('Hubo un problema al procesar la solicitud');
+            })
         }
     </script>
 @endsection

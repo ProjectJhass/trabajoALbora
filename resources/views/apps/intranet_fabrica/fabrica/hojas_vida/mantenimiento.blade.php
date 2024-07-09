@@ -48,7 +48,8 @@
 
                         @if ($rol === 1)
                             {{-- EL BOTON VA EN ESTE ESPACIO --}}
-                            <button type="button" class="btn btn-secondary shadow" data-toggle="modal" data-target="#staticBackdrop">
+                            <button type="button" class="btn btn-secondary shadow" data-toggle="modal"
+                                data-target="#staticBackdrop">
                                 <i class="fas fa-tools"></i>&nbsp; Crear Mantenimiento
                             </button>
                         @endif
@@ -108,17 +109,21 @@
 
                                                 <td>
                                                     @if ($rol === 1)
-                                                        <a type="button" class="{{ $info }}" data-toggle="{{ $modal }}"
+                                                        <a type="button" class="{{ $info }}"
+                                                            data-toggle="{{ $modal }}"
                                                             id="boton_{{ $item['id_mantenimiento'] }}"
                                                             onclick="chargeMantenice('{{ route('charge.mantenice') }}','{{ $item['id_mantenimiento'] }}'),validacion('{{ $modal }}')"
-                                                            data-target="#modal" data-button="{{ $info }}">{!! $icono !!}</a>
+                                                            data-target="#modal"
+                                                            data-button="{{ $info }}">{!! $icono !!}</a>
                                                     @else
                                                         @if ($hoy <= $item['fecha_mantenimiento'])
-                                                            <button class="btn btn-success"data-toggle="modal" data-target="#{{ $modali }}"
+                                                            <button class="btn btn-success"data-toggle="modal"
+                                                                data-target="#{{ $modali }}"
                                                                 onclick="chargeInfo('{{ route('user.mantenice') }}', '{{ $item['id_mantenimiento'] }}')"><i
                                                                     class="fas fa-user-check"></i></button>
                                                         @elseif($hoy > $item['fecha_mantenimiento'] && $hoy <= $item['extemporaneo'])
-                                                            <button class="btn btn-warning"data-toggle="modal" data-target="#{{ $modali }}"
+                                                            <button class="btn btn-warning"data-toggle="modal"
+                                                                data-target="#{{ $modali }}"
                                                                 onclick="chargeInfo('{{ route('user.mantenice') }}', '{{ $item['id_mantenimiento'] }}')"><i
                                                                     class="fas fa-exclamation-triangle"></i></button>
                                                         @endif
@@ -137,17 +142,21 @@
                                                     <td>
 
                                                         @if ($rol === 1)
-                                                            <a type="button" class="{{ $info }}" data-toggle="{{ $modal }}"
+                                                            <a type="button" class="{{ $info }}"
+                                                                data-toggle="{{ $modal }}"
                                                                 id="boton_{{ $item['id_mantenimiento'] }}"
                                                                 onclick="chargeMantenice('{{ route('charge.mantenice') }}','{{ $item['id_mantenimiento'] }}'),validacion('{{ $modal }}')"
-                                                                data-target="#modal" data-button="{{ $info }}">{!! $icono !!}</a>
+                                                                data-target="#modal"
+                                                                data-button="{{ $info }}">{!! $icono !!}</a>
                                                         @else
                                                             @if ($hoy <= $item['fecha_mantenimiento'])
-                                                                <button class="btn btn-success"data-toggle="modal" data-target="#{{ $modali }}"
+                                                                <button class="btn btn-success"data-toggle="modal"
+                                                                    data-target="#{{ $modali }}"
                                                                     onclick="chargeInfo('{{ route('user.mantenice') }}', '{{ $item['id_mantenimiento'] }}')"><i
                                                                         class="fas fa-user-check"></i></button>
                                                             @elseif($hoy > $item['fecha_mantenimiento'] && $hoy <= $item['extemporaneo'])
-                                                                <button class="btn btn-warning"data-toggle="modal" data-target="#{{ $modali }}"
+                                                                <button class="btn btn-warning"data-toggle="modal"
+                                                                    data-target="#{{ $modali }}"
                                                                     onclick="chargeInfo('{{ route('user.mantenice') }}', '{{ $item['id_mantenimiento'] }}')"><i
                                                                         class="fas fa-exclamation-triangle"></i></button>
                                                             @endif
@@ -165,7 +174,8 @@
     </section>
     @if ($rol === 1)
         <!-- Modal de creacion de mantenimiento -->
-        <div class="modal fade" id="staticBackdrop" data-keyboard="false" aria-hidden="true" style="font-family: sans-serif; color: #697a8d;">
+        <div class="modal fade" id="staticBackdrop" data-keyboard="false" aria-hidden="true"
+            style="font-family: sans-serif; color: #697a8d;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
@@ -180,67 +190,57 @@
                         <form action="" name="formulario" id="formulario" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div>
-                                            <label for="perro">Máquina</label>
-                                            <select class="select2" id="seleccion_maquina" style="width: 100%!important;" name="select">
-                                                <option value="seleccion">Seleccionar maquina...</option>
-                                                @foreach ($data as $value)
-                                                    <option value="{{ $value['id_maquina'] }}">
-                                                        &nbsp&nbsp&nbsp{{ $value['referencia'] }}&nbsp&nbsp&nbsp{{ $value['nombre_maquina'] }}
-
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <input type="text" style="display: none;" id="puente">
-                                        <div class="mt-2">
-                                            <label for="responsable" class="d-block">Responsable:</label>
-                                            <select name="responsable" id="responsable" class="select2" style="width: 100%!important;">
-                                                <option value="seleccion">Seleccionar responsable...</option>
-                                                @foreach ($responsables as $key)
-                                                    <option value="{{ $key->id }}">{{ $key->nombre }}</option>
-                                                @endforeach
-
-                                            </select>
-                                        </div>
-                                        <div class="form-group mt-2">
-                                            <label for="responsable" class="d-block">Guardar hoja de vida:</label>
-                                            <select name="hoja_vida" id="hoja_vida" class="form-control" style="width: 100%!important;">
-                                                <option value="seleccion">Seleccionar opción...</option>
-                                                <option value="true">SI</option>
-                                                <option value="false">NO</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Máquina</label>
+                                    <select class="select2" id="seleccion_maquina" style="width: 100%!important;"
+                                        name="select">
+                                        <option value="seleccion">Seleccionar...</option>
+                                        @foreach ($data as $value)
+                                            <option value="{{ $value['id_maquina'] }}">
+                                                {{ $value['referencia'] . ' ' . $value['nombre_maquina'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="">
-                                            <label for="calendar">Fecha Mantenimiento:</label>
-                                            <input type="date" class="form-control" name="calendar" id="calendar">
-                                        </div>
-                                        <div class="mt-2">
-                                            <label for="observacion">Observación:</label>
-                                            <textarea type="text" class="form-control" id="observacion" rows="4" name="observacion" placeholder="Observaciones..."></textarea>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Responsable</label>
+                                    <select name="responsable" id="responsable" class="select2" style="width: 100%!important;">
+                                        <option value="seleccion">Seleccionar...</option>
+                                        @foreach ($responsables as $key)
+                                            <option value="{{ $key->id }}">{{ $key->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Fecha a realizar</label>
+                                    <input type="date" class="form-control" name="calendar" id="calendar">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">¿Guardar en hoja de vida?</label>
+                                    <select name="hoja_vida" id="hoja_vida" class="form-control">
+                                        <option value="seleccion">Seleccionar...</option>
+                                        <option value="true">SI</option>
+                                        <option value="false">NO</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="">Observaciones</label>
+                                    <textarea name="observacion" id="observacion" class="form-control" cols="30" rows="2"></textarea>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger shadow" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-success shadow" onclick="enviardatos('{{ route('save.mantenice') }}')"><i
-                                class="fas fa-save"></i>&nbsp
+                        <button type="button" class="btn btn-success shadow"
+                            onclick="enviardatos('{{ route('save.mantenice') }}')"><i class="fas fa-save"></i>&nbsp
                             Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Modal de edicion de mantenimiento-->
-        <div class="modal fade" id="modal" data-keyboard="false" aria-hidden="true" style="font-family: sans-serif; color: #697a8d;">
+        <div class="modal fade" id="modal" data-keyboard="false" aria-hidden="true"
+            style="font-family: sans-serif; color: #697a8d;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
@@ -263,7 +263,8 @@
                                         </div>
                                         <div class="mt-2">
                                             <label for="responsable" class="d-block">Responsable:</label>
-                                            <select name="responsable1" id="responsable1" class="select2" style="width: 100%!important;">
+                                            <select name="responsable1" id="responsable1" class="select2"
+                                                style="width: 100%!important;">
 
                                                 </option>
                                                 @foreach ($responsables as $key)
@@ -282,7 +283,8 @@
                                         </div>
                                         <div class="mt-2">
                                             <label for="observacion">Observación:</label>
-                                            <textarea type="text" class="form-control" id="observacion1" rows="2" name="observacion1" placeholder="Observaciones..."></textarea>
+                                            <textarea type="text" class="form-control" id="observacion1" rows="2" name="observacion1"
+                                                placeholder="Observaciones..."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -302,7 +304,8 @@
         </div>
     @else
         <!-- Modal de aceptacion-->
-        <div class="modal fade" id="modalAceptacion" data-keyboard="false" aria-hidden="true" style="font-family: sans-serif; color: #697a8d;">
+        <div class="modal fade" id="modalAceptacion" data-keyboard="false" aria-hidden="true"
+            style="font-family: sans-serif; color: #697a8d;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
@@ -324,7 +327,8 @@
                                         </div>
                                         <div class="mt-2">
                                             <label for="responsable" class="d-block">Responsable:</label>
-                                            <input type="text" disabled id="responsable_"class="form-control" autocomplete="off">
+                                            <input type="text" disabled id="responsable_"class="form-control"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -332,12 +336,13 @@
                                     <div class="form-group">
                                         <div class="">
                                             <label for="calendar">Fecha Mantenimiento:</label>
-                                            <input type="date" class="form-control" name="calendar_" id="calendar_" disabled>
+                                            <input type="date" class="form-control" name="calendar_" id="calendar_"
+                                                disabled>
                                         </div>
                                         <div class="mt-2">
                                             <label for="observacion3">Observación:</label>
-                                            <textarea type="text" class="form-control" id="observacion_" rows="3" name="observacion1" placeholder="Observaciones..."
-                                                autocomplete="off"></textarea>
+                                            <textarea type="text" class="form-control" id="observacion_" rows="3" name="observacion1"
+                                                placeholder="Observaciones..." autocomplete="off"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -347,7 +352,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary shadow" data-dismiss="modal">Cerrar</button>
                         <button type="button" class="btn btn-success shadow" id="button_aceptar" data-mantenice=""
-                            onclick="okMantenice('{{ route('request.mantenice') }}')"><i class="fas fa-paper-plane"></i>&nbsp;
+                            onclick="okMantenice('{{ route('request.mantenice') }}')"><i
+                                class="fas fa-paper-plane"></i>&nbsp;
                             Guardar</button>
                     </div>
                 </div>
