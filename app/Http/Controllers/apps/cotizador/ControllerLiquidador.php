@@ -224,9 +224,10 @@ class ControllerLiquidador extends Controller
                 $dsto = $info_->descuento;
             }
         } else {
+            $descuento_p = $plan==1?$intereses->porcentaje_contado:$intereses->porcentaje_credito;
             $aplica = false;
             $tasa_f = str_replace(',', '.', $tasas_f->valor_tasa);
-            $descuento =  $intereses->porcentaje_contado;
+            $descuento = $descuento_p;
             $dsto = 0;
         }
 
