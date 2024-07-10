@@ -103,7 +103,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <div style="cursor: pointer" data-toggle="modal" data-target="#modalGenerarCotizacion">
-                        <i class="fas fa-cart-arrow-down" style="font-size: 45px; color:rgb(197, 197, 197)"></i>
+                        <i class="fas fa-cart-arrow-down text-danger" style="font-size: 45px"></i>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -115,7 +115,7 @@
             <div class="card text-center">
                 <div class="card-body text-center">
                     <div style="cursor: pointer" data-toggle="modal" data-target="#modalInfoSolicitarCredito">
-                        <i class="far fa-credit-card" style="font-size: 45px; color:rgb(197, 197, 197)"></i>
+                        <i class="far fa-credit-card text-info" style="font-size: 45px"></i>
                     </div>
                 </div>
                 <div class="card-footer">
