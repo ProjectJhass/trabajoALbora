@@ -478,6 +478,7 @@
             datos.done((res) => {
                 notificacion("¡Información agregada éxitosamente!", "success", 5000)
                 document.getElementById('tableInfoGeneralCorteMaderaOtra').innerHTML = res.tabla
+                document.getElementById('formInfoPiezasPendientesOtraSerie').reset()
             })
             datos.fail(() => {
                 notificacion("¡Error! No se pudo agregar la información", "error", 5000)

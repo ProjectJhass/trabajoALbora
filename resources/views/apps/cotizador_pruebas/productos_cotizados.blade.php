@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="row justify-content-center" id="detallesVistasCot">
+            <div class="justify-content-center" id="detallesVistasCot">
                 <?php echo $planesV; ?>
             </div>
 
@@ -293,6 +293,36 @@
                             <button type="button" class="btn btn-danger" id="btnSolicitarCredito" onclick="solicitarCreditoCoitzador()">Solicitar
                                 crédito</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalValorFinanciarCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Valor a financiar</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="">Valor a financiar</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">$</span>
+                                        </div>
+                                        <input type="number" class="form-control" name="vlr_financiar_credito" id="vlr_financiar_credito">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-danger" onclick="formSolicitarEstudioDeCredito()">Generar el estudio de
+                                crédito</button>
                         </div>
                     </div>
                 </div>
@@ -750,6 +780,20 @@
                 return true
             }
             return false
+        }
+
+        solicitarEstudioDeCredito = () => {
+            $("#modalValorFinanciarCredito").modal("show")
+            var total_pagar = $("#total_a_pagar").val()
+            $("#vlr_financiar_credito").val(total_pagar)
+        }
+
+        formSolicitarEstudioDeCredito = () => {
+            var formatter = new Intl.NumberFormat();
+            $("#modalValorFinanciarCredito").modal("hide")
+            $("#modalInfoSolicitarCredito").modal("show")
+            var total_pagar = $("#vlr_financiar_credito").val()
+            $("#txt_financiar_credito").val("$ " + formatter.format(total_pagar))
         }
 
         solicitarCreditoCoitzador = () => {
