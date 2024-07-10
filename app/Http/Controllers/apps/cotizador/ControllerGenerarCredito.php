@@ -20,7 +20,7 @@ class ControllerGenerarCredito extends Controller
         $iva_ = $info_saldos->iva;
         $porc_iva = $info_saldos->porcentaje_iva;
 
-        $porc_dsto = '0.2';
+        $porc_dsto = (($info_saldos->porcentaje_credito)/100);
         $bandera = 0;
 
         $productos = ModelCotizaciones::where('idsession', session('IdSession'))->get();

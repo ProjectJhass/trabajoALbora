@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\apps\cotizador\ModelCotizaciones;
 use App\Models\apps\cotizador\ModelGenerarHash;
 use App\Models\apps\cotizador\ModelPlanesFinanciacion;
+use App\Models\apps\cotizador\ModelSueldosIntereses;
 use App\Models\soap\cotizador_consultas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -77,6 +78,7 @@ class ControllerPanel extends Controller
                 $plan_coti = 'CO';
             }
             $planes = ModelPlanesFinanciacion::where('plan', $plan_coti)->first();
+            $intereses = ModelSueldosIntereses::find(1);
 
             $query = ModelCotizaciones::create([
                 'idsession' => $session,
@@ -87,7 +89,7 @@ class ControllerPanel extends Controller
                 'vlr_credito' => round($vlr_contado * (str_replace(',', '.', $planes->valor_tasa))),
                 'dsto_adicional' => '0',
                 'plan' => $planes->plan,
-                'descuento' => '20',
+                'descuento' => $intereses->porcentaje_contado,
                 'cuotas' => $planes->id_tasa,
                 'asesor' => Auth::user()->nombre,
                 'fecha' => date('Y-m-d'),
