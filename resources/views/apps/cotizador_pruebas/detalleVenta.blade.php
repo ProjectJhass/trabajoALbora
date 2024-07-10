@@ -143,30 +143,32 @@
         </div>
     </div>
 </div>
-<div class="col-md-12 mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-body">
-                    <div style="cursor: pointer" data-toggle="modal" data-target="#modalGenerarCotizacion">
-                        <i class="fas fa-cart-arrow-down text-danger" style="font-size: 45px"></i>
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div style="cursor: pointer" data-toggle="modal" data-target="#modalGenerarCotizacion">
+                            <i class="fas fa-cart-arrow-down text-danger" style="font-size: 45px"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    Generar cotización
+                    <div class="card-footer">
+                        Generar cotización
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-body text-center">
-                    {{-- <div style="cursor: pointer" data-toggle="modal" data-target="#modalInfoSolicitarCredito"> --}}
-                    <div style="cursor: pointer" onclick="solicitarEstudioDeCredito()">
-                        <i class="far fa-credit-card text-info" style="font-size: 45px"></i>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body text-center">
+                        {{-- <div style="cursor: pointer" data-toggle="modal" data-target="#modalInfoSolicitarCredito"> --}}
+                        <div style="cursor: pointer" onclick="solicitarEstudioDeCredito()">
+                            <i class="far fa-credit-card text-info" style="font-size: 45px"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    Solicitar crédito
+                    <div class="card-footer">
+                        Solicitar crédito
+                    </div>
                 </div>
             </div>
         </div>
