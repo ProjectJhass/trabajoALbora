@@ -12,10 +12,10 @@ class ControllerCumpleClientes extends Controller
     public function index()
     {
         $ayer = date("Y-m-d", strtotime(date('Y-m-d') . "- 1 days"));
-        $siete_dias = date("Y-m-d", strtotime(date('Y-m-d') . "- 1 days"));
+        $siete_dias = date("Y-m-d", strtotime(date('Y-m-d') . "- 7 days"));
 
-        $cumple_hoy = ModelClientesCRM::whereDay('fecha_cumple', date('Y-m-d'))
-            ->whereMonth('fecha_cumple', date('Y-m-d'))
+        $cumple_hoy = ModelClientesCRM::whereDay('fecha_cumple', date('d'))
+            ->whereMonth('fecha_cumple', date('m'))
             ->where('cedula_asesor', Auth::user()->id)
             ->get();
 
