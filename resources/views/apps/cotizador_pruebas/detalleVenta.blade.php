@@ -8,7 +8,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3">
             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-percent"></i></span>
@@ -26,11 +25,8 @@
                 <span class="info-box-text">Descuento adicional</span>
                 <span class="info-box-number">$ {{ number_format($adicional) }}</span>
             </div>
-
         </div>
-
     </div>
-
     <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3">
             <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-hand-holding-usd"></i></span>
@@ -38,11 +34,8 @@
                 <span class="info-box-text">Total a pagar</span>
                 <span class="info-box-number">$ {{ number_format($total) }}</span>
             </div>
-
         </div>
-
     </div>
-
 </div>
 <div class="col-md-8 mb-3" id="detalleVentaCotizador" hidden>
     <div class="card card-outline card-secondary">
