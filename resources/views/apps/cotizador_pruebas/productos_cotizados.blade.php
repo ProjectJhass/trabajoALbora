@@ -5,6 +5,11 @@
 @section('head')
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <style>
+        .swal2-toast {
+            max-width: 100% !important;
+        }
+    </style>
 @endsection
 @section('body')
     <div class="panel-inicio" id="panel-prod-cotizados">
@@ -138,7 +143,7 @@
                                         <div class="card text-center">
                                             <div class="card-body">
                                                 <div style="cursor: pointer" onclick="generarInformacionCotizacion('pdf')">
-                                                    <i class="far fa-file-pdf" style="font-size: 35px; color:rgb(197, 197, 197)"></i>
+                                                    <i class="far fa-file-pdf text-danger" style="font-size: 35px"></i>
                                                 </div>
                                             </div>
                                             <div class="card-footer">
@@ -150,7 +155,7 @@
                                         <div class="card text-center">
                                             <div class="card-body text-center">
                                                 <div style="cursor: pointer" onclick="generarInformacionCotizacion('wp')">
-                                                    <i class="fab fa-whatsapp" style="font-size: 35px; color:rgb(197, 197, 197)"></i>
+                                                    <i class="fab fa-whatsapp text-success" style="font-size: 35px"></i>
                                                 </div>
                                             </div>
                                             <div class="card-footer">
@@ -162,7 +167,7 @@
                                         <div class="card text-center">
                                             <div class="card-body text-center">
                                                 <div style="cursor: pointer" onclick="generarInformacionCotizacion('email')">
-                                                    <i class="far fa-envelope" style="font-size: 35px; color:rgb(197, 197, 197)"></i>
+                                                    <i class="far fa-envelope text-info" style="font-size: 35px"></i>
                                                 </div>
                                             </div>
                                             <div class="card-footer">
@@ -187,7 +192,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="formulario-datos-cliente-cotizacion" class="was-validated" style="font-size: 14px" autocomplete="off">
+                            <form id="formInformacionClienteNuevoCredito" class="was-validated" style="font-size: 14px" autocomplete="off">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
@@ -200,23 +205,27 @@
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Primer Nombre</label>
-                                        <input type="text" value="{{ isset($cliente->nombre_1) ? $cliente->nombre_1 : '' }}" class="form-control"
+                                        <input type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                            value="{{ isset($cliente->nombre_1) ? $cliente->nombre_1 : '' }}" class="form-control"
                                             name="nombre1_credito" id="nombre1_credito" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Segundo Nombre</label>
-                                        <input type="text" value="{{ isset($cliente->nombre_2) ? $cliente->nombre_2 : '' }}" class="form-control"
+                                        <input type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                            value="{{ isset($cliente->nombre_2) ? $cliente->nombre_2 : '' }}" class="form-control"
                                             name="nombre2_credito" id="nombre2_credito">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Primer Apellido</label>
-                                        <input type="text" value="{{ isset($cliente->apellido_1) ? $cliente->apellido_1 : '' }}"
-                                            class="form-control" name="apellido1_credito" id="apellido1_credito" required>
+                                        <input type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                            value="{{ isset($cliente->apellido_1) ? $cliente->apellido_1 : '' }}" class="form-control"
+                                            name="apellido1_credito" id="apellido1_credito" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Segundo Apellido</label>
-                                        <input type="text" value="{{ isset($cliente->apellido_2) ? $cliente->apellido_2 : '' }}"
-                                            class="form-control" name="apellido2_credito" id="apellido2_credito">
+                                        <input type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                            value="{{ isset($cliente->apellido_2) ? $cliente->apellido_2 : '' }}" class="form-control"
+                                            name="apellido2_credito" id="apellido2_credito">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Departamento</label>
@@ -238,12 +247,14 @@
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Barrio</label>
-                                        <input type="text" value="{{ isset($cliente->barrio) ? $cliente->barrio : '' }}" class="form-control"
-                                            name="barrio_credito" id="barrio_credito" required>
+                                        <input type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                            value="{{ isset($cliente->barrio) ? $cliente->barrio : '' }}" class="form-control" name="barrio_credito"
+                                            id="barrio_credito" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Dirección</label>
-                                        <input type="text" value="{{ isset($cliente->direccion) ? $cliente->direccion : '' }}" class="form-control"
+                                        <input type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                            value="{{ isset($cliente->direccion) ? $cliente->direccion : '' }}" class="form-control"
                                             name="direccion_credito" id="direccion_credito" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
@@ -262,8 +273,9 @@
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">E-mail</label>
-                                        <input type="email" value="{{ isset($cliente->email) ? $cliente->email : '' }}" class="form-control"
-                                            name="correo_credito" id="correo_credito" required>
+                                        <input type="email" onkeyup="this.value=this.value.toLowerCase()"
+                                            value="{{ isset($cliente->email) ? $cliente->email : '' }}" class="form-control" name="correo_credito"
+                                            id="correo_credito" required>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input-group mb-3">
@@ -278,7 +290,8 @@
                             </form>
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-danger" id="btnSolicitarCredito">Solicitar crédito</button>
+                            <button type="button" class="btn btn-danger" id="btnSolicitarCredito" onclick="solicitarCreditoCoitzador()">Solicitar
+                                crédito</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
@@ -737,6 +750,59 @@
                 return true
             }
             return false
+        }
+
+        solicitarCreditoCoitzador = () => {
+            Swal.fire({
+                position: "top-end",
+                icon: "info",
+                title: "Realizando la solicitud de crédito...",
+                showConfirmButton: false,
+                timer: 10000,
+                toast: true,
+            });
+
+            var ciudad = $("#ciudad_credito").find("option:selected");
+            var depto = document.getElementById("depto_credito");
+            var nom_depto = depto.options[depto.selectedIndex].text;
+
+            var formData = new FormData(document.getElementById("formInformacionClienteNuevoCredito"));
+            formData.append("id_ciudad_credito", ciudad.data("id_city"));
+            formData.append("departamento", nom_depto);
+
+            var datos = $.ajax({
+                url: "{{ route('generar.solicitud.credito.pruebas') }}",
+                type: "POST",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+            })
+            datos.done((res) => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: " " + res.mensaje,
+                    showConfirmButton: false,
+                    timer: 5000,
+                    toast: true,
+                });
+            })
+            datos.fail((jqXHR) => {
+                let errorMessage = "";
+                if (jqXHR.responseJSON && jqXHR.responseJSON.mensaje) {
+                    errorMessage = jqXHR.responseJSON.mensaje;
+                }
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: " " + errorMessage,
+                    showConfirmButton: false,
+                    timer: 6000,
+                    toast: true,
+                });
+            })
         }
     </script>
     @if (isset($cliente->id_depto))

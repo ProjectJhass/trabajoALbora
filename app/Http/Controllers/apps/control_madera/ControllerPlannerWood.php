@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelCantidadesFavor;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
+use App\Models\apps\control_madera\ModelInfoMadera;
+use App\Models\apps\control_madera\ModelInfoMueble;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
 use App\Models\apps\control_madera\ModelInfoTablasCortadas;
 use App\Models\apps\control_madera\ModelLogs;
+use App\Models\apps\control_madera\ModelPiezasMaderaFavor;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
 use App\Models\apps\control_madera\ModelPlannerTabla;
 use Illuminate\Http\Request;
@@ -43,7 +46,11 @@ class ControllerPlannerWood extends Controller
             $val_t += $value->cantidad_tabla;
         }
         $view = self::renderPiezasInfo($piezas_planificadas);
-        return view("apps.control_madera.app.wood.iniciar_corte.piezas", ['planner' => $cortes_planificados, 'piezas_corte' => $view, 'series' => $series, 'cant_tablas' => $val_t]);
+
+        $info_g = ModelPiezasMaderaFavor::where("id_corte", $id_corte)->get();
+        $view_p = view("apps.control_madera.app.wood.iniciar_corte.tablePiezasMadera", ["info" => $info_g])->render();
+
+        return view("apps.control_madera.app.wood.iniciar_corte.piezas", ['planner' => $cortes_planificados, 'piezas_corte' => $view, 'series' => $series, 'cant_tablas' => $val_t, 'table_info' => $view_p, 'id_corte'=>$id_corte]);
     }
 
     public function renderPiezasInfo($piezas)
@@ -132,7 +139,7 @@ class ControllerPlannerWood extends Controller
             return response()->json(['status' => false, 'mensaje' => 'ERROR: Está superando la tolerancia exigida, ingresa un valor inferior'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
 
-        
+
 
 
         if ($cantidad_total >= $cantidad_solicitada) {
@@ -322,5 +329,40 @@ class ControllerPlannerWood extends Controller
         ]);
 
         return response()->json(['status' => true, 'tablas' => $val_t], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function getInfoTablaMadera()
+    {
+    }
+
+    //Se guardan las piezas según el tipo de madera - esto se realizada en los cortes de la wood
+    public function saveInformationPiezasMadera(Request $request)
+    {
+        $largo = $request->largoOtraSerie;
+        $ancho = $request->anchoOtraSerie;
+        $grueso = $request->gruesoOtraSerie;
+        $cantidad = $request->cantidadOtraSerie;
+        $madera = $request->maderaOtraSerie;
+        $id_corte = $request->id_corte;
+
+        $info_madera = ModelInfoMadera::where("nombre_madera", $madera)->first();
+        $id_madera = isset($info_madera->id_madera) ? $info_madera->id_madera : 0;
+
+        ModelPiezasMaderaFavor::create([
+            'largo' => $largo,
+            'ancho' => $ancho,
+            'grueso' => $grueso,
+            'cantidad_inicial' => $cantidad,
+            'cantidad_disponible' => $cantidad,
+            'id_madera' => $id_madera,
+            'madera' => $madera,
+            'id_corte' => $id_corte,
+            'estado' => 'Pendiente'
+        ]);
+
+        $info_g = ModelPiezasMaderaFavor::where("id_corte", $id_corte)->get();
+        $tabla = view("apps.control_madera.app.wood.iniciar_corte.tablePiezasMadera", ["info" => $info_g])->render();
+
+        return response()->json(['status' => true, 'tabla' => $tabla], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

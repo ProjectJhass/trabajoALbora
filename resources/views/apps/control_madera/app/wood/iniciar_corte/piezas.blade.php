@@ -16,6 +16,7 @@
             <div class="card alert-top">
                 <div class="card-header">
                     <h5>Serie</h5>
+                    <input type="text" hidden readonly value="{{ $id_corte }}" name="num_id_corte" id="num_id_corte" class="form-control">
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -207,10 +208,70 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal para registrar teleras/piezas de corte wood --}}
+    <div class="modal fade" id="modalRegistroPiezasOtraSerie" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Piezas para otra serie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formInfoPiezasPendientesOtraSerie" method="post" class="was-validated">
+                        <div class="row p-5">
+                            <div class="col-md-2 mb-3">
+                                <div class="form-group">
+                                    <label><strong>Largo (m)</strong></label>
+                                    <input type="number" min="0" class="form-control" style="text-align: center" name="largoOtraSerie"
+                                        id="largoOtraSerie" required>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <div class="form-group">
+                                    <label><strong>Ancho (cm)</strong></label>
+                                    <input type="number" min="0" class="form-control" style="text-align: center" name="anchoOtraSerie"
+                                        id="anchoOtraSerie" required>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <div class="form-group">
+                                    <label><strong>Grueso (cm)</strong></label>
+                                    <input type="number" min="0" class="form-control" style="text-align: center" name="gruesoOtraSerie"
+                                        id="gruesoOtraSerie" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label><strong>Cantidad</strong></label>
+                                    <input type="number" class="form-control" style="text-align: center" name="cantidadOtraSerie"
+                                        id="cantidadOtraSerie" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label><strong>Madera</strong></label>
+                                    <input type="text" value="{{ $planner->madera }}" class="form-control" name="maderaOtraSerie"
+                                        id="maderaOtraSerie" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4" id="tableInfoGeneralCorteMaderaOtra">
+                                {!! $table_info !!}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" onclick="saveInfoPiezasMadera()">Agregar registros</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @if (str_contains('Vaquera', $planner->madera))
         <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalRegistroTablasWood').modal('show')">+ Madera</a>
     @else
-        <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalNuevasPiezasWood').modal('show')">+ Madera</a>
+        <a style="cursor: pointer;" class="btn-flotante text-white" onclick="$('#modalRegistroPiezasOtraSerie').modal('show')">+ Madera</a>
     @endif
 @endsection
 @section('footer')
@@ -398,6 +459,28 @@
                     $("#AddtablaWood").val('')
                     $("#AddAnchoWood").val('')
                 }
+            })
+        }
+
+        saveInfoPiezasMadera = () => {
+            notificacion("Agregando información del corte...", "info", 10000);
+            var formulario = new FormData(document.getElementById('formInfoPiezasPendientesOtraSerie'));
+            formulario.append('id_corte', $("#num_id_corte").val());
+            var datos = $.ajax({
+                url: "{{ route('save.info.wood.pieza') }}",
+                type: "post",
+                dataType: "json",
+                data: formulario,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            datos.done((res) => {
+                notificacion("¡Información agregada éxitosamente!", "success", 5000)
+                document.getElementById('tableInfoGeneralCorteMaderaOtra').innerHTML = res.tabla
+            })
+            datos.fail(() => {
+                notificacion("¡Error! No se pudo agregar la información", "error", 5000)
             })
         }
     </script>

@@ -31,6 +31,7 @@ use App\Http\Controllers\apps\cotizador\ControllerPdfFogade;
 use App\Http\Controllers\apps\cotizador\ControllerRetomarCotizacion;
 use App\Http\Controllers\apps\cotizador\ControllerValidarProductos;
 use App\Http\Controllers\apps\cotizador\session\session;
+use App\Http\Controllers\apps\cotizador_pruebas\ControllerGenerarCredito as Cotizador_pruebasControllerGenerarCredito;
 use App\Http\Controllers\apps\cotizador_pruebas\ControllerGenerarLiquidador;
 use App\Http\Controllers\apps\cotizador_pruebas\ControllerPanel as Cotizador_pruebasControllerPanel;
 use App\Http\Controllers\apps\cotizador_pruebas\ControllerPdfCotizacion as Cotizador_pruebasControllerPdfCotizacion;
@@ -141,8 +142,10 @@ Route::get('/', function () {
     return Hash::make($pwd);
 }); */
 
+//Controlador para registrar los ingresos de los asesores
 Route::post('/login/ingreso', [ControllerRegistrarIngresos::class, 'RegistrarIngreso'])->name("registrar.ingreso.asesor");
 
+//Primera plataforma, este grupo de rutas pertenece a la intranet
 Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'checkSesion'], function () {
 
     //Seccion de prototipos fábrica
@@ -156,9 +159,11 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     Route::post('/cambio-seccion', [ControllerIdeas::class, 'changeSection'])->name("cambio-seccion");
     Route::post('/delete-img', [ControllerIdeas::class, 'deleteImg'])->name("delete-img");
     Route::post('/delete-link', [ControllerIdeas::class, 'deleteLink'])->name("delete-link");
-    ////////////////////////////////////////////////////////////////////
+    //Fin prototipos fábrica
 
     Route::post('/general/sesiones', [ControllerSesiones::class, 'index']);
+
+    //Envio de notificación vía email para cargue de documentación
     Route::post('general/notificaciones', [EnviarNotificacion::class, 'index'])->name('intranet.docs.general.not');
 
     //Calendario individual Asesores
@@ -190,21 +195,18 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     Route::post('/formulario-asignacion', [ControllerEvaluacionDepartamentos::class, 'formularioAsignacionCentroOperacion'])->name('formulario.asignacion.centro.operacion');
     Route::post('/asignacion-centro-operacion', [ControllerEvaluacionDepartamentos::class, 'asignacionCentroOperacion'])->name('asignacion.centro.operacion');
 
-
-    //Route::group(['middleware' => 'AsesorAccess', 'prefix' => 'asesor'], function () {
+    //Ruta para carpetas/archivos temporales temporales
     Route::group(['prefix' => 'tmp'], function () {
         Route::get('/docs/{dpto}', [ControllerTemporal::class, 'index'])->name('intranet.docs.tmp');
         Route::post('/docs/{dpto}', [ControllerTemporal::class, 'CargarDocumentosTmp']);
     });
-
 
     //Documentos generales memorandos áreas
     Route::get('/{seccion}/docs/{memo}', [ControllerDocumentacionIntranet::class, 'documentos'])->name('intranet.memorandos.areas');
     Route::post('{seccion}/docs/{memo}', [ControllerDocumentacionIntranet::class, 'cargar_documentos']);
     Route::post('{seccion}/docs/{memo}/eliminar', [ControllerDocumentacionIntranet::class, 'eliminar_documentos']);
 
-
-    //'middleware'=>'intranet'
+    //Sección home - slider y demás información (página inicial)
     Route::group(['prefix' => 'home'], function () {
         Route::get('/general', [ControllerHome::class, 'index'])->name('home');
         Route::get('/editar', [ControllerHome::class, 'editar'])->name('home.edit');
@@ -213,6 +215,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         Route::post('/editar/actualizar', [ControllerHome::class, 'actualizar']);
     });
 
+    //Sección de logística
     Route::group(['prefix' => 'logistica'], function () {
         Route::get('/general', [ControllerLogistica::class, 'index'])->name('logistica');
         Route::get('/menu-memos-vigentes', function () {
@@ -220,12 +223,14 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         })->name('menu.memos.log');
     });
 
+    //Sección de cartera
     Route::group(['prefix' => 'cartera'], function () {
         Route::get('/general', [ControllerCargarCartera::class, 'index'])->name('cartera');
         Route::get('/paginas-para-referenciar', function () {
             return view('apps.intranet.cartera.referenciar');
         })->name('paginas.referenciar');
 
+        //Cargue de información a base de datos CUENTAS_CARTERA para digitalización y consulta del cotizador
         Route::group(['prefix' => 'info'], function () {
             Route::get("", [ControllerCargueDigitalizacion::class, 'index'])->name("info.dig.excel");
             Route::post("", [ControllerCargueDigitalizacion::class, 'getInfoExcel'])->name("search.dig.excel");
@@ -233,7 +238,8 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         });
     });
 
-
+    //Grupo de rutas para la sección de ingresos y salidas 
+    //Informes por rangos de fecha y descargue de información
     Route::group(['prefix' => 'ingresos-y-salidas'], function () {
         Route::get('/estadisticas', [ControllerIngresosSalidas::class, 'index'])->name('estadisticas');
         Route::post('/estadisticas', [ControllerIngresosSalidas::class, 'actualizarEstadisticas'])->name('search.estadisticas');
@@ -265,14 +271,16 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         Route::get('/exportar-info', [ControllerIngresosSalidas::class, 'exportar'])->name('exportar');
         Route::post('/exportar-info', [ControllerIngresosSalidas::class, 'descargarExcel']);
     });
+    //Fin de ingresos y salidas
 
-
+    //Sección de ventas
     Route::group(['prefix' => 'ventas'], function () {
         Route::get('/general', function () {
             return view('apps.intranet.ventas.home');
         })->name('ventas');
     });
 
+    //Sección de recursos humanos 
     Route::group(['prefix' => 'rrhh'], function () {
 
         Route::get('/general', [ControllerRecursosHumanos::class, 'index'])->name('rrhh');
@@ -403,9 +411,7 @@ Route::group(['prefix' => 'automoviles', 'middleware' => 'auth'], function () {
     Route::get('/informacion-general/{id_auto}/{placa}/{row_id}', [ControllerAutomoviles::class, 'InformacionAuto'])->name('informacion.autos');
     Route::post('/informacion-general/{id_auto}/{placa}/{row_id}', [ControllerAutomoviles::class, 'ConsultarFechas']);
 
-
     Route::get('/proveedores', [ControllerProveedores::class, 'index'])->name('proveedores.albura');
-
 
     Route::get('/comparativo', [ControllerComparativo::class, 'index'])->name('comparativo.albura');
     Route::post('/comparativo', [ControllerComparativoGeneral::class, 'index']);
@@ -430,8 +436,11 @@ Route::group(['prefix' => 'catalogo', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function () {
 });
 
+
+//Plataforma de control de madera
 Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middleware' => 'checkPermisosMadera'], function () {
 
+    //Página de inicio de la plataforma
     Route::get('', [ControllerFabricaMadera::class, 'home'])->name('madera.home');
 
     Route::group(['prefix' => 'printer'], function () {
@@ -537,6 +546,9 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
         Route::post('/search-obs-wood', [ControllerPlannerWood::class, 'getDataObsCortes'])->name('getObsWood');
         Route::post('/search-piezas-favor', [ControllerPlannerWood::class, 'getInfoDataPiezasMadera'])->name('getinfoPiezasFavor');
         Route::post('/save-piezas-favor', [ControllerPlannerWood::class, 'saveInformacionPiezasFavor'])->name('saveinfoPiezasFavor');
+
+        //Se agrega la ruta para guardar piezas según tipo de madera
+        Route::post('/guardar-piezas-wood', [ControllerPlannerWood::class, 'saveInformationPiezasMadera'])->name('save.info.wood.pieza');
     });
 });
 
@@ -571,7 +583,7 @@ Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function
         Route::get('/whatsapp', [ControllerFinalizar::class, 'WhatsApp'])->name("enviar.whatsapp.cotizacion.pruebas");
         Route::post('/email', [ControllerFinalizar::class, 'Email'])->name("enviar.correo.cotizacion.pruebas");
         Route::get('/fogade', [ControllerPdfFogade::class, 'GenerarDocumentoFogade'])->name("generar.pdf.fogade");
-        Route::get('/credito', [ControllerGenerarCredito::class, 'GenerarSolicitudCredito'])->name("generar.solicitud.credito");
+        Route::post('/credito', [Cotizador_pruebasControllerGenerarCredito::class, 'solicitarCredito'])->name("generar.solicitud.credito.pruebas");
     });
 });
 
