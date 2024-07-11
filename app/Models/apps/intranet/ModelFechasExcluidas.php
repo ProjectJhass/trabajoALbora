@@ -9,6 +9,8 @@ class ModelFechasExcluidas extends Model
 {
     use HasFactory;
 
+    protected $connection = 'servicios_tecnicos';
+
     protected $table = 'fechasexcluidas';
 
     protected $fillable = [

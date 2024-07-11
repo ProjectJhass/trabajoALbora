@@ -98,7 +98,7 @@ class ControllerAnalytics extends Controller
             'etapas_servicos.etapa',
             DB::raw('CAST(etapas_servicos.dias AS UNSIGNED) as dias'),
             'historial_seguimiento.created_at',
-            DB::raw('CASE WHEN DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) = 0 THEN 1 ELSE DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) - ( SELECT COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.fecha_inicial AND CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END ) END as diferencia'),
+            DB::raw('CASE WHEN DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) = 0 THEN 1 ELSE DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) - ( SELECT COUNT(*) FROM st_servicios_tecnicos.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.fecha_inicial AND CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END ) END as diferencia'),
         )
             ->join('etapas_servicos', 'historial_seguimiento.id_proceso', '=', 'etapas_servicos.id')
             ->join('servicios_tecnicos', 'servicios_tecnicos.id_st', '=', 'historial_seguimiento.id_st')
@@ -507,7 +507,7 @@ class ControllerAnalytics extends Controller
             'historial_seguimiento.fecha_inicial',
             DB::raw('CAST(etapas_servicos.dias AS UNSIGNED) as dias'),
             'historial_seguimiento.created_at',
-            DB::raw('CASE WHEN DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) = 0 THEN 1 ELSE DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) - ( SELECT COUNT(*) FROM db_plataformas.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.fecha_inicial AND CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END ) END as diferencia'),
+            DB::raw('CASE WHEN DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) = 0 THEN 1 ELSE DATEDIFF( CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END , historial_seguimiento.fecha_inicial ) - ( SELECT COUNT(*) FROM st_servicios_tecnicos.fechasexcluidas fe WHERE fe.fecha BETWEEN historial_seguimiento.fecha_inicial AND CASE WHEN historial_seguimiento.fecha_final IS NULL THEN CURDATE() ELSE historial_seguimiento.fecha_final END ) END as diferencia'),
         )
             ->join('etapas_servicos', 'historial_seguimiento.id_proceso', '=', 'etapas_servicos.id')
             ->join('servicios_tecnicos', 'servicios_tecnicos.id_st', '=', 'historial_seguimiento.id_st')

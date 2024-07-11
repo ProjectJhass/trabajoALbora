@@ -11,6 +11,8 @@ class ModelHistorialFechasNotificacion extends Model
 {
     use HasFactory;
 
+    protected $connection = 'servicios_tecnicos';
+
     protected $table = 'historial_fechas_notificaciones';
 
     protected $fillable = [
