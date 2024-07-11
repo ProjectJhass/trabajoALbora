@@ -115,8 +115,8 @@
                     } else {
                         $("#cedula_st").val("800009732")
                         $("#nombre_st").val("MUEBLES ALBURA SAS")
-                        $("#celular_st").val("3183569509")
-                        $("#email_st").val("bodega.ppal@mueblesalbura.com.co")
+                        $("#celular_st").val("")
+                        $("#email_st").val("")
                         $("#direccion_st").val("CARRERA 16 A N 10 - 42")
                         $("#barrio_st").val("LA POPA")
                         $("#ciudad_st").val("DOSQUEBRADAS")
