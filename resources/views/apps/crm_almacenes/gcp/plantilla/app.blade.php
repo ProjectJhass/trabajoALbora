@@ -301,6 +301,14 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('crm.exportar.home') }}" class="nav-link text-white @yield('exportar')">
+                                    <i class="nav-icon fas fa-file-excel"></i>
+                                    <p>
+                                        Exportar Información
+                                    </p>
+                                </a>
+                            </li>
                         @endif
                     </ul>
                 </nav>
