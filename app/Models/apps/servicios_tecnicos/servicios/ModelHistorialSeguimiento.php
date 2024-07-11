@@ -19,4 +19,3 @@ class ModelHistorialSeguimiento extends Model
         'updated_at'
     ];
 }
-?>
