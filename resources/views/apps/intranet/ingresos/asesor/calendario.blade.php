@@ -40,7 +40,8 @@
                                 <h4 class="card-title">Usuarios agregados</h4>
                             </div>
                             <div class="card-body">
-                                <div id="external-events" class="overflow-auto" style="max-width: 300px; max-height: 320px;">
+                                <div id="external-events" class="overflow-auto"
+                                    style="max-width: 300px; max-height: 320px;">
                                     <div class="external-event" data-url="" data-evento="1" data-zona="" data-cedula=""
                                         style="background-color: rgb(10, 136, 138); border-color: rgb(10, 136, 138); color: rgb(255, 255, 255); position: relative;">
                                     </div>
@@ -61,19 +62,21 @@
                                 <div class="row">
                                     <div class="col-md-12 mb-3" hidden>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="A">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                id="inlineRadio1" value="A">
                                             <label class="form-check-label" for="inlineRadio1">Asesor</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="R"
-                                                checked>
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                id="inlineRadio2" value="R" checked>
                                             <label class="form-check-label" for="inlineRadio2">Reunión</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-3" id="formulario-agregar-nuevo-registro">
                                         <div class="btn-group" style="width: 100%; margin-bottom: 10px;" hidden>
                                             <ul class="fc-color-picker" id="color-chooser">
-                                                <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                                                <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a>
+                                                </li>
                                             </ul>
                                         </div>
                                         <div class="form-group">
@@ -85,7 +88,8 @@
                                             <input type="text" class="form-control" name="url-event" id="url-event">
                                         </div>
                                         <div class="input-group">
-                                            <button id="add-new-event" type="button" class="btn btn-danger">Agregar Información</button>
+                                            <button id="add-new-event" type="button" class="btn btn-danger">Agregar
+                                                Información</button>
                                         </div>
                                     </div>
                                 </div>
@@ -97,8 +101,10 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-sm btn-danger" id="btnAbrirModalFirmarDescanso" onclick="modalFirmarDescansosDom()">Firmar descanso</button>
-                                <a href="{{ route('h.firmas.asesor') }}" type="button" class="btn btn-secondary">Certificados</a>
+                                <button type="button" class="btn btn-sm btn-danger" id="btnAbrirModalFirmarDescanso"
+                                    onclick="modalFirmarDescansosDom()">Firmar descanso</button>
+                                <a href="{{ route('h.firmas.asesor') }}" type="button"
+                                    class="btn btn-secondary">Certificados</a>
                             </div>
                         </div>
                         <div class="col-md-9 mb-2 text-center">
@@ -135,7 +141,8 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalFirmarDescansos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalFirmarDescansos" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -150,20 +157,22 @@
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="">Cédula</label>
-                                    <input type="text" value="{{ Auth::user()->id }}" readonly class="form-control" name="cedula" id="cedula">
+                                    <input type="text" value="{{ Auth::user()->id }}" readonly class="form-control"
+                                        name="cedula" id="cedula">
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="">Nombre</label>
-                                    <input type="text" value="{{ Auth::user()->nombre }}" readonly class="form-control" name="nombre"
-                                        id="nombre">
+                                    <input type="text" value="{{ Auth::user()->nombre }}" readonly
+                                        class="form-control" name="nombre" id="nombre">
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="">Departamento</label>
-                                    <select class="form-control" onchange="searchInfoCiudades(this.value)" name="departamento" id="departamento"
-                                        required>
+                                    <select class="form-control" onchange="searchInfoCiudades(this.value)"
+                                        name="departamento" id="departamento" required>
                                         <option value="">Seleccionar...</option>
                                         @foreach ($deptos as $item)
-                                            <option value="{{ $item->id_depto }}" data-depto="{{ $item->depto }}">{{ $item->depto }}</option>
+                                            <option value="{{ $item->id_depto }}" data-depto="{{ $item->depto }}">
+                                                {{ $item->depto }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -182,11 +191,13 @@
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="">Dominical laborado</label>
-                                    <select class="form-control" name="dominical_laborado" id="dominical_laborado" required></select>
+                                    <select class="form-control" name="dominical_laborado" id="dominical_laborado"
+                                        required></select>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="">Día descanso compensatorio</label>
-                                    <select class="form-control" name="dia_compensado" id="dia_compensado" required></select>
+                                    <select class="form-control" name="dia_compensado" id="dia_compensado"
+                                        required></select>
                                 </div>
                                 <div class="col-md-8 mb-3">
                                     <label for="">Observaciones</label>
@@ -197,20 +208,23 @@
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar formulario</button>
-                        <button type="button" class="btn btn-danger" onclick="validarFieldsDescanso()">Firmar descanso compensatorio</button>
+                        <button type="button" class="btn btn-danger" onclick="validarFieldsDescanso()">Firmar descanso
+                            compensatorio</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="modalTomarFotografia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalTomarFotografia" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="card card-outline card-danger">
                             <div class="card-header">
                                 <label for="">Dispositivo</label>
-                                <select name="listaDeDispositivos" id="listaDeDispositivos" class="form-control"></select>
+                                <select name="listaDeDispositivos" id="listaDeDispositivos"
+                                    class="form-control"></select>
                             </div>
                             <div class="card-body text-center">
                                 <video muted="muted" id="video" style="width: 80%;"></video>
@@ -218,7 +232,8 @@
                             </div>
                             <div class="card-footer text-center">
                                 <button type="button" id="boton" class="btn btn-danger">Tomar fotografía</button>
-                                <button type="button" id="cerrarModalFotoGrafia" class="btn btn-secondary" data-dismiss="modal">Cerrar
+                                <button type="button" id="cerrarModalFotoGrafia" class="btn btn-secondary"
+                                    data-dismiss="modal">Cerrar
                                     ventana</button>
                                 <p id="estado"></p>
                             </div>
@@ -243,21 +258,25 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputEmail4">Nombre</label>
-                                    <input type="text" readonly class="form-control" id="nombre_prog_cal" name="nombre_prog_cal">
+                                    <input type="text" readonly class="form-control" id="nombre_prog_cal"
+                                        name="nombre_prog_cal">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputPassword4">Fecha inicio</label>
-                                    <input type="date" readonly class="form-control" id="fecha_i_prog_cal" name="fecha_i_prog_cal">
+                                    <input type="date" readonly class="form-control" id="fecha_i_prog_cal"
+                                        name="fecha_i_prog_cal">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputPassword4">Fecha final</label>
-                                    <input type="date" readonly class="form-control" id="fecha_f_prog_cal" name="fecha_f_prog_cal">
+                                    <input type="date" readonly class="form-control" id="fecha_f_prog_cal"
+                                        name="fecha_f_prog_cal">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="inputCity">Evento</label>
-                                    <select readonly name="tipo_evento_prog_cal" id="tipo_evento_prog_cal" class="form-control">
+                                    <select readonly name="tipo_evento_prog_cal" id="tipo_evento_prog_cal"
+                                        class="form-control">
                                         <option value="">Seleccionar...</option>
                                         <option value="1">Descanso</option>
                                         <option value="2">Dominical</option>
@@ -268,20 +287,22 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="inputState">Asesor quien reemplaza</label>
-                                    <input type="text" readonly class="form-control" name="cedula_reemplaza_prog" id="cedula_reemplaza_prog">
+                                    <input type="text" readonly class="form-control" name="cedula_reemplaza_prog"
+                                        id="cedula_reemplaza_prog">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputAddress2">Observación</label>
-                                <textarea readonly name="observacion_evento_cal" class="form-control" id="observacion_evento_cal" placeholder="Observaciones de la programación"
-                                    cols="30" rows="3"></textarea>
+                                <textarea readonly name="observacion_evento_cal" class="form-control" id="observacion_evento_cal"
+                                    placeholder="Observaciones de la programación" cols="30" rows="3"></textarea>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-danger" id="btnFirmarDesdeModal" onclick="firmarFechaDescansoModal()"><i
-                                class="fas fa-edit"></i> Firmar fecha</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar información</button>
+                        <button type="button" class="btn btn-danger" id="btnFirmarDesdeModal"
+                            onclick="firmarFechaDescansoModal()"><i class="fas fa-edit"></i> Firmar fecha</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                                class="fas fa-times"></i> Cerrar información</button>
                     </div>
                 </div>
             </div>
@@ -361,8 +382,10 @@
                         evento: $(eventEl).attr('data-evento'),
                         cedula_u: $(eventEl).attr('data-cedula'),
                         zona: $(eventEl).attr('data-zona'),
-                        backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
-                        borderColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
+                        backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue(
+                            'background-color'),
+                        borderColor: window.getComputedStyle(eventEl, null).getPropertyValue(
+                            'background-color'),
                         textColor: window.getComputedStyle(eventEl, null).getPropertyValue('color'),
                     };
                 }
@@ -406,7 +429,8 @@
                 droppable: true, // this allows things to be dropped onto the calendar !!!
                 eventClick: function(info) {
                     if (info.event._def.extendedProps.bloqueado == '0') {
-                        if ((info.event._def.extendedProps.evento) !== undefined && (info.event._def.extendedProps.evento) != 3) {
+                        if ((info.event._def.extendedProps.evento) !== undefined && (info.event._def
+                                .extendedProps.evento) != 3) {
                             $('#actualizar-programacion-calendario').modal('show');
                             $('#id_prog_cal').val(info.event._def.publicId);
                             $('#nombre_prog_cal').val(info.event._def.title);
@@ -536,12 +560,14 @@
             $("#cerrarModalFotoGrafia").text("Cerrar ventana")
 
             function tieneSoporteUserMedia() {
-                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator
+                return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices
+                    .getUserMedia) || navigator
                     .webkitGetUserMedia || navigator.msGetUserMedia)
             }
 
             function _getUserMedia() {
-                return (navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator
+                return (navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) ||
+                    navigator
                     .webkitGetUserMedia || navigator.msGetUserMedia).apply(navigator, arguments);
             }
 
@@ -586,7 +612,8 @@
                 // Comenzamos viendo si tiene soporte, si no, nos detenemos
                 if (!tieneSoporteUserMedia()) {
                     alert("Lo siento. Tu navegador no soporta esta característica");
-                    $estado.innerHTML = "Parece que tu navegador no soporta esta característica. Intenta actualizarlo.";
+                    $estado.innerHTML =
+                        "Parece que tu navegador no soporta esta característica. Intenta actualizarlo.";
                     return;
                 }
                 //Aquí guardaremos el stream globalmente
@@ -701,8 +728,19 @@
             var descanso = $("#dia_compensado").val()
             if (depto.length > 0 && ciudad.length > 0 && almacen.length > 0) {
                 if (dominical.length > 0 || descanso.length > 0) {
-                    $("#modalTomarFotografia").modal("show")
-                    tomarFotografiaDescanso()
+                    if (dominical.length > 0 && descanso.length == 0) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Debes seleccionar el día compensatorio',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            toast: true
+                        });
+                    } else {
+                        $("#modalTomarFotografia").modal("show")
+                        tomarFotografiaDescanso()
+                    }
                 } else {
                     Swal.fire({
                         position: 'top-end',
