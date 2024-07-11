@@ -21,6 +21,10 @@ class ModelSueldosIntereses extends Model
         'interes_mora',
         'valor_fianza',
         'iva',
-        'porcentaje_iva'
+        'porcentaje_iva',
+        'porcentaje_contado',
+        'porcentaje_credito',
+        'porc_sin_plan',
+        'cuadre_base'
     ];
 }
