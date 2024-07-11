@@ -2,7 +2,10 @@
 @section('head')
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="./../../css/tiempos_respuesta.css">
+    <link rel="stylesheet" href="./../../css/causalidades.css">
 @endsection
 @section('analytics')
     active
@@ -103,74 +106,123 @@
                 </div>
             </div>
         </div>
-        <div class="col-md mb-3">
+        <div id="informesContainer" class="col-md mb-3">
             <div class="card h-100 mt-4">
-                <div class="card-header graph-header">
-                    <div class="card-title d-flex align-items-start justify-content-between">
-                        <h5>Informe de causalidades</h5>
+                <div class="card-header d-flex align-items-center justify-content-between border-bottom w-100">
+                    <h4 class="m-0">INFORMES: Ordenes de Servicio</h4>
+                    <div class="filtrosContainer border border-top-0 border-bottom-0 w-50 px-4 pr-0">
+                        <div class='fechasContainer d-flex align-items-center justify-content-betweeen'>
+                            <input type='month' class='form-control' name='fecha_inicial' id='fecha_tiempos_i'
+                                onchange="filtroFechasTiempos()">
+                            <label class="mx-4" for=''>Hasta:</label>
+                            <input type='month' class='form-control' name='fecha_final' id='fecha_tiempos_f'
+                                onchange="filtroFechasTiempos()">
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-success text-nowrap" data-bs-toggle="popover"
-                        data-bs-offset="0,14" data-bs-placement="top" data-bs-html="true"
-                        data-bs-content="
-                            <form action='{{ route('analytics.export.causales.st') }}' method='post'>
-                                <div class='d-flex justify-content-center'><button type='submit' class='btn btn-sm btn-success'>Exportar</button></div>"
-                        title="Exportar Excel">
-                        <i class="bx bxs-file-export"></i>
-                    </button>
                 </div>
-                <div class="card-body" id="tableCausalidades">
-                    @php
-                        echo $causalidades_graph;
-                    @endphp
-                </div>
-            </div>
-        </div>
-        <div class="col-md mb-3">
-            <div class="card h-100 mt-4">
-                <div class="card-header graph-header">
-                    <div class="card-title d-flex align-items-start justify-content-between">
-                        <h5>Tiempos de respuesta por etapas</h5>
-                    </div>
-                    <div id="inputContainer">
-                        <input name="searchInputGraph" type="text" id="searchInputGraph" class="form-control border-0"
-                            placeholder="Buscar Orden..." required autocomplete="off">
-                    </div>
-                    <button type="button" class="btn btn-sm btn-success text-nowrap" data-bs-toggle="popover"
-                        data-bs-offset="0,14" data-bs-placement="top" data-bs-html="true"
-                        data-bs-content="
-                            <form action='{{ route('analytics.export.tiempos.respuesta.st') }}' method='post'>
-                                <div class='d-flex justify-content-center'><button type='submit' class='btn btn-sm btn-success'>Exportar</button></div>"
-                        title="Exportar Excel">
-                        <i class="bx bxs-file-export"></i>
-                    </button>
-                </div>
-                <div class="steps-container" id="graphTiemposRespuesta">
-                    @php
-                        echo $tiempos_graph;
-                    @endphp
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-column p-4 text-center">
-                        <div class="h-100 border rounded">
-                            <div id="inputContainer">
-                                <input name="searchInput" type="number" id="searchInput" class="form-control border-0"
-                                    placeholder="Buscar Orden..." required autocomplete="off">
-                                <img id="sorting_icon" src="./../../assets/img/icons/unicons/sort-vertical.png"
-                                    alt="" srcset="">
+                <div class="card-body">
+                    <div id="causalidadesContainer" class="col-md mb-3">
+                        <div class="card shadow-lg h-100 mt-4">
+                            <div
+                                class="card-header graph-header border-bottom d-flex justify-content-between align-items-center mb-4">
+                                <div class="card-title d-flex align-items-center justify-content-center m-0">
+                                    <h5 style="text-align: center; margin: 0;">Informe de Causalidades</h5>
+                                </div>
+                                <button id="exportarCausales" type="button" class="btn btn-sm btn-success text-nowrap"
+                                    onclick="exportarExcel('causales')" title="Exportar">
+                                    <i class="bx bxs-file-export"></i>
+                                </button>
                             </div>
-                            <div class="list-container ">
-                                <ul id="list" class="list-group">
-                                    @foreach ($odts as $key)
-                                        <li class="item "> {{ $key['id_st'] }}</li>
-                                    @endforeach
-                                </ul>
+                            <div class="card-body" id="graficaCausalidades">
+                                {!! $causalidades_graph !!}
                             </div>
                         </div>
                     </div>
-                    <div class="card-body " id="infoTiemposRespuesta">
-                        @php
-                            echo $tiempos_table;
-                        @endphp
+                    <div id="tiemposRespuestContainer" class="col-md mb-3">
+                        <div class="card shadow-lg h-100 mt-4">
+                            <div class="card-header graph-header border-bottom d-flex align-items-center">
+                                <div class="card-title d-flex align-items-center justify-content-center m-0">
+                                    <h5 style="text-align: center; margin: 0;">Informe de Tiempos de Respuesta por Etapa
+                                    </h5>
+                                </div>
+                                <style>
+                                    .semaforo {
+                                        height: 36px;
+                                        box-sizing: border-box;
+                                        padding: 2px;
+                                        display: flex;
+                                        flex-direction: row;
+                                        background-color: rgb(48, 48, 48);
+                                        border-radius: 10px;
+                                    }
+
+                                    .btn_semaforo {
+                                        margin: 1px;
+                                        border: none;
+                                        box-shadow: 0 -2px;
+                                        width: 30px;
+                                        height: 30px;
+                                        border-radius: 50%;
+                                        filter: brightness(0.7);
+                                    }
+
+                                    .btn_semaforo:hover,
+                                    .btn_semaforo:focus {
+                                        filter: brightness(1);
+                                    }
+                                </style>
+                                <div id="ordenServicioContainer">
+                                    <input name="searchInputGraph" type="text" id="searchInputGraph"
+                                        class="form-control border-0" placeholder="Buscar Orden de Servicio" required
+                                        autocomplete="off" onchange="buscarGraficaODT()">
+                                </div>
+                                <div class="semaforo">
+                                    <button class="btn_semaforo" onclick="filtroEstadosTiempos('peligro')" type="button"
+                                        style="background-color: #ff3e1d;"></button>
+                                    <button class="btn_semaforo" onclick="filtroEstadosTiempos('advertencia')"
+                                        type="button" style="background-color: #e8b009;"></button>
+                                    <button class="btn_semaforo" onclick="filtroEstadosTiempos('a_tiempo')"
+                                        type="button" style="background-color: #62bd30;"></button>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-success text-nowrap"
+                                    onclick="exportarExcel('tiempos')" title="Exportar Excel">
+                                    <i class="bx bxs-file-export"></i>
+                                </button>
+                            </div>
+                            <div class="my-5">
+                                <div class="steps-container" id="graficaTiemposRespuesta">
+                                    @php
+                                        echo $tiempos_graph;
+                                    @endphp
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-5 d-none">
+                                <div class="d-flex flex-column p-4 text-center">
+                                    <div class="h-100 border rounded">
+                                        <div id="inputContainer">
+                                            <input name="searchInput" type="number" id="searchInput"
+                                                class="form-control border-0" placeholder="Buscar Orden..." required
+                                                autocomplete="off">
+                                            <img id="sorting_icon"
+                                                src="./../../assets/img/icons/unicons/sort-vertical.png" alt=""
+                                                srcset="">
+                                        </div>
+                                        <div class="list-container ">
+                                            <ul id="list" class="list-group">
+                                                @foreach ($odts as $key)
+                                                    <li class="item "> {{ $key['id_st'] }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body " id="infoTiemposRespuesta">
+                                    @php
+                                        echo $tiempos_table;
+                                    @endphp
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,12 +235,15 @@
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
     <script src="https://unpkg.com/@popperjs/core@^2.0.0"></script>
     <script src="./../../js/tiempos_respuesta.js"></script>
+    <script src="./../../js/causalidades.js"></script>
     <script>
         $(document).ready(function() {
             setupTable();
-            loadGraph();
+            loadTiemposGraph();
+            loadCausalesGraph();
         })
         $(() => {
             var array_1 = @json($js);
@@ -196,7 +251,6 @@
             render(array_1);
             renderG2(array_2);
         })
-
         let cardColor, headingColor, axisColor, shadeColor, borderColor;
 
         cardColor = config.colors.cardColor;
@@ -424,6 +478,7 @@
                 }
             })
         }
+
         buscarOrdenST = (co) => {
             var datos = $.ajax({
                 url: "{{ route('search.orden.st') }}",
@@ -453,11 +508,17 @@
             });
         }
         buscarGraficaODT = (co) => {
+            var fecha_i = $('#fecha_tiempos_i').val();
+            var fecha_f = $('#fecha_tiempos_f').val();
+            fecha_i ? fecha_i += "-01" : null;
+            fecha_f ? fecha_f = getLastDayOfMonth(fecha_f) : null;
             var datos = $.ajax({
                 url: "{{ route('search.graph.st') }}",
                 type: "POST",
                 dataType: "json",
                 data: {
+                    fecha_i,
+                    fecha_f,
                     co
                 },
                 headers: {
@@ -466,9 +527,150 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
-                    document.getElementById('graphTiemposRespuesta').innerHTML = res.graph;
-                    loadGraph();
+                    document.getElementById('graficaTiemposRespuesta').innerHTML = res.graph;
+                    loadTiemposGraph();
                 }
+            });
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Hubo un problema al procesar la solicitud',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            });
+        }
+        filtroFechasTiempos = () => {
+            var fecha_i = $('#fecha_tiempos_i').val();
+            var fecha_f = $('#fecha_tiempos_f').val();
+            fecha_i ? fecha_i += "-01" : null;
+            fecha_f ? fecha_f = getLastDayOfMonth(fecha_f) : null;
+            var datos = $.ajax({
+                url: "{{ route('search.analytics.fechas') }}",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    fecha_i,
+                    fecha_f
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            datos.done((res) => {
+                document.getElementById('graficaCausalidades').innerHTML = res.causales
+                loadCausalesGraph();
+                document.getElementById('graficaTiemposRespuesta').innerHTML = res.tiempos
+                loadTiemposGraph();
+                // setupTable();
+            });
+            datos.fail(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Hubo un problema al procesar la solicitud',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            });
+        }
+        getLastDayOfMonth = (dateString) => {
+            // Crear una nueva fecha con el primer día del mes siguiente
+            let [year, month] = dateString.split('-').map(Number);
+            let date = new Date(year, month, 0); // El día 0 del mes siguiente es el último día del mes actual
+
+            // Formatear la fecha a YYYY-MM-dd
+            let lastDay = date.getDate();
+            let formattedMonth = month.toString().padStart(2, '0');
+            let formattedDay = lastDay.toString().padStart(2, '0');
+
+            return `${year}-${formattedMonth}-${formattedDay}`;
+        }
+        exportarExcel = (grafica) => {
+            var fecha_i = $('#fecha_tiempos_i').val();
+            var fecha_f = $('#fecha_tiempos_f').val();
+            fecha_i ? fecha_i += "-01" : null;
+            fecha_f ? fecha_f = getLastDayOfMonth(fecha_f) : null;
+            let url;
+            let title;
+            if (grafica == "tiempos") {
+                url = '{{ route('analytics.export.tiempos.respuesta.st') }}'
+                title = "informe-tiempos-respuesta.xlsx";
+            } else if (grafica == "causales") {
+                url = '{{ route('analytics.export.causales.st') }}';
+                title = "informe-causales.xlsx";
+            }
+            var datos = $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    fecha_i,
+                    fecha_f
+                },
+                xhrFields: {
+                    responseType: 'blob' // Permite recibir datos binarios (como archivos)
+                },
+                success: function(response, status, xhr) {
+                    // Crear un objeto URL y descargar el archivo
+                    var blob = new Blob([response]);
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = title;
+                    link.click();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al exportar Excel:', error);
+                }
+            });
+        }
+        buscarArticulos = (causalidad) => {
+            var fecha_i = $('#fecha_tiempos_i').val();
+            var fecha_f = $('#fecha_tiempos_f').val();
+            fecha_i ? fecha_i += "-01" : null;
+            fecha_f ? fecha_f = getLastDayOfMonth(fecha_f) : null;
+            $.ajax({
+                url: "{{ route('search.article.st') }}",
+                type: "GET",
+                data: {
+                    'causalidad': causalidad,
+                    fecha_i,
+                    fecha_f
+                },
+                dataType: "json",
+                success: function(res) {
+                    document.querySelector('.modal-body').innerHTML = res.data;
+                    document.querySelector('.modal-title').innerHTML =
+                        "<div class='fs-6 start-0'>Articulos bajo causal de:</div><div class='w-100 d-flex justify-content-center fs-3 align-items-center text-center'><div>" +
+                        causalidad + "</div></div";
+                },
+                error: function(err) {
+                    console.error(err);
+                }
+            })
+        }
+        filtroEstadosTiempos = (estado) => {
+            var fecha_i = $('#fecha_tiempos_i').val();
+            var fecha_f = $('#fecha_tiempos_f').val();
+            fecha_i ? fecha_i += "-01" : null;
+            fecha_f ? fecha_f = getLastDayOfMonth(fecha_f) : null;
+            var datos = $.ajax({
+                url: "{{ route('search.analytics.estado') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    fecha_i,
+                    fecha_f,
+                    estado
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            datos.done((res) => {
+                document.getElementById('graficaTiemposRespuesta').innerHTML = res.tiempos
+                loadTiemposGraph();
+                // setupTable();
             });
             datos.fail(() => {
                 Swal.fire({

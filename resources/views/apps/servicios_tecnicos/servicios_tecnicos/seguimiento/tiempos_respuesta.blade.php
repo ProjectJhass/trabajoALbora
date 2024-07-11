@@ -10,18 +10,19 @@
     <tbody class="text-center">
         @foreach ($data as $orden)
             @foreach ($orden as $seguimiento)
-                <tr>
-                    <td>{{ $seguimiento['id'] }}</td>
-                    <td>{{ $seguimiento['etapa'] }}</td>
-                    <td>{{ $seguimiento['dias'] }}</td>
-                    <td>{{ $seguimiento['diferencia'] }}</td>
-                </tr>
+            <tr>
+                <td>{{ $seguimiento->id }}</td>
+                <td>{{ $seguimiento->etapa }}</td>
+                <td>{{ $seguimiento->dias }}</td>
+                <td>{{ $seguimiento->diferencia }}</td>
+            </tr>
             @endforeach
         @endforeach
     </tbody>
 </table>
 <style>
-    td, th{
+    td,
+    th {
         height: 33px;
     }
 </style>
