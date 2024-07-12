@@ -479,6 +479,10 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
         Route::post('create-planner-corte', [ControllerSavePlanificacionCorte::class, 'savePlanificacion'])->name('planner.corte.piezas');
         Route::post('search-troncos', [ControllerSearchMadera::class, 'search'])->name('search.info.troncos');
         Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
+        
+        //Informacion general piezas a favor desde corte de madera
+        Route::post("obtener-info-madera",[ControllerPlannerMadera::class, 'getInfoPiezasPorTipoDeMadera'])->name('get.info.por.madera');
+        Route::post("agregar-piezas-madera",[ControllerPlannerMadera::class, 'getInfoUtilizarPiezasMadera'])->name('add.info.por.madera');
 
         //Planear Corte de tablas
         Route::post('planner-corte-tabla', [ControllerPlannerTabla::class, 'saveInfoCorteTabla'])->name('save.planner.tabla');

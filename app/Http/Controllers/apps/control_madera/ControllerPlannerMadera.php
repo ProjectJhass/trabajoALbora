@@ -9,6 +9,7 @@ use App\Models\apps\control_madera\ModelInfoMueble;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
 use App\Models\apps\control_madera\ModelLogs;
+use App\Models\apps\control_madera\ModelPiezasMaderaFavor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,13 +48,16 @@ class ControllerPlannerMadera extends Controller
             ->where('estado', '1')
             ->get();
 
+        $madera_a_favor = ModelPiezasMaderaFavor::where("id_madera", $id_madera)->where("estado", "Pendiente")->count();
+
         $options = '<option value="">Seleccionar...</option>';
         foreach ($valores as $key => $value) {
             $options .= '<option value="' . $value->id_mueble . '">' . $value->mueble . '</option>';
         }
 
-        return response()->json(['status' => true, 'valores' => $options], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        return response()->json(['status' => true, 'valores' => $options, 'vlr_madera' => $madera_a_favor], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
+
 
     public function createPlanificacionSerie(Request $request)
     {
@@ -129,16 +133,6 @@ class ControllerPlannerMadera extends Controller
                                 <div class="row">
                                 <div class="col-md-1 mb-3">
                                     <div class="form-group">
-                                        <label class="text-danger">Calidad</label>
-                                        <select class="form-control" name="calidad_corte' . $ban . '" id="calidad_corte' . $ban . '">
-                                        <option value=""></option>
-                                        <option value="Excelente">Excelente</option>
-                                        <option value="Buena">Buena</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-1 mb-3">
-                                    <div class="form-group">
                                         <label for="">Largo</label>
                                         <input type="text" class="form-control" style="background-color: #e3e3e3; text-align: center;" value="' . $largo . '" name="largo_pieza' . $ban . '"
                                             id="largo_pieza' . $ban . '">
@@ -162,7 +156,7 @@ class ControllerPlannerMadera extends Controller
                                         <label for="">Cantidad</label>
                                         <input type="text" hidden class="form-control" value="' . $cantidad_requerida_r . '" name="cantidad_pieza_r' . $ban . '" style="color: white !important; background-color: #248c32; text-align: center;" id="cantidad_pieza_r' . $ban . '">
                                         <input type="text" class="form-control" value="' . $cantidad_requerida . '" name="cantidad_pieza' . $ban . '" style="color: white !important; background-color: #248c32; text-align: center;" id="cantidad_pieza' . $ban . '">
-                                        <span>A favor: ' . $cantidad_fav . '</span>
+                                        <span style="cursor:pointer" onclick="addPiezasFavorPlanificacionGenerada(\'' . $ban . '\')">A favor: <i class="fas fa-plus-circle text-danger"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2 mb-3">
@@ -178,6 +172,16 @@ class ControllerPlannerMadera extends Controller
                                 </div>
                                 <div class="col-md-1 mb-3">
                                     <div class="form-group">
+                                        <label class="text-danger">Calidad</label>
+                                        <select class="form-control" name="calidad_corte' . $ban . '" id="calidad_corte' . $ban . '">
+                                        <option value=""></option>
+                                        <option value="Excelente">Excelente</option>
+                                        <option value="Buena">Buena</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <div class="form-group">
                                         <label for="">Pulgadas</label>
                                         <input type="text" class="form-control" onchange="buscarTroncosObjetivos(\'' . $ban . '\',this.value)" style="background-color: #e3e3e3; text-align: center;" name="pulgadas_utilizadas' . $ban . '" id="pulgadas_utilizadas' . $ban . '">
                                         <span>Suma: <span class="badge badge-pill bg-danger" id="sumPulg' . $ban . '">0</span></span>
@@ -187,11 +191,8 @@ class ControllerPlannerMadera extends Controller
                                     <div class="form-group">
                                         <label class="text-danger">Bloque</label>
                                         <select id="troncos' . $ban . '" name="troncos' . $ban . '" onchange="troncoSeleccionado(\'' . $ban . '\', this.value)" class="form-control">
-                                            <option value=""></option>';
-                foreach ($troncos as $key => $value) {
-                    $form_ .= '<option value="' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '">' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '</option>';
-                }
-                $form_ .= '</select>
+                                            <option value=""></option>
+                                        </select>
                                      <input type="text" class="form-control" hidden name="troncoNum' . $ban . '" id="troncoNum' . $ban . '">
                                      <div id="troncos_selected' . $ban . '"></div>
                                     </div>
@@ -221,5 +222,26 @@ class ControllerPlannerMadera extends Controller
         ]);
 
         return response()->json(['status' => true, 'planilla' => $form_], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function getInfoPiezasPorTipoDeMadera(Request $request)
+    {
+        $id_madera = $request->id_madera;
+        $madera_a_favor = ModelPiezasMaderaFavor::select('largo', 'ancho', 'grueso', 'cantidad_disponible as cantidad_inicial', 'madera')->where("id_madera", $id_madera)->where("estado", "Pendiente")->get();
+        $table = view("apps.control_madera.app.wood.iniciar_corte.tablePiezasMadera", ["info" => $madera_a_favor])->render();
+
+        return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function getInfoUtilizarPiezasMadera(Request $request)
+    {
+        $id_madera = $request->id_madera;
+        $cantidad = $request->cantidad;
+        $consecutivo = $request->consecutivo;
+
+        $madera_a_favor = ModelPiezasMaderaFavor::select('largo', 'ancho', 'grueso', 'cantidad_disponible as cantidad', 'madera')->where("id_madera", $id_madera)->where("estado", "Pendiente")->get();
+        $table = view("apps.control_madera.app.planner.planner.tableModificarFavor", ["info" => $madera_a_favor, "cantidad_pieza" => $cantidad, 'consecutivo'=>$consecutivo])->render();
+
+        return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

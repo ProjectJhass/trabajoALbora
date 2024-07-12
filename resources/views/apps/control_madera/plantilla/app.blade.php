@@ -450,6 +450,11 @@
                     if (res.status == true) {
                         $('#mueble_planner').prop('disabled', false)
                         document.getElementById('mueble_planner').innerHTML = res.valores
+                        if (res.vlr_madera > 0) {
+                            document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = false
+                        } else {
+                            document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = true
+                        }
                     }
                 })
                 datos.fail(() => {
