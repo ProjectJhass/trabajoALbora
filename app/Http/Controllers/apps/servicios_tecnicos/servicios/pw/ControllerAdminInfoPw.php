@@ -12,14 +12,14 @@ class ControllerAdminInfoPw extends Controller
 {
     public function getTable($data)
     {
-        return view('apps.servicios_tecnicos.servicios_tecnicos.apps.servicios_tecnicos.pagina_web.table', ['ost' => $data])->render();
+        return view('apps.servicios_tecnicos.servicios_tecnicos.pagina_web.table', ['ost' => $data])->render();
     }
 
     public function infoPaginaWeb()
     {
         $data = ModelPaginaWeb::where('estado', 'creado')->orderBy('created_at', 'desc')->get();
         $table = self::getTable($data);
-        return view('apps.servicios_tecnicos.servicios_tecnicos.apps.servicios_tecnicos.pagina_web.solicitudes', ['table' => $table]);
+        return view('apps.servicios_tecnicos.servicios_tecnicos.pagina_web.solicitudes', ['table' => $table]);
     }
 
     public function searchInfo(Request $request)

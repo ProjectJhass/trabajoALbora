@@ -9,56 +9,54 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class ExportInfoCausalidades implements FromCollection, WithHeadings, WithColumnWidths
 {
-
+    private $fecha_i;
+    private $fecha_f;
+    private $fechaActual;
+    private $fechaFinMesActual;
+    public function __construct($fecha_i = null, $fecha_f = null)
+    {
+        $this->fechaActual = date('Y-m-01');
+        $this->fechaFinMesActual = date('Y-m-t');
+        $this->fecha_i = $fecha_i;
+        $this->fecha_f = $fecha_f;
+    }
     public function collection()
     {
-        $data_ = ModelNuevaSolicitud::select('id_st', 'causales')
+        $query = ModelNuevaSolicitud::select('id_item', 'articulo', 'causales', 'created_at')
             ->whereNotNull('causales')
-            ->where('causales', '!=', '')
-            ->get();
-        $causales = collect();
+            ->where('causales', '!=', '');
 
-        foreach ($data_ as $value) {
-            if (str_contains($value->causales, ',')) {
-                $causalesExploded = explode(',', $value->causales);
-                foreach ($causalesExploded as $causal) {
-                    $causales[] = ['causales' => $causal];
-                }
-            } else {
-                $causales[] = ['causales' => $value->causales];
-            }
+        if (!empty($this->fecha_i) && !empty($this->fecha_f)) {
+            $query->whereBetween('created_at', [$this->fecha_i, $this->fecha_f]);
+        } else if (!empty($this->fecha_i)) {
+            $query->where('created_at', '>=', $this->fecha_i);
+        } else if (!empty($this->fecha_f)) {
+            $query->where('created_at', '<=', $this->fecha_f);
+        } else {
+            $query->whereBetween('created_at', [$this->fechaActual, $this->fechaFinMesActual]);
         }
-        // $causales = $causales->groupBy('causales');
-        $causales = $causales->groupBy('causales')->map(function ($group) {
-            return $group->count();
-        });
-        $res = collect();
-        foreach ($causales as $key => $value) {
-            $res[] = ['causales' => $key, 'cantidad' => $value];
-        }
-        $a = collect();
-        foreach ($res as $r) {
-            $a[] = collect([$r]);
-        }
-        $sortedCollection = $a->sortByDesc(function ($item) {
-            return $item[0]['cantidad'];
-        });
-        return $sortedCollection;
+        $data_ = $query->get();
+
+        return $data_;
     }
 
     public function headings(): array
     {
         return [
-            'causalidad',
-            'cantidad'
+            'SKU',
+            'Nombre item',
+            'Causalidad',
+            'Fecha_creacion'
         ];
     }
 
     public function columnWidths(): array
     {
         return [
-            'A' => 40,
-            'B' => 10,
+            'A' => 5,
+            'B' => 60,
+            'C' => 40,
+            'D' => 30,
         ];
     }
 }

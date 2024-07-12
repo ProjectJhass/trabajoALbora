@@ -20,4 +20,9 @@ class ModelInfoLlamadasPendientes extends Model
         'estado',
         'id_cliente'
     ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(ModelClientesCRM::class, 'id_cliente');
+    }
 }

@@ -66,13 +66,23 @@
 
             switch (valor) {
                 case "CLIENTE":
-                    $("#cedula_st").val("")
-                    $("#nombre_st").val("")
-                    $("#celular_st").val("")
-                    $("#email_st").val("")
-                    $("#direccion_st").val("")
-                    $("#barrio_st").val("")
-                    $("#ciudad_st").val("")
+                    if (co == "999") {
+                        $("#cedula_st").val("")
+                        $("#nombre_st").val("")
+                        $("#celular_st").val("3114545153")
+                        $("#email_st").val("servicioalcliente@happysleep.com.co")
+                        $("#direccion_st").val("KM 1 VIA EL EDEN")
+                        $("#barrio_st").val("FRENTE AL BARRIO ARRAYANES")
+                        $("#ciudad_st").val("ARMENIA")
+                    } else {
+                        $("#cedula_st").val("")
+                        $("#nombre_st").val("")
+                        $("#celular_st").val("")
+                        $("#email_st").val("")
+                        $("#direccion_st").val("")
+                        $("#barrio_st").val("")
+                        $("#ciudad_st").val("")
+                    }
                     break;
                 case "ALMACEN":
                     if (co == "999") {
@@ -105,8 +115,8 @@
                     } else {
                         $("#cedula_st").val("800009732")
                         $("#nombre_st").val("MUEBLES ALBURA SAS")
-                        $("#celular_st").val("3183569509")
-                        $("#email_st").val("bodega.ppal@mueblesalbura.com.co")
+                        $("#celular_st").val("")
+                        $("#email_st").val("")
                         $("#direccion_st").val("CARRERA 16 A N 10 - 42")
                         $("#barrio_st").val("LA POPA")
                         $("#ciudad_st").val("DOSQUEBRADAS")
@@ -130,27 +140,34 @@
         }
 
         CrearNuevaSolicitudST = () => {
-            notificacion("Guardando información de la orden de servicio", "info", 10000);
-            var formulario = new FormData(document.getElementById('form-send-new-ost'));
-            formulario.append('valor', 'valor');
-            var datos = $.ajax({
-                url: "{{ route('form.create.ost') }}",
-                type: "post",
-                dataType: "json",
-                data: formulario,
-                cache: false,
-                contentType: false,
-                processData: false
-            });
-            datos.done((res) => {
-                notificacion("Excelente! Orden de servicio técnico creado", "success", 5000);
-                setTimeout(() => {
-                    window.location.href = "{{ route('informe.seg') }}"
-                }, 1500);
-            })
-            datos.fail(() => {
-                notificacion("ERROR! Revisa la información y vuelve a intentarlo", "error", 5000);
-            })
+            var proveedor = $("#proveedor_st").val()
+            var co = $("#co_new_ost").val()
+            var tipo_st = $("#txt_tipo_st").val()
+            if (proveedor.length > 0 && co.length > 0 && tipo_st.length > 0) {
+                notificacion("Guardando información de la orden de servicio", "info", 10000);
+                var formulario = new FormData(document.getElementById('form-send-new-ost'));
+                formulario.append('valor', 'valor');
+                var datos = $.ajax({
+                    url: "{{ route('form.create.ost') }}",
+                    type: "post",
+                    dataType: "json",
+                    data: formulario,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+                datos.done((res) => {
+                    notificacion("Excelente! Orden de servicio técnico creado", "success", 5000);
+                    setTimeout(() => {
+                        window.location.href = "{{ route('informe.seg') }}"
+                    }, 1500);
+                })
+                datos.fail(() => {
+                    notificacion("ERROR! Revisa la información y vuelve a intentarlo", "error", 5000);
+                })
+            } else {
+                notificacion("ERROR! Revisa los campos en rojo y vuelve a intentar", "error", 5000);
+            }
         }
     </script>
 @endsection

@@ -17,6 +17,7 @@ use App\Models\apps\servicios_tecnicos\servicios\ModelSeguimientoGeneral;
 use App\Models\apps\servicios_tecnicos\servicios\ModelSeguimientoTaller;
 use App\Models\apps\servicios_tecnicos\servicios\ModelSeguimientoVisita;
 use App\Models\apps\servicios_tecnicos\servicios\ModelValoracionFab;
+use App\Models\apps\servicios_tecnicos\servicios\infoAlmacenes;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\seguimiento\ControllerSeguimiento;
 use App\Mail\NotificacionCliente;
 use App\Mail\NotificacionDevolucionCliente;
@@ -114,6 +115,11 @@ class ControllerSeguimientoSt extends Controller
                         $query->where('proveedor', 'HAPPY SLEEP')
                             ->orWhere('almacen', $almacen);
                     })->where('estado', $estado)->where('respuesta_st', '<>', 'No garantia')->count();
+                case '4':
+                    $valor = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
+                        $query->where('proveedor', 'HAPPY SLEEP')
+                            ->orWhere('almacen', $almacen);
+                    })->where('estado', $estado)->where('respuesta_st', '=', 'Definido')->count();
                     break;
             }
         } else {
@@ -130,6 +136,10 @@ class ControllerSeguimientoSt extends Controller
                     $valor = ModelNuevaSolicitud::where('estado', $estado)
                         ->where('respuesta_st', '<>', 'No garantia')
                         ->count();
+                case '4':
+                    $valor = ModelNuevaSolicitud::where('estado', $estado)
+                        ->where('respuesta_st', '=', 'Definido')
+                        ->count();
                     break;
             }
         }
@@ -137,37 +147,91 @@ class ControllerSeguimientoSt extends Controller
         return $valor;
     }
 
-    protected function getInfoEstado($empresa, $estado, $almacen)
+    protected function getInfoEstado($proveedor, $estado, $almacen, $fecha_i, $fecha_f, $servicio)
     {
         if ($almacen == 'HAPPYSLEEP') {
             $info = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
                 $query->where('proveedor', 'HAPPY SLEEP')
                     ->orWhere('almacen', $almacen);
-            })->where('estado', $estado)->where('respuesta_st', '<>', 'No garantia')->get();
+            })->where('estado', '=', $estado)->where('respuesta_st', '<>', 'No garantia');
         } else {
-            $info = ModelNuevaSolicitud::where('estado', $estado)->where('respuesta_st', '<>', 'No garantia')->get();
+            $info = ModelNuevaSolicitud::where('estado', $estado)
+                ->where('respuesta_st', '<>', 'No garantia');
         }
-        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info])->render();
+        if (!empty($almacen) && $almacen != 'PPAL') {
+            $info->where('almacen', '=', $almacen);
+        }
+        if (!empty($fecha_i) && !empty($fecha_f)) {
+            // Ambas fechas están presentes
+            $info->whereBetween('servicios_tecnicos.created_at', [$fecha_i, $fecha_f]);
+        } elseif (!empty($fecha_i)) {
+            // Solo fecha de inicio
+            $info->where('servicios_tecnicos.created_at', '>=', $fecha_i);
+        } elseif (!empty($fecha_f)) {
+            // Solo fecha final
+            $info->where('servicios_tecnicos.created_at', '<=', $fecha_f);
+        }
+        if (!empty($servicio)) {
+            $info->where('tipo_servicio', '=', $servicio);
+        }
+        if (!empty($proveedor)) {
+            $info->where('servicios_tecnicos.proveedor', '=', $proveedor);
+        }
+
+        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info->get()])->render();
     }
 
-    protected function getDefinirGar($empresa, $concepto, $almacen)
+    protected function getDefinirGar($proveedor, $concepto, $almacen, $fecha_i, $fecha_f, $servicio)
     {
         if ($almacen == 'HAPPYSLEEP') {
             $info = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
                 $query->where('proveedor', 'HAPPY SLEEP')
                     ->orWhere('almacen', $almacen);
-            })->where('respuesta_st', $concepto)->where('estado', 'Por definir')->get();
+            })->where('respuesta_st', $concepto)->where('estado', 'Por definir');
         } else {
-            $info = ModelNuevaSolicitud::where('respuesta_st', $concepto)->where('estado', 'Por definir')->get();
+            $info = ModelNuevaSolicitud::where('respuesta_st', $concepto)->where('estado', 'Por definir');
         }
-        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info])->render();
+        if (!empty($fecha_i) && !empty($fecha_f)) {
+            // Ambas fechas están presentes
+            $info->whereBetween('servicios_tecnicos.created_at', [$fecha_i, $fecha_f]);
+        } elseif (!empty($fecha_i)) {
+            // Solo fecha de inicio
+            $info->where('servicios_tecnicos.created_at', '>=', $fecha_i);
+        } elseif (!empty($fecha_f)) {
+            // Solo fecha final
+            $info->where('servicios_tecnicos.created_at', '<=', $fecha_f);
+        }
+        if (!empty($servicio)) {
+            $info->where('tipo_servicio', '=', $servicio);
+        }
+        if (!empty($proveedor)) {
+            $info->where('servicios_tecnicos.proveedor', '=', $proveedor);
+        }
+
+        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info->get()])->render();
     }
 
-    protected function getInfoAllSt($proveedor, $id, $almacen)
+    protected function getInfoAllSt($proveedor, $id, $almacen, $fecha_i = null, $fecha_f = null, $servicio)
     {
         if ($almacen == 'BODEGA_020' ||  $almacen == 'PPAL') {
-            $info = ModelNuevaSolicitud::whereNotIn('estado', ['Recoger', 'Por definir', 'Definido', 'En devolucion'])->get();
-            return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info])->render();
+            $info = ModelNuevaSolicitud::whereNotIn('estado', ['Recoger', 'Por definir', 'Definido', 'En devolucion']);
+            if (!empty($fecha_i) && !empty($fecha_f)) {
+                // Ambas fechas están presentes
+                $info->whereBetween('servicios_tecnicos.created_at', [$fecha_i, $fecha_f]);
+            } elseif (!empty($fecha_i)) {
+                // Solo fecha de inicio
+                $info->where('servicios_tecnicos.created_at', '>=', $fecha_i);
+            } elseif (!empty($fecha_f)) {
+                // Solo fecha final
+                $info->where('servicios_tecnicos.created_at', '<=', $fecha_f);
+            }
+            if (!empty($proveedor)) {
+                $info->where('servicios_tecnicos.proveedor', '=', $proveedor);
+            }
+            if (!empty($servicio)) {
+                $info->where('tipo_servicio', '=', $servicio);
+            }
+            return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info->get()])->render();
         }
 
         switch ($almacen) {
@@ -175,14 +239,34 @@ class ControllerSeguimientoSt extends Controller
                 $info = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
                     $query->where('proveedor', 'HAPPY SLEEP')
                         ->orWhere('almacen', $almacen);
-                })->whereNotIn('estado', ['Recoger', 'Por definir', 'Definido', 'En devolucion'])->get();
+                })->whereNotIn('estado', ['Recoger', 'Por definir', 'Definido', 'En devolucion']);
                 break;
 
             default:
-                $info = ModelNuevaSolicitud::whereNotIn('estado', ['Recoger', 'Por definir', 'Definido', 'En devolucion'])->get();
+                $info = ModelNuevaSolicitud::whereNotIn('estado', ['Recoger', 'Por definir', 'Definido', 'En devolucion']);
+                if (!empty($almacen)) {
+                    $info->where('almacen', '=', $almacen);
+                }
                 break;
         }
-        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info])->render();
+        if (!empty($fecha_i) && !empty($fecha_f)) {
+            // Ambas fechas están presentes
+            $info->whereBetween('servicios_tecnicos.created_at', [$fecha_i, $fecha_f]);
+        } elseif (!empty($fecha_i)) {
+            // Solo fecha de inicio
+            $info->where('servicios_tecnicos.created_at', '>=', $fecha_i);
+        } elseif (!empty($fecha_f)) {
+            // Solo fecha final
+            $info->where('servicios_tecnicos.created_at', '<=', $fecha_f);
+        }
+
+        if (!empty($proveedor)) {
+            $info->where('servicios_tecnicos.proveedor', '=', $proveedor);
+        }
+        if (!empty($servicio)) {
+            $info->where('tipo_servicio', '=', $servicio);
+        }
+        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.table_seguimiento', ['st' => $info->get()])->render();
     }
 
     protected function table_seguimiento()
@@ -268,17 +352,18 @@ class ControllerSeguimientoSt extends Controller
         $almacen_p = Auth::user()->almacen;
         $id_user = Auth::user()->id;
         $proveedor = Auth::user()->empresa;
-
-        $table = self::getInfoAllSt($proveedor, $id_user, $almacen_p);
+        $almacenes = infoAlmacenes::all();
+        $table = self::getInfoAllSt($proveedor, $id_user, $almacen_p, '', '', '');
 
         $vlrs = array([
             'proceso' => self::infoCountEstados($almacen_p, 1, '', $id_user),
             'garantia' => self::infoCountEstados($almacen_p, 2, '', $id_user),
             'recoger' => self::infoCountEstados($almacen_p, 3, 'Recoger', $id_user),
-            'definir' => self::infoCountEstados($almacen_p, 3, 'En devolucion', $id_user) //por definir
+            'definir' => self::infoCountEstados($almacen_p, 3, 'En devolucion', $id_user), //por definir
+            'historial' => self::infoCountEstados($almacen_p, 4, 'Definido', $id_user)
         ]);
 
-        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.seguimiento', ['table' => $table, 'valores' => $vlrs]);
+        return view('apps.servicios_tecnicos.servicios_tecnicos.creados.seguimiento', ['table' => $table, 'valores' => $vlrs, 'almacenes' => $almacenes]);
     }
 
     public function viewInfoGeneralOst(Request $request)
@@ -604,16 +689,24 @@ class ControllerSeguimientoSt extends Controller
         $id_user = Auth::user()->id;
         $almacen = Auth::user()->almacen;
 
+        $fecha_i = $request->fecha_inicial;
+        $fecha_f = $request->fecha_final;
+
+        $proveedor = $request->proveedor;
+        if (!empty($request->almacen)) {
+            $almacen = $request->almacen;
+        }
+        $servicio = $request->servicio;
+
         switch ($estado) {
             case 'all':
-                $data = self::getInfoAllSt($proveedor, $id_user, $almacen);
+                $data = self::getInfoAllSt($proveedor, $id_user, $almacen, $fecha_i, $fecha_f, $servicio);
                 break;
             case 'No garantia':
-                $data = self::getDefinirGar($proveedor, $estado, $almacen);
+                $data = self::getDefinirGar($proveedor, $estado, $almacen, $fecha_i, $fecha_f, $servicio);
                 break;
-
             default:
-                $data = self::getInfoEstado($proveedor, $estado, $almacen);
+                $data = self::getInfoEstado($proveedor, $estado, $almacen, $fecha_i, $fecha_f, $servicio);
                 break;
         }
 
