@@ -701,8 +701,20 @@
             var descanso = $("#dia_compensado").val()
             if (depto.length > 0 && ciudad.length > 0 && almacen.length > 0) {
                 if (dominical.length > 0 || descanso.length > 0) {
-                    $("#modalTomarFotografia").modal("show")
-                    tomarFotografiaDescanso()
+                    if(dominical.length > 0 && descanso.length == 0){
+                        Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Debes seleccionar la fecha del compensatorio',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        toast: true
+                    });
+                    }else{
+                        $("#modalTomarFotografia").modal("show")
+                        tomarFotografiaDescanso()
+                    }
+                    
                 } else {
                     Swal.fire({
                         position: 'top-end',
