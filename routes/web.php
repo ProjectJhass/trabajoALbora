@@ -275,6 +275,12 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     });
     //Fin de ingresos y salidas
 
+    Route::group(['prefix' => 'ventas'], function () {
+        Route::get('', function(){
+            return view('apps.intranet.ventas.home');
+        })->name('ventas');
+    });
+
     //Sección de recursos humanos 
     Route::group(['prefix' => 'rrhh'], function () {
 
