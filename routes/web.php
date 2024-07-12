@@ -275,15 +275,6 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     });
     //Fin de ingresos y salidas
 
-    //Sección de ventas
-    Route::group(['prefix' => 'ventas'], function () {
-        Route::get('/general', function () {
-            return view('apps.intranet.ventas.home');
-        })->name('ventas');
-        Route::get('/visitas', [ControllerVisitas::class, 'index'])->name('visitas');
-        Route::post('/visitas', [ControllerVisitas::class, 'crearVisita'])->name('visitas.crear');
-    });
-
     //Sección de recursos humanos 
     Route::group(['prefix' => 'rrhh'], function () {
 
