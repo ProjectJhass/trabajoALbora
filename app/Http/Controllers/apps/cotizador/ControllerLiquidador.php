@@ -182,9 +182,13 @@ class ControllerLiquidador extends Controller
 
     public function validarPlanesItems($aplica, $valor, $tasa_f, $dsto)
     {
+        $intereses = ModelSueldosIntereses::find(1);
+        $porcentaje_sin_plan = (($intereses->porc_sin_plan)/100);
+        $resta_porc_base = (($intereses->cuadre_base)/100);
+
         if ($aplica) {
-            $valor_dsto_30 = $valor - ($valor * 0.3);
-            $porcentaje_base = (($valor - ($valor_dsto_30 / 0.8)) / $valor);
+            $valor_dsto_30 = $valor - ($valor * $porcentaje_sin_plan);
+            $porcentaje_base = (($valor - ($valor_dsto_30 / $resta_porc_base)) / $valor);
             $nuevo_valor = ($valor - ($valor * $porcentaje_base));
             return round(($nuevo_valor) * $tasa_f);
         } else {
@@ -205,23 +209,25 @@ class ControllerLiquidador extends Controller
 
         $info_ = ModelModificacionPlan::find($plan);
         $tasas_f = ModelPlanesFinanciacion::find($plan);
+        $intereses = ModelSueldosIntereses::find(1);
 
         if ($info_) {
             if ($info_->fecha_finalizacion < date('Y-m-d')) {
                 $aplica = false;
                 $tasa_f = str_replace(',', '.', $tasas_f->valor_tasa);
-                $descuento =  20;
+                $descuento =  $intereses->porcentaje_credito;
                 $dsto = 0;
             } else {
                 $aplica = true;
                 $tasa_f = $info_->valor_tasa;
-                $descuento = 20;
+                $descuento = $intereses->porcentaje_credito;
                 $dsto = $info_->descuento;
             }
         } else {
+            $descuento_p = $plan==1?$intereses->porcentaje_contado:$intereses->porcentaje_credito;
             $aplica = false;
             $tasa_f = str_replace(',', '.', $tasas_f->valor_tasa);
-            $descuento =  20;
+            $descuento = $descuento_p;
             $dsto = 0;
         }
 
@@ -310,8 +316,6 @@ class ControllerLiquidador extends Controller
         ]);
 
         session($data);
-
-
 
         if ($request->tipo_cotizacion != 'CO') {
             if (session('cuota_mensual_cot') != '') {

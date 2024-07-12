@@ -46,7 +46,7 @@ class ControllerPdfCotizacion extends Controller
         $tasa_mora = $info_sueldos->interes_mora;
 
         $cuotas = (session('cuotas_plan_cotizador') == 1) ? 'CO' : session('cuotas_plan_cotizador') . "F";
-        $porc_dsto = ($cuotas == 'CO') ? '0.3' : '0.2';
+        $porc_dsto = ($cuotas == 'CO') ? ($info_sueldos->porcentaje_contado/100) : ($info_sueldos->porcentaje_credito/100);
         $vigencia = date("Y-m-d", strtotime(date('Y-m-d') . "+ 8 days"));
         $productos = self::obtenerProductosCotizados(session('IdSession'));
 

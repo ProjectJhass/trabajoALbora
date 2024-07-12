@@ -40,6 +40,7 @@ use App\Http\Controllers\apps\crm_almacenes\ControllerClientesEfectivos;
 use App\Http\Controllers\apps\crm_almacenes\ControllerCrearTerceroSiesa;
 use App\Http\Controllers\apps\crm_almacenes\ControllerCumpleClientes;
 use App\Http\Controllers\apps\crm_almacenes\ControllerEstadisticasAdmin;
+use App\Http\Controllers\apps\crm_almacenes\ControllerExportarInfoCRM;
 use App\Http\Controllers\apps\crm_almacenes\ControllerInformeDeVentas;
 use App\Http\Controllers\apps\crm_almacenes\ControllerInicioCrm;
 use App\Http\Controllers\apps\crm_almacenes\ControllerLiquidadorDescuentos;
@@ -77,6 +78,7 @@ use App\Http\Controllers\apps\intranet\ControllerSesiones;
 use App\Http\Controllers\apps\intranet\ControllerTemporal;
 use App\Http\Controllers\apps\intranet\ControllerUsuarios;
 use App\Http\Controllers\apps\intranet\EnviarNotificacion;
+use App\Http\Controllers\apps\intranet\ControllerVisitas;
 use App\Http\Controllers\apps\intranet_fabrica\CambiosEnSeries;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerCarrucel;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerCerrarSolicitudMtto;
@@ -278,6 +280,8 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         Route::get('/general', function () {
             return view('apps.intranet.ventas.home');
         })->name('ventas');
+        Route::get('/visitas', [ControllerVisitas::class, 'index'])->name('visitas');
+        Route::post('/visitas', [ControllerVisitas::class, 'crearVisita'])->name('visitas.crear');
     });
 
     //Sección de recursos humanos 
@@ -518,11 +522,11 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
             });
 
             Route::group(['prefix' => 'config'], function () {
-                Route::get('/', [ControllerTokenAcceso::class, 'index'])->name('token.acceso.movil');
-                Route::post('/url', [ControllerTokenAcceso::class, 'urlConnection'])->name('url.acceso.movil');
-                Route::post('/create-movil', [ControllerTokenAcceso::class, 'RegistrarDispositivo'])->name('crear.acceso.movil');
-                Route::post('/editar-movil', [ControllerTokenAcceso::class, 'EditarDispositivo'])->name('editar.acceso.movil');
-                Route::post('/eliminar-movil', [ControllerTokenAcceso::class, 'EliminarDipositivo'])->name('eliminar.acceso.movil');
+                // Route::get('/', [ControllerTokenAcceso::class, 'index'])->name('token.acceso.movil');
+                // Route::post('/url', [ControllerTokenAcceso::class, 'urlConnection'])->name('url.acceso.movil');
+                // Route::post('/create-movil', [ControllerTokenAcceso::class, 'RegistrarDispositivo'])->name('crear.acceso.movil');
+                // Route::post('/editar-movil', [ControllerTokenAcceso::class, 'EditarDispositivo'])->name('editar.acceso.movil');
+                // Route::post('/eliminar-movil', [ControllerTokenAcceso::class, 'EliminarDipositivo'])->name('eliminar.acceso.movil');
             });
         });
     });
@@ -739,6 +743,13 @@ Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () 
             Route::post('/por-asesor', [ControllerEstadisticasAdmin::class, 'fechas'])->name("consultar.info.asesor.estadisticas");
         });
     });
+    Route::group(['prefix' => 'exportar'], function (){
+        Route::get('', [ControllerExportarInfoCRM::class, 'index'])->name('crm.exportar.home');
+        Route::get('filtrar', [ControllerExportarInfoCRM::class, 'filtrarInfo'])->name('crm.filtrar.info');
+        Route::post('clientes', [ControllerExportarInfoCRM::class, 'exportarClientes'])->name('crm.exportar.clientes');
+        Route::post('cotizaciones', [ControllerExportarInfoCRM::class, 'exportarCotizaciones'])->name('crm.exportar.cotizaciones');
+        Route::post('llamadas', [ControllerExportarInfoCRM::class, 'exportarLlamadas'])->name('crm.exportar.llamadas');
+    });
 });
 
 Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function () {
@@ -926,6 +937,9 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middlew
         Route::post('analytics', [ControllerAnalytics::class, 'searchinfo'])->name('analytics.search');
         Route::post('analytics/orden', [ControllerAnalytics::class, 'obtenerOrdenesST'])->name('search.orden.st');
         Route::post('analytics/graph', [ControllerAnalytics::class, 'obtenerGraficaODT'])->name('search.graph.st');
+        Route::get('analytics/articles', [ControllerAnalytics::class, 'getArticulosByCausalidad'])->name('search.article.st');
+        Route::get('/analytics/tiempos-fecha', [ControllerAnalytics::class, 'filtrarFechaGraficas'])->name("search.analytics.fechas");
+        Route::post('/analytics/tiempos-estado', [ControllerAnalytics::class, 'filtrarTiemposPorEstado'])->name("search.analytics.estado");
 
         Route::post('search-ost', [ControllerSearchSt::class, 'search'])->name('search.ost');
         Route::post('search-co', [ControllerAlmacenes::class, 'ObtenerInfoAlmacenes'])->name('search.co');

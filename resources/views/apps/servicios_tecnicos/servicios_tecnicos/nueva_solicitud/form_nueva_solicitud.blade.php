@@ -139,7 +139,7 @@
                             <label for="ciudad_st">Ciudad</label>
                         </div>
                         <div class="form-floating">
-                            <select name="pago_st" id="pago_st" class="form-control" required>
+                            <select name="pago_st" id="pago_st" class="form-control">
                                 <option value="{{ $info['pago'] }}">{{ $info['pago'] }}</option>
                                 <option value="CONTADO">CONTADO</option>
                                 <option value="CREDITO">CREDITO</option>

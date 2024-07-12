@@ -91,9 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-loadGraph = () => {
+loadTiemposGraph = () => {
     const steps = document.querySelectorAll('.steps');
-
     handlePopper = (button, tooltip) => {
         const popperInstance = Popper.createPopper(button, tooltip, {
             placement: 'top',
@@ -148,7 +147,6 @@ loadGraph = () => {
         // Crear el contenedor principal del mensaje
         const container = document.createElement('div');
         container.classList.add('message-container');
-
         // Crear el título del mensaje
         const title = document.createElement('h2');
         // Crear el primer párrafo
@@ -199,7 +197,7 @@ loadGraph = () => {
     formatODT = (element, id_st) => {
         const odt = [];
         Array.from(element.childNodes).filter(node => node.nodeType === 1)
-            .forEach((el, i) => {
+            .forEach((el) => {
                 if (el.firstElementChild && el.firstElementChild.id) {
                     let dataHolder = el.firstElementChild.dataset;
                     if (dataHolder.id !== "" && dataHolder.stage !== "" && dataHolder.days !== "" && dataHolder.diff !== "") {
@@ -221,8 +219,7 @@ loadGraph = () => {
 
     Array.from(steps).forEach(async (step) => {
         try {
-            const child = step.previousElementSibling;
-            const id_st = child.innerText;
+            const id_st = step.previousElementSibling.innerText;
             const odt = formatODT(step, id_st);
             const bar = document.getElementById(`bar_${id_st}`);
             const maxID = (odt.reduce((maxId, etapa) => Math.max(etapa.id, maxId), -Infinity));

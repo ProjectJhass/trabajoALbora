@@ -46,6 +46,10 @@ class ModelClientesCRM extends Model
     {
         return $this->hasMany(ModelInfoLlamadasPendientes::class, 'id_cliente')->where('estado', 'PENDIENTE');
     }
+    public function llamadasRealizadas()
+    {
+        return $this->hasMany(ModelInfoLlamadasPendientes::class, 'id_cliente')->where('estado', 'REALIZADA');
+    }
 
     public function itemsCotizados()
     {
