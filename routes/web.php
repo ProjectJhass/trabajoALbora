@@ -275,15 +275,6 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     });
     //Fin de ingresos y salidas
 
-    //Sección de ventas
-    Route::group(['prefix' => 'ventas'], function () {
-        Route::get('/general', function () {
-            return view('apps.intranet.ventas.home');
-        })->name('ventas');
-        Route::get('/visitas', [ControllerVisitas::class, 'index'])->name('visitas');
-        Route::post('/visitas', [ControllerVisitas::class, 'crearVisita'])->name('visitas.crear');
-    });
-
     //Sección de recursos humanos 
     Route::group(['prefix' => 'rrhh'], function () {
 
@@ -483,6 +474,10 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
         Route::post('create-planner-corte', [ControllerSavePlanificacionCorte::class, 'savePlanificacion'])->name('planner.corte.piezas');
         Route::post('search-troncos', [ControllerSearchMadera::class, 'search'])->name('search.info.troncos');
         Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
+        
+        //Informacion general piezas a favor desde corte de madera
+        Route::post("obtener-info-madera",[ControllerPlannerMadera::class, 'getInfoPiezasPorTipoDeMadera'])->name('get.info.por.madera');
+        Route::post("agregar-piezas-madera",[ControllerPlannerMadera::class, 'getInfoUtilizarPiezasMadera'])->name('add.info.por.madera');
 
         //Planear Corte de tablas
         Route::post('planner-corte-tabla', [ControllerPlannerTabla::class, 'saveInfoCorteTabla'])->name('save.planner.tabla');

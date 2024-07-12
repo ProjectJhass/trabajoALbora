@@ -209,6 +209,12 @@
             </div>
         </div>
     </div>
+    <div class="row" id="txtInfoGeneralPiezasFavorMadera">
+        <div class="col-md-12 text-center">
+            <p>Este tipo de madera tiene piezas a favor, <span class="text-success" style="cursor: pointer"
+                    onclick="getInfoPiezasFavorMadera()">visualizar todas <i class="fas fa-check"></i></span></p>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card alert-top alert-danger" data-aos="fade-up" data-aos-delay="400">
@@ -258,6 +264,21 @@
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" onclick="planearCorteTabla()">Crear plan corte de tablas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Información de las piezas a favor por madera --}}
+    <div class="modal fade" id="modalInfoPiezasFavorPorMadera" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Información general</h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="tableInfoGeneralPiezasPorMadera"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -496,6 +517,60 @@
             datos.fail(() => {
                 notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
             })
+        }
+
+        getInfoPiezasFavorMadera = () => {
+            var id_madera = $("#madera_planner").val()
+            $("#modalInfoPiezasFavorPorMadera").modal("show")
+
+            var datos = $.ajax({
+                url: "{{ route('get.info.por.madera') }}",
+                type: "post",
+                dataType: "json",
+                data: {
+                    id_madera
+                }
+            });
+            datos.done((res) => {
+                document.getElementById('tableInfoGeneralPiezasPorMadera').innerHTML = res.table
+            })
+            datos.fail(() => {
+                notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
+            })
+        }
+
+        addPiezasFavorPlanificacionGenerada = (id) => {
+            var id_madera = $("#madera_planner").val()
+            var cantidad = $("#cantidad_pieza" + id).val()
+            $("#modalInfoPiezasFavorPorMadera").modal("show")
+
+            var datos = $.ajax({
+                url: "{{ route('add.info.por.madera') }}",
+                type: "post",
+                dataType: "json",
+                data: {
+                    id_madera,
+                    cantidad,
+                    consecutivo: id
+                }
+            });
+            datos.done((res) => {
+                document.getElementById('tableInfoGeneralPiezasPorMadera').innerHTML = res.table
+            })
+            datos.fail(() => {
+                notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
+            })
+        }
+
+        actualizarCantidadPiezaPlanear = (valor, id, consec) => {
+            if (valor.length == 0) {
+                valor = 0;
+            }
+            var cantidad = parseFloat($("#cantidad_pieza" + id).val())
+            var vlr = parseFloat(valor);
+            var cantidad_ahora = cantidad - vlr;
+            // $("#cantidad_pieza" + id).val(cantidad_ahora)
+            $("#txtCantidadRequeridaMadera" + consec).text(cantidad_ahora)
         }
     </script>
 @endsection
