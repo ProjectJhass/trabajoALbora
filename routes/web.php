@@ -935,6 +935,9 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middlew
         Route::post('analytics', [ControllerAnalytics::class, 'searchinfo'])->name('analytics.search');
         Route::post('analytics/orden', [ControllerAnalytics::class, 'obtenerOrdenesST'])->name('search.orden.st');
         Route::post('analytics/graph', [ControllerAnalytics::class, 'obtenerGraficaODT'])->name('search.graph.st');
+        Route::get('analytics/articles', [ControllerAnalytics::class, 'getArticulosByCausalidad'])->name('search.article.st');
+        Route::get('/analytics/tiempos-fecha', [ControllerAnalytics::class, 'filtrarFechaGraficas'])->name("search.analytics.fechas");
+        Route::post('/analytics/tiempos-estado', [ControllerAnalytics::class, 'filtrarTiemposPorEstado'])->name("search.analytics.estado");
 
         Route::post('search-ost', [ControllerSearchSt::class, 'search'])->name('search.ost');
         Route::post('search-co', [ControllerAlmacenes::class, 'ObtenerInfoAlmacenes'])->name('search.co');
