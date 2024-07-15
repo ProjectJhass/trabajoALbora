@@ -45,7 +45,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <label for="">Neto</label>
+                    <label for="">Neto</label> 
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">$</span>
@@ -104,7 +104,7 @@
                         <input type="number" class="form-control" value="{{ $total }}" name="total_a_pagar" id="total_a_pagar">
                     </div>
                 </div>
-                <div class="col-md-12 mb-3">
+{{--                 <div class="col-md-12 mb-3">
                     <label for="">Cuota inicial</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -131,7 +131,7 @@
                         </div>
                         <input type="text" class="form-control" name="valor_resta_financiar" id="valor_resta_financiar" readonly>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

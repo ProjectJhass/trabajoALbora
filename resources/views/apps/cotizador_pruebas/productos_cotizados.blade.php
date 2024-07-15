@@ -23,7 +23,8 @@
                         <div class="card-body">
                             <div id="productsCotizadosAlbura"><?php echo $tblProducts; ?></div>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('lista.precios.pruebas') }}" type="button" class="btn btn-sm btn-danger">Lista de precios</a>
+                                <a href="{{ route('lista.precios.pruebas') }}" type="button"
+                                    class="btn btn-sm btn-danger">Lista de precios</a>
                                 {{-- <button type="button" class="btn btn-sm btn-success" id="btn-activar-dsto-add"
                                     onclick="habilitarCampoDstoAdd();">Descuento adicional</button> --}}
                             </div>
@@ -45,7 +46,8 @@
                 </div>
             </div> --}}
 
-            <div class="modal fade" id="modalGenerarCotizacion" tabindex="-1" aria-labelledby="modalGenerarCotizacionLabel" aria-hidden="true">
+            <div class="modal fade" id="modalGenerarCotizacion" tabindex="-1" aria-labelledby="modalGenerarCotizacionLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -55,12 +57,14 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="formDatosCotizacionContado" class="was-validated" style="font-size: 14px" autocomplete="off">
+                            <form id="formDatosCotizacionContado" class="was-validated" style="font-size: 14px"
+                                autocomplete="off">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="">Cédula</label>
-                                        <input type="number" value="{{ isset($cliente->cedula_cliente) ? $cliente->cedula_cliente : '' }}"
+                                        <input type="number"
+                                            value="{{ isset($cliente->cedula_cliente) ? $cliente->cedula_cliente : '' }}"
                                             class="form-control" name="cedula_cliente" id="cedula_cliente" required>
                                         <div class="form-group form-check" id="div_check_sin_cedula">
                                             <input type="checkbox" class="form-check-input" id="check_sin_cedula">
@@ -69,19 +73,22 @@
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Nombre</label>
-                                        <input type="text" value="{{ isset($cliente->nombre_1) ? $cliente->nombre_1 : '' }}"
-                                            onkeyup="this.value=this.value.toUpperCase()" class="form-control" name="primer_nombre" id="primer_nombre"
-                                            required>
+                                        <input type="text"
+                                            value="{{ isset($cliente->nombre_1) ? $cliente->nombre_1 : '' }}"
+                                            onkeyup="this.value=this.value.toUpperCase()" class="form-control"
+                                            name="primer_nombre" id="primer_nombre" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Apellidos</label>
-                                        <input type="text" value="{{ isset($cliente->apellido_1) ? $cliente->apellido_1 : '' }}"
-                                            onkeyup="this.value=this.value.toUpperCase()" class="form-control" name="primer_apellido"
-                                            id="primer_apellido">
+                                        <input type="text"
+                                            value="{{ isset($cliente->apellido_1) ? $cliente->apellido_1 : '' }}"
+                                            onkeyup="this.value=this.value.toUpperCase()" class="form-control"
+                                            name="primer_apellido" id="primer_apellido">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Departamento</label>
-                                        <select name="depto" id="depto" onchange="obtenerCiudadesCoti(this.value)" class="form-control" required>
+                                        <select name="depto" id="depto" onchange="obtenerCiudadesCoti(this.value)"
+                                            class="form-control" required>
                                             <option value="">Seleccionar</option>
                                             @foreach ($dptos as $item)
                                                 <option value="{{ $item->id_depto }}"
@@ -98,39 +105,45 @@
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Barrio</label>
-                                        <input type="text" value="{{ isset($cliente->barrio) ? $cliente->barrio : '' }}" class="form-control"
-                                            name="barrio" id="barrio">
+                                        <input type="text" value="{{ isset($cliente->barrio) ? $cliente->barrio : '' }}"
+                                            class="form-control" name="barrio" id="barrio">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Dirección</label>
-                                        <input type="text" value="{{ isset($cliente->direccion) ? $cliente->direccion : '' }}" class="form-control"
-                                            name="direccion" id="direccion">
+                                        <input type="text"
+                                            value="{{ isset($cliente->direccion) ? $cliente->direccion : '' }}"
+                                            class="form-control" name="direccion" id="direccion">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Teléfono 1</label>
-                                        <input type="text" value="{{ isset($cliente->celular_1) ? $cliente->celular_1 : '' }}" class="form-control"
-                                            minlength="7" maxlength="10" pattern="\d{7,10}" name="telefono1" id="telefono1" required>
+                                        <input type="text"
+                                            value="{{ isset($cliente->celular_1) ? $cliente->celular_1 : '' }}"
+                                            class="form-control" minlength="7" maxlength="10" pattern="\d{7,10}"
+                                            name="telefono1" id="telefono1" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">E-mail</label>
-                                        <input type="email" value="{{ isset($cliente->email) ? $cliente->email : '' }}" class="form-control"
-                                            name="correo" id="correo">
+                                        <input type="email" value="{{ isset($cliente->email) ? $cliente->email : '' }}"
+                                            class="form-control" name="correo" id="correo">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Género</label>
                                         <select name="genero" id="genero" class="form-control" required>
                                             <option value="">Seleccionar...</option>
                                             <option value="HOMBRE"
-                                                {{ isset($cliente->genero) ? ($cliente->genero == 'HOMBRE' ? 'selected' : '') : '' }}>HOMBRE
+                                                {{ isset($cliente->genero) ? ($cliente->genero == 'HOMBRE' ? 'selected' : '') : '' }}>
+                                                HOMBRE
                                             </option>
-                                            <option value="MUJER" {{ isset($cliente->genero) ? ($cliente->genero == 'MUJER' ? 'selected' : '') : '' }}>
+                                            <option value="MUJER"
+                                                {{ isset($cliente->genero) ? ($cliente->genero == 'MUJER' ? 'selected' : '') : '' }}>
                                                 MUJER
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Fecha cumpleaños</label>
-                                        <input type="date" value="{{ isset($cliente->fecha_cumple) ? $cliente->fecha_cumple : '' }}"
+                                        <input type="date"
+                                            value="{{ isset($cliente->fecha_cumple) ? $cliente->fecha_cumple : '' }}"
                                             class="form-control" name="cumple_cl" id="cumple_cl">
                                     </div>
                                     <div class="col-md-4 mb-4">
@@ -142,7 +155,8 @@
                                     <div class="col-md-2">
                                         <div class="card text-center">
                                             <div class="card-body">
-                                                <div style="cursor: pointer" onclick="generarInformacionCotizacion('pdf')">
+                                                <div style="cursor: pointer"
+                                                    onclick="generarInformacionCotizacion('pdf')">
                                                     <i class="far fa-file-pdf text-danger" style="font-size: 35px"></i>
                                                 </div>
                                             </div>
@@ -166,7 +180,8 @@
                                     <div class="col-md-2">
                                         <div class="card text-center">
                                             <div class="card-body text-center">
-                                                <div style="cursor: pointer" onclick="generarInformacionCotizacion('email')">
+                                                <div style="cursor: pointer"
+                                                    onclick="generarInformacionCotizacion('email')">
                                                     <i class="far fa-envelope text-info" style="font-size: 35px"></i>
                                                 </div>
                                             </div>
@@ -182,7 +197,8 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalInfoSolicitarCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modalInfoSolicitarCredito" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -192,13 +208,15 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="formInformacionClienteNuevoCredito" class="was-validated" style="font-size: 14px" autocomplete="off">
+                            <form id="formInformacionClienteNuevoCredito" class="was-validated" style="font-size: 14px"
+                                autocomplete="off">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="">Cédula</label>
-                                        <input type="text" onchange="validarInformacionIngresadaCred()" class="form-control" pattern="\d{7,10}"
-                                            name="cedula_credito" id="cedula_credito" minlength="7" maxlength="10" required>
+                                        <input type="text" onchange="validarInformacionIngresadaCred()"
+                                            class="form-control" pattern="\d{7,10}" name="cedula_credito"
+                                            id="cedula_credito" minlength="7" maxlength="10" required>
                                         <div class="invalid-feedback">
                                             La cédula debe tener entre 7 y 10 dígitos.
                                         </div>
@@ -206,31 +224,33 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="">Primer Nombre</label>
                                         <input type="text" onkeyup="this.value=this.value.toUpperCase()"
-                                            value="{{ isset($cliente->nombre_1) ? $cliente->nombre_1 : '' }}" class="form-control"
-                                            name="nombre1_credito" id="nombre1_credito" required>
+                                            value="{{ isset($cliente->nombre_1) ? $cliente->nombre_1 : '' }}"
+                                            class="form-control" name="nombre1_credito" id="nombre1_credito" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Segundo Nombre</label>
                                         <input type="text" onkeyup="this.value=this.value.toUpperCase()"
-                                            value="{{ isset($cliente->nombre_2) ? $cliente->nombre_2 : '' }}" class="form-control"
-                                            name="nombre2_credito" id="nombre2_credito">
+                                            value="{{ isset($cliente->nombre_2) ? $cliente->nombre_2 : '' }}"
+                                            class="form-control" name="nombre2_credito" id="nombre2_credito">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Primer Apellido</label>
                                         <input type="text" onkeyup="this.value=this.value.toUpperCase()"
-                                            value="{{ isset($cliente->apellido_1) ? $cliente->apellido_1 : '' }}" class="form-control"
-                                            name="apellido1_credito" id="apellido1_credito" required>
+                                            value="{{ isset($cliente->apellido_1) ? $cliente->apellido_1 : '' }}"
+                                            class="form-control" name="apellido1_credito" id="apellido1_credito"
+                                            required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Segundo Apellido</label>
                                         <input type="text" onkeyup="this.value=this.value.toUpperCase()"
-                                            value="{{ isset($cliente->apellido_2) ? $cliente->apellido_2 : '' }}" class="form-control"
-                                            name="apellido2_credito" id="apellido2_credito">
+                                            value="{{ isset($cliente->apellido_2) ? $cliente->apellido_2 : '' }}"
+                                            class="form-control" name="apellido2_credito" id="apellido2_credito">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Departamento</label>
-                                        <select name="depto_credito" id="depto_credito" onchange="obtenerCiudadesCotiCredito(this.value)"
-                                            class="form-control" required>
+                                        <select name="depto_credito" id="depto_credito"
+                                            onchange="obtenerCiudadesCotiCredito(this.value)" class="form-control"
+                                            required>
                                             <option value="">Seleccionar</option>
                                             @foreach ($dptos as $item)
                                                 <option value="{{ $item->id_depto }}"
@@ -248,49 +268,54 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="">Barrio</label>
                                         <input type="text" onkeyup="this.value=this.value.toUpperCase()"
-                                            value="{{ isset($cliente->barrio) ? $cliente->barrio : '' }}" class="form-control" name="barrio_credito"
-                                            id="barrio_credito" required>
+                                            value="{{ isset($cliente->barrio) ? $cliente->barrio : '' }}"
+                                            class="form-control" name="barrio_credito" id="barrio_credito" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Dirección</label>
                                         <input type="text" onkeyup="this.value=this.value.toUpperCase()"
-                                            value="{{ isset($cliente->direccion) ? $cliente->direccion : '' }}" class="form-control"
-                                            name="direccion_credito" id="direccion_credito" required>
+                                            value="{{ isset($cliente->direccion) ? $cliente->direccion : '' }}"
+                                            class="form-control" name="direccion_credito" id="direccion_credito"
+                                            required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Teléfono 1</label>
-                                        <input type="text" value="{{ isset($cliente->celular_1) ? $cliente->celular_1 : '' }}" class="form-control"
-                                            minlength="7" maxlength="10" pattern="\d{7,10}" name="telefono1_credito" id="telefono1_credito"
-                                            required>
+                                        <input type="text"
+                                            value="{{ isset($cliente->celular_1) ? $cliente->celular_1 : '' }}"
+                                            class="form-control" minlength="7" maxlength="10" pattern="\d{7,10}"
+                                            name="telefono1_credito" id="telefono1_credito" required>
                                         <div class="invalid-feedback">
                                             El número debe tener entre 7 y 10 dígitos.
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">Teléfono 2</label>
-                                        <input type="text" value="{{ isset($cliente->celular_2) ? $cliente->celular_2 : '' }}" class="form-control"
-                                            minlength="7" maxlength="10" pattern="\d{7,10}" name="telefono2_credito" id="telefono2_credito">
+                                        <input type="text"
+                                            value="{{ isset($cliente->celular_2) ? $cliente->celular_2 : '' }}"
+                                            class="form-control" minlength="7" maxlength="10" pattern="\d{7,10}"
+                                            name="telefono2_credito" id="telefono2_credito">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="">E-mail</label>
                                         <input type="email" onkeyup="this.value=this.value.toLowerCase()"
-                                            value="{{ isset($cliente->email) ? $cliente->email : '' }}" class="form-control" name="correo_credito"
-                                            id="correo_credito" required>
+                                            value="{{ isset($cliente->email) ? $cliente->email : '' }}"
+                                            class="form-control" name="correo_credito" id="correo_credito" required>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">Valor a financiar</span>
                                             </div>
-                                            <input type="text" name="txt_financiar_credito" id="txt_financiar_credito" readonly
-                                                class="form-control">
+                                            <input type="text" name="txt_financiar_credito" id="txt_financiar_credito"
+                                                readonly class="form-control">
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-danger" id="btnSolicitarCredito" onclick="solicitarCreditoCoitzador()">Solicitar
+                            <button type="button" class="btn btn-danger" id="btnSolicitarCredito"
+                                onclick="solicitarCreditoCoitzador()">Solicitar
                                 crédito</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </div>
@@ -298,7 +323,8 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalValorFinanciarCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modalValorFinanciarCredito" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -310,18 +336,51 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
+                                    <label for="">Valor neto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">$</span>
+                                        </div>
+                                        <input type="number" class="form-control" name="vlr_financiar_credito"
+                                            id="vlr_financiar_credito">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="">Cuota inicial</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">$</span>
+                                        </div>
+                                        <input type="number" class="form-control"
+                                            onkeyup="calcularValorCredito(this.value)" name="valor_a_financiar"
+                                            id="valor_a_financiar">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3" id="txtValorFinanciar" hidden>
                                     <label for="">Valor a financiar</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon3">$</span>
                                         </div>
-                                        <input type="number" class="form-control" name="vlr_financiar_credito" id="vlr_financiar_credito">
+                                        <input type="text" class="form-control" name="valor_nuevo_financiar"
+                                            id="valor_nuevo_financiar" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3" id="txtValorRestaCredito" hidden>
+                                    <label for="">Valor cuota inicial</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">$</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="valor_resta_financiar"
+                                            id="valor_resta_financiar" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-danger" onclick="formSolicitarEstudioDeCredito()">Generar el estudio de
+                            <button type="button" class="btn btn-danger"
+                                onclick="formSolicitarEstudioDeCredito()">Generar el estudio de
                                 crédito</button>
                         </div>
                     </div>
@@ -335,7 +394,8 @@
         @endif
     </div>
 
-    <div class="modal fade" id="modalInfoCuentasCartera" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalInfoCuentasCartera" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-body" id="info-cuentas-cartera-error"></div>
@@ -776,7 +836,8 @@
             var ciudad = $("#ciudad").val()
             var celular = $("#telefono1").val()
             var genero = $("#genero").val()
-            if (cedula.length > 0 && nombre.length > 0 && dpto.length > 0 && ciudad.length > 0 && celular.length > 0 && genero.length > 0) {
+            if (cedula.length > 0 && nombre.length > 0 && dpto.length > 0 && ciudad.length > 0 && celular.length > 0 &&
+                genero.length > 0) {
                 return true
             }
             return false
@@ -789,11 +850,29 @@
         }
 
         formSolicitarEstudioDeCredito = () => {
+
+            Swal.fire({
+                title: "Estas seguro del valor a financiar?",
+                text: "No podrás reversar la operación",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, continuar",
+                cancelButtonText: "No, cancelar!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    confirmValorFinanciar()
+                }
+            });
+        }
+
+        confirmValorFinanciar = () => {
             var formatter = new Intl.NumberFormat();
             $("#modalValorFinanciarCredito").modal("hide")
             $("#modalInfoSolicitarCredito").modal("show")
-            var total_pagar = $("#vlr_financiar_credito").val()
-            $("#txt_financiar_credito").val("$ " + formatter.format(total_pagar))
+            var total_pagar = $("#valor_nuevo_financiar").val()
+            $("#txt_financiar_credito").val("$ " + total_pagar)
         }
 
         solicitarCreditoCoitzador = () => {

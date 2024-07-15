@@ -61,7 +61,7 @@ class ControllerGenerarCredito extends Controller
             cuota_inicial: ' . session('valor_inicial') . ',
             cuota_mensual: ' . $cuota_mensual . ',
             saldo_a_plazos: ' . $saldo_a_plazos . ',
-            tasa: ' . $tasa . ',
+            tasa: "' . $tasa . '",
             email:"' . session('correo') . '",
             productos: [';
 
