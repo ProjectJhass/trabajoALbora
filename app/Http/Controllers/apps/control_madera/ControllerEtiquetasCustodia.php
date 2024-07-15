@@ -8,7 +8,7 @@ use App\Models\apps\control_madera\ModelEtiquetasEnCustodia;
 use App\Models\apps\control_madera\ModelInfoMadera;
 use App\Models\apps\control_madera\ModelInspeccionMateriaPrima;
 use App\Models\apps\control_madera\ModelLogs;
-use App\Models\apps\nexus\ModelUsuarios;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +16,7 @@ class ControllerEtiquetasCustodia extends Controller
 {
     public function index()
     {
-        $usuarios = ModelUsuarios::where("estado", "Activo")->get();
+        $usuarios = User::where("estado", "1")->get();
         $data = ModelEtiquetasEnCustodia::where("estado", "Sin procesar")->get();
         $table = view("apps.control_madera.app.printer.custodia.table.info", ['data' => $data])->render();
         return view("apps.control_madera.app.printer.custodia.etiquetas", ['table' => $table, 'usuarios' => $usuarios]);
