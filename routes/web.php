@@ -40,6 +40,7 @@ use App\Http\Controllers\apps\crm_almacenes\ControllerClientesEfectivos;
 use App\Http\Controllers\apps\crm_almacenes\ControllerCrearTerceroSiesa;
 use App\Http\Controllers\apps\crm_almacenes\ControllerCumpleClientes;
 use App\Http\Controllers\apps\crm_almacenes\ControllerEstadisticasAdmin;
+use App\Http\Controllers\apps\crm_almacenes\ControllerExportarInfoCRM;
 use App\Http\Controllers\apps\crm_almacenes\ControllerInformeDeVentas;
 use App\Http\Controllers\apps\crm_almacenes\ControllerInicioCrm;
 use App\Http\Controllers\apps\crm_almacenes\ControllerLiquidadorDescuentos;
@@ -737,6 +738,14 @@ Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () 
             Route::get('/estadisticas', [ControllerEstadisticasAdmin::class, 'index'])->name('estadisticas.admin.crm');
             Route::post('/asesores', [ControllerEstadisticasAdmin::class, 'ObtenerAsesores']);
             Route::post('/por-asesor', [ControllerEstadisticasAdmin::class, 'fechas'])->name("consultar.info.asesor.estadisticas");
+        });
+
+        Route::group(['prefix' => 'exportar'], function (){
+            Route::get('', [ControllerExportarInfoCRM::class, 'index'])->name('crm.exportar.home');
+            Route::get('filtrar', [ControllerExportarInfoCRM::class, 'filtrarInfo'])->name('crm.filtrar.info');
+            Route::post('clientes', [ControllerExportarInfoCRM::class, 'exportarClientes'])->name('crm.exportar.clientes');
+            Route::post('cotizaciones', [ControllerExportarInfoCRM::class, 'exportarCotizaciones'])->name('crm.exportar.cotizaciones');
+            Route::post('llamadas', [ControllerExportarInfoCRM::class, 'exportarLlamadas'])->name('crm.exportar.llamadas');
         });
     });
 });
