@@ -850,7 +850,6 @@
         }
 
         formSolicitarEstudioDeCredito = () => {
-
             Swal.fire({
                 title: "Estas seguro del valor a financiar?",
                 text: "No podrás reversar la operación",
@@ -872,7 +871,12 @@
             $("#modalValorFinanciarCredito").modal("hide")
             $("#modalInfoSolicitarCredito").modal("show")
             var total_pagar = $("#valor_nuevo_financiar").val()
-            $("#txt_financiar_credito").val("$ " + total_pagar)
+            var valor_inicial = $("#vlr_financiar_credito").val()
+            if (total_pagar.length > 0) {
+                $("#txt_financiar_credito").val("$ " + total_pagar)
+            } else {
+                $("#txt_financiar_credito").val("$ " + formatter.format(valor_inicial))
+            }
         }
 
         solicitarCreditoCoitzador = () => {
@@ -905,7 +909,7 @@
             datos.done((res) => {
                 Swal.fire({
                     position: "top-end",
-                    icon: "error",
+                    icon: "success",
                     title: " " + res.mensaje,
                     showConfirmButton: false,
                     timer: 5000,
