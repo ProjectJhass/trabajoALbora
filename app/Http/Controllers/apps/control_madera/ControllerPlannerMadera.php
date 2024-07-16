@@ -239,9 +239,33 @@ class ControllerPlannerMadera extends Controller
         $cantidad = $request->cantidad;
         $consecutivo = $request->consecutivo;
 
-        $madera_a_favor = ModelPiezasMaderaFavor::select('largo', 'ancho', 'grueso', 'cantidad_disponible as cantidad', 'madera')->where("id_madera", $id_madera)->where("estado", "Pendiente")->get();
+        $madera_a_favor = ModelPiezasMaderaFavor::select('id', 'largo', 'ancho', 'grueso', 'cantidad_disponible as cantidad', 'madera')->where("id_madera", $id_madera)->where("estado", "Pendiente")->get();
         $table = view("apps.control_madera.app.planner.planner.tableModificarFavor", ["info" => $madera_a_favor, "cantidad_pieza" => $cantidad, 'consecutivo'=>$consecutivo])->render();
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function updateInfoPiezasDisponibles(Request $request) {
+        $bandera = $request->cantidad_ciclo_maderas_;
+        $cantidad_requerida = 0;
+
+        for ($i=1; $i <= $bandera ; $i++) { 
+            $id_pieza_wood = $request["item_id_$i"];
+            $cantidad = !empty($request["cantidad_utilizar$i"])?$request["cantidad_utilizar$i"]:0;
+            $cantidad_requerida += $cantidad;
+
+             $getPiezaWood = ModelPiezasMaderaFavor::find($id_pieza_wood);
+             $cant_dispo = $getPiezaWood->cantidad_disponible;
+
+             $cantidad_final = $cant_dispo - $cantidad;
+             if($cantidad_final==0){
+                $getPiezaWood->estado = "Procesado";
+             }
+
+             $getPiezaWood->cantidad_disponible = $cantidad_final;
+             $getPiezaWood->save(); 
+        }
+
+         return response()->json(["status" => true, "cantidad_requerida"=>$cantidad_requerida], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 }

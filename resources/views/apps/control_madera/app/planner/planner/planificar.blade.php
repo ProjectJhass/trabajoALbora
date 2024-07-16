@@ -146,8 +146,9 @@
                     <div class="header-title">
                         <h4 class="card-title mb-0">Planificación</h4>
                     </div>
-                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalPlanificarCorteTablas"><i
-                            class="fas fa-check-circle"></i> Planificar corte de tablas</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#modalPlanificarCorteTablas"><i class="fas fa-check-circle"></i> Planificar corte de
+                        tablas</button>
                 </div>
                 <div class="card-body">
                     <form class="form-label-left input_mask" id="formInfoPlanificacionMadera" autocomplete="off">
@@ -157,7 +158,8 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-3 col-sm-3 ">Serie </label>
                                     <div class="col-md-9 col-sm-9 ">
-                                        <select name="serie_planner" id="serie_planner" onchange="searchInfoMadera(this.value)" class="form-control">
+                                        <select name="serie_planner" id="serie_planner"
+                                            onchange="searchInfoMadera(this.value)" class="form-control">
                                             <option value="">Seleccionar...</option>
                                             @foreach ($series as $item)
                                                 <option value="{{ $item->id_serie }}">{{ $item->serie }}</option>
@@ -170,8 +172,8 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-3 ">Madera </label>
                                     <div class="col-md-9 col-sm-9 ">
-                                        <select name="madera_planner" id="madera_planner" onchange="searchInfoMueble(this.value)" disabled
-                                            class="form-control">
+                                        <select name="madera_planner" id="madera_planner"
+                                            onchange="searchInfoMueble(this.value)" disabled class="form-control">
                                             <option value="">Seleccionar...</option>
                                         </select>
                                     </div>
@@ -181,8 +183,8 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-3">Mueble </label>
                                     <div class="col-md-9 col-sm-9 ">
-                                        <select name="mueble_planner" onchange="insertCantidadChange(this.value)" id="mueble_planner" class="form-control"
-                                            disabled>
+                                        <select name="mueble_planner" onchange="insertCantidadChange(this.value)"
+                                            id="mueble_planner" class="form-control" disabled>
                                             <option value="">Seleccionar...</option>
                                         </select>
                                     </div>
@@ -192,7 +194,17 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-3 col-sm-3">Cantidad </label>
                                     <div class="col-md-9 col-sm-9 ">
-                                        <input type="number" name="cantidad_planner" id="cantidad_planner" class="form-control" disabled>
+                                        <input type="number" name="cantidad_planner" id="cantidad_planner"
+                                            class="form-control" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3" hidden>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-3 col-sm-3">Madera </label>
+                                    <div class="col-md-9 col-sm-9 ">
+                                        <input type="text" name="txtPiezasFavConsultaMadera"
+                                            id="txtPiezasFavConsultaMadera" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +213,8 @@
                         <div class="form-group text-center">
                             <button type="button" class="btn btn-secondary" onclick="limpiarCampos()" id="btnResetPlanner"
                                 type="reset">Limpiar</button>
-                            <button type="button" onclick="planificarCorteMadera()" id="btnCreateplanMadera" disabled class="btn btn-danger">Crear
+                            <button type="button" onclick="planificarCorteMadera()" id="btnCreateplanMadera" disabled
+                                class="btn btn-danger">Crear
                                 planificación</button>
                         </div>
                     </form>
@@ -209,7 +222,7 @@
             </div>
         </div>
     </div>
-    <div class="row" id="txtInfoGeneralPiezasFavorMadera">
+    <div class="row" id="txtInfoGeneralPiezasFavorMadera" hidden>
         <div class="col-md-12 text-center">
             <p>Este tipo de madera tiene piezas a favor, <span class="text-success" style="cursor: pointer"
                     onclick="getInfoPiezasFavorMadera()">visualizar todas <i class="fas fa-check"></i></span></p>
@@ -236,7 +249,8 @@
     </div>
 
     {{-- Modal para planificar cortes de tablas --}}
-    <div class="modal fade" id="modalPlanificarCorteTablas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalPlanificarCorteTablas" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -249,7 +263,8 @@
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="">Cantidad a cortar</label>
-                                    <input type="number" class="form-control" name="cantidad_tablas" id="cantidad_tablas">
+                                    <input type="number" class="form-control" name="cantidad_tablas"
+                                        id="cantidad_tablas">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -263,13 +278,15 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="planearCorteTabla()">Crear plan corte de tablas</button>
+                    <button type="button" class="btn btn-primary" onclick="planearCorteTabla()">Crear plan corte de
+                        tablas</button>
                 </div>
             </div>
         </div>
     </div>
     {{-- Modal Información de las piezas a favor por madera --}}
-    <div class="modal fade" id="modalInfoPiezasFavorPorMadera" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalInfoPiezasFavorPorMadera" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -279,6 +296,7 @@
                 <div class="modal-body" id="tableInfoGeneralPiezasPorMadera"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="actualizarCantidadesDisponibles()">Guardar Piezas A Favor</button>
                 </div>
             </div>
         </div>
@@ -319,7 +337,8 @@
 
         troncoSeleccionado = (id, valor) => {
             $('#troncos' + id).val('')
-            $('#troncos_selected' + id).append('<span class="badge badge-pill bg-secondary" style="cursor:pointer" id="' + id + valor +
+            $('#troncos_selected' + id).append(
+                '<span class="badge badge-pill bg-secondary" style="cursor:pointer" id="' + id + valor +
                 '" onclick="deleteTronco(\'' + id + '\',\'' + valor + '\')" >' + valor + '</span>\t')
             var text = infoInput(id)
             var text = text.replace(/^,/, '');
@@ -381,6 +400,9 @@
 
         planificarCorteMadera = () => {
             notificacion("Creando planificación...", "info", 10000);
+
+            var valor_input = $("#txtPiezasFavConsultaMadera").val()
+
             document.querySelector('body').classList.remove("loaded")
             var formulario = new FormData(document.getElementById('formInfoPlanificacionMadera'));
             formulario.append('valor', 'valor');
@@ -397,6 +419,13 @@
                 document.querySelector('body').classList.add("loaded")
                 notificacion("¡Planificación creada exitosamente!", "success", 3000)
                 document.getElementById('plan-generado-corte-madera').innerHTML = res.planilla
+
+                if (valor_input > 0) {
+                    document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = false
+                } else {
+                    document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = true
+                }
+
             })
             datos.fail(() => {
                 notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
@@ -566,11 +595,48 @@
             if (valor.length == 0) {
                 valor = 0;
             }
-            var cantidad = parseFloat($("#cantidad_pieza" + id).val())
-            var vlr = parseFloat(valor);
-            var cantidad_ahora = cantidad - vlr;
-            // $("#cantidad_pieza" + id).val(cantidad_ahora)
-            $("#txtCantidadRequeridaMadera" + consec).text(cantidad_ahora)
+
+            var bucle = parseFloat($("#cantidad_ciclo").text())
+            var requerido = parseFloat($("#cantidad_pieza" + id).val())
+            var total = 0
+            let cantidad_disponible = parseFloat($(`#txtCantDisponibleMadera` + consec).text());
+
+            for (let i = 1; i <= bucle; i++) {
+                var valor_input_t = $("#cantidad_utilizar" + i).val()
+                var valor_c = parseFloat(valor_input_t.length > 0 ? valor_input_t : 0)
+                total += valor_c
+
+                if (cantidad_disponible < valor) {
+                    $("#cantidad_utilizar" + consec).val(cantidad_disponible)
+                }
+
+                if (total > requerido) {
+                    notificacion("Revisa la información, las cantidades no pueden exceder del disponible", "error",
+                        5000);
+                    $("#cantidad_utilizar" + consec).val('')
+                }
+            }
+        }
+
+        actualizarCantidadesDisponibles = () => {
+            let formData = new FormData(document.getElementById("tbl_cantidades_a_favor"));
+            var datos = $.ajax({
+                url: "{{ route('update.pieza.favor') }}",
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            datos.done((res) => {
+                // notificacion(res.mensaje, "success", 5000)
+                // $('#cantidad_tablas').val('')
+                console.log(res);
+            })
+            datos.fail(() => {
+                notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);
+            })
         }
     </script>
 @endsection

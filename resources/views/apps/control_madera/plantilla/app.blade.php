@@ -451,9 +451,9 @@
                         $('#mueble_planner').prop('disabled', false)
                         document.getElementById('mueble_planner').innerHTML = res.valores
                         if (res.vlr_madera > 0) {
-                            document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = false
+                            $("#txtPiezasFavConsultaMadera").val(res.vlr_madera)
                         } else {
-                            document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = true
+                            $("#txtPiezasFavConsultaMadera").val("")
                         }
                     }
                 })

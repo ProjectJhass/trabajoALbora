@@ -62,10 +62,11 @@ class ControllerPlannerWood extends Controller
     {
         $id_pieza = $request->id_pieza;
         $tronco = $request->tronco;
+        $pulgadas_cortadas = 0;
 
         $info_tronco = ModelConsecutivosMadera::find($tronco);
 
-        if ($info_tronco->estado != "Procesado" && $info_tronco->estado != "Pendiente") {
+        if ($info_tronco->estado == "Activo") {
 
             $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
             $tronco_db = $info_->troncos_utilizados;
@@ -74,6 +75,22 @@ class ControllerPlannerWood extends Controller
 
             $pulgadas_tronco = $info_tronco->pulgadas;
             $pulgadas_restantes =  $info_->pulgadas_resta;
+
+            $info_tronco->estado = "En corte";
+            $info_tronco->save();
+
+            $info_p = ModelPiezasPlanificadasCorte::where("id_plan", $info_->id_plan)->get();
+            foreach ($info_p as $key => $val) {
+                $bloques = explode(",", $val->troncos_utilizados);
+                foreach ($bloques as $key => $bloque) {
+                    $info_c = ModelConsecutivosMadera::find($bloque);
+                    $pulgadas_cortadas += $info_c->pulgadas;
+                }
+            }
+
+            $data_c = ModelCortesPlanificados::find($info_->id_plan);
+            $data_c->pulgadas_cortadas = $pulgadas_cortadas;
+            $data_c->save();
 
             ModelLogs::create([
                 'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el bloque #' . $tronco . ' para corte de serie en la woodniser',
@@ -88,6 +105,7 @@ class ControllerPlannerWood extends Controller
     {
         $id_pieza = $request->id_pieza;
         $tronco = $request->tronco;
+        $pulgadas_cortadas = 0;
 
         $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
         $tronco_db = $info_->troncos_utilizados;
@@ -102,6 +120,23 @@ class ControllerPlannerWood extends Controller
 
         $info_->troncos_utilizados = $tronco_db_updated;
         $info_->save();
+
+        $info_tronco = ModelConsecutivosMadera::find($tronco);
+        $info_tronco->estado = "Activo";
+        $info_tronco->save();
+
+        $info_p = ModelPiezasPlanificadasCorte::where("id_plan", $info_->id_plan)->get();
+        foreach ($info_p as $key => $val) {
+            $bloques = explode(",", $val->troncos_utilizados);
+            foreach ($bloques as $key => $bloque) {
+                $info_c = ModelConsecutivosMadera::find($bloque);
+                $pulgadas_cortadas += $info_c->pulgadas;
+            }
+        }
+
+        $data_c = ModelCortesPlanificados::find($info_->id_plan);
+        $data_c->pulgadas_cortadas = $pulgadas_cortadas;
+        $data_c->save();
 
         ModelLogs::create([
             'accion' => 'El usuario ' . Auth::user()->nombre . ' eliminó el bloque #' . $tronco . ' utilizado para corte de serie en la woodniser',
@@ -136,11 +171,8 @@ class ControllerPlannerWood extends Controller
         $cantidad_total = $cantidad_cortada + $cantidad_;
 
         if ($cantidad_total > $rango_s) {
-            return response()->json(['status' => false, 'mensaje' => 'ERROR: Está superando la tolerancia exigida, ingresa un valor inferior'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+            return response()->json(['status' => false, 'mensaje' => 'ERROR: Está superando la tolerancia exigida '.$rango_s.', ingresa un valor inferior'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
-
-
-
 
         if ($cantidad_total >= $cantidad_solicitada) {
             // $restante = $cantidad_total - $cantidad_solicitada;
@@ -182,10 +214,21 @@ class ControllerPlannerWood extends Controller
 
     public function checkStatusPlanCorte($id_plan)
     {
+        $bandera_ = 0;
         $cantidad_piezas = ModelPiezasPlanificadasCorte::where("id_plan", $id_plan)->get();
+        foreach ($cantidad_piezas as $key => $value) {
+            $cantidad = $value->cantidad;
+            $tolerancia = round(($cantidad*0.1));
+            $inferior = $cantidad-$tolerancia;
+            $superior = $cantidad+$tolerancia;
+            if($value->cantidad_cortada>=$inferior && $value->cantidad_cortada<=$superior){
+                $bandera_++;
+            }
+        }
+
         $cantidad_completadas = ModelPiezasPlanificadasCorte::where("estado", "Completado")->where("id_plan", $id_plan)->count();
 
-        if (count($cantidad_piezas) == $cantidad_completadas) {
+        if (count($cantidad_piezas) == $bandera_) {
             $ancho_tabla = 0;
             $pulgadas_cortadas = 0;
 

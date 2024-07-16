@@ -492,6 +492,7 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
         //Actualizar corte de tablas
         Route::post('searchInfo-bloque-tabla', [ControllerPlannerTabla::class, 'troncosUtilizarTablas'])->name('search.bloque.tabla');
         Route::post('delete-bloque-tabla', [ControllerPlannerTabla::class, 'actualizarBloquesUtilizados'])->name('delete.bloque.tabla');
+        Route::post('update-pieza-a-favor', [ControllerPlannerMadera::class, 'updateInfoPiezasDisponibles'])->name('update.pieza.favor');
 
         Route::group(['prefix' => 'admin'], function () {
             Route::post('/search-troncos-utilizados', [ControllerInfoGeneralCortes::class, 'getinfoTroncosUtilizados'])->name('get.info.troncos.utili');
