@@ -373,13 +373,15 @@
         }
 
         cambiarEstadoTronco = (id, valor, estado) => {
+            var rangoBloque = $("#largo_bloque"+id).val()
             var datos = $.ajax({
                 url: "{{ route('change.info.troncos') }}",
                 type: "post",
                 dataType: "json",
                 data: {
                     valor,
-                    estado
+                    estado,
+                    rangoBloque
                 }
             });
             datos.done((res) => {
@@ -515,6 +517,7 @@
                 processData: false
             });
             datos.done((res) => {
+                document.getElementById('txtInfoGeneralPiezasFavorMadera').hidden = true
                 document.querySelector('body').classList.add("loaded")
                 notificacion(res.mensaje, "success", 5000)
                 document.getElementById('formInfoPlanificacionMadera').reset()
@@ -619,7 +622,13 @@
         }
 
         actualizarCantidadesDisponibles = () => {
+            var id_consecutivo = $("#id_consec_maderas").val()
+            console.log(id_consecutivo)
+            var cantidad_ = parseFloat($("#cantidad_pieza"+id_consecutivo).val())
+            var id_pieza_form = $("#id_pieza_planner"+id_consecutivo).val()
+
             let formData = new FormData(document.getElementById("tbl_cantidades_a_favor"));
+            formData.append("id_pieza_form", id_pieza_form)
             var datos = $.ajax({
                 url: "{{ route('update.pieza.favor') }}",
                 type: "post",
@@ -630,9 +639,10 @@
                 processData: false
             });
             datos.done((res) => {
-                // notificacion(res.mensaje, "success", 5000)
-                // $('#cantidad_tablas').val('')
-                console.log(res);
+                notificacion("Se actualizaron las cantidades a favor", "success", 5000);
+                var cant_r = parseFloat(res.cantidad_requerida);
+                $("#cantidad_pieza"+id_consecutivo).val(cantidad_-cant_r)
+                $("#modalInfoPiezasFavorPorMadera").modal("hide")
             })
             datos.fail(() => {
                 notificacion("ERROR! Revisa los campos y vuelve a intentarlo", "error", 5000);

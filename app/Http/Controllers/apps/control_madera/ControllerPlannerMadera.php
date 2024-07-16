@@ -18,6 +18,15 @@ class ControllerPlannerMadera extends Controller
     public function planner()
     {
         $series = ModelInfoSerie::all();
+        $piezas_favor = ModelPiezasMaderaFavor::whereIn("estado", ["En uso","Por confirmar"])->get();
+        foreach ($piezas_favor as $key => $value) {
+            $pf = ModelPiezasMaderaFavor::find($value->id);
+            $pf->cantidad_disponible = $pf->cantidad_inicial;
+            $pf->estado = "Pendiente";
+            $pf->pieza = null;
+            $pf->save();
+        }
+        ModelConsecutivosMadera::where("estado","En uso")->update(["estado"=>"Activo"]);
         return view('apps.control_madera.app.planner.planner.planificar', ['series' => $series]);
     }
 
@@ -239,7 +248,7 @@ class ControllerPlannerMadera extends Controller
         $cantidad = $request->cantidad;
         $consecutivo = $request->consecutivo;
 
-        $madera_a_favor = ModelPiezasMaderaFavor::select('id', 'largo', 'ancho', 'grueso', 'cantidad_disponible as cantidad', 'madera')->where("id_madera", $id_madera)->where("estado", "Pendiente")->get();
+        $madera_a_favor = ModelPiezasMaderaFavor::select('id', 'largo', 'ancho', 'grueso', 'cantidad_disponible as cantidad', 'madera')->where("id_madera", $id_madera)->whereIn("estado",["Pendiente","Por confirmar"])->get();
         $table = view("apps.control_madera.app.planner.planner.tableModificarFavor", ["info" => $madera_a_favor, "cantidad_pieza" => $cantidad, 'consecutivo'=>$consecutivo])->render();
 
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -259,7 +268,10 @@ class ControllerPlannerMadera extends Controller
 
              $cantidad_final = $cant_dispo - $cantidad;
              if($cantidad_final==0){
-                $getPiezaWood->estado = "Procesado";
+                 $getPiezaWood->estado = "En uso";
+                 $getPiezaWood->pieza = $request->id_pieza_form;
+             }else{
+                $getPiezaWood->estado = "Por confirmar";
              }
 
              $getPiezaWood->cantidad_disponible = $cantidad_final;

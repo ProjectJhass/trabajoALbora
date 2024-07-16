@@ -21,6 +21,7 @@ class ModelPiezasPlanificadasCorte extends Model
         'ancho',
         'grueso',
         'cantidad',
+        'cant_real',
         'l_bloque',
         'pulgadas_t',
         'troncos',

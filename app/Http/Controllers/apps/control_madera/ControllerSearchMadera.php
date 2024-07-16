@@ -142,6 +142,7 @@ class ControllerSearchMadera extends Controller
     {
         $valor = $request->valor;
         $estado = $request->estado;
+        $rango_bloques = $request->rangoBloque;
 
         $info_ = explode("-", $valor);
         $id = trim($info_[0]);
@@ -156,10 +157,21 @@ class ControllerSearchMadera extends Controller
                 $data_->save();
                 break;
         }
+
+        $bloques_ = [];
+
+        $info_bloques = explode("-", $rango_bloques);
+        $bloque_inferior = ($info_bloques[0] * 100);
+        $bloque_superior = ($info_bloques[1] * 100);
+
+        for ($i = $bloque_inferior; $i <= $bloque_superior; $i++) {
+            array_push($bloques_, ($i / 100));
+        }
+
         $form_ = '<option value=""></option>';
-        $troncos = ModelConsecutivosMadera::where('estado', 'Activo')->orderBy('pulgadas', 'asc')->get();
+        $troncos = ModelConsecutivosMadera::where("id_info_madera",$data_->id_info_madera)->where('estado', 'Activo')->whereIn('largo', $bloques_)->orderBy('pulgadas', 'asc')->get();
         foreach ($troncos as $key => $value) {
-            $form_ .= '<option value="' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '">' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '</option>';
+            $form_ .= '<option value="' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '">' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . ' - L'.$value->largo.'m</option>';
         }
 
         return response()->json(['options' => $form_], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

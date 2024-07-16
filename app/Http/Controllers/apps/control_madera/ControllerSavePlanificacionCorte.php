@@ -7,6 +7,7 @@ use App\Models\apps\control_madera\ModelCantidadesFavor;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
 use App\Models\apps\control_madera\ModelLogs;
+use App\Models\apps\control_madera\ModelPiezasMaderaFavor;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,13 +64,16 @@ class ControllerSavePlanificacionCorte extends Controller
             }
 
             ModelConsecutivosMadera::whereNotIn('estado', ['Procesado', 'Pendiente', 'Empezado', 'En corte'])->update(['estado' => 'Activo']);
-
+            ModelPiezasMaderaFavor::where('estado', "Por confirmar")->update(["estado" => "Pendiente"]);
+            
             for ($i = 1; $i < $cantidad_piezas; $i++) {
-
+                
                 $suma_pulgadas = 0;
                 $troncos_utilizados  = [];
-
+                
                 $id_pieza = $request['id_pieza_planner' . $i];
+                
+                ModelPiezasMaderaFavor::where('estado', "En uso")->where("pieza", $id_pieza)->update(["estado" => "Procesado"]);
 
                 $calidad_corte = $request['calidad_corte' . $i];
 
@@ -108,19 +112,15 @@ class ControllerSavePlanificacionCorte extends Controller
 
                 ModelConsecutivosMadera::whereIn('id', $troncos_utilizados)->update(['estado' => 'En corte']);
 
-                $cantidad_favor = ModelCantidadesFavor::where("id_pieza", $id_pieza)->where("estado", "Pendiente")->first();
-                if ($cantidad_favor) {
-                    $cant_favor = $cantidad_favor->cantidad;
-                    if ($cant_favor >= $cantidad_pieza_real) {
-                        $cantidad_final = $cant_favor - $cantidad_pieza_real;
-                        $cantidad_favor->cantidad = $cantidad_final;
-                        if ($cantidad_final == 0) {
-                            $cantidad_favor->estado = "Completado";
-                        }
-                    } else {
-                        $cantidad_favor->estado = "Completado";
+                if($cantidad_pieza_real != $cantidad_pieza){
+                    if($cantidad_pieza <= 0){
+                        $cantidad_pieza = 0;
+                        $estado = "Completado";
+                    }else{
+                        $estado = "Pendiente"; 
                     }
-                    $cantidad_favor->save();
+                }else{
+                    $estado = "Pendiente";
                 }
 
                 ModelPiezasPlanificadasCorte::create([
@@ -130,11 +130,12 @@ class ControllerSavePlanificacionCorte extends Controller
                     'ancho' => $ancho,
                     'grueso' => $grueso,
                     'cantidad' => $cantidad_pieza,
+                    'cant_real'=>$cantidad_pieza_real,
                     'l_bloque' => $largo_bloque,
                     'pulgadas_t' => $pulgadas_utilizadas,
                     'troncos' => implode(", ", $troncos_utilizados),
                     'obs' => $obs,
-                    'estado' => 'Pendiente',
+                    'estado' => $estado,
                     'id_plan' => $id_plan
                 ]);
             }

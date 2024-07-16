@@ -38,6 +38,7 @@
             <tr hidden>
                 <td id="cantidad_ciclo">{{ $bandera - 1 }}</td>
                 <td> <input name="cantidad_ciclo_maderas_" value="{{ $bandera - 1 }}" /></td>
+                <td> <input name="id_consec_maderas" id="id_consec_maderas" value="{{ $consecutivo }}" /></td>
             </tr>
         </tbody>
     </table>

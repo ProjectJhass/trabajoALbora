@@ -351,7 +351,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon3">$</span>
                                         </div>
-                                        <input type="number" class="form-control"
+                                        <input type="text" class="form-control"
                                             onkeyup="calcularValorCredito(this.value)" name="valor_a_financiar"
                                             id="valor_a_financiar">
                                     </div>
@@ -807,11 +807,17 @@
         };
 
         calcularValorCredito = (valor) => {
+            var valor_i = valor
+            valor_i = valor_i.replace(/\./g, '');
+            valor = valor_i
+
             var total_pagar = $("#total_a_pagar").val()
             var valor_pagar = parseFloat(total_pagar);
             var valor_financiar = parseFloat(valor);
 
             var formatter = new Intl.NumberFormat();
+
+            $("#valor_a_financiar").val(formatter.format(valor))
 
             if (valor.length > 0) {
                 document.getElementById('txtValorFinanciar').hidden = false;
@@ -844,14 +850,21 @@
         }
 
         solicitarEstudioDeCredito = () => {
+            var formatter = new Intl.NumberFormat();
             $("#modalValorFinanciarCredito").modal("show")
             var total_pagar = $("#total_a_pagar").val()
-            $("#vlr_financiar_credito").val(total_pagar)
+            $("#vlr_financiar_credito").val(formatter.format(total_pagar))
+            $("#vlr_financiar_credito").prop('readonly', true)
+            $("#vlr_financiar_credito").prop('type', "text")
+        }
+
+        simuladorCredito = () => {
+            window.open('https://crexit.com.co', "", "width=380, height=480, top=50, left=50");
         }
 
         formSolicitarEstudioDeCredito = () => {
             Swal.fire({
-                title: "Estas seguro del valor a financiar?",
+                title: `Estas seguro del valor a financiar: ${traerValorAFinanciar()}?`,
                 text: "No podrás reversar la operación",
                 icon: "warning",
                 showCancelButton: true,
@@ -867,15 +880,19 @@
         }
 
         confirmValorFinanciar = () => {
-            var formatter = new Intl.NumberFormat();
             $("#modalValorFinanciarCredito").modal("hide")
             $("#modalInfoSolicitarCredito").modal("show")
+            $("#txt_financiar_credito").val("$ " + traerValorAFinanciar())
+        }
+
+        traerValorAFinanciar = () => {
+            var formatter = new Intl.NumberFormat();
             var total_pagar = $("#valor_nuevo_financiar").val()
             var valor_inicial = $("#vlr_financiar_credito").val()
             if (total_pagar.length > 0) {
-                $("#txt_financiar_credito").val("$ " + total_pagar)
+                return total_pagar;
             } else {
-                $("#txt_financiar_credito").val("$ " + formatter.format(valor_inicial))
+                return valor_inicial;
             }
         }
 

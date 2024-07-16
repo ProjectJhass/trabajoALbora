@@ -25,7 +25,7 @@
                                             <option value=""></option>
                                             <option value="tabla">Corte de tabla</option>
                                             <option value="serie">Corte de serie</option>
-                                            <option value="Tserie">Tablas cortadas de serie</option>
+                                            <option value="Tserie">Pulgadas no utilizadas</option>
                                         </select>
                                     </div>
                                 </div>

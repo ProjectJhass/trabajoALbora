@@ -172,23 +172,31 @@ class ControllerPrinterQr extends Controller
 
             return true;
         } catch (\Exception $e) {
-
-            $info_error_printed = ModelConsecutivosFallidos::where("consecutivo", $consecutivo)->first();
-            if ($info_error_printed) {
-                $info_error_printed->id_impresion = $id_;
-                $info_error_printed->tipo_madera = $madera_;
-                $info_error_printed->save();
-            } else {
-                ModelConsecutivosFallidos::create([
-                    'consecutivo' => $consecutivo,
-                    'id_impresion' => $id_,
-                    'tipo_madera' => $madera_,
-                    'estado' => 'Fallido'
-                ]);
-            }
+            self::crearConsecFallidos($consecutivo, $id_, $madera_);
             $error_printed++;
             return false;
         }
+    }
+
+    public function crearConsecFallidos($consecutivo, $id_, $madera_){
+        $info_error_printed = ModelConsecutivosFallidos::where("consecutivo", $consecutivo)->first();
+        if ($info_error_printed) {
+            $info_error_printed->id_impresion = $id_;
+            $info_error_printed->tipo_madera = $madera_;
+            $info_error_printed->save();
+        } else {
+            ModelConsecutivosFallidos::create([
+                'consecutivo' => $consecutivo,
+                'id_impresion' => $id_,
+                'tipo_madera' => $madera_,
+                'estado' => 'Fallido'
+            ]);
+        }
+
+        $info_p = ModelInspeccionMateriaPrima::find($id_);
+        $cantidad_db = $info_p->total_bloques;
+        $info_p->total_bloques = $cantidad_db - 1;
+        $info_p->save();
     }
 
 
@@ -312,20 +320,7 @@ class ControllerPrinterQr extends Controller
     public function sendPageToPrinter($socket, $content_to_print, &$printed_pages, &$error_printed, $consecutivo, $id_, $madera_)
     {
         if (socket_write($socket, $content_to_print, strlen($content_to_print)) === false) {
-            $info_error_printed = ModelConsecutivosFallidos::where("consecutivo", $consecutivo)->first();
-            if ($info_error_printed) {
-                $info_error_printed->id_impresion = $id_;
-                $info_error_printed->tipo_madera = $madera_;
-                $info_error_printed->save();
-            } else {
-                ModelConsecutivosFallidos::create([
-                    'consecutivo' => $consecutivo,
-                    'id_impresion' => $id_,
-                    'tipo_madera' => $madera_,
-                    'estado' => 'Fallido'
-                ]);
-            }
-
+            self::crearConsecFallidos($consecutivo, $id_, $madera_);
             $error_printed++;
             return false;
         }

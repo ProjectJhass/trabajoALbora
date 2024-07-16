@@ -164,6 +164,19 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body text-center">
+                        {{-- <div style="cursor: pointer" data-toggle="modal" data-target="#modalInfoSolicitarCredito"> --}}
+                        <div style="cursor: pointer" onclick="simuladorCredito()">
+                            <i class="fas fa-calculator text-secondary" style="font-size: 45px"></i>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        Simulador crédito
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

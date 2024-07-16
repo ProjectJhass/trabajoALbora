@@ -45,6 +45,18 @@ class ControllerPlannerWood extends Controller
         foreach ($can_tablas as $key => $value) {
             $val_t += $value->cantidad_tabla;
         }
+
+        foreach ($piezas_planificadas as $key => $val) {
+            $bloques = explode(",", $val->troncos);
+            foreach ($bloques as $key => $info) {
+                if(!empty($info)){
+                    $bloque_ = ModelConsecutivosMadera::find($info);
+                    $bloque_->estado = "Ocupado";
+                    $bloque_->save();
+                }                
+            }
+        }
+
         $view = self::renderPiezasInfo($piezas_planificadas);
 
         $info_g = ModelPiezasMaderaFavor::where("id_corte", $id_corte)->get();
@@ -66,7 +78,7 @@ class ControllerPlannerWood extends Controller
 
         $info_tronco = ModelConsecutivosMadera::find($tronco);
 
-        if ($info_tronco->estado == "Activo") {
+        if ($info_tronco->estado == "Activo" || $info_tronco->estado == "Ocupado") {
 
             $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
             $tronco_db = $info_->troncos_utilizados;
@@ -83,8 +95,10 @@ class ControllerPlannerWood extends Controller
             foreach ($info_p as $key => $val) {
                 $bloques = explode(",", $val->troncos_utilizados);
                 foreach ($bloques as $key => $bloque) {
-                    $info_c = ModelConsecutivosMadera::find($bloque);
-                    $pulgadas_cortadas += $info_c->pulgadas;
+                    if(!empty($bloque)){
+                        $info_c = ModelConsecutivosMadera::find($bloque);
+                        $pulgadas_cortadas += $info_c->pulgadas;
+                    }
                 }
             }
 
@@ -215,7 +229,10 @@ class ControllerPlannerWood extends Controller
     public function checkStatusPlanCorte($id_plan)
     {
         $bandera_ = 0;
-        $cantidad_piezas = ModelPiezasPlanificadasCorte::where("id_plan", $id_plan)->get();
+        $cantidad_piezas = ModelPiezasPlanificadasCorte::join("cortes_planificados as c", "piezas_planificadas.id_plan","=","c.id")->
+            select("c.madera", "piezas_planificadas.cantidad","piezas_planificadas.cantidad_cortada")
+            ->where("c.id", $id_plan)->get();
+
         foreach ($cantidad_piezas as $key => $value) {
             $cantidad = $value->cantidad;
             $tolerancia = round(($cantidad*0.1));
@@ -226,29 +243,25 @@ class ControllerPlannerWood extends Controller
             }
         }
 
-        $cantidad_completadas = ModelPiezasPlanificadasCorte::where("estado", "Completado")->where("id_plan", $id_plan)->count();
+        $info_c_m = $cantidad_piezas->first();
 
         if (count($cantidad_piezas) == $bandera_) {
-            $ancho_tabla = 0;
-            $pulgadas_cortadas = 0;
+            $pulgadas_no_utilizadas = 0;
 
-            $tablas_cortadas = ModelInfoTablasCortadas::where("id_corte", $id_plan)->get();
-            foreach ($tablas_cortadas as $key => $value) {
-                $ancho_tabla += $value->ancho_tabla;
-            }
-            $pulgadas_no_utilizadas = round(($ancho_tabla / 2.54) * 0.75);
-
-            foreach ($cantidad_piezas as $key => $val) {
-                $bloques = explode(",", $val->troncos_utilizados);
-                foreach ($bloques as $key => $bloque) {
-                    $info_ = ModelConsecutivosMadera::find($bloque);
-                    $pulgadas_cortadas += $info_->pulgadas;
+            if($info_c_m->madera=="Vaquera"){
+               $info_g = ModelInfoTablasCortadas::where("id_corte",$id_plan)->get();
+               foreach ($info_g as $key => $madera_v) {
+                $pulgadas_no_utilizadas += round(((($madera_v->ancho_tabla)*1.19*($madera_v->cantidad_tabla)*300)/1550));
+               }
+            }else{
+                $info_pf = ModelPiezasMaderaFavor::where("id_corte", $id_plan)->get();
+                foreach ($info_pf as $key => $madera_ot) {
+                    $pulgadas_no_utilizadas += round(((($madera_ot->ancho*$madera_ot->grueso*$madera_ot->largo)*$madera_ot->cantidad_inicial)/1550));
                 }
             }
 
             $data_c = ModelCortesPlanificados::find($id_plan);
             $data_c->estado = "Completado";
-            $data_c->pulgadas_cortadas = $pulgadas_cortadas;
             $data_c->pulgadas_no_utilizadas = $pulgadas_no_utilizadas;
             $data_c->save();
 
@@ -351,7 +364,7 @@ class ControllerPlannerWood extends Controller
     {
         $id_corte = $request->id_corte;
         $cantidad_tabla = $request->cant_tablas;
-        $ancho = $request->ancho;
+        $ancho = trim(str_replace(['.',','],".", $request->ancho));
 
         ModelInfoTablasCortadas::create([
             'cantidad_tabla' => $cantidad_tabla,

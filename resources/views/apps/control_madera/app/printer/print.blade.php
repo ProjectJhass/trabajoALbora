@@ -351,10 +351,10 @@
             $('#modalInfoHistoryPrinted').modal('show')
             if (tipo == 1) {
                 $('#titlePrinted').text("Impresos")
-                var id_printed = $("h1[data-cantidadTrue]").attr("data-cantidadTrue")
+                var id_printed = document.getElementById('cantidad_impresiones_correctas').getAttribute('data-cantidadTrue');
             } else {
                 $('#titlePrinted').text("Fallidos")
-                var id_printed = $("h1[data-cantidadFalse]").attr("data-cantidadFalse")
+                var id_printed = document.getElementById('cantidad_impresiones_fallidas').getAttribute('data-cantidadFalse');
             }
             var datos = $.ajax({
                 url: "{{ route('search.printed') }}",
