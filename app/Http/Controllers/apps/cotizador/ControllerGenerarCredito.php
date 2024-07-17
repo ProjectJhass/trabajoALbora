@@ -42,15 +42,18 @@ class ControllerGenerarCredito extends Controller
         $saldo_a_plazos = round($valor_total - session('valor_inicial'));
         $cuota_mensual = round($saldo_a_plazos / session('cuotas_plan_cotizador'));
 
+        $direccion_ = str_replace("-"," ", session('direccion'));
+        $barrio_ = str_replace("-"," ", session('barrio'));
+
         $varJSON = '{
             cedula: ' . session('cedula_cliente') . ',
             primer_nombre: "' . session('primer_nombre') . '",
             segundo_nombre: "' . session('segundo_nombre') . '",
             primer_apellido: "' . session('primer_apellido') . '",
             segundo_apellido: "' . session('segundo_apellido') . '",
-            direccion: "' . session('direccion') . '",
+            direccion: "' . $direccion_ . '",
             ciudad: "' . session('ciudad') . '",
-            barrio: "' . session('barrio') . '",
+            barrio: "' . $barrio_ . '",
             telefono: ' . session('telefono1') . ',
             numero_cuotas: "' . session('cuotas_plan_cotizador') . '",
             valor_antes_iva: ' . $valor_antes_iva . ',
@@ -69,11 +72,13 @@ class ControllerGenerarCredito extends Controller
 
         foreach ($productos as $key => $value) {
 
+            $item_ = str_replace("-", " ", $value->producto);
+
             if ($contador == 1 && $bandera == 1) {
                 $varJSON  .= '
                 {
                     codigo_productos: "' . $value->sku . '",
-                    descripcion: "' . $value->producto . '",
+                    descripcion: "' . $item_ . '",
                     cantidad: ' . $value->cantidad . ',
                     valoru: "' . (round((($value->vlr_credito) - ($value->vlr_credito * $porc_dsto)), 0, PHP_ROUND_HALF_UP)) . '",
                 }';
@@ -82,7 +87,7 @@ class ControllerGenerarCredito extends Controller
                     $varJSON  .= '
                     {
                         codigo_productos: "' . $value->sku . '",
-                        descripcion: "' . $value->producto . '",
+                        descripcion: "' . $item_ . '",
                         cantidad: ' . $value->cantidad . ',
                         valoru: "' . (round((($value->vlr_credito) - ($value->vlr_credito * $porc_dsto)), 0, PHP_ROUND_HALF_UP)) . '",
                     }';
@@ -90,7 +95,7 @@ class ControllerGenerarCredito extends Controller
                     $varJSON  .= '
                     {
                         codigo_productos: "' . $value->sku . '",
-                        descripcion: "' . $value->producto . '",
+                        descripcion: "' . $item_ . '",
                         cantidad: ' . $value->cantidad . ',
                         valoru: "' . (round((($value->vlr_credito) - ($value->vlr_credito * $porc_dsto)), 0, PHP_ROUND_HALF_UP)) . '",
                     },';
