@@ -95,12 +95,21 @@ class ModelIngresosSalidas extends Model
     {
         return DB::table('registro_ingreso as r')
             ->join('users as u', 'u.id', '=', 'r.id_usuario')
-            ->select(['u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
+            ->select(['r.id_row' ,'u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
             ->whereBetween('r.fecha_registro', ([$fecha_i, $fecha_f]))
             ->where('r.co', $co)
             ->where('u.estado', 1)
             ->where('r.hora_ingreso', '>', $hora_i)
             ->get();
+    }
+
+    public static function ObtenerNovedadesLlegadasTarde($id_row)
+    {
+        return DB::table('novedades')
+        ->where('id_registro_ingreso', $id_row)
+        ->limit(1)
+        ->orderBy('id_novedad', 'DESC')
+        ->get();
     }
 
     public static function ValidarEventosUsuarios($cedula_u, $fecha_c)

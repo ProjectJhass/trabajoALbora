@@ -48,6 +48,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
+                            <strong>Sagrilaft</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sagrilaft', 'memo' => 'manual-sagrilaft']) }}">
+                                <img src="{{ asset('icons/analisis-de-riesgo.png') }}" width="40%" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
+                            <strong>PTEE</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sagrilaft', 'memo' => 'manual-ptee']) }}">
+                                <img src="{{ asset('icons/ptee.png') }}" width="40%" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 {{-- <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
                         <div class="card-header">

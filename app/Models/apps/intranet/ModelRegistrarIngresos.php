@@ -68,14 +68,15 @@ class ModelRegistrarIngresos extends Model
             ->whereNotNull('hora_reingreso')->count();
     }
 
-    public static function RegistrarNovedad($cedula, $fecha, $novedad, $novedad_general)
+    public static function RegistrarNovedad($cedula, $fecha, $novedad, $novedad_general, $id_registro_novedad)
     {
         DB::table('novedades')->insert([
             'novedad_salida' => $novedad_general,
             'novedad_usuario' => $novedad,
             'fecha_novedad' => $fecha,
             'id_registro' => $cedula,
-            'co' => self::ObtenerCO($cedula)
+            'co' => self::ObtenerCO($cedula),
+            'id_registro_ingreso' => $id_registro_novedad
         ]);
     }
 
@@ -83,7 +84,7 @@ class ModelRegistrarIngresos extends Model
     {
         $co = self::ObtenerCO($cedula);
         return DB::table('registro_ingreso')
-            ->insert([
+            ->insertGetId([
                 'co' => $co,
                 'fecha_registro' => $fecha,
                 'hora_ingreso' => $hora,

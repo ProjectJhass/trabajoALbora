@@ -16,7 +16,8 @@ class ControllerRegistrarNovedades extends Controller
                 'novedad_usuario' => $request->comentario,
                 'fecha_novedad' => $request->fecha,
                 'id_registro' => $request->empleado,
-                'co' => $request->co
+                'co' => $request->co,
+                'id_registro_ingreso' => ""
             ]);
             $response = ModelRegistrarNovedades::AgregarNovedades($data);
             if ($response) {

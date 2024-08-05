@@ -9,6 +9,7 @@
             <th>Hora salida</th>
             <th>Hora re-ingreso</th>
             <th>Hora re-salida</th>
+            <th>Novedades</th>
         </tr>
     </thead>
     <tbody class="text-center" style="font-size: 14px">
@@ -23,6 +24,7 @@
                 <td>{{ $item->hora_ingreso }}</td>
                 <td>{{ $item->hora_salida }}</td>
                 <td>{{ $item->hora_reingreso }}</td>
+                <td>{{ $item->hora_salida_reingreso }}</td>
                 <td>{{ $item->hora_salida_reingreso }}</td>
             </tr>
         @endforeach

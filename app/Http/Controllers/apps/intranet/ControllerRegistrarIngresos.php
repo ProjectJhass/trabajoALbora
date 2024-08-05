@@ -84,7 +84,7 @@ class ControllerRegistrarIngresos extends Controller
                         $data = (['hora_salida' => $hora]);
                         if (ModelRegistrarIngresos::ActualizarRegistroIngreso($data, $id_tabla)) {
                             if (!empty($novedad_u)) {
-                                ModelRegistrarIngresos::RegistrarNovedad($usuario, $fecha, $novedad_u, $novedad_general);
+                                ModelRegistrarIngresos::RegistrarNovedad($usuario, $fecha, $novedad_u, $novedad_general, $id_tabla);
                             }
                             return response()->json(['status' => true, 'mensaje' => 'Salida registrada'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
                         }
@@ -93,7 +93,7 @@ class ControllerRegistrarIngresos extends Controller
                             $data = (['hora_salida_reingreso' => $hora]);
                             if (ModelRegistrarIngresos::ActualizarRegistroIngreso($data, $id_tabla)) {
                                 if (!empty($novedad_u)) {
-                                    ModelRegistrarIngresos::RegistrarNovedad($usuario, $fecha, $novedad_u, $novedad_general);
+                                    ModelRegistrarIngresos::RegistrarNovedad($usuario, $fecha, $novedad_u, $novedad_general, $id_tabla);
                                 }
                                 return response()->json(['status' => true, 'mensaje' => 'Salida registrada'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
                             }
