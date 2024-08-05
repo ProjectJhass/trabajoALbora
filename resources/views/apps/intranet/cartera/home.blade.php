@@ -60,7 +60,8 @@
                             <strong>Cartas generales</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'cartas-generales']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'cartas-generales']) }}">
                                 <img src="{{ asset('icons/cartas.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -72,7 +73,8 @@
                             <strong>Memorandos</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'memorandos-cartera']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'memorandos-cartera']) }}">
                                 <img src="{{ asset('icons/memorando.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -84,7 +86,8 @@
                             <strong>Actas de visita</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'actas-de-visita']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'actas-de-visita']) }}">
                                 <img src="{{ asset('icons/contrato.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -96,7 +99,8 @@
                             <strong>Politicas y leyes</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'politicas-y-leyes']) }}">
+                            <a
+                                href="{{ route('intranet.memorandos.areas', ['seccion' => 'cartera', 'memo' => 'politicas-y-leyes']) }}">
                                 <img src="{{ asset('icons/leyes.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -156,13 +160,41 @@
                         </div>
                     </div>
                 </div>
+                {{-- <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
+                            <strong>Crex°it - Asesores</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a href="https://crexit.com.co/" target="_BLANK">
+                                <img src="{{ asset('icons/crexit.png') }}" width="40%" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger" style="width: 100%; height: 93%">
+                        <div class="card-header">
+                            <strong>Crex°it - Asesores</strong>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="card-body text-center">
+                                <a href="https://albura.cuotasoft.com/app_Login/" target="_BLANK">
+                                    <img src="https://crexit.com.co/wp-content/uploads/2024/05/LogoCrexit-e1717190280798.png"
+                                        width="80%" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-3 mb-3">
                     <div class="card card-outline card-danger">
                         <div class="card-header">
                             <strong>Bext trámites</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="https://credidescuentos.bextramites.com/login.php?empresa=credidescuentos" target="_BLANK">
+                            <a href="https://credidescuentos.bextramites.com/login.php?empresa=credidescuentos"
+                                target="_BLANK">
                                 <img src="{{ asset('icons/bext.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -222,14 +254,14 @@
                         <div class="row col-8">
                             <form>
                                 <div class="d-flex flex-row text-center d-flex justify-content-evenly">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito1" name="digito"
-                                        maxlength="1" oninput="limitarInput(this, 2)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito2" name="digito"
-                                        maxlength="1" oninput="limitarInput(this, 3)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito3" name="digito"
-                                        maxlength="1" oninput="limitarInput(this, 4)" placeholder="-">
-                                    <input type="text" class="caracter form-control col-2 text-center" id="digito4" name="digito"
-                                        maxlength="1" oninput="limitarInput(this)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito1"
+                                        name="digito" maxlength="1" oninput="limitarInput(this, 2)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito2"
+                                        name="digito" maxlength="1" oninput="limitarInput(this, 3)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito3"
+                                        name="digito" maxlength="1" oninput="limitarInput(this, 4)" placeholder="-">
+                                    <input type="text" class="caracter form-control col-2 text-center" id="digito4"
+                                        name="digito" maxlength="1" oninput="limitarInput(this)" placeholder="-">
                                 </div>
                             </form>
                         </div>

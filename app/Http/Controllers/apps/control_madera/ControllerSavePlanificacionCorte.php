@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps\control_madera;
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelCantidadesFavor;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelCortesPiezaFavor;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
 use App\Models\apps\control_madera\ModelLogs;
 use App\Models\apps\control_madera\ModelPiezasMaderaFavor;
@@ -74,6 +75,7 @@ class ControllerSavePlanificacionCorte extends Controller
                 $id_pieza = $request['id_pieza_planner' . $i];
                 
                 ModelPiezasMaderaFavor::where('estado', "En uso")->where("pieza", $id_pieza)->update(["estado" => "Procesado"]);
+                ModelCortesPiezaFavor::where('estado', "Por confirmar")->where("id_pieza", $id_pieza)->update(["estado" => "Procesado", "id_plan" => $id_plan]);
 
                 $calidad_corte = $request['calidad_corte' . $i];
 

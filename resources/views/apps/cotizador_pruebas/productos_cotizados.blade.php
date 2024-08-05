@@ -9,6 +9,65 @@
         .swal2-toast {
             max-width: 100% !important;
         }
+
+        .custom-btn-outline-danger {
+            color: #5f01cb;
+            border-color: #5f01cb;
+        }
+
+        .custom-btn-outline-danger:hover {
+            color: #fff;
+            background-color: #5f01cb;
+            border-color: #5f01cb;
+        }
+
+        .custom-btn-outline-danger:focus,
+        .custom-btn-outline-danger.focus {
+            box-shadow: 0 0 0 0.2rem rgba(95, 1, 203, 0.5);
+        }
+
+        .custom-btn-outline-danger:active,
+        .custom-btn-outline-danger.active,
+        .custom-btn-outline-danger.dropdown-toggle.show {
+            color: #fff;
+            background-color: #5f01cb;
+            border-color: #5f01cb;
+        }
+
+        .custom-btn-outline-danger:active:focus,
+        .custom-btn-outline-danger.active:focus {
+            box-shadow: 0 0 0 0.2rem rgba(95, 1, 203, 0.5);
+        }
+
+        .custom-btn-danger {
+            color: #fff;
+            background-color: #5f01cb;
+            border-color: #5f01cb;
+        }
+
+        .custom-btn-danger:hover {
+            color: #fff;
+            background-color: #4e009c;
+            border-color: #4e009c;
+        }
+
+        .custom-btn-danger:focus,
+        .custom-btn-danger.focus {
+            box-shadow: 0 0 0 0.2rem rgba(95, 1, 203, 0.5);
+        }
+
+        .custom-btn-danger:active,
+        .custom-btn-danger.active,
+        .custom-btn-danger.dropdown-toggle.show {
+            color: #fff;
+            background-color: #4e009c;
+            border-color: #4e009c;
+        }
+
+        .custom-btn-danger:active:focus,
+        .custom-btn-danger.active:focus {
+            box-shadow: 0 0 0 0.2rem rgba(95, 1, 203, 0.5);
+        }
     </style>
 @endsection
 @section('body')
@@ -201,9 +260,9 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Solicitar crédito</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <div class="modal-header" style="background-color:#5f01cb;">
+                            <h5 class="modal-title text-white" id="exampleModalLabel">Solicitar crédito</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -314,7 +373,7 @@
                             </form>
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-danger" id="btnSolicitarCredito"
+                            <button type="button" class="btn custom-btn-danger" id="btnSolicitarCredito"
                                 onclick="solicitarCreditoCoitzador()">Solicitar
                                 crédito</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -327,9 +386,10 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Valor a financiar</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <div class="modal-header" style="background-color: #5f01cb">
+                            <h5 class="modal-title" style="color: #fff" id="exampleModalLabel">Valor a financiar</h5>
+                            <button style="color: #fff" type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -376,10 +436,25 @@
                                             id="valor_resta_financiar" readonly>
                                     </div>
                                 </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="">¿A cuantos meses?</label>
+                                    <select name="cuotas_credito_simulador" id="cuotas_credito_simulador"
+                                        class="form-control" required>
+                                        <option value="NAN" selected disabled>Seleccione número de cuotas</option>
+                                        <option value="3">3</option>
+                                        <option value="6">6</option>
+                                        <option value="12">12</option>
+                                        <option value="18">18</option>
+                                        <option value="24">24</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-danger"
+                        <div class="modal-footer justify-content-around">
+                            <button type="button" class="btn custom-btn-outline-danger"
+                                onclick="calcularValorCredito_simulador()">Simular Credito</button>
+                            <button type="button" class="btn custom-btn-danger"
                                 onclick="formSolicitarEstudioDeCredito()">Generar el estudio de
                                 crédito</button>
                         </div>
@@ -399,6 +474,24 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-body" id="info-cuentas-cartera-error"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar información</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_simulador_creditos_albura" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Simulador de credito</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="información_simulador_creditos"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar información</button>
                 </div>
@@ -851,15 +944,32 @@
 
         solicitarEstudioDeCredito = () => {
             var formatter = new Intl.NumberFormat();
-            $("#modalValorFinanciarCredito").modal("show")
+            $("#vlr_financiar_credito").prop('type', "text")
             var total_pagar = $("#total_a_pagar").val()
             $("#vlr_financiar_credito").val(formatter.format(total_pagar))
             $("#vlr_financiar_credito").prop('readonly', true)
-            $("#vlr_financiar_credito").prop('type', "text")
+            $("#modalValorFinanciarCredito").modal("show")
         }
 
         simuladorCredito = () => {
-            window.open('https://crexit.com.co', "", "width=380, height=480, top=50, left=50");
+
+            $('#modal_simulador_creditos_albura').modal('toggle');
+
+            $.ajax({
+                url: "{{ route('traer.simulador.credito') }}",
+                type: "POST",
+                data: {
+                    "total_pagar": $("#total_a_pagar").val()
+                },
+                success: (data) => {
+                    $('#información_simulador_creditos').html(data.viewSimulador);
+                },
+                error: (err) => {
+                    console.error(err);
+                }
+            })
+
+            // window.open('https://crexit.com.co', "", "width=380, height=480, top=50, left=50");
         }
 
         formSolicitarEstudioDeCredito = () => {
@@ -868,7 +978,7 @@
                 text: "No podrás reversar la operación",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#5f01cb",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Si, continuar",
                 cancelButtonText: "No, cancelar!",
@@ -947,6 +1057,113 @@
                     toast: true,
                 });
             })
+        }
+
+        calcularValorCredito_simulador = () => {
+
+            let valor_i = "";
+
+            if ($('#valor_nuevo_financiar').val() != "") {
+                valor_i = $('#valor_nuevo_financiar').val()
+            } else {
+                valor_i = $('#vlr_financiar_credito').val();
+            }
+
+            valor_i = valor_i.replace(/\./g, '');
+
+            let tasa_interes = 2.1585;
+            let tasa_fogade = 14.28;
+            let tasa_iva = 19;
+            let tasa_promedio_iva = 11;
+            let valor_financiar = Math.round(valor_i);
+            let plazo_coutas = $('#cuotas_credito_simulador').val();
+            /* HACER VALIDACIÓN DEL VALOR A FINANCIAR Y LAS CUOTAS */
+
+            if (plazo_coutas == null || plazo_coutas == NaN) {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: " Para realizar la simulación debes: seleccionar un plazo de coutas! ",
+                    showConfirmButton: false,
+                    timer: 5000,
+                    toast: true,
+                });
+                return;
+            }
+
+            var formatter = new Intl.NumberFormat();
+
+            let divisor_intereses = parseFloat(+tasa_interes / 100);
+            let divisor_fogade = parseFloat(+tasa_fogade / 100);
+            let divisor_iva = parseFloat(+tasa_iva / 100);
+            let divisor_iva_promedio = parseFloat(+tasa_promedio_iva / 100);
+            let valor_fogade = Math.round(+(valor_financiar * divisor_fogade) + valor_financiar);
+
+            let PxI = parseFloat((valor_fogade * divisor_intereses) + ((valor_fogade * divisor_intereses) * divisor_iva));
+            let ImasUno = parseFloat(1 + divisor_intereses);
+            let UnoMasEleveadoNegativoPeriodo = parseFloat(ImasUno ** parseFloat(-plazo_coutas));
+            let UnoMenosUnoPotenciadoPeriodo = parseFloat(1 - UnoMasEleveadoNegativoPeriodo);
+            let iva_promedio = Math.round(valor_fogade * divisor_intereses * divisor_iva_promedio);
+
+            let coutaMensualFija = Math.round((divisor_intereses * valor_fogade) / UnoMenosUnoPotenciadoPeriodo) + iva_promedio;
+
+            let total_credito_crexit_ = Math.round(coutaMensualFija * plazo_coutas);
+
+
+            // console.log(coutaMensualFija);
+            Swal.fire({
+                html: `
+                <div class="container text-center">
+    <div class="mx-auto py-3 px-5 d-flex flex-column justify-content-between" style="border-radius:12px;width:350px; height:500px; box-shadow: 0px 0px 20px 0px rgb(0,0,0,0.3)">
+        <h2 class="fw-bold m-0 p-0" style="color:#5f01cb;">Cuota Mensual</h2>
+        <h1 class="fw-bold m-0 p-0" style="color:#5f01cb;"><b class="m-0 p-0">$${formatter.format(Math.round(coutaMensualFija))}</b></h1>
+
+        <div class="d-flex justify-content-between my-3">
+            <div class="text-start px-2 flex-fill">
+                <div class="fw-bold fs-4 m-0"><b>Número Cuotas</b></div>
+                <span style="color:#5f01cb;"><b>${plazo_coutas}</b></span>
+            </div>
+            <div class="text-start px-2 flex-fill border-left">
+                <div class="fw-bold fs-4 m-0"><b>Tasa Mensual</b></div>
+                <span style="color:#5f01cb;"><b>${2.16}%</b></span>
+            </div>
+            <div class="text-start px-2 flex-fill border-left">
+                <div class="fw-bold fs-4 m-0"><b>Tasa Aval</b></div>
+                <span style="color:#5f01cb;"><b>${tasa_fogade}%</b></span>
+            </div>
+        </div>
+
+        <div class="fw-bold fs-3 m-0 p-0"><h2 class="m-0 p-0">Total Crédito</h2></div>
+        <h2 style="color:#5f01cb;">$${formatter.format(Math.round(total_credito_crexit_))}</h2>
+        <div class="d-flex justify-content-center">
+            <img src="https://crexit.com.co/wp-content/uploads/2024/05/LogoCrexit-e1717190280798.png" alt="" class="logo-img" srcset="">
+        </div>
+        <br>
+        <p class="text-muted mt-3" style="font-size:12px">*El valor de tu cuota es un aproximado y dependerá de tu fecha de compra.*</p>
+        <p class="text-muted mt-3" style="font-size:12px">*El IVA ya viene aplicado en la couta mensual, al igual que en el total del credito.*</p>
+    </div>
+</div>
+<style>
+    .my-confirm-button {
+        background-color: #5f01cb !important;
+    }
+    .logo-img {
+        width: 100px;  /* Ajusta el ancho según sea necesario */
+        height: auto;  /* Mantiene la proporción de la imagen */
+        margin-top: 20px;  /* Añade margen superior si es necesario */
+    }
+    .border-left {
+        border-left: 2.5px solid #000000 !important;
+        padding-left: 2px; /* Añade padding para evitar que el contenido se pegue al borde */
+    }
+</style>`,
+                customClass: {
+                    container: 'swal2-bootstrap-custom-container',
+                    confirmButton: 'my-confirm-button'
+                },
+            });
+
+
         }
     </script>
     @if (isset($cliente->id_depto))

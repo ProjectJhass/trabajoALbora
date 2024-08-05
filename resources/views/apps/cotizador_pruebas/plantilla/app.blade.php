@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
         .loader-wrapper {
             --line-width: 5px;
@@ -151,20 +152,22 @@
     </div>
 
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand-md navbar-white" style="background:  #3f9407;">
+        <nav class="main-header navbar navbar-expand-md navbar-white" style="background:  #be0811;">
             <div class="container">
                 <div class="navbar-brand">
                     <img src="{{ asset('img/blanco2.png') }}" alt="Logo Muebles Albura SAS" class="brand-image">
                 </div>
-                <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler order-1" type="button" data-toggle="collapse"
+                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="{{ route('catalogo.cotizador') }}" class="nav-link text-white">Catálogo de productos</a>
+                            <a href="{{ route('catalogo.cotizador') }}" class="nav-link text-white">Catálogo de
+                                productos</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('inicio.crm.punto.venta') }}" class="nav-link text-white">CRM</a>
@@ -199,8 +202,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon3">Retomar Cotización</span>
                                         </div>
-                                        <input type="number" class="form-control" id="cedulaRetomarCotizacion" name="cedulaRetomarCotizacion"
-                                            placeholder="Número de cédula" autocomplete="off" aria-describedby="basic-addon3">
+                                        <input type="number" class="form-control" id="cedulaRetomarCotizacion"
+                                            name="cedulaRetomarCotizacion" placeholder="Número de cédula"
+                                            autocomplete="off" aria-describedby="basic-addon3">
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +236,8 @@
                             </div>
                         </div>
                         <div class="modal-footer right-content-between">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar información</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar
+                                información</button>
                         </div>
                     </div>
                 </div>

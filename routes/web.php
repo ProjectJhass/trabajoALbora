@@ -51,6 +51,7 @@ use App\Http\Controllers\apps\crm_almacenes\ControllerNuevoRegistroCliente;
 use App\Http\Controllers\apps\crm_almacenes\ControllerValidarInfo;
 use App\Http\Controllers\apps\crm_almacenes\ControllerVentasEfectivas;
 use App\Http\Controllers\apps\crm_almacenes\liquidador\ControllerLiquidadorIntereses;
+use App\Http\Controllers\apps\crm_almacenes\general\ControllerCRMGeneral;
 use App\Http\Controllers\apps\intranet\Bitacora\ControllerAdmin;
 use App\Http\Controllers\apps\intranet\Bitacora\ControllerAsignado;
 use App\Http\Controllers\apps\intranet\Bitacora\ControllerBitacoraUsuario;
@@ -239,7 +240,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         });
     });
 
-    //Grupo de rutas para la sección de ingresos y salidas 
+    //Grupo de rutas para la sección de ingresos y salidas
     //Informes por rangos de fecha y descargue de información
     Route::group(['prefix' => 'ingresos-y-salidas'], function () {
         Route::get('/estadisticas', [ControllerIngresosSalidas::class, 'index'])->name('estadisticas');
@@ -281,7 +282,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
         })->name('ventas');
     });
 
-    //Sección de recursos humanos 
+    //Sección de recursos humanos
     Route::group(['prefix' => 'rrhh'], function () {
 
         Route::get('/general', [ControllerRecursosHumanos::class, 'index'])->name('rrhh');
@@ -317,7 +318,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     Route::group(['prefix' => 'sagrilaft'], function () {
         Route::get('', [ControllerFlayer::class, 'index'])->name('sagrilaft');
         Route::group(['prefix' => 'flayer'], function () {
-            Route::get('', [ControllerFlayer::class, 'home'])->name('flayer');
+            Route::get('', [ControllerFlayer::class, 'home'])->name('sagrilaft.flayer');
             Route::post('', [ControllerFlayer::class, 'updateImgFlayer']);
             Route::post('search', [ControllerFlayer::class, 'searchInfoFlayer']);
             Route::post('visualizar-flayer', [ControllerRegisterFlayer::class, 'validateImgFlayer'])->name('validate.flayer');
@@ -480,7 +481,7 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
         Route::post('create-planner-corte', [ControllerSavePlanificacionCorte::class, 'savePlanificacion'])->name('planner.corte.piezas');
         Route::post('search-troncos', [ControllerSearchMadera::class, 'search'])->name('search.info.troncos');
         Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
-        
+
         //Informacion general piezas a favor desde corte de madera
         Route::post("obtener-info-madera",[ControllerPlannerMadera::class, 'getInfoPiezasPorTipoDeMadera'])->name('get.info.por.madera');
         Route::post("agregar-piezas-madera",[ControllerPlannerMadera::class, 'getInfoUtilizarPiezasMadera'])->name('add.info.por.madera');
@@ -560,7 +561,7 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
 
 //Cotizador de pruebas
 
-Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'cotizador_albura', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'lista_precios'], function () {
         Route::get('/retomar/{id_retomar}', [Cotizador_pruebasControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion.pruebas');
         Route::post('/consultar-cedula', [Cotizador_pruebasControllerRetomarCotizacion::class, 'getCotizacionesCliente'])->name('retomar.info.cliente.p');
@@ -581,6 +582,13 @@ Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function
         Route::post('/actualizar', [ControllerGenerarLiquidador::class, 'actualizar'])->name("actualizar.producto.pruebas");
         Route::post('/validar-informacion', [ControllerGenerarLiquidador::class, 'ValidarDatosCotizacion'])->name("datos.cotizacion.pruebas");
         Route::post('/generar-cotizacion', [ControllerGenerarLiquidador::class, 'agregarInformacionCotizacionCRM'])->name("agregar.crm.cotizacion");
+
+        /* RUTAS PARA EL MANEJO DEL SIMULADOR DE CREDITOS */
+
+        Route::group(['prefix' => 'simulador'], function () {
+            Route::post('/', [ControllerGenerarLiquidador::class, 'traerModuloSimuladorCredito'])->name('traer.simulador.credito');
+        });
+
     });
 
     Route::group(['prefix' => 'finalizar'], function () {
@@ -596,7 +604,7 @@ Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function
 
 //Cotizador real
 
-Route::group(['prefix' => 'cotizador', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function () {
 
     Route::get('check-session', [session::class, 'checkSession']);
 
@@ -636,6 +644,11 @@ Route::group(['prefix' => 'cotizador', 'middleware' => 'auth'], function () {
 
 Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () {
 
+    Route::prefix('general')->group(function() {
+        Route::prefix('birthday')->group(function() {
+            Route::get('/getClientBirthday', [ControllerCRMGeneral:: class, 'getClientBirthdayAdviser'])->name("crm_almacenes.general.birthday");
+        });
+    });
 
     Route::prefix('liquidador')->group(function () {
         Route::prefix('/intereses')->group(function () {

@@ -30,7 +30,7 @@
                             <strong>Flayer - SAGRILAFT/PTEE</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ route('flayer') }}">
+                            <a href="{{ route('sagrilaft.flayer') }}">
                                 <img src="{{ asset('icons/actualizar-datos.png') }}" width="40%" alt="">
                             </a>
                         </div>
@@ -48,6 +48,30 @@
                         </div>
                     </div>
                 </div>
+                {{-- <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
+                            <strong>Manual SAGRILAFT</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sagrilaft', 'memo' => 'memorandos-sagrilaft']) }}">
+                                <img src="{{ asset('icons/book.png') }}" width="40%" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-outline card-danger">
+                        <div class="card-header">
+                            <strong>Manual PTEE</strong>
+                        </div>
+                        <div class="card-body text-center">
+                            <a href="{{ route('intranet.memorandos.areas', ['seccion' => 'sagrilaft', 'memo' => 'memorandos-sagrilaft']) }}">
+                                <img src="{{ asset('icons/book.png') }}" width="40%" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div> --}}
             </div>
         </div>
     </section>

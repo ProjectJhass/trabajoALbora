@@ -254,4 +254,14 @@ class ControllerGenerarLiquidador extends Controller
                 break;
         }
     }
+
+    public function traerModuloSimuladorCredito(Request $request)
+    {
+
+        $simulador = view('apps.cotizador_pruebas.simulador.simulador',
+            ['total_pagar' => $request->total_pagar]
+        )->render();
+
+        return response()->json(['status' => true, 'viewSimulador' => $simulador], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
 }

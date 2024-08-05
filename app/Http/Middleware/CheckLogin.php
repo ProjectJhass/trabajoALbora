@@ -16,10 +16,18 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->estado != '1') {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/login')->with('message', 'Al parecer se te cerro la sesión, vuelve a acceder.');
+        }
+
+        if ($user->estado != '1') {
             Auth::logout();
             return redirect('/login')->with('message', 'No tienes permiso para acceder a la plataforma');
         }
+
+        // Continúa con la solicitud
         return $next($request);
     }
 }

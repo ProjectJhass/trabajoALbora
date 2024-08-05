@@ -154,11 +154,31 @@
         <div class="loader-section section-right"></div>
     </div>
 
+    {{-- Modal para marcar la venta efectiva de clientes punto de ventas SIESA --}}
+
+    <div class="modal fade" id="mdl_cumple_cliente_crm">
+        <div class="modal-dialog modal-xl" style="max-width: 50%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #c22121; color: white;">
+                    <h5>Cumpleaños</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                        onclick="() => { $('#mdl_cumple_cliente_crm').modal('toggle'); }" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="body_mdl_cumple_cliente">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <nav class="main-header navbar navbar-expand navbar-white" style="background-color: #c22121;">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i
+                            class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     @if (Auth::user()->cargo == 'guest')
@@ -171,14 +191,10 @@
             @else
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-white" data-toggle="dropdown" href="#">
-                            <i class="fas fa-bell"></i>
+                        <a class="nav-link text-white" onclick="consultar_cumple_pendientes()" type="button">
+                            <i class="fas fa-birthday-cake"></i>
                             <span id="cantidad-noti-cumple"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right">
-                            <div id="lista-de-notificaciones"></div>
-                            <a href="{{ route('cumple.asesor.info') }}" class="dropdown-item dropdown-footer text-blue">Ver todos</a>
-                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('home') }}">
@@ -191,7 +207,8 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <div class="brand-link" style="background-color: #c22121;">
-                <img src="{{ asset('img/ROJOc.png') }}" alt="Muebles Albura" class="brand-image img-circle elevation-3">
+                <img src="{{ asset('img/ROJOc.png') }}" alt="Muebles Albura"
+                    class="brand-image img-circle elevation-3">
                 <span class="brand-text font-weight-light">Muebles Albura</span>
             </div>
             <div class="sidebar">
@@ -205,10 +222,12 @@
                 </div>
 
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         @if (Auth::user()->cargo == 'guest')
                             <li class="nav-item">
-                                <a href="{{ route('liquidador.intereses') }}" class="nav-link text-white @yield('intereses')">
+                                <a href="{{ route('liquidador.intereses') }}"
+                                    class="nav-link text-white @yield('intereses')">
                                     <i class="nav-icon fas fa-money-bill-alt"></i>
                                     <p>
                                         Liq. Intereses
@@ -216,7 +235,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('liquidador.descuentos') }}" class="nav-link text-white @yield('descuentos')">
+                                <a href="{{ route('liquidador.descuentos') }}"
+                                    class="nav-link text-white @yield('descuentos')">
                                     <i class="nav-icon fas fa-tags"></i>
                                     <p>
                                         Liq. Descuentos
@@ -225,7 +245,8 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a href="{{ route('lista.precios', ['origen' => '1']) }}" class="nav-link text-white">
+                                <a href="{{ route('lista.precios.pruebas', ['origen' => '1']) }}"
+                                    class="nav-link text-white">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>
                                         Cotizador
@@ -233,7 +254,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('inicio.crm.punto.venta') }}" class="nav-link text-white @yield('maestra')">
+                                <a href="{{ route('inicio.crm.punto.venta') }}"
+                                    class="nav-link text-white @yield('maestra')">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>
                                         Maestra general
@@ -241,7 +263,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('registrar.nuevo.cliente') }}" class="nav-link text-white @yield('digitar')">
+                                <a href="{{ route('registrar.nuevo.cliente') }}"
+                                    class="nav-link text-white @yield('digitar')">
                                     <i class="nav-icon fas fa-user-plus"></i>
                                     <p>
                                         Digitar contácto
@@ -249,7 +272,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('llamadas.pendientes.crm') }}" class="nav-link text-white @yield('llamadas')">
+                                <a href="{{ route('llamadas.pendientes.crm') }}"
+                                    class="nav-link text-white @yield('llamadas')">
                                     <i class="nav-icon fas fa-phone-alt"></i>
                                     <p>
                                         Realizar llamadas
@@ -258,7 +282,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('info.cliente.efectivo') }}" class="nav-link text-white @yield('efectivos')">
+                                <a href="{{ route('info.cliente.efectivo') }}"
+                                    class="nav-link text-white @yield('efectivos')">
                                     <i class="nav-icon fas fa-user-check"></i>
                                     <p>
                                         Clientes Efectivos
@@ -267,7 +292,8 @@
                             </li>
                             @if (Auth::user()->cargo == 'administrador')
                                 <li class="nav-item">
-                                    <a href="{{ route('estadisticas.admin.crm') }}" class="nav-link text-white @yield('ventas')">
+                                    <a href="{{ route('estadisticas.admin.crm') }}"
+                                        class="nav-link text-white @yield('ventas')">
                                         <i class="nav-icon fas fa-chart-line"></i>
                                         <p>
                                             Informe de ventas
@@ -276,7 +302,8 @@
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a href="{{ route('informes.asesor.crm') }}" class="nav-link text-white @yield('ventas')">
+                                    <a href="{{ route('informes.asesor.crm') }}"
+                                        class="nav-link text-white @yield('ventas')">
                                         <i class="nav-icon fas fa-chart-line"></i>
                                         <p>
                                             Informe de ventas
@@ -286,7 +313,8 @@
                             @endif
 
                             <li class="nav-item">
-                                <a href="{{ route('liquidador.intereses') }}" class="nav-link text-white @yield('intereses')">
+                                <a href="{{ route('liquidador.intereses') }}"
+                                    class="nav-link text-white @yield('intereses')">
                                     <i class="nav-icon fas fa-money-bill-alt"></i>
                                     <p>
                                         Liq. Intereses
@@ -294,7 +322,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('liquidador.descuentos') }}" class="nav-link text-white @yield('descuentos')">
+                                <a href="{{ route('liquidador.descuentos') }}"
+                                    class="nav-link text-white @yield('descuentos')">
                                     <i class="nav-icon fas fa-tags"></i>
                                     <p>
                                         Liq. Descuentos
@@ -302,7 +331,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('crm.exportar.home') }}" class="nav-link text-white @yield('exportar')">
+                                <a href="{{ route('crm.exportar.home') }}"
+                                    class="nav-link text-white @yield('exportar')">
                                     <i class="nav-icon fas fa-file-excel"></i>
                                     <p>
                                         Exportar Información
@@ -337,6 +367,21 @@
 
         loadedPanel = () => {
             document.querySelector('body').classList.add("loaded")
+        }
+
+        const consultar_cumple_pendientes = () => {
+            $('#mdl_cumple_cliente_crm').modal('toggle')
+
+            $.ajax({
+                url: "{{ route('crm_almacenes.general.birthday') }}",
+                type: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: (response) => {
+                    $('#body_mdl_cumple_cliente').html(response.viewBirtdayClient);
+                }
+            })
         }
 
         $(() => {
@@ -380,15 +425,16 @@
                     }
                     if (res.cant_cumple > 0) {
 
+                        // consultar_cumple_pendientes();
+
                         $(document).Toasts('create', {
                             class: 'bg-info',
                             title: 'Cumpleaños',
-                            body: 'Hay ' + res.cant_cumple + ' clientes que están cumpliendo años hoy',
-                            autohide: true,
-                            delay: 2000,
+                            body: 'Hay ' + res.cant_cumple + ' clientes que están cumpliendo años hoy!'
                         });
 
-                        document.getElementById('cantidad-noti-cumple').innerHTML = '<span class="badge badge-success navbar-badge">' + res
+                        document.getElementById('cantidad-noti-cumple').innerHTML =
+                            '<span class="badge badge-success navbar-badge">' + res
                             .cant_cumple + '</span>'
                         document.getElementById('lista-de-notificaciones').innerHTML = res.cumple;
                     } else {
@@ -485,7 +531,8 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
-                    document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = res.comentarios;
+                    document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = res
+                        .comentarios;
                 }
             });
             datos.fail(() => {
@@ -583,7 +630,8 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
-                    document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = res.comentarios;
+                    document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = res
+                        .comentarios;
                     $('#new-coment-user-alm').val('');
                 }
             });
@@ -867,8 +915,10 @@
                                 'El producto fue eliminado',
                                 'success'
                             )
-                            document.getElementById('informacion-productos-cotizados-cliente').innerHTML = res.data;
-                            $('#valor_total_pagar_user_p').val(new Intl.NumberFormat("es-CO").format(res.a_pagar));
+                            document.getElementById('informacion-productos-cotizados-cliente')
+                                .innerHTML = res.data;
+                            $('#valor_total_pagar_user_p').val(new Intl.NumberFormat("es-CO").format(res
+                                .a_pagar));
                         }
                     });
                     data.fail(() => {
@@ -1216,7 +1266,8 @@
                             $('#apellido1_efect').val(res.cliente[0].ap1)
                             $('#apellido2_efect').val(res.cliente[0].ap2)
                             $('#forma_pago_c').val(pago)
-                            $('#valor_efect_total').val("$ " + new Intl.NumberFormat().format(res.cliente[0].valor_ttal))
+                            $('#valor_efect_total').val("$ " + new Intl.NumberFormat().format(res
+                                .cliente[0].valor_ttal))
                             $('#productos-efect_v').html(res.productos)
 
                             $('#forma_pago_c').prop('disabled', false)
@@ -1264,13 +1315,15 @@
                 $('.star' + id_user).addClass('text-danger')
 
                 $('#cedula' + id_user).html(cedula_user)
-                $('#cliente' + id_user).html(res.cliente.nombre_1 + " " + res.cliente.apellido_1 + " " + res.cliente.apellido_2)
+                $('#cliente' + id_user).html(res.cliente.nombre_1 + " " + res.cliente.apellido_1 + " " + res
+                    .cliente.apellido_2)
                 $('#ciudad' + id_user).html(res.cliente.ciudad)
                 $('#celular' + id_user).html(res.cliente.celular_1)
 
                 var product = res.productos.map(function(val) {
                     var prods = '';
-                    var products = '<div class="dropdown-item">' + val.producto + '</div><div class="dropdown-divider"></div>';
+                    var products = '<div class="dropdown-item">' + val.producto +
+                        '</div><div class="dropdown-divider"></div>';
                     prods += products
                     return prods
                 })
@@ -1380,7 +1433,8 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
-                    document.getElementById('informacion-productos-cotizados-cliente').innerHTML = res.productos;
+                    document.getElementById('informacion-productos-cotizados-cliente').innerHTML = res
+                        .productos;
                     $('#valor_a_pagar').val("$ " + new Intl.NumberFormat("es-CO").format(res.vlr_pagar));
                 }
             });
@@ -1393,6 +1447,39 @@
                     timer: 1500
                 })
             });
+        }
+
+        async function copyImageToClipboard(imageUrl, id_cliente) {
+
+            let number = $(`#cellnumber_cumple_${id_cliente}`).val();
+            let text = $(`#text_cumple_${id_cliente}`).val();
+
+            try {
+                // Fetch the image
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+
+                // Create an offscreen canvas
+                const img = await createImageBitmap(blob);
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                // Convert canvas to blob (PNG)
+                canvas.toBlob(async (pngBlob) => {
+                    const item = new ClipboardItem({
+                        "image/png": pngBlob
+                    });
+                    await navigator.clipboard.write([item]);
+                    window.open(
+                        `https://web.whatsapp.com/send/?phone=${number}&text=${text}&type=phone_number&app_absent=0`,
+                        'BLANK_');
+                }, 'image/png');
+            } catch (error) {
+                console.error("Error al copiar la imagen al portapapeles:", error);
+            }
         }
     </script>
     @yield('footer')

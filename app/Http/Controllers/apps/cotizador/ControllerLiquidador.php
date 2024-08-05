@@ -11,6 +11,7 @@ use App\Models\apps\cotizador\ModelModificacionPlan;
 use App\Models\apps\cotizador\ModelPlanesFinanciacion;
 use App\Models\apps\cotizador\ModelSueldosIntereses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerLiquidador extends Controller
 {
@@ -209,7 +210,16 @@ class ControllerLiquidador extends Controller
 
         $info_ = ModelModificacionPlan::find($plan);
         $tasas_f = ModelPlanesFinanciacion::find($plan);
+
         $intereses = ModelSueldosIntereses::find(1);
+
+        if(Auth::user()->usuario == "MARIA.GRANADA") {
+            $intereses = ModelSueldosIntereses::find(1);
+            // $intereses = ModelSueldosIntereses::find(2);
+        } else {
+            $intereses = ModelSueldosIntereses::find(1);
+        }
+
 
         if ($info_) {
             if ($info_->fecha_finalizacion < date('Y-m-d')) {

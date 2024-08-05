@@ -46,7 +46,7 @@
                                 <div class="col-md-12">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" style="background-color: #f5f5f5"><strong>Pulgadas cortadas</strong></span>
-                                        <input type="text" value="{{ $planner->pulgadas_cortadas }}" readonly class="form-control">
+                                        <input type="text" value="{{ $planner->pulgadas_cortadas + $pulgadas_cortadas_a_favor }}" readonly class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-12">

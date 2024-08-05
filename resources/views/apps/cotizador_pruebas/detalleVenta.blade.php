@@ -45,7 +45,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <label for="">Neto</label> 
+                    <label for="">Neto</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">$</span>
@@ -156,15 +156,16 @@
                     <div class="card-body text-center">
                         {{-- <div style="cursor: pointer" data-toggle="modal" data-target="#modalInfoSolicitarCredito"> --}}
                         <div style="cursor: pointer" onclick="solicitarEstudioDeCredito()">
-                            <i class="far fa-credit-card text-info" style="font-size: 45px"></i>
+                            {{-- <i class="far fa-credit-card text-info" style="font-size: 45px"></i> --}}
+                            <img height="45px" src="https://crexit.com.co/wp-content/uploads/2024/05/LogoCrexit-e1717190280798.png" alt="" srcset="">
                         </div>
                     </div>
-                    <div class="card-footer">
-                        Solicitar crédito
+                    <div class="card-footer" style="font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        Solicitar crédito en <b>CRE</b><b style="color:#5f01cb;">X</b><b>°IT</b>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2" hidden>
                 <div class="card text-center">
                     <div class="card-body text-center">
                         {{-- <div style="cursor: pointer" data-toggle="modal" data-target="#modalInfoSolicitarCredito"> --}}
@@ -172,7 +173,7 @@
                             <i class="fas fa-calculator text-secondary" style="font-size: 45px"></i>
                         </div>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer" style="font-size: 15px">
                         Simulador crédito
                     </div>
                 </div>

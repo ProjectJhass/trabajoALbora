@@ -151,7 +151,7 @@
     </div>
 
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand-md navbar-white" style="background:  #be0811;">
+        <nav class="main-header navbar navbar-expand-md navbar-white" style="background:  #3f9407;">
             <div class="container">
                 <div class="navbar-brand">
                     <img src="{{ asset('img/blanco2.png') }}" alt="Logo Muebles Albura SAS" class="brand-image">

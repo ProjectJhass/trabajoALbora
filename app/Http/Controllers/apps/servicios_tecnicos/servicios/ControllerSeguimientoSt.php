@@ -1058,13 +1058,15 @@ class ControllerSeguimientoSt extends Controller
             }
 
             if ($concepto != 'No garantia por tiempo' && $concepto != 'No garantia') {
-
                 $ost->proceso = 'Servicio tecnico';
                 $ost->estado = 'En devolucion';
                 $ost->save();
 
                 self::mailCartaFab($id_ost);
                 Mail::to($ost->email)->later(now()->addSeconds(5), new NotificacionDevolucionCliente($ost->nombre, $ost->articulo, $id_ost));
+            }else{
+                $ost->estado = 'Por definir';
+                $ost->save();
             }
 
             $form = self::timeLineOst($id_ost);

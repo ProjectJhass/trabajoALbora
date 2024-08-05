@@ -4,7 +4,9 @@ namespace App\Http\Controllers\apps\control_madera;
 
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelCortesPiezaFavor;
 use App\Models\apps\control_madera\ModelCortesPlanificados;
+use App\Models\apps\control_madera\ModelInfoTablasCortadas;
 use App\Models\apps\control_madera\ModelPiezasPlanificadasCorte;
 use App\Models\apps\control_madera\ModelPlannerTabla;
 use Illuminate\Http\Request;
@@ -42,7 +44,26 @@ class ControllerInfoGeneralCortes extends Controller
         $id_corte = $request->id_corte;
         $cortes_planificados = ModelCortesPlanificados::find($id_corte);
         $piezas_planificadas = ModelPiezasPlanificadasCorte::where("id_plan", $id_corte)->get();
-        return view('apps.control_madera.app.planner.cortes_terminados.infoCortesTerminados', ['planner' => $cortes_planificados, 'piezas' => $piezas_planificadas]);
+
+        $piezas_a_favor_planificada = ModelCortesPiezaFavor::join("cortes_piezas_wood as cpw", "cpw.id", '=', 'cortes_pieza_a_favor.id_a_favor')
+        ->where("cortes_pieza_a_favor.id_plan", $id_corte)->get();
+
+        $pulgadas_cortadas_a_favor = 0;
+
+        foreach ($piezas_a_favor_planificada as $key => $val) {
+
+            if($val->madera=="Pino Cipres" || $val->madera=="Flormorado") {
+                $pulgadas_cortadas_a_favor += round(((($val->ancho * $val->grueso * $val->largo) * $val->cantidad) / 1550));
+            } else {
+                // $info_g = ModelInfoTablasCortadas::where("id_corte",$id_corte)->get();
+                // foreach ($info_g as $key => $madera_v) {
+                //     $pulgadas_cortadas_a_favor += round(((($madera_v->ancho_tabla)*1.9*($madera_v->cantidad_tabla)*300)/1550));
+                // }
+            }
+
+        }
+
+        return view('apps.control_madera.app.planner.cortes_terminados.infoCortesTerminados', ['planner' => $cortes_planificados, 'piezas' => $piezas_planificadas, "pulgadas_cortadas_a_favor" => $pulgadas_cortadas_a_favor]);
     }
 
     public function filtrarCortesTerminados(Request $request)
@@ -85,16 +106,19 @@ class ControllerInfoGeneralCortes extends Controller
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">';
-        $troncos = explode(",", $piezas_->troncos);
+
+        $troncos = array_filter(array_map('trim', explode(",", $piezas_->troncos)));
         sort($troncos);
         foreach ($troncos as $key => $value) {
             $pulgadas_ = ModelConsecutivosMadera::find($value);
-            $pulgadas = $pulgadas_->pulgadas;
-            $dataTable .= '<tr>
+            if ($pulgadas_) {
+                $pulgadas = $pulgadas_->pulgadas;
+                $dataTable .= '<tr>
                                         <td>' . $value . '</td>
                                         <td>' . number_format($pulgadas) . '</td>
                                         <td>' . $pulgadas_->largo . 'm</td>
                                         </tr>';
+            }
         }
         $dataTable .= '</tbody>
                                 </table>
@@ -103,7 +127,7 @@ class ControllerInfoGeneralCortes extends Controller
                         <div class="col-md-6">
                             <div class="card-box table-responsive">
                                 <p class="text-muted font-13 m-b-30">
-                                    Bloques utilizados 
+                                    Bloques utilizados
                                 </p>
                                 <table id="datatableMadera" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
@@ -114,16 +138,19 @@ class ControllerInfoGeneralCortes extends Controller
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">';
-        $troncos = explode(",", $piezas_->troncos_utilizados);
+
+        $troncos = array_filter(array_map('trim', explode(",", $piezas_->troncos_utilizados)));
         sort($troncos);
         foreach ($troncos as $key => $value) {
             $pulgadas_ = ModelConsecutivosMadera::find($value);
-            $pulgadas = $pulgadas_->pulgadas;
-            $dataTable .= '<tr>
+            if ($pulgadas_) {
+                $pulgadas = $pulgadas_->pulgadas;
+                $dataTable .= '<tr>
                                         <td>' . $value . '</td>
                                         <td>' . number_format($pulgadas) . '</td>
                                         <td>' . $pulgadas_->largo . 'm</td>
                                         </tr>';
+            }
         }
         $dataTable .= '</tbody>
                                 </table>
@@ -132,4 +159,5 @@ class ControllerInfoGeneralCortes extends Controller
                     </div>';
         return response()->json(['status' => true, 'table' => $dataTable], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
+
 }

@@ -251,7 +251,7 @@ class ControllerPlannerWood extends Controller
             if($info_c_m->madera=="Vaquera"){
                $info_g = ModelInfoTablasCortadas::where("id_corte",$id_plan)->get();
                foreach ($info_g as $key => $madera_v) {
-                $pulgadas_no_utilizadas += round(((($madera_v->ancho_tabla)*1.19*($madera_v->cantidad_tabla)*300)/1550));
+                $pulgadas_no_utilizadas += round(((($madera_v->ancho_tabla)*1.9*($madera_v->cantidad_tabla)*300)/1550));
                }
             }else{
                 $info_pf = ModelPiezasMaderaFavor::where("id_corte", $id_plan)->get();

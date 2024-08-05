@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps\control_madera;
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelCantidadesFavor;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelCortesPiezaFavor;
 use App\Models\apps\control_madera\ModelInfoMueble;
 use App\Models\apps\control_madera\ModelInfoPiezasMueble;
 use App\Models\apps\control_madera\ModelInfoSerie;
@@ -25,6 +26,7 @@ class ControllerPlannerMadera extends Controller
             $pf->estado = "Pendiente";
             $pf->pieza = null;
             $pf->save();
+            ModelCortesPiezaFavor::where("estado", "Por confirmar")->where("id_a_favor", $value->id)->delete();
         }
         ModelConsecutivosMadera::where("estado","En uso")->update(["estado"=>"Activo"]);
         return view('apps.control_madera.app.planner.planner.planificar', ['series' => $series]);
@@ -257,10 +259,12 @@ class ControllerPlannerMadera extends Controller
     public function updateInfoPiezasDisponibles(Request $request) {
         $bandera = $request->cantidad_ciclo_maderas_;
         $cantidad_requerida = 0;
+        $id_pieza_frm = $request->id_pieza_form;
 
         for ($i=1; $i <= $bandera ; $i++) { 
             $id_pieza_wood = $request["item_id_$i"];
             $cantidad = !empty($request["cantidad_utilizar$i"])?$request["cantidad_utilizar$i"]:0;
+            
             $cantidad_requerida += $cantidad;
 
              $getPiezaWood = ModelPiezasMaderaFavor::find($id_pieza_wood);
@@ -269,15 +273,27 @@ class ControllerPlannerMadera extends Controller
              $cantidad_final = $cant_dispo - $cantidad;
              if($cantidad_final==0){
                  $getPiezaWood->estado = "En uso";
-                 $getPiezaWood->pieza = $request->id_pieza_form;
+                 $getPiezaWood->pieza = $id_pieza_frm;
              }else{
                 $getPiezaWood->estado = "Por confirmar";
              }
 
              $getPiezaWood->cantidad_disponible = $cantidad_final;
              $getPiezaWood->save(); 
+             self::insertInfoPiezasUsed($id_pieza_frm, $id_pieza_wood, $cantidad);
         }
 
          return response()->json(["status" => true, "cantidad_requerida"=>$cantidad_requerida], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function insertInfoPiezasUsed( $id_pieza, $id_pieza_a_favor, $cantidad ){
+        if($cantidad != 0 ) {
+            ModelCortesPiezaFavor::create([
+                'id_pieza' => $id_pieza,
+                'id_a_favor' => $id_pieza_a_favor,
+                'cantidad' => $cantidad,
+                'estado' => "Por confirmar"
+            ]);
+        }
     }
 }
