@@ -9,7 +9,7 @@ class ModelConsecutivoCotizacion extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'albura_cotizador';
 
     protected $table = 'consecutivo_cotizacion';
 

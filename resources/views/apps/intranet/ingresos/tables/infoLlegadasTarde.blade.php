@@ -18,14 +18,14 @@
             <?php $n++; ?>
             <tr>
                 <td>{{ $n }}</td>
-                <td class="text-left">{{ $item->id }}</td>
-                <td class="text-left">{{ $item->nombre }}</td>
-                <td>{{ $item->fecha_registro }}</td>
-                <td>{{ $item->hora_ingreso }}</td>
-                <td>{{ $item->hora_salida }}</td>
-                <td>{{ $item->hora_reingreso }}</td>
-                <td>{{ $item->hora_salida_reingreso }}</td>
-                <td>{{ $item->hora_salida_reingreso }}</td>
+                <td class="text-left">{{ $item['id'] }}</td>
+                <td class="text-left">{{ $item['nombre'] }}</td>
+                <td>{{ $item['fecha_registro'] }}</td>
+                <td>{{ $item['hora_ingreso'] }}</td>
+                <td>{{ $item['hora_salida'] }}</td>
+                <td>{{ $item['hora_reingreso'] }}</td>
+                <td>{{ $item['hora_salida_reingreso'] }}</td>
+                <td>{{ $item['hora_salida_reingreso'] }}</td>
             </tr>
         @endforeach
     </tbody>

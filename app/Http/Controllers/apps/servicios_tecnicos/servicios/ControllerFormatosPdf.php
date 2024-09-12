@@ -142,7 +142,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(10);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode($info_c->diagnostico), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode($info_c->diagnostico ?? ""), 0, 'J');
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(10, 10, '', 0);
@@ -150,7 +150,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(8);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 10, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode($info_c->solucion), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode($info_c->solucion ?? ""), 0, 'J');
 
         $pdf->Ln(4);
         $pdf->Cell(11, 5, '', 0);
@@ -707,7 +707,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(10);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 20, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode($info_c->diagnostico), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode($info_c->diagnostico ?? ""), 0, 'J');
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(10, 10, '', 0);
@@ -715,7 +715,7 @@ class ControllerFormatosPdf extends Controller
         $pdf->Ln(8);
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(10, 10, '', 0);
-        $pdf->MultiCell(0, 6, utf8_decode($info_c->solucion), 0, 'J');
+        $pdf->MultiCell(0, 6, utf8_decode($info_c->solucion ?? ""), 0, 'J');
 
         $pdf->Ln(4);
         $pdf->Cell(11, 5, '', 0);

@@ -105,7 +105,7 @@
                             <strong>PQRS Fábrica</strong>
                         </div>
                         <div class="card-body text-center">
-                            <a href="{{ $baseUrl }}/pqrs_fabrica/formulario/" target="_BLANK">
+                            <a href="{{ $baseUrl }}/plataformas_web/public/formulario-registro-pqrs" target="_BLANK">
                                 <img src="{{ asset('icons/pqr.png') }}" width="40%" alt="">
                             </a>
                         </div>

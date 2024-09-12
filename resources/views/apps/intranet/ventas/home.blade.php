@@ -61,7 +61,7 @@
                         </div>
                         <div class="card-body">
                             <div class="text-center">
-                                <a href="{{ route('lista.precios.pruebas', ['origen' => '1']) }}">
+                                <a href="{{ route('lista.precios.crexit', ['origen' => '1']) }}">
                                     <img src="{{ asset('icons/cotizador.png') }}" width="40%" alt="">
                                 </a>
                             </div>

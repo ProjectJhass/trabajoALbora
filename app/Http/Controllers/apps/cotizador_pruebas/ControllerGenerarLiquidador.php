@@ -222,10 +222,10 @@ class ControllerGenerarLiquidador extends Controller
 
         switch ($opcion) {
             case 'pdf':
-                return response()->json(['status' => true, 'url' => route('generar.pdf.cotizacion.pruebas', ['cliente' => $id_cliente])], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+                return response()->json(['status' => true, 'url' => route('generar.pdf.cotizacion.crexit', ['cliente' => $id_cliente])], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
                 break;
             case 'wp':
-                $mensaje = "Hola 👋 buen día le escribe " . Auth::user()->nombre . ", su especialista en productos para el hogar 🏡 de Muebles Albura. Adjunto envio la cotización de los productos pre-seleccionados por usted. Estaré muy pendiente de la confirmación de su compra, y así proceder con la entrega de su pedido lo antes posible.";
+                $mensaje = "Hola 👋 buen día le escribe " . Auth::user()->nombre . ", su especialista en productos para el hogar 🏡 de *Muebles Albura*. %0A%0AAdjunto envio la cotización de los productos pre-seleccionados por usted. Estaré muy pendiente de la confirmación de su compra, y así proceder con la entrega de su pedido lo antes posible. %0A%0A*Para mas información visite:* https://mueblesalbura.com.co/tratamiento-de-datos-personales/";
                 $url = "https://web.whatsapp.com/send/?phone=57$celular_&text=$mensaje&type=phone_number&app_absent=0";
                 return response()->json(['status' => true, 'url' => $url], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
                 break;

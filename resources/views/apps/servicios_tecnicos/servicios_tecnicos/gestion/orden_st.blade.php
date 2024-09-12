@@ -78,6 +78,7 @@
                                     id="concepto_valoracion">
                                     <option value="">Seleccionar...</option>
                                     <option value="Garantia">Garantía</option>
+                                    <option value="Cobrable">Cobrable</option>
                                     <option value="Valoracion">Para valoración</option>
                                     <option value="No garantia">No garantía</option>
                                     <option value="No garantia por tiempo">No garantía por tiempo</option>

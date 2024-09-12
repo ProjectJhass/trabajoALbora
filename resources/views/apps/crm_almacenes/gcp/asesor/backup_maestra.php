@@ -431,6 +431,7 @@
                                         <div class="form-group">
                                             <select name="cierre_venta" id="cierre_venta" class="form-control" required>
                                                 <option value="" selected disabled>Cierre</option>
+                                                <option value="Crexit">Crexit</option>
                                                 <option value="Addi">Addi</option>
                                                 <option value="Brilla">Brilla</option>
                                                 <option value="OnCredit">OnCredit</option>

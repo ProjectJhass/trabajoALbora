@@ -139,7 +139,7 @@
                         </li> --}}
                     @endif
                     @if (
-                        (Auth::user()->almacen == 'SERVICIO TECNICO FAB' || Auth::user()->almacen == 'SERVICIO TECNICO' || Auth::user()->almacen == 'PPAL') &&
+                        (Auth::user()->almacen == 'SERVICIO TECNICO FAB' || Auth::user()->almacen == 'SERVICIO TECNICO' || Auth::user()->almacen == 'PPAL' || Auth::user()->almacen == 'HAPPYSLEEP' || Auth::user()->almacen == 'BODEGA_020') &&
                             Auth::user()->rol == 1)
                         <li class="menu-item @yield('seguimiento')">
                             <a href="{{ route('info.st.seg') }}" class="menu-link">
@@ -258,6 +258,7 @@
                                 <input type="number" name="cedula_new_ost" onkeyup="validarinputSt(this.value)" id="cedula_new_ost"
                                     class="form-control" required placeholder="Número" />
                             </div>
+
                             <div class="col-md-5">
                                 <label for="co_new_ost" class="form-label">Centro de experiencia</label>
                                 <select class="form-control" name="co_new_ost" id="co_new_ost" required>

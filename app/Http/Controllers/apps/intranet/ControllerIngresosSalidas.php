@@ -201,12 +201,12 @@ class ControllerIngresosSalidas extends Controller
         $co = $request->co;
 
         $hora_ingreso = self::HoraIngreso($co);
-        $data = ModelIngresosSalidas::ObtenerDataLlegadasTarde($fecha_i, $fecha_f, $co, $hora_ingreso);
+        $data_items = ModelIngresosSalidas::ObtenerDataLlegadasTarde($fecha_i, $fecha_f, $co, $hora_ingreso);
 
         $dataArray = [];
 
-        foreach ($data as $item) {
-            $dataArray[] = [
+        foreach ($data_items as $item) {
+            $dataArray[] = array(
                 "id" => $item->id,
                 "nombre" => $item->nombre,
                 "fecha_registro" => $item->fecha_registro,
@@ -215,15 +215,15 @@ class ControllerIngresosSalidas extends Controller
                 "hora_reingreso" => $item->hora_reingreso,
                 "hora_salida_reingreso" => $item->hora_salida_reingreso,
                 "id_row" => $item->id_row
-            ];
+            );
         }
 
         $table = view('apps.intranet.ingresos.tables.infoLlegadasTarde', ['info' => $dataArray])->render();
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
-    public function searchNovedades($id_row) {
-
+    public function searchNovedades($id_row)
+    {
     }
 
     protected static function ObtenerListadoInasistenciasUsuarios($co, $fecha_i, $fecha_f)

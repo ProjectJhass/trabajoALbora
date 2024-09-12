@@ -544,7 +544,7 @@ class ControllerSeguimientoSt extends Controller
 
     public function addEvidenciasSolicitudSt(Request $request)
     {
-        $extensions = (['png', 'jpg', 'jpeg', 'tiff', 'webp', 'mp4']);
+        $extensions = (['png', 'jpg', 'jpeg', 'tiff', 'webp', 'mp4', 'pdf']);
 
         if ($request->hasFile('file_evidencia_ost')) {
             $id_ost = $request->id_ost_evidencias;

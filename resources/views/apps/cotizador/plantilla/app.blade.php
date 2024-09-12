@@ -151,7 +151,7 @@
     </div>
 
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand-md navbar-white" style="background:  #3f9407;">
+        <nav class="main-header navbar navbar-expand-md navbar-white" style="background:  #be0811;">
             <div class="container">
                 <div class="navbar-brand">
                     <img src="{{ asset('img/blanco2.png') }}" alt="Logo Muebles Albura SAS" class="brand-image">
@@ -278,7 +278,7 @@
                 loandingPanel()
 
                 var datos = $.ajax({
-                    url: "{{ route('search.info.cliente.cotizador') }}",
+                    url: "{{ route('search.info.cliente.cotizador.pruebas') }}",
                     type: "POST",
                     dataType: "json",
                     data: {

@@ -54,14 +54,18 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3">
+                            {{-- <div class="col-md-4 mb-3" hidden>
                                 <div class="form-group">
                                     <label for="">CÉDULA</label>
                                     <input type="number" class="form-control" name="cedula-user-enc" id="cedula-user-enc" placeholder="Número de cédula">
                                 </div>
+                            </div> --}}
+                            <div class="col-md-4 mb-3 d-flex justify-content-center align-self-center">
+                                {{-- <div class="d-flex justify-content-center align-self-center"> --}}
+                                    <button type="button" class="btn btn-outline-danger" onclick="RealizarEncuestaSatisfaccionFab('{{ url('/intranet_fabrica/realizar-encuesta-satisfaccion') }}')">Realizar encuesta</button>
+                                {{-- </div> --}}
                             </div>
                         </div>
-                        <button type="button" class="btn btn-danger" onclick="ValidarExistenciaUsuarioEnc('cedula-user-enc')">Consultar</button>
                     </form>
                     <br>
                     <div id="mensaje-de-notificacion-response"></div>
@@ -72,30 +76,12 @@
 @endsection
 @section('scripts')
     <script>
-        ValidarExistenciaUsuarioEnc = (cedula) => {
-            var cedula_usuario = $('#' + cedula).val();
-            var datos = $.ajax({
-                type: "POST",
-                url: "{{ route('existencia.usuario') }}",
-                dataType: "json",
-                data: {
-                    cedula_usuario
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            datos.done((res) => {
-                if (res.status == true) {
-                    document.getElementById('mensaje-de-notificacion-response').innerHTML = res.mensaje;
-                    setTimeout(() => {
-                        document.getElementById('mensaje-de-notificacion-response').innerHTML = "";
-                    }, 4000);
-                }
-            });
-            datos.fail(() => {
-                toastr.error('Hubo un problema al procesar la informacion');
-            });
+
+        RealizarEncuestaSatisfaccionFab = (url) => {
+            var proceso = $('#proceso-fabrica-enc').val();
+            var seccion = $('#seccion-fabrica-enc').val();
+            // console.log(url + "/" + proceso + "/" + seccion);
+            document.location.href = url + "/" + proceso + "/" + seccion;
         }
 
         ObtenerSeccionesFab = (valor, url) => {

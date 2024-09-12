@@ -66,7 +66,7 @@ class ControllerRetomarCotizacion extends Controller
                             ';
                     if ($dias <= 15) {
 
-                        $historial .= '<a href="' . route('retomar.cotizacion', ['id_retomar' => $value->id_retomar]) . '" class="btn btn-info btn-sm">Retomar</a>';
+                        $historial .= '<a href="' . route('retomar.cotizacion.prueba', ['id_retomar' => $value->id_retomar]) . '" class="btn btn-info btn-sm">Retomar</a>';
                     }
                     $historial .= '
                         </div>

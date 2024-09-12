@@ -48,7 +48,8 @@
                                 <tr id="infoLlamada{{ $item->id_llamada }}" class="{{ $text }}">
                                     <td>{{ $item->id_llamada }}</td>
                                     <td class="text-left">
-                                        {{ $item->nombre_1 . ' ' . $item->nombre_2 . ' ' . $item->apellido_1 . ' ' . $item->apellido_2 }}</td>
+                                        {{ $item->nombre_1 . ' ' . $item->nombre_2 . ' ' . $item->apellido_1 . ' ' . $item->apellido_2 }}
+                                    </td>
                                     <td>{{ $item->fecha_a_llamar }}</td>
                                     <td>{{ $item->celular_1 . ' - ' . $item->celular_2 }}</td>
                                     <td>
@@ -60,9 +61,11 @@
                                                 onclick="VisualizarProductosCliente('{{ $item->id_cliente }}')"><i
                                                     class="fas fa-shopping-cart"></i></button>
                                             <button type="button" class="btn btn-warning"
-                                                onclick="VisualizarCometariosCliente('{{ $item->id_cliente }}')"><i class="fas fa-comments"></i></button>
+                                                onclick="VisualizarCometariosCliente('{{ $item->id_cliente }}')"><i
+                                                    class="fas fa-comments"></i></button>
                                             <a href="{{ route('asesor.whatsapp', ['celular' => empty($item->celular_1) ? 1 : $item->celular_1]) }}"
-                                                target="_BLANK" type="button" class="btn btn-success"><i class="fab fa-whatsapp"></i></a>
+                                                target="_BLANK" type="button" class="btn btn-success"><i
+                                                    class="fab fa-whatsapp"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -116,7 +119,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3"><strong>Valor a pagar</strong></span>
                             </div>
-                            <input type="text" class="form-control" id="valor_a_pagar" aria-describedby="basic-addon3" disabled>
+                            <input type="text" class="form-control" id="valor_a_pagar" aria-describedby="basic-addon3"
+                                disabled>
                         </div>
                     </div>
                 </div>
@@ -149,8 +153,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Asesor</div>
                                     </div>
-                                    <input type="text" class="form-control" value="{{ Auth::user()->nombre }}" id="inlineFormInputGroup"
-                                        placeholder="Asesor" disabled>
+                                    <input type="text" class="form-control" value="{{ Auth::user()->nombre }}"
+                                        id="inlineFormInputGroup" placeholder="Asesor" disabled>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -158,20 +162,21 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Estado de la llamada</div>
                                     </div>
-                                    <input type="text" class="form-control" value="PENDIENTE" id="inlineFormInputGroup" placeholder="Estado"
-                                        disabled>
+                                    <input type="text" class="form-control" value="PENDIENTE"
+                                        id="inlineFormInputGroup" placeholder="Estado" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
-                                <textarea name="comentario_seguimiento" id="comentario_seguimiento" class="form-control" cols="30" rows="3"
-                                    placeholder="Seguimiento realizado" required></textarea>
+                                <textarea name="comentario_seguimiento" id="comentario_seguimiento" class="form-control" cols="30"
+                                    rows="3" placeholder="Seguimiento realizado" required></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Próxima llamada</div>
                                     </div>
-                                    <input type="date" class="form-control" id="fecha_proxima_llamada" name="fecha_proxima_llamada">
+                                    <input type="date" class="form-control" id="fecha_proxima_llamada"
+                                        name="fecha_proxima_llamada">
                                 </div>
                             </div>
                         </div>
@@ -179,7 +184,8 @@
                 </div>
                 <div class="modal-footer left-content-between">
                     <button type="button" class="btn btn-success"
-                        onclick="AgregarInformacionSeguimientoLlamada('formulario-actulizar-seguimiento-crm')">Actualizar seguimiento</button>
+                        onclick="AgregarInformacionSeguimientoLlamada('formulario-actulizar-seguimiento-crm')">Actualizar
+                        seguimiento</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar información</button>
                 </div>
             </div>
@@ -220,6 +226,15 @@
 
         VisualizarCometariosCliente = (id_cliente) => {
             $('#historial-comentarios-seguimiento').modal('show');
+            document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = "";
+            Swal.fire({
+                position: 'top',
+                icon: 'info',
+                toast: true,
+                title: 'Cargando comentarios.',
+                showConfirmButton: false,
+                timer: 10000
+            })
             var datos = $.ajax({
                 url: "{{ route('comentarios.asesores') }}",
                 type: "POST",
@@ -233,10 +248,20 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
-                    document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = res.comentarios
+                    Swal.fire({
+                        position: 'top',
+                        icon: 'success',
+                        toast: true,
+                        title: 'Comentarios cargados.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = res
+                        .comentarios
                 }
             });
             datos.fail(() => {
+                document.getElementById('comentarios-realizados-cliente-almacen').innerHTML = "";
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',

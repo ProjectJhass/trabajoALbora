@@ -29,7 +29,7 @@
                         $asesor = $item->asesoresCRM->toArray();
                     @endphp
                     <tr>
-                        <td class="text-left"><small>{{ $asesor[0]['nombre'] }}</small></td>
+                        <td class="text-left"><small>{{ $asesor[0]['nombre'] ?? "" }}</small></td>
                         <td>{{ $item->cedula_cliente }}</td>
                         <td class="text-left">{{ $item->nombre_1 . ' ' . $item->nombre_2 . ' ' . $item->apellido_1 . ' ' . $item->apellido_1 }}</td>
                         <td>{{ $ventas_ef[0]['fecha_compra'] }}</td>

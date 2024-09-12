@@ -559,58 +559,60 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
     });
 });
 
-//Cotizador de pruebas
+//Cotizador real
 
 Route::group(['prefix' => 'cotizador_albura', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'lista_precios'], function () {
-        Route::get('/retomar/{id_retomar}', [Cotizador_pruebasControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion.pruebas');
-        Route::post('/consultar-cedula', [Cotizador_pruebasControllerRetomarCotizacion::class, 'getCotizacionesCliente'])->name('retomar.info.cliente.p');
-        Route::get('/catalogo', [ControllerCatalogo::class, 'index'])->name('catalogo.cotizador');
+        Route::get('/retomar/{id_retomar}', [Cotizador_pruebasControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion.crexit');
+        Route::post('/consultar-cedula', [Cotizador_pruebasControllerRetomarCotizacion::class, 'getCotizacionesCliente'])->name('retomar.info.cliente.crexit');
+        Route::get('/catalogo', [ControllerCatalogo::class, 'index'])->name('catalogo.cotizador.crexit');
     });
 
     Route::group(['prefix' => 'panel'], function () {
-        Route::get('/lista-de-precios/{origen?}', [Cotizador_pruebasControllerPanel::class, 'panel'])->name('lista.precios.pruebas');
-        Route::post('/agregar-producto', [Cotizador_pruebasControllerPanel::class, 'AgregarProducto'])->name('add.new.product.pruebas');
-        Route::get('/nueva-cotizacion', [Cotizador_pruebasControllerPanel::class, 'GenerarNuevaCotizacion'])->name('precios.nueva.cotizacion.pruebas');
+        Route::get('/lista-de-precios/{origen?}', [Cotizador_pruebasControllerPanel::class, 'panel'])->name('lista.precios.crexit');
+        Route::post('/agregar-producto', [Cotizador_pruebasControllerPanel::class, 'AgregarProducto'])->name('add.new.product.crexit');
+        Route::get('/nueva-cotizacion', [Cotizador_pruebasControllerPanel::class, 'GenerarNuevaCotizacion'])->name('precios.nueva.cotizacion.crexit');
     });
 
     Route::group(['prefix' => 'liquidador'], function () {
-        Route::get('/cotizacion', [ControllerGenerarLiquidador::class, 'index'])->name('liquidar.cotizacion.pruebas');
+        Route::get('/cotizacion', [ControllerGenerarLiquidador::class, 'index'])->name('liquidar.cotizacion.crexit');
         Route::post('/cotizacion', [ControllerValidarProductos::class, 'index']);
 
-        Route::post('/eliminar', [ControllerGenerarLiquidador::class, 'eliminar'])->name("eliminar.item.cot.pruebas");
-        Route::post('/actualizar', [ControllerGenerarLiquidador::class, 'actualizar'])->name("actualizar.producto.pruebas");
-        Route::post('/validar-informacion', [ControllerGenerarLiquidador::class, 'ValidarDatosCotizacion'])->name("datos.cotizacion.pruebas");
+        Route::post('/eliminar', [ControllerGenerarLiquidador::class, 'eliminar'])->name("eliminar.item.cot.crexit");
+        Route::post('/actualizar', [ControllerGenerarLiquidador::class, 'actualizar'])->name("actualizar.producto.crexit");
+        Route::post('/validar-informacion', [ControllerGenerarLiquidador::class, 'ValidarDatosCotizacion'])->name("datos.cotizacion.crexit");
         Route::post('/generar-cotizacion', [ControllerGenerarLiquidador::class, 'agregarInformacionCotizacionCRM'])->name("agregar.crm.cotizacion");
 
         /* RUTAS PARA EL MANEJO DEL SIMULADOR DE CREDITOS */
 
         Route::group(['prefix' => 'simulador'], function () {
-            Route::post('/', [ControllerGenerarLiquidador::class, 'traerModuloSimuladorCredito'])->name('traer.simulador.credito');
+            Route::post('/', [ControllerGenerarLiquidador::class, 'traerModuloSimuladorCredito'])->name('traer.simulador.credito.crexit');
         });
 
     });
 
+    Route::post('consultar-ciudades', [ControllerLiquidador::class, 'ConsultarCiudad'])->name('ciudades.consultar.crexit');
+
     Route::group(['prefix' => 'finalizar'], function () {
-        Route::get('/menu', [ControllerFinalizar::class, 'index'])->name("finalizar.cotizacion.pruebas");
-        Route::get('/pdf/{cliente}', [Cotizador_pruebasControllerPdfCotizacion::class, 'GenerarPdfCotizacion'])->name('generar.pdf.cotizacion.pruebas');
-        Route::get('/whatsapp', [ControllerFinalizar::class, 'WhatsApp'])->name("enviar.whatsapp.cotizacion.pruebas");
-        Route::post('/email', [ControllerFinalizar::class, 'Email'])->name("enviar.correo.cotizacion.pruebas");
-        Route::get('/fogade', [ControllerPdfFogade::class, 'GenerarDocumentoFogade'])->name("generar.pdf.fogade");
-        Route::post('/credito', [Cotizador_pruebasControllerGenerarCredito::class, 'solicitarCredito'])->name("generar.solicitud.credito.pruebas");
+        Route::get('/menu', [ControllerFinalizar::class, 'index'])->name("finalizar.cotizacion.crexit");
+        Route::get('/pdf/{cliente}', [Cotizador_pruebasControllerPdfCotizacion::class, 'GenerarPdfCotizacion'])->name('generar.pdf.cotizacion.crexit');
+        Route::get('/whatsapp', [ControllerFinalizar::class, 'WhatsApp'])->name("enviar.whatsapp.cotizacion.crexit");
+        Route::post('/email', [ControllerFinalizar::class, 'Email'])->name("enviar.correo.cotizacion.crexit");
+        Route::get('/fogade', [ControllerPdfFogade::class, 'GenerarDocumentoFogade'])->name("generar.pdf.fogade.crexit");
+        Route::post('/credito', [Cotizador_pruebasControllerGenerarCredito::class, 'solicitarCredito'])->name("generar.solicitud.credito.crexit");
     });
 });
 
 
-//Cotizador real
+//Cotizador de pruebas
 
 Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function () {
 
     Route::get('check-session', [session::class, 'checkSession']);
 
     Route::group(['prefix' => 'cotizador'], function () {
-        Route::get('/retomar/{id_retomar}', [ControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion');
-        Route::post('/consultar-cedula', [ControllerRetomarCotizacion::class, 'ObtenerInformacionUltimasCotizaciones'])->name('search.info.cliente.cotizador');
+        Route::get('/retomar/{id_retomar}', [ControllerRetomarCotizacion::class, 'RetomarCotizacionCliente'])->name('retomar.cotizacion.prueba');
+        Route::post('/consultar-cedula', [ControllerRetomarCotizacion::class, 'ObtenerInformacionUltimasCotizaciones'])->name('search.info.cliente.cotizador.pruebas');
         Route::get('/catalogo', [ControllerCatalogo::class, 'index'])->name('catalogo.cotizador');
     });
 
@@ -647,6 +649,7 @@ Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () 
     Route::prefix('general')->group(function() {
         Route::prefix('birthday')->group(function() {
             Route::get('/getClientBirthday', [ControllerCRMGeneral:: class, 'getClientBirthdayAdviser'])->name("crm_almacenes.general.birthday");
+            Route::post('/postClientBirthday', [ControllerCRMGeneral:: class, 'postClientBirthdayAdviser'])->name("crm_almacenes.general.create_birthday");
         });
     });
 
@@ -790,7 +793,7 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
     Route::get('/encuesta-de-satisfaccion', [ControllerEncuestaSatisfaccion::class, 'VisualizarInformacion'])->name("encuesta.satisfaccion.fab");
     Route::post('/validar-existencia-de-usuario', [ControllerEncuestaSatisfaccion::class, 'ValidarExistenciaDeUsuario'])->name('existencia.usuario');
     Route::post('/obtener-secciones-fabrica', [ControllerEncuestaSatisfaccion::class, 'ObtenerSeccionesFabricaEnc'])->name('secciones.fabrica');
-    Route::get('/realizar-encuesta-satisfaccion/{proceso}/{seccion}/{cedula}', [ControllerEncuestaSatisfaccion::class, 'RealizarEncuestaSatisfaccion']);
+    Route::get('/realizar-encuesta-satisfaccion/{proceso}/{seccion}', [ControllerEncuestaSatisfaccion::class, 'RealizarEncuestaSatisfaccion']);
     Route::post('/guardar-informacion-encuesta', [ControllerEncuestaSatisfaccion::class, 'GuardarInformacionEncuestaCliente'])->name('guardar.encuesta');
 
     /* Rutas para solicitud de mantenimiento */

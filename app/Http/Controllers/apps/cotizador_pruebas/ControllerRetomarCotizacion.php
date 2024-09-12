@@ -44,7 +44,7 @@ class ControllerRetomarCotizacion extends Controller
                             ';
                     if ($dias <= 15) {
 
-                        $historial .= '<a href="' . route('retomar.cotizacion.pruebas', ['id_retomar' => $value->id_cliente]) . '" class="btn btn-info btn-sm">Retomar</a>';
+                        $historial .= '<a href="' . route('retomar.cotizacion.crexit', ['id_retomar' => $value->id_cliente]) . '" class="btn btn-info btn-sm">Retomar</a>';
                     }
                     $historial .= '
                         </div>
@@ -63,6 +63,6 @@ class ControllerRetomarCotizacion extends Controller
     {
         $value = ModelInfoClientesCRM::find($id_retomar);
         session(['IdSession' => $value->id_cotizacion]);
-        return redirect(route('liquidar.cotizacion.pruebas'));
+        return redirect(route('liquidar.cotizacion.crexit'));
     }
 }

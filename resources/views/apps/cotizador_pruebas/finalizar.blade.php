@@ -52,11 +52,11 @@
                         Documento Fogade
                     </div>
                     <div class="card-body text-center">
-                        <a href="{{ route('generar.pdf.fogade') }}" target="_BLANK"><img src="{{ asset('img/documento.png') }}" width="50%"
+                        <a href="{{ route('generar.pdf.fogade.crexit') }}" target="_BLANK"><img src="{{ asset('img/documento.png') }}" width="50%"
                                 alt=""></a>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ route('generar.pdf.fogade') }}" target="_BLANK">Descargar documento</a>
+                        <a href="{{ route('generar.pdf.fogade.crexit') }}" target="_BLANK">Descargar documento</a>
                     </div>
                 </div>
             </div>

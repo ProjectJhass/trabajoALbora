@@ -82,7 +82,7 @@
                         <div class="card-body">
                             <div id="productsCotizadosAlbura"><?php echo $tblProducts; ?></div>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('lista.precios.pruebas') }}" type="button"
+                                <a href="{{ route('lista.precios.crexit') }}" type="button"
                                     class="btn btn-sm btn-danger">Lista de precios</a>
                                 {{-- <button type="button" class="btn btn-sm btn-success" id="btn-activar-dsto-add"
                                     onclick="habilitarCampoDstoAdd();">Descuento adicional</button> --}}
@@ -200,10 +200,32 @@
                                         </select>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="">Fecha cumpleaños</label>
-                                        <input type="date"
-                                            value="{{ isset($cliente->fecha_cumple) ? $cliente->fecha_cumple : '' }}"
-                                            class="form-control" name="cumple_cl" id="cumple_cl">
+                                        <label for="mes_dia">Fecha cumpleaños (Mes - Día)</label>
+                                        <div class="d-flex">
+                                            <select class="form-control mr-2" name="mes_cumple" id="mes_cumple" required>
+                                                <option value="" selected disabled>Seleccionar</option>
+                                                <option value="01">Enero</option>
+                                                <option value="02">Febrero</option>
+                                                <option value="03">Marzo</option>
+                                                <option value="04">Abril</option>
+                                                <option value="05">Mayo</option>
+                                                <option value="06">Junio</option>
+                                                <option value="07">Julio</option>
+                                                <option value="08">Agosto</option>
+                                                <option value="09">Septiembre</option>
+                                                <option value="10">Octubre</option>
+                                                <option value="11">Noviembre</option>
+                                                <option value="12">Diciembre</option>
+                                            </select>
+
+                                            <select class="form-control" name="dia_cumple" id="dia_cumple" required>
+                                                <option value="" selected disabled>Seleccionar</option>
+                                                @for ($i = 1; $i <= 31; $i++)
+                                                    <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">
+                                                        {{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-md-4 mb-4">
                                         <label for="">Observaciones</label>
@@ -373,7 +395,7 @@
                             </form>
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn custom-btn-danger" id="btnSolicitarCredito"
+                            <button hidden type="button" class="btn custom-btn-danger" id="btnSolicitarCredito"
                                 onclick="solicitarCreditoCoitzador()">Solicitar
                                 crédito</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -518,7 +540,7 @@
                 $('#depto').addClass('is-valid')
 
                 var datos = $.ajax({
-                    url: "{{ Route('ciudades.consultar') }}",
+                    url: "{{ Route('ciudades.consultar.crexit') }}",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -542,7 +564,7 @@
         obtenerCiudadesCotiCredito = (id) => {
             if (id.length > 0) {
                 var datos = $.ajax({
-                    url: "{{ Route('ciudades.consultar') }}",
+                    url: "{{ Route('ciudades.consultar.crexit') }}",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -714,7 +736,7 @@
 
         ConfirmEliminarProducto = (id_cotizacion, url) => {
             var datos = $.ajax({
-                url: "{{ route('eliminar.item.cot.pruebas') }}",
+                url: "{{ route('eliminar.item.cot.crexit') }}",
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -737,7 +759,7 @@
             var dsto_ad = $("#dsto_ad" + id_cotizacion).val();
 
             var datos = $.ajax({
-                url: "{{ route('actualizar.producto.pruebas') }}",
+                url: "{{ route('actualizar.producto.crexit') }}",
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -820,6 +842,7 @@
                 formData.append("opcion_final", seccion);
                 formData.append("id_ciudad", ciudad.data("id_city"));
                 formData.append("departamento", nom_depto);
+                formData.append("cumple_cl", `2024-${$('#mes_cumple').val()}-${$('#dia_cumple').val()}`);
 
                 var datos = $.ajax({
                     url: "{{ route('agregar.crm.cotizacion') }}",
@@ -870,7 +893,7 @@
 
             if (cedula.length > 0) {
                 var datos = $.ajax({
-                    url: "{{ route('datos.cotizacion.pruebas') }}",
+                    url: "{{ route('datos.cotizacion.crexit') }}",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -956,7 +979,7 @@
             $('#modal_simulador_creditos_albura').modal('toggle');
 
             $.ajax({
-                url: "{{ route('traer.simulador.credito') }}",
+                url: "{{ route('traer.simulador.credito.crexit') }}",
                 type: "POST",
                 data: {
                     "total_pagar": $("#total_a_pagar").val()
@@ -1025,7 +1048,7 @@
             formData.append("departamento", nom_depto);
 
             var datos = $.ajax({
-                url: "{{ route('generar.solicitud.credito.pruebas') }}",
+                url: "{{ route('generar.solicitud.credito.crexit') }}",
                 type: "POST",
                 dataType: "json",
                 data: formData,
@@ -1071,10 +1094,10 @@
 
             valor_i = valor_i.replace(/\./g, '');
 
-            let tasa_interes = 2.1585;
+            let tasa_interes = 2.1348;
             let tasa_fogade = 14.28;
             let tasa_iva = 19;
-            let tasa_promedio_iva = 11;
+            let tasa_promedio_iva = 10.825;
             let valor_financiar = Math.round(valor_i);
             let plazo_coutas = $('#cuotas_credito_simulador').val();
             /* HACER VALIDACIÓN DEL VALOR A FINANCIAR Y LAS CUOTAS */
@@ -1099,13 +1122,15 @@
             let divisor_iva_promedio = parseFloat(+tasa_promedio_iva / 100);
             let valor_fogade = Math.round(+(valor_financiar * divisor_fogade) + valor_financiar);
 
-            let PxI = parseFloat((valor_fogade * divisor_intereses) + ((valor_fogade * divisor_intereses) * divisor_iva));
+            let PxI = parseFloat((valor_fogade * divisor_intereses) + ((valor_fogade * divisor_intereses) *
+                divisor_iva));
             let ImasUno = parseFloat(1 + divisor_intereses);
             let UnoMasEleveadoNegativoPeriodo = parseFloat(ImasUno ** parseFloat(-plazo_coutas));
             let UnoMenosUnoPotenciadoPeriodo = parseFloat(1 - UnoMasEleveadoNegativoPeriodo);
             let iva_promedio = Math.round(valor_fogade * divisor_intereses * divisor_iva_promedio);
 
-            let coutaMensualFija = Math.round((divisor_intereses * valor_fogade) / UnoMenosUnoPotenciadoPeriodo) + iva_promedio;
+            let coutaMensualFija = Math.round((divisor_intereses * valor_fogade) / UnoMenosUnoPotenciadoPeriodo) +
+                iva_promedio;
 
             let total_credito_crexit_ = Math.round(coutaMensualFija * plazo_coutas);
 
@@ -1114,55 +1139,66 @@
             Swal.fire({
                 html: `
                 <div class="container text-center">
-    <div class="mx-auto py-3 px-5 d-flex flex-column justify-content-between" style="border-radius:12px;width:350px; height:500px; box-shadow: 0px 0px 20px 0px rgb(0,0,0,0.3)">
-        <h2 class="fw-bold m-0 p-0" style="color:#5f01cb;">Cuota Mensual</h2>
-        <h1 class="fw-bold m-0 p-0" style="color:#5f01cb;"><b class="m-0 p-0">$${formatter.format(Math.round(coutaMensualFija))}</b></h1>
+                    <div class="mx-auto py-3 px-5 d-flex flex-column justify-content-between" style="border-radius:12px;width:350px; height:500px; box-shadow: 0px 0px 20px 0px rgb(0,0,0,0.3)">
+                        <h2 class="fw-bold m-0 p-0" style="color:#5f01cb;">Cuota Mensual</h2>
+                        <h1 class="fw-bold m-0 p-0" style="color:#5f01cb;"><b class="m-0 p-0">$${formatter.format(Math.round(coutaMensualFija))}</b></h1>
 
-        <div class="d-flex justify-content-between my-3">
-            <div class="text-start px-2 flex-fill">
-                <div class="fw-bold fs-4 m-0"><b>Número Cuotas</b></div>
-                <span style="color:#5f01cb;"><b>${plazo_coutas}</b></span>
-            </div>
-            <div class="text-start px-2 flex-fill border-left">
-                <div class="fw-bold fs-4 m-0"><b>Tasa Mensual</b></div>
-                <span style="color:#5f01cb;"><b>${2.16}%</b></span>
-            </div>
-            <div class="text-start px-2 flex-fill border-left">
-                <div class="fw-bold fs-4 m-0"><b>Tasa Aval</b></div>
-                <span style="color:#5f01cb;"><b>${tasa_fogade}%</b></span>
-            </div>
-        </div>
+                        <div class="d-flex justify-content-between my-3">
+                            <div class="text-start px-2 flex-fill">
+                                <div class="fw-bold fs-4 m-0"><b>Número Cuotas</b></div>
+                                <span style="color:#5f01cb;"><b>${plazo_coutas}</b></span>
+                            </div>
+                            <div class="text-start px-2 flex-fill border-left">
+                                <div class="fw-bold fs-4 m-0"><b>Tasa Mensual</b></div>
+                                <span style="color:#5f01cb;"><b>${2.13}%</b></span>
+                            </div>
+                            <div class="text-start px-2 flex-fill border-left">
+                                <div class="fw-bold fs-4 m-0"><b>Tasa Aval</b></div>
+                                <span style="color:#5f01cb;"><b>${tasa_fogade}%</b></span>
+                            </div>
+                        </div>
 
-        <div class="fw-bold fs-3 m-0 p-0"><h2 class="m-0 p-0">Total Crédito</h2></div>
-        <h2 style="color:#5f01cb;">$${formatter.format(Math.round(total_credito_crexit_))}</h2>
-        <div class="d-flex justify-content-center">
-            <img src="https://crexit.com.co/wp-content/uploads/2024/05/LogoCrexit-e1717190280798.png" alt="" class="logo-img" srcset="">
-        </div>
-        <br>
-        <p class="text-muted mt-3" style="font-size:12px">*El valor de tu cuota es un aproximado y dependerá de tu fecha de compra.*</p>
-        <p class="text-muted mt-3" style="font-size:12px">*El IVA ya viene aplicado en la couta mensual, al igual que en el total del credito.*</p>
-    </div>
-</div>
-<style>
-    .my-confirm-button {
-        background-color: #5f01cb !important;
-    }
-    .logo-img {
-        width: 100px;  /* Ajusta el ancho según sea necesario */
-        height: auto;  /* Mantiene la proporción de la imagen */
-        margin-top: 20px;  /* Añade margen superior si es necesario */
-    }
-    .border-left {
-        border-left: 2.5px solid #000000 !important;
-        padding-left: 2px; /* Añade padding para evitar que el contenido se pegue al borde */
-    }
-</style>`,
+                        <div class="fw-bold fs-3 m-0 p-0"><h2 class="m-0 p-0">Total Crédito</h2></div>
+                        <h2 style="color:#5f01cb;">$${formatter.format(Math.round(total_credito_crexit_))}</h2>
+                        <div class="d-flex justify-content-center">
+                            <img src="https://crexit.com.co/wp-content/uploads/2024/05/LogoCrexit-e1717190280798.png" alt="" class="logo-img" srcset="">
+                        </div>
+                        <br>
+                        <p class="text-muted mt-3" style="font-size:12px">*El valor de tu cuota es un aproximado y dependerá de tu fecha de compra.*</p>
+                        <p class="text-muted mt-3" style="font-size:12px">*El IVA ya viene aplicado en la couta mensual, al igual que en el total del credito.*</p>
+                    </div>
+                </div>
+                <style>
+                    .my-confirm-button {
+                        background-color: #5f01cb !important;
+                    }
+                    .logo-img {
+                        width: 100px;  /* Ajusta el ancho según sea necesario */
+                        height: auto;  /* Mantiene la proporción de la imagen */
+                        margin-top: 20px;  /* Añade margen superior si es necesario */
+                    }
+                    .border-left {
+                        border-left: 2.5px solid #000000 !important;
+                        padding-left: 2px; /* Añade padding para evitar que el contenido se pegue al borde */
+                    }
+                </style>`,
                 customClass: {
                     container: 'swal2-bootstrap-custom-container',
                     confirmButton: 'my-confirm-button'
                 },
             });
+        }
 
+        function validate_cumple_data(element) {
+            let input = this.value;
+            // Validar que cumpla el patrón MM-DD
+            if (/^\d{2}-\d{2}$/.test(input)) {
+                let [mes, dia] = input.split('-');
+                console.log(`Mes: ${mes}, Día: ${dia}`);
+                // Aquí puedes realizar cualquier otra acción con el mes y el día
+            } else {
+                console.log('Formato incorrecto. Debe ser MM-DD.');
+            }
 
         }
     </script>

@@ -31,6 +31,7 @@ class ControllerUsuarios extends Controller
 
         if (count($usuarios) > 0) {
             foreach ($usuarios as $key => $value) {
+                // $info_ = ModelUsersIntranet::where('id', 'LIKE' "$value['cedula']%");
                 $info_ = ModelUsersIntranet::find($value['cedula']);
 
                 if ($info_) {

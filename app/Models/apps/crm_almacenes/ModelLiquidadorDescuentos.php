@@ -9,7 +9,7 @@ class ModelLiquidadorDescuentos extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'albura_cotizador';
 
     protected $table = 'liquidador_de_descuentos';
 

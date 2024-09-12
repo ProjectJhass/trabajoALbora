@@ -9,7 +9,7 @@ class ModelClientesCRM extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'albura_cotizador';
 
     protected $table = 'clientes_crm';
 
@@ -64,5 +64,10 @@ class ModelClientesCRM extends Model
     public function asesoresCRM()
     {
         return $this->hasMany(ModelInfoAsesores::class, 'id', 'cedula_asesor');
+    }
+
+    public function cumpleanosEnviados()
+    {
+        return $this->hasMany(ModelCumpleClientesCRM::class, 'id_cliente', 'id_cliente');
     }
 }

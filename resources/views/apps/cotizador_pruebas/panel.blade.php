@@ -76,7 +76,7 @@
                             <center>
                                 <div class="btn-group text-center" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success" onclick="AgregarInfoProductoSeleccionado()">Agregar Item</button>
-                                    <a href="{{ route('liquidar.cotizacion.pruebas') }}" type="button" class="btn btn-danger">Liquidador final</a>
+                                    <a href="{{ route('liquidar.cotizacion.crexit') }}" type="button" class="btn btn-danger">Liquidador final</a>
                                 </div>
                             </center>
                         </form>
@@ -136,7 +136,7 @@
 
             if (sku.length > 0 && producto.length > 0 && valor.length > 0 && cantidad.length > 0) {
                 var datos = $.ajax({
-                    url: "{{ route('add.new.product.pruebas') }}",
+                    url: "{{ route('add.new.product.crexit') }}",
                     type: "POST",
                     dataType: "json",
                     data: {

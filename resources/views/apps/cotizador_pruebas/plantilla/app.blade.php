@@ -166,7 +166,7 @@
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="{{ route('catalogo.cotizador') }}" class="nav-link text-white">Catálogo de
+                            <a href="{{ route('catalogo.cotizador.crexit') }}" class="nav-link text-white">Catálogo de
                                 productos</a>
                         </li>
                         <li class="nav-item">
@@ -192,7 +192,7 @@
                             <div class="row">
                                 <div class="col-md-8 mb-2">
                                     <h4><i class="fas fa-tachometer-alt"></i> Panel - Lista de precios <a
-                                            href="{{ route('precios.nueva.cotizacion.pruebas') }}" type="button"
+                                            href="{{ route('precios.nueva.cotizacion.crexit') }}" type="button"
                                             class="btn btn-sm btn-success">Nueva
                                             cotización</a>
                                     </h4>
@@ -283,7 +283,7 @@
                 loandingPanel()
 
                 var datos = $.ajax({
-                    url: "{{ route('retomar.info.cliente.p') }}",
+                    url: "{{ route('retomar.info.cliente.crexit') }}",
                     type: "POST",
                     dataType: "json",
                     data: {

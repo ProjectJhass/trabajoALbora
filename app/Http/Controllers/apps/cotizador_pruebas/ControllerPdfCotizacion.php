@@ -52,7 +52,7 @@ class ControllerPdfCotizacion extends Controller
             $telefono_ = $info_sucursales->telefonos;
             $email_ = $info_sucursales->email;
         }
-        
+
         $pdf = new Fpdf();
         $pdf->AddPage();
         $pdf->Image(public_path('img/logoMueblesAlburapdf.jpeg'), 20, 10, 35, 14, 'JPEG');
@@ -386,6 +386,11 @@ class ControllerPdfCotizacion extends Controller
         $pdf->SetFont('Arial', '', 7);
         $pdf->Cell(2, 10, '', 0);
         $pdf->Cell(15, 24, utf8_decode("800.009.732-6 Muebles Albura SAS"), 0);
+
+        $pdf->Cell(133.6, 10, '', 0);
+
+        $pdf->SetFont('Arial', '', 7);
+        $pdf->Cell(40, 24, utf8_decode("Para más información visita: https://mueblesalbura.com.co/tratamiento-de-datos-personales/"), 0,0, 'R', false, 'https://mueblesalbura.com.co/tratamiento-de-datos-personales/');
 
         return $pdf;
     }

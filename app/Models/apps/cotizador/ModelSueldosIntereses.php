@@ -9,7 +9,7 @@ class ModelSueldosIntereses extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'pruebas_cotizador_oncredit';
 
     protected $table = 'sueldo_e_interes';
 

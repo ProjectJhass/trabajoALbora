@@ -16,7 +16,8 @@
                     <table width="100%">
                         <tr>
                             <td width="50%">
-                                <img src="https://img.mailinblue.com/2547420/images/rnb/original/63c95df80e1a1a40c40097d0.png" width="60%" alt="">
+                                <img src="https://img.mailinblue.com/2547420/images/rnb/original/63c95df80e1a1a40c40097d0.png"
+                                    width="60%" alt="">
                             </td>
                             <td width="50%" style="text-align: center; font-size: 19px">
                                 ENCUESTA DE SATISFACCIÓN DEL CLIENTE INTERNO
@@ -28,55 +29,29 @@
                             <td>&nbsp;</td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520">
+                    <table width="100%" cellpadding="0" border="0" style="margin-top: 3%; margin-bottom: 3%;">
                         <tr>
-                            <td style="height: 1px;">
-                                <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                    <tr>
-                                        <td>
-                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                <tr>
-                                                    <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                             </td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%" border="0" width="100%">
+                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%" border="0"
+                        width="100%">
                         <tr>
                             <td style="width: 33.33%; text-align: center">CÓDIGO: RG-TH-07</td>
                             <td style="width: 33.33%; text-align: center">VERSIÓN: 05</td>
                             <td style="width: 33.33%; text-align: center">PÁGINA: 1</td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520">
+                    <table width="100%" cellpadding="0" border="0" style="margin-top: 3%; margin-bottom: 3%;">
                         <tr>
-                            <td style="height: 1px;">
-                                <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                    <tr>
-                                        <td>
-                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                <tr>
-                                                    <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                             </td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%; font-size: 13px" border="0" width="100%">
+                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%; font-size: 13px"
+                        border="0" width="100%">
                         @foreach ($info as $key => $value)
-                            <tr style="margin-top: 50px">
-                                <td width="130px"><strong>NOMBRE:</strong></td>
-                                <td>{{ $value->nombre_usuario }}</td>
-                            </tr>
                             <tr>
                                 <td width="130px"><strong>PROCESO:</strong></td>
                                 <td>{{ $value->proceso }}</td>
@@ -91,78 +66,49 @@
                             </tr>
                         @endforeach
                     </table>
-                    <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520">
+                    <table width="100%" cellpadding="0" border="0" style="margin-top: 3%; margin-bottom: 3%;">
                         <tr>
-                            <td style="height: 1px;">
-                                <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                    <tr>
-                                        <td>
-                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                <tr>
-                                                    <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                             </td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%" border="0" width="100%">
+                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%" border="0"
+                        width="100%">
                         <tr>
                             <td width="40%"><strong>OBJETIVO:</strong><br>
-                                <p style="text-align: justify">Medir el nivel de satisfacción del personal interno a fin de identificar
+                                <p style="text-align: justify">Medir el nivel de satisfacción del personal interno a
+                                    fin de identificar
                                     y determinar fortalezas y debilidades de la empresa con sus colaboradores
                                     de manera que ayude a generar estratégias para incrementar su satisfacción y
                                     por ende la productividad general.</p>
                             </td>
                             <td width="10%"></td>
                             <td width="40%"><strong>INSTRUCCIONES:</strong><br>
-                                <p style="text-align: justify">Lea atentamente cada uno de los puntos y califique el factor mencionado de 1 a 5, donde 1
-                                    es la calificación más baja y 5 es la calificación más alta, conforme a su percepción general de la empresa.
+                                <p style="text-align: justify">Lea atentamente cada uno de los puntos y califique el
+                                    factor mencionado de 1 a 5, donde 1
+                                    es la calificación más baja y 5 es la calificación más alta, conforme a su
+                                    percepción general de la empresa.
                                 </p>
                             </td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520">
+                    <table width="100%" cellpadding="0" border="0" style="margin-top: 3%; margin-bottom: 3%;">
                         <tr>
-                            <td style="height: 1px;">
-                                <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                    <tr>
-                                        <td>
-                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                <tr>
-                                                    <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                             </td>
                         </tr>
                     </table>
-                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%" border="0" width="100%">
+                    <table cellspacing="0" cellpadding="0" style="margin-top: 2%; margin-bottom: 2%" border="0"
+                        width="100%">
                         <tr>
                             <p><u>PREGUNTAS Y PUNTUACIÓN</u></p>
                         </tr>
                         <tr>
-                            <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520" style="margin-top: 3%; margin-bottom: 3%;">
+                            <table width="100%" cellpadding="0" border="0"
+                                style="margin-top: 3%; margin-bottom: 3%;">
                                 <tr>
-                                    <td style="height: 1px;">
-                                        <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                            <tr>
-                                                <td>
-                                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                        style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                        <tr>
-                                                            <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td
+                                        style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                                     </td>
                                 </tr>
                             </table>
@@ -181,21 +127,11 @@
                             </table>
                         </tr>
                         <tr>
-                            <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520" style="margin-top: 3%; margin-bottom: 3%;">
+                            <table width="100%" cellpadding="0" border="0"
+                                style="margin-top: 3%; margin-bottom: 3%;">
                                 <tr>
-                                    <td style="height: 1px;">
-                                        <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                            <tr>
-                                                <td>
-                                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                        style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                        <tr>
-                                                            <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td
+                                        style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                                     </td>
                                 </tr>
                             </table>
@@ -218,21 +154,11 @@
                             </table>
                         </tr>
                         <tr>
-                            <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520" style="margin-top: 3%; margin-bottom: 3%;">
+                            <table width="100%" cellpadding="0" border="0"
+                                style="margin-top: 3%; margin-bottom: 3%;">
                                 <tr>
-                                    <td style="height: 1px;">
-                                        <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                            <tr>
-                                                <td>
-                                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                        style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                        <tr>
-                                                            <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td
+                                        style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                                     </td>
                                 </tr>
                             </table>
@@ -242,7 +168,8 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            ¿Qué actividad de integración sugiere?
+                                            ¿Esta dispuesto a participar en actividades de integración en horarios
+                                            adicionales?
                                         </td>
                                     </tr>
                                     <tr>
@@ -253,21 +180,11 @@
                                 </table>
                             </tr>
                             <tr>
-                                <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520" style="margin-top: 3%; margin-bottom: 3%;">
+                                <table width="100%" cellpadding="0" border="0"
+                                    style="margin-top: 3%; margin-bottom: 3%;">
                                     <tr>
-                                        <td style="height: 1px;">
-                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                                <tr>
-                                                    <td>
-                                                        <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                            style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                            <tr>
-                                                                <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <td
+                                            style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                                         </td>
                                     </tr>
                                 </table>
@@ -276,7 +193,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            ¿Qué habilidad posee (Cantar, Bailar, Jugar... etc)?
+                                            ¿Que actividades de integración sugiere?
                                         </td>
                                     </tr>
                                     <tr>
@@ -287,21 +204,11 @@
                                 </table>
                             </tr>
                             <tr>
-                                <table cellspacing="0" cellpadding="0" border="0" role="presentation" width="520" style="margin-top: 3%; margin-bottom: 3%;">
+                                <table width="100%" cellpadding="0" border="0"
+                                    style="margin-top: 3%; margin-bottom: 3%;">
                                     <tr>
-                                        <td style="height: 1px;">
-                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
-                                                <tr>
-                                                    <td>
-                                                        <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" valign="" class="r14-i" height="1"
-                                                            style="border-top-style: solid; background-clip: border-box; border-top-color: #4A4A4A; border-top-width: 1px; font-size: 1px; line-height: 1px;">
-                                                            <tr>
-                                                                <td height="0" style="font-size: 0px; line-height: 0px;">­</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <td
+                                            style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                                         </td>
                                     </tr>
                                 </table>
@@ -310,12 +217,46 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            ¿Qué mejoras sugiere en la empresa?
+                                            ¿Que habilidades posee (cantar, bailar, juegar, etc.)?
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             {{ $value->comentario3 }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </tr>
+                            <tr>
+                                <table width="100%" cellpadding="0" border="0"
+                                    style="margin-top: 3%; margin-bottom: 3%;">
+                                    <tr>
+                                        <td
+                                            style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </tr>
+                            <tr>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            ¿Qué mejoras sugiere para la empresa?
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $value->comentario4 }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </tr>
+                            <tr>
+                                <table width="100%" cellpadding="0" border="0"
+                                    style="margin-top: 3%; margin-bottom: 3%;">
+                                    <tr>
+                                        <td
+                                            style="height: 1px; font-size: 0px; line-height: 0px; border-top: 1px solid #4A4A4A">
                                         </td>
                                     </tr>
                                 </table>

@@ -20,10 +20,10 @@ class ControllerAuthUser extends Controller
                 if ((strcmp($usuario, $data_->usuario) === 0)  && password_verify($clave, $data_->password)) {
                     return response()->json(['status' => true], 200);
                 }
-                return response()->json('', 401);
+                return response()->json(['staus' => false, "message" => "Datos no validos."], 401);
             }
-            return response()->json('', 401);
+            return response()->json(['staus' => false, "message" => "Este usuario no existe."], 401);
         }
-        return response()->json('', 401);
+        return response()->json(['staus' => false, "message" => "Llegaron datos vacios."], 401);
     }
 }

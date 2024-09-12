@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps\cotizador_pruebas;
 
 use App\Http\Controllers\apps\cotizador\session\session;
 use App\Http\Controllers\Controller;
+use App\Models\apps\cotizador\cartera\ModelCartera;
 use App\Models\apps\cotizador_pruebas\ModelCotizacionesRealizadas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,14 @@ class ControllerGenerarCredito extends Controller
 
         if (empty($cedula) || empty($primer_nombre) || empty($primer_apellido) || empty($id_departamento) || empty($id_ciudad) || empty($barrio) || empty($direccion) || empty($telefono) || empty($email)) {
             return response()->json(['status' => false, 'mensaje' => '¡ERROR! los campos en rojo no deben estar vacios'], 401);
+        }
+
+        $cuenta_cartera = ModelCartera::where('cedula_cliente', $cedula)->count();
+
+        if ($cuenta_cartera != 0) {
+            $info_cartera_negativa = ModelCartera::where('cedula_cliente', $cedula)->get();
+            // $table = self::estructuraClienteCartera($info_c);
+            return response()->json(['status' => 'cartera', 'mensaje' => 'No puede realizar el crédito a este cliente'], 400, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
 
         $productos = ModelCotizacionesRealizadas::where('idsession', session('IdSession'))->get();

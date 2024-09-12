@@ -26,7 +26,7 @@ class ControllerPanel extends Controller
     {
         session()->forget(['IdSession']);
         session(['IdSession' => ModelGenerarHash::make()]);
-        return redirect()->route('lista.precios.pruebas');
+        return redirect()->route('lista.precios.crexit');
     }
 
     public function AgregarProducto(Request $request)

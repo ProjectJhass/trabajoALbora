@@ -9,7 +9,7 @@ class ModelInfoCiudades extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'albura_cotizador';
 
     protected $table = 'ciudades_id';
 

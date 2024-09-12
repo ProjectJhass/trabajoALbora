@@ -27,10 +27,19 @@ class ControllerValidarInfo extends Controller
                 ->get();
 
 
-            $cumple =  ModelClientesCRM::whereDay('fecha_cumple', $date_d)
-                ->whereMonth('fecha_cumple', $date_m)
-                ->where('cedula_asesor', $asesor_)
-                ->get();
+            if (Auth::user()->cargo == "administrador") {
+
+                $cumple =  ModelClientesCRM::whereDay('fecha_cumple', $date_d)
+                    ->whereMonth('fecha_cumple', $date_m)
+                    ->get();
+            } else {
+
+                $cumple =  ModelClientesCRM::whereDay('fecha_cumple', $date_d)
+                    ->whereMonth('fecha_cumple', $date_m)
+                    ->where('cedula_asesor', $asesor_)
+                    ->get();
+            }
+
 
 
             if (count($llamadas) > 0) {

@@ -214,6 +214,7 @@ class ControllerInformeDeVentas extends Controller
         }
         return $data_info;
     }
+
     public function getInfoProductosCotizadosAl($asesor, $fecha_i, $fecha_f)
     {
         $data = ModelItemsCotizadosCrm::join('users as u', 'u.nombre', '=', 'cotizaciones.asesor')

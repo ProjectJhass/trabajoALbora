@@ -78,7 +78,7 @@ class ControllerMaestraAsesor extends Controller
                     <span class="direct-chat-name float-left">' . $value->asesor . '</span>
                     <span class="direct-chat-timestamp float-right">' . $value->fecha . '</span>
                 </div>
-                <img class="direct-chat-img" src="/ecommerce/img/profile.png" alt="message user image">
+                <img class="direct-chat-img" src="/ecommerce/img/profile.png">
                 <div class="direct-chat-text bg-info">
                     ' . $value->comentario . '
                 </div>
@@ -89,7 +89,7 @@ class ControllerMaestraAsesor extends Controller
                     <span class="direct-chat-name float-right">' . $value->asesor . '</span>
                     <span class="direct-chat-timestamp float-left">' . $value->fecha . '</span>
                 </div>
-                <img class="direct-chat-img" src="/ecommerce/img/profile.png" alt="message user image">
+                <img class="direct-chat-img" src="/ecommerce/img/profile.png">
                 <div class="direct-chat-text bg-success">
                     ' . $value->comentario . '
                 </div>

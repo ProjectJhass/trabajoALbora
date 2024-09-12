@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ModelInfoDepartamentos extends Model
 {
     use HasFactory;
-    
-    protected $connection = 'cotizador';
+
+    protected $connection = 'albura_cotizador';
 
     protected $table = 'departamentos';
 

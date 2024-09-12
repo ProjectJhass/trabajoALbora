@@ -95,7 +95,7 @@ class ModelIngresosSalidas extends Model
     {
         return DB::table('registro_ingreso as r')
             ->join('users as u', 'u.id', '=', 'r.id_usuario')
-            ->select(['r.id_row' ,'u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso'])
+            ->select(['u.id', 'u.nombre', 'r.fecha_registro', 'r.hora_ingreso', 'r.hora_salida', 'r.hora_reingreso', 'r.hora_salida_reingreso', 'r.id_row'])
             ->whereBetween('r.fecha_registro', ([$fecha_i, $fecha_f]))
             ->where('r.co', $co)
             ->where('u.estado', 1)

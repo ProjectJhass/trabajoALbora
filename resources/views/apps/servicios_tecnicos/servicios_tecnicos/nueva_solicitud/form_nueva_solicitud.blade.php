@@ -74,10 +74,15 @@
                     <div class="form-floating">
                         <select name="txt_tipo_st" id="txt_tipo_st" onchange="validarTipoStForm(this.value)"
                             class="form-control" required>
-                            <option value=""></option>
-                            <option value="CLIENTE" {{ !empty($co_exp) ? 'selected' : '' }}>CLIENTE</option>
-                            <option value="ALMACEN">ALMACEN</option>
-                            <option value="BODEGA">BODEGA</option>
+                            @if (Auth::user()->id == '30314322')
+                                <option value=""></option>
+                                <option value="ALMACEN">ALMACEN</option>
+                            @else
+                                <option value=""></option>
+                                <option value="CLIENTE" {{ !empty($co_exp) ? 'selected' : '' }}>CLIENTE</option>
+                                <option value="ALMACEN">ALMACEN</option>
+                                <option value="BODEGA">BODEGA</option>
+                            @endif
                         </select>
                         <label for="proveedor_st">Tipo ST</label>
                     </div>

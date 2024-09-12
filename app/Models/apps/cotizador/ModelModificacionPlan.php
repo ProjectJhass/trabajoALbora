@@ -9,8 +9,8 @@ class ModelModificacionPlan extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
-    
+    protected $connection = 'pruebas_cotizador_oncredit';
+
     protected $table = 'tasas_descuentos';
 
     protected $primaryKey = 'id_tasa';

@@ -24,11 +24,12 @@ class ControllerMaestraAdmin extends Controller
 
             $info_clientes = ModelClientesCRM::with([
                 'llamadasPendientes',
-                'itemsCotizados'
+                'itemsCotizados',
+                'cumpleanosEnviados'
             ])->where('cedula_asesor', $id_asesor)
                 ->orderByDesc('created_at')
                 ->get();
-                
+
         }else{
 
             $columna = ($tipo_cliente == 5 || $tipo_cliente == 6) ? "estado" : "tipo_cliente";
@@ -36,12 +37,13 @@ class ControllerMaestraAdmin extends Controller
 
             $info_clientes = ModelClientesCRM::with([
                 'llamadasPendientes',
-                'itemsCotizados'
+                'itemsCotizados',
+                'cumpleanosEnviados'
             ])->where('cedula_asesor', $id_asesor)
                 ->where($columna, $valor)
                 ->orderByDesc('created_at')
                 ->get();
-        }      
+        }
 
         $table = view('apps.crm_almacenes.gcp.administrador.tables.tableMaestraAdmin', ['clientes' => $info_clientes])->render();
 

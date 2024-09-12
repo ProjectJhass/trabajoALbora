@@ -9,7 +9,7 @@ class ModelInfoLlamadasPendientes extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'albura_cotizador';
 
     protected $table = 'llamadas_a_realizar';
 

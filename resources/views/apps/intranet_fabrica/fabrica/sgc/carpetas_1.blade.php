@@ -87,7 +87,7 @@
                                         <tr>
                                             <td>{{ $n }}</td>
                                             <td class="text-left">
-                                                <a href="{{ asset('documentacion-sgc/' . $value->documento) }}"
+                                                <a href="{{ asset('storage/documentacion-sgc/' . $value->documento) }}"
                                                     style="text-decoration: none; color: black" target="_BLANK">
                                                     <small><img src="{{ asset('icons/pdf.png') }}" alt="" width="40px">
                                                         {{ $value->nombre_doc }}</small>

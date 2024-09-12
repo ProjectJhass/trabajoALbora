@@ -117,6 +117,7 @@ class ControllerGestionTaller extends Controller
                         $seg_->updateSeguimiento($id_st, 6);
                         $seg_->agregarSeguimiento($id_st, 7);
                     }
+
                 } else {
 
                     $articulo_ = $ost->articulo;

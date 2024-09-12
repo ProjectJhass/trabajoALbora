@@ -9,7 +9,7 @@ class ModelDepartamentos extends Model
 {
     use HasFactory;
 
-    protected $connection = 'cotizador';
+    protected $connection = 'pruebas_cotizador_oncredit';
 
     protected $table = 'departamentos';
 

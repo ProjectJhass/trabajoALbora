@@ -157,7 +157,7 @@
     {{-- Modal para marcar la venta efectiva de clientes punto de ventas SIESA --}}
 
     <div class="modal fade" id="mdl_cumple_cliente_crm">
-        <div class="modal-dialog modal-xl" style="max-width: 50%">
+        <div class="modal-dialog modal-xl" style="max-width: 70%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #c22121; color: white;">
                     <h5>Cumpleaños</h5>
@@ -217,7 +217,7 @@
                         <img src="{{ asset('img/asesor.png') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <div class="d-block text-white">CRM Punto de Venta</div>
+                        <div class="d-block text-white">CRM Punto de Venta {{ Auth::user()->cargo }}</div>
                     </div>
                 </div>
 
@@ -245,7 +245,7 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a href="{{ route('lista.precios.pruebas', ['origen' => '1']) }}"
+                                <a href="{{ route('lista.precios.crexit', ['origen' => '1']) }}"
                                     class="nav-link text-white">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>
@@ -330,6 +330,8 @@
                                     </p>
                                 </a>
                             </li>
+                        @endif
+                        @if (Auth::user()->cargo == 'administrador')
                             <li class="nav-item">
                                 <a href="{{ route('crm.exportar.home') }}"
                                     class="nav-link text-white @yield('exportar')">
@@ -1419,6 +1421,16 @@
         }
         VisualizarProductosCliente = (id_cliente) => {
             $('#informacion-productos-cotizados').modal('show');
+            document.getElementById('informacion-productos-cotizados-cliente').innerHTML = "";
+            $('#valor_a_pagar').val('');
+            Swal.fire({
+                position: 'top',
+                icon: 'info',
+                toast: true,
+                title: 'Cargando comentarios.',
+                showConfirmButton: false,
+                timer: 10000
+            })
 
             var datos = $.ajax({
                 url: "{{ route('items.cotizados.crm') }}",
@@ -1433,6 +1445,7 @@
             });
             datos.done((res) => {
                 if (res.status == true) {
+                    Swal.close();
                     document.getElementById('informacion-productos-cotizados-cliente').innerHTML = res
                         .productos;
                     $('#valor_a_pagar').val("$ " + new Intl.NumberFormat("es-CO").format(res.vlr_pagar));
@@ -1453,6 +1466,7 @@
 
             let number = $(`#cellnumber_cumple_${id_cliente}`).val();
             let text = $(`#text_cumple_${id_cliente}`).val();
+            let text_cliente = $(`#text_cumple_${id_cliente}`).val();
 
             try {
                 // Fetch the image
@@ -1476,6 +1490,23 @@
                     window.open(
                         `https://web.whatsapp.com/send/?phone=${number}&text=${text}&type=phone_number&app_absent=0`,
                         'BLANK_');
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('crm_almacenes.general.create_birthday') }}",
+                        data: {
+                            "id_client": id_cliente,
+                            "cell_client": number,
+                            "text_client": text_cliente,
+                            "img_client": imageUrl
+                        },
+                        success: function (response) {
+                            console.log(response);
+                        }, error: (err) => {
+                            console.error(err);
+                        }
+                    });
+
                 }, 'image/png');
             } catch (error) {
                 console.error("Error al copiar la imagen al portapapeles:", error);

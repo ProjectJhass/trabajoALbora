@@ -1,10 +1,18 @@
+@php
+    function formatName_client($name)
+    {
+        $name = preg_replace('/\s+/', ' ', trim($name));
+        $name = ucwords(strtolower($name));
+        return $name;
+    }
+@endphp
 <div class="container">
     @if ($count_birthday > 0 || $count_birthday_tomorrow > 0)
 
         @if ($count_birthday > 0)
             <div class="row">
 
-                <div class="col-lg-12">
+                <div class="col-lg-9">
 
                     <h3 class="text-center text-danger">Hoy</h3>
 
@@ -16,36 +24,66 @@
                                     class="img-size-50 mr-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
-                                        {{ $item->nombre_1 . ' ' . $item->nombre_2 . ' ' . $item->apellido_1 . ' ' . $item->apellido_2 }}
-                                        <a onclick='copyImageToClipboard("https://app-mueblesalbura.com/mesa_de_ayuda/imagenes/img/Cumplean%CC%83os%20Cliente%20Albura.jpeg", "{{ $item->id_cliente }}")'
-                                            class="float-right text-sm text-success"><i class="fab fa-whatsapp"
-                                                style="font-size: 28px"></i></a>
+                                        {{ $name_client = $item->nombre_1 . ' ' . $item->nombre_2 . ' ' . $item->apellido_1 . ' ' . $item->apellido_2 }}
+                                        @if (Auth::user()->cargo != 'administrador')
+                                            <a onclick='copyImageToClipboard("https://app-mueblesalbura.com/mesa_de_ayuda/imgCasos/cumpleanos_cliente_crm.jpg", "{{ $item->id_cliente }}")'
+                                                class="float-right text-sm text-success"><i class="fab fa-whatsapp"
+                                                    style="font-size: 28px"></i></a>
+                                        @endif
                                     </h3>
                                     <p class="text-sm">Cumpleaños</p>
                                     <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> Hoy</p>
+                                    @if (Auth::user()->cargo == 'administrador')
+                                        <p class="text-sm text-muted"><b>Asesor: </b>
+                                            {{ $item->nombre }}</p>
+                                        <p class="text-sm text-muted"><b>Telefono: </b>
+                                            {{ $item->celular_1 }}</p>
+                                        <p class="text-sm text-muted"><b>Estado: </b>
+                                            @if ($item->id_cumple_enviado != null)
+                                                <b class="text-success">Enviado</b>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Mensaje</span>
+                                                    <textarea rows="3" class="form-control">{{ base64_decode($item->text_enviado) }}</textarea>
+                                                </div>
+                                            @else
+                                                <b class="text-danger">No enviado</b>
+                                            @endif
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1">Telefono</span>
-                                        <input type="text" class="form-control" placeholder="Username"
-                                            aria-label="Username" value="57{{ $item->celular_1 }}"
-                                            id="cellnumber_cumple_{{ $item->id_cliente }}"
-                                            aria-describedby="basic-addon1">
+                            @if (Auth::user()->cargo != 'administrador')
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" id="basic-addon1">Telefono</span>
+                                            <input type="text" class="form-control" placeholder="Username"
+                                                aria-label="Username" value="57{{ $item->celular_1 }}"
+                                                id="cellnumber_cumple_{{ $item->id_cliente }}"
+                                                aria-describedby="basic-addon1">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Mensaje</span>
+                                            <textarea rows="3" class="form-control" id="text_cumple_{{ $item->id_cliente }}" aria-label="With textarea">!Hola, *{{ formatName_client("$name_client") }}* que tengas un día maravilloso, Feliz Cumpleaños te desea *Muebles Albura* 🎉🙌✨!</textarea>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-7">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Mensaje</span>
-                                        <textarea rows="1" class="form-control" id="text_cumple_{{ $item->id_cliente }}" aria-label="With textarea">!Que tengas un día maravilloso, Feliz Cumpleaños le desea Muebles Albura 🎉🙌✨!</textarea>
-                                    </div>
-                                </div>
-                            </div>
+                            @endif
                         </div>
                         <div class="dropdown-divider"></div>
                     @endforeach
 
+                </div>
+                <div class="col-lg-3">
+                    <div class="text-center">
+                        <b>Imagen de cumpleaños</b>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <img width="180" height="auto"
+                            src="https://app-mueblesalbura.com/mesa_de_ayuda/imgCasos/cumpleanos_cliente_crm.jpg">
+                    </div>
                 </div>
 
             </div>

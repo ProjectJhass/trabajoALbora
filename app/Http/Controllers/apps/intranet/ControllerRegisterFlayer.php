@@ -21,35 +21,74 @@ class ControllerRegisterFlayer extends Controller
         ]);
     }
 
+    /* DOS VECES AL MES */
+
+    // public function validateImgFlayer(Request $request)
+    // {
+    //     $img = "";
+
+    //     if(Auth::user()->id == '' || empty(Auth::user()->id)){
+    //         return response()->json([], 302, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    //     }
+
+    //     if ($request->has('val')) {
+    //         $cedula = Auth::user()->id;
+
+    //         $date = date('Y-m-d');
+    //         $init = date("Y-m") . "-01";
+    //         $fin = date("Y-m") . "-15";
+
+    //         $periodo = $date >= $init && $date < $fin ? 1 : 2;
+    //         $operador = $periodo == 1 ? "<" : ">=";
+    //         $fecha_evaluar = $periodo == 1 ? $init : $fin;
+
+    //         $valor = ModelInfoFlayer::where('fecha', $operador, $fecha_evaluar)->where('id_estado', '<>', '0')->where('cedula', $cedula)->count();
+
+    //         $bool = $valor == 0 ? true : false;
+
+    //         if ($bool) {
+    //             $img = ModelFlayer::all();
+    //             foreach ($img as $key => $value) {
+    //                 $url = $value->url;
+    //             }
+    //             $img = '<img src="' . asset($url) . '" width="90%" alt="">';
+    //         }
+
+    //         return response()->json(['status' => $bool, 'img' => $img], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    //     }
+
+    //     return response()->json([], 302, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    // }
+
+    /* 1 VEZ AL MES */
     public function validateImgFlayer(Request $request)
     {
         $img = "";
 
-        if(Auth::user()->id == '' || empty(Auth::user()->id)){
+        if (Auth::user()->id == '' || empty(Auth::user()->id)) {
             return response()->json([], 302, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
 
         if ($request->has('val')) {
             $cedula = Auth::user()->id;
+            $currentMonth = date('Y-m'); // Obtener el mes actual (YYYY-MM)
 
-            $date = date('Y-m-d');
-            $init = date("Y-m") . "-01";
-            $fin = date("Y-m") . "-15";
-
-            $periodo = $date >= $init && $date < $fin ? 1 : 2;
-            $operador = $periodo == 1 ? "<" : ">=";
-            $fecha_evaluar = $periodo == 1 ? $init : $fin;
-
-            $valor = ModelInfoFlayer::where('fecha', $operador, $fecha_evaluar)->where('id_estado', '<>', '0')->where('cedula', $cedula)->count();
+            // Verificar si ya se ha mostrado la imagen este mes
+            $valor = ModelInfoFlayer::where('fecha', 'LIKE', $currentMonth . '%')
+                ->where('id_estado', '<>', '0')
+                ->where('cedula', $cedula)
+                ->count();
 
             $bool = $valor == 0 ? true : false;
 
             if ($bool) {
+                // Mostrar imagen y guardar el registro de que fue vista este mes
                 $img = ModelFlayer::all();
                 foreach ($img as $key => $value) {
                     $url = $value->url;
                 }
                 $img = '<img src="' . asset($url) . '" width="90%" alt="">';
+
             }
 
             return response()->json(['status' => $bool, 'img' => $img], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);

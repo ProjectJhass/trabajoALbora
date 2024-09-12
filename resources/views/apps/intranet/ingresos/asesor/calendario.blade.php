@@ -741,7 +741,7 @@
                         $("#modalTomarFotografia").modal("show")
                         tomarFotografiaDescanso()
                     }
-                    
+
                 } else {
                     Swal.fire({
                         position: 'top-end',

@@ -142,46 +142,42 @@
         let coutaMensualFija = parseFloat(PxI / UnoMenosUnoPotenciadoPeriodo)
 
 
-        let domHtml = `                    <div class="row">
-
-<div class="col m-2">
-    <div class="d-flex justify-content-center">
-    <label for="">Tasa De Interes</label>
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon3">%</span>
-        </div>
-        <input type="text" value="2.17" class="form-control" readonly id="monto_credito_simulador">
-    </div>
-</div>
-<div class="col m-2">
-
-    <div class="d-flex justify-content-center">
-    <label for="">Cuota Mensual</label>
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon3">$</span>
-        </div>
-        <input type="text" value="${formatter.format(Math.round(coutaMensualFija))}" readonly class="form-control" id="monto_credito_simulador">
-    </div>
-
-</div>
-<div class="col m-2">
-    <div class="d-flex justify-content-center">
-    <label for="">Tiempo Financiación</label>
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon3">Meses</span>
-        </div>
-        <input type="text" value="${plazo_coutas}" class="form-control" readonly id="monto_credito_simulador">
-    </div>
-
-</div>
-
-</div>`
+        let domHtml = `
+            <div class="row">
+                <div class="col m-2">
+                    <div class="d-flex justify-content-center">
+                    <label for="">Tasa De Interes</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">%</span>
+                        </div>
+                        <input type="text" value="2.17" class="form-control" readonly id="monto_credito_simulador">
+                    </div>
+                </div>
+                <div class="col m-2">
+                    <div class="d-flex justify-content-center">
+                    <label for="">Cuota Mensual</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">$</span>
+                        </div>
+                        <input type="text" value="${formatter.format(Math.round(coutaMensualFija))}" readonly class="form-control" id="monto_credito_simulador">
+                    </div>
+                </div>
+                <div class="col m-2">
+                    <div class="d-flex justify-content-center">
+                        <label for="">Tiempo Financiación</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Meses</span>
+                        </div>
+                        <input type="text" value="${plazo_coutas}" class="form-control" readonly id="monto_credito_simulador">
+                    </div>
+                </div>
+            </div>`;
 
         Swal.fire({
             position: "top",
@@ -196,8 +192,5 @@
         $('#cargar_informacion_simulacion').html(domHtml);
         $('#hidden_block_simulacion').show();
         $('#hidden_block_simulacion').addClass("animate__animated animate__flash");
-
-
-
     }
 </script>
