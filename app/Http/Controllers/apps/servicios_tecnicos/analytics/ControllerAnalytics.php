@@ -9,6 +9,7 @@ use App\Models\apps\intranet\ModelFechasExcluidas;
 use App\Models\apps\servicios_tecnicos\servicios\ModelHistorialFechasNotificacion;
 use App\Models\apps\servicios_tecnicos\servicios\ModelNuevaSolicitud;
 use App\Models\apps\servicios_tecnicos\servicios\ModelHistorialSeguimiento;
+use App\Models\apps\servicios_tecnicos\servicios\ModelHistoricoNotificacionesPersonalizadas;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,6 +25,7 @@ class ControllerAnalytics extends Controller
     {
         // self::notificarRetrasos();
         self::programarNotificacionesRetrasos();
+        // self::validarNotificacionesEnvioRecogida();
 
         $year = date('Y');
 
@@ -43,8 +45,22 @@ class ControllerAnalytics extends Controller
             ->where('respuesta_st', '<>', 'Cobrable')
             ->whereYear('created_at', $year)->groupBy(DB::raw('month(created_at)'))->get();
 
-        return view('apps.servicios_tecnicos.servicios_tecnicos.home', ['cantidad' => $count_st, 'items' => $data_, 'js' => $data_->toArray(), 'periodico' => $months->toArray(), 'tiempos_table' => $tiempos_table, 'odts' => $odts, 'tiempos_graph' => $tiempos_graph, 'causalidades_graph' => $causalidades_graph]);
+        return view(
+            'apps.servicios_tecnicos.servicios_tecnicos.home',
+            [
+                'cantidad' => $count_st,
+                'items' => $data_,
+                'js' => $data_->toArray(),
+                'periodico' => $months->toArray(),
+                'tiempos_table' => $tiempos_table,
+                'odts' => $odts,
+                'tiempos_graph' => $tiempos_graph,
+                'causalidades_graph' => $causalidades_graph,
+                // "data_time_graph" => self::getInfoHistorialSeguimiento()
+            ]
+        );
     }
+
     public function searchinfo(Request $request)
     {
         $grafica = $request->grafica;
@@ -179,6 +195,7 @@ class ControllerAnalytics extends Controller
         $data_info = self::getInfoHistorialSeguimiento($orden_servicio);
         return view('apps.servicios_tecnicos.servicios_tecnicos.seguimiento.tiempos_respuesta', ['data' => $data_info])->render();
     }
+
     public function filtrarFechaGraficas(Request $request)
     {
         $fecha_i = $request->fecha_i;
@@ -194,6 +211,7 @@ class ControllerAnalytics extends Controller
 
         return response()->json(['tiempos' => $tiempos, 'causales' => $causales]);
     }
+
     public function obtenerOrdenesST(Request $request)
     {
         $orden_servicio = $request->co;
@@ -204,6 +222,7 @@ class ControllerAnalytics extends Controller
         }
         return response()->json(['status' => true, 'table' => $tiempos_table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
+
     public function obtenerGraficaODT(Request $request)
     {
         $fecha_i = $request->fecha_i;
@@ -216,6 +235,7 @@ class ControllerAnalytics extends Controller
         }
         return response()->json(['status' => true, 'graph' => $tiempos_graph], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
+
     public function getTiemposRespuestaGraph($orden_servicio, $fecha_i = null, $fecha_f = null, $estado = null)
     {
         $data_info = self::getInfoHistorialSeguimiento($orden_servicio, $fecha_i, $fecha_f, $estado);
@@ -570,5 +590,78 @@ class ControllerAnalytics extends Controller
     public function esFestivo($fecha): bool
     {
         return ModelFechasExcluidas::where('fecha', '=', $fecha)->exists();
+    }
+
+    public function validarNotificacicionesEnvioRecogida()
+    {
+        $data_time_graph = self::getInfoHistorialSeguimiento('');
+
+        $date_d = date('d');
+        $date_m = date('m');
+        $date_y = date('Y');
+
+        $arr_id_st = [];
+
+        $cant_demora_recogida = 0;
+
+        foreach ($data_time_graph as $key_time_graph => $value_time_graph) {
+            $id_st = $value_time_graph[0]->id_st;
+
+            for ($i = 1; $i <= 7; $i++) {
+                if (isset($value_time_graph[$i - 1]) && $value_time_graph[$i - 1]->etapa == "Recogida") {
+                    if ($value_time_graph[$i - 1]->diferencia >= 4) {
+
+                        $verify_existe_fecha_final = ModelHistorialSeguimiento::where('id_st', $id_st)
+                            ->where('id_proceso', $i)->first();
+
+                        if ($verify_existe_fecha_final->fecha_final == "" || $verify_existe_fecha_final->fecha_final == null) {
+
+                            $st_exist = ModelHistoricoNotificacionesPersonalizadas::where('id_st', '=', $id_st)
+                                ->where('id_proceso', $i)->where('day', $date_d)->where('month', $date_m)->where('year', $date_y)->first();
+
+                            if (!$st_exist) {
+
+                                $cant_demora_recogida++;
+
+                                $arr_id_st[] = $id_st;
+
+                                ModelHistoricoNotificacionesPersonalizadas::create([
+                                    "id_st" => $id_st,
+                                    "id_proceso" => $i,
+                                    "dias_transcurridos" => $value_time_graph[$i - 1]->diferencia ?? 1,
+                                    "day" => $date_d,
+                                    "month" => $date_m,
+                                    "year" => $date_y
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(!empty($arr_id_st)) {
+            self::enviarNotificacionCorreoST($arr_id_st);
+        }
+    }
+
+    public function enviarNotificacionCorreoST($arr_id_st)
+    {
+        try{
+
+            $to = ["bodega.ppal@mueblesalbura.com.co", "logistica@mueblesalbura.com.co"];
+            // $to = ["albura.development@gmail.com"];
+
+            $data = ModelHistoricoNotificacionesPersonalizadas::with([
+                'nuevaSolicitud',
+            ])
+                ->whereIn('id_st', $arr_id_st)->get();
+            Mail::send('apps.servicios_tecnicos.servicios_tecnicos.seguimiento.reporte-retraso-recogida', ['data' => $data], function ($mail) use ($to) {
+                $mail->to($to);
+                $mail->subject('Novedad en tiempos de recogida de servicios');
+            });
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

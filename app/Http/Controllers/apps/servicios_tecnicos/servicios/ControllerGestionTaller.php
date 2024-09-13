@@ -117,7 +117,6 @@ class ControllerGestionTaller extends Controller
                         $seg_->updateSeguimiento($id_st, 6);
                         $seg_->agregarSeguimiento($id_st, 7);
                     }
-
                 } else {
 
                     $articulo_ = $ost->articulo;
@@ -232,8 +231,43 @@ class ControllerGestionTaller extends Controller
 
             $seg_ost = new ControllerSeguimientoSt();
             $form = $seg_ost->timeLineOst($id_st);
+
+            self::enviarNotificacionCorreoSTAccion($request->id_st_taller, $accion, $estado_articulo);
+
             return response()->json(['status' => true, 'form' => $form], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         }
         return response()->json([], 401, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+    }
+
+    public function enviarNotificacionCorreoSTAccion($id_st, $accion, $estado_articulo)
+    {
+        try {
+
+            if ($accion == 'ingreso') {
+                $to = ["diana.mora@mueblesalbura.com.co", "serviciostecnicos@mueblesalbura.com.co"];
+            } else {
+                $to = ["bodega.ppal@mueblesalbura.com.co", "logistica@mueblesalbura.com.co"];
+            }
+
+            // $to = ["albura.development@gmail.com"];
+
+            $data = ModelNuevaSolicitud::find($id_st);
+
+            Mail::send(
+                'apps.servicios_tecnicos.servicios_tecnicos.seguimiento.reporte-detalle-fabrica',
+                [
+                    'data' => $data,
+                    'action' => $accion,
+                    "estado_articulo" => $estado_articulo,
+                ],
+                function ($mail) use ($to, $id_st, $accion) {
+                    $mail->to($to);
+                    $mail->subject("Se realiza un(a) $accion a la Orden de servicio $id_st.");
+                }
+            );
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
