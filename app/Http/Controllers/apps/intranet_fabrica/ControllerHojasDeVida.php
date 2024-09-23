@@ -112,4 +112,28 @@ class ControllerHojasDeVida extends Controller
             return response()->json(['mensaje' => 'Ocurrió un error en el proceso'], 500);
         }
     }
+
+    public function documento_hojas_de_vida_maquinas(Request $request)
+    {
+        $referenciaMaquina = $request->referencia;
+        $fechaInicial = date('Y-m-d', strtotime($request->fechaInicial));
+        $fechaFinal = date('Y-m-d', strtotime($request->fechaFinal));
+
+        $historialMaquina = OrmModelSolicitudesMtto::where("maquina", "LIKE", "%$referenciaMaquina%")
+            ->whereBetween('fecha_solicitud', [$fechaInicial, $fechaFinal])->orderByDesc("fecha_solicitud")->get();
+
+        $info = ModelHvMaquinas::where("referencia", "LIKE", "%$referenciaMaquina%")
+            ->orWhere("nombre_maquina", "LIKE", "%$referenciaMaquina%")
+            ->orderByDesc("created_at")
+            ->get();
+
+        return view(
+            'apps.intranet_fabrica.fabrica.hojas_vida.documents.historial_maquina_pdf',
+            [
+                'referencia' => $referenciaMaquina,
+                'info_maquina' => $info,
+                'historialMaquina' => $historialMaquina
+            ]
+        )->render();
+    }
 }

@@ -54,7 +54,7 @@ class ControllerSavePlanificacionCorte extends Controller
                     empty($request['cantidad_pieza' . $i]) ||
                     empty($request['largo_bloque' . $i]) ||
                     empty($request['pulgadas_utilizadas' . $i]) ||
-                    empty($request['troncoNum' . $i]) ||
+                    // empty($request['troncoNum' . $i]) ||
                     empty($request['calidad_corte' . $i])
                 ) {
                     $info_insert = ModelCortesPlanificados::find($id_plan);
@@ -66,14 +66,14 @@ class ControllerSavePlanificacionCorte extends Controller
 
             ModelConsecutivosMadera::whereNotIn('estado', ['Procesado', 'Pendiente', 'Empezado', 'En corte'])->update(['estado' => 'Activo']);
             ModelPiezasMaderaFavor::where('estado', "Por confirmar")->update(["estado" => "Pendiente"]);
-            
+
             for ($i = 1; $i < $cantidad_piezas; $i++) {
-                
+
                 $suma_pulgadas = 0;
                 $troncos_utilizados  = [];
-                
+
                 $id_pieza = $request['id_pieza_planner' . $i];
-                
+
                 ModelPiezasMaderaFavor::where('estado', "En uso")->where("pieza", $id_pieza)->update(["estado" => "Procesado"]);
                 ModelCortesPiezaFavor::where('estado', "Por confirmar")->where("id_pieza", $id_pieza)->update(["estado" => "Procesado", "id_plan" => $id_plan]);
 
@@ -119,7 +119,7 @@ class ControllerSavePlanificacionCorte extends Controller
                         $cantidad_pieza = 0;
                         $estado = "Completado";
                     }else{
-                        $estado = "Pendiente"; 
+                        $estado = "Pendiente";
                     }
                 }else{
                     $estado = "Pendiente";

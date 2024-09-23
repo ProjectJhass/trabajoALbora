@@ -3,7 +3,7 @@
         <div class="user-block">
             <img class="img-circle img-bordered-sm" src="{{ asset('img/mantenimiento.png') }}" alt="user image">
             <span class="username">
-                <div class="text-primary">{{ $historial->solicitud }}</div>
+                <div><b>Descripción del requerimiento: </b> <b class="text-primary">{{ $historial->solicitud }}</b></div>
             </span>
             <span class="description">
                 <b>Responsable: </b>{{ $historial->responsable_s }} <br>

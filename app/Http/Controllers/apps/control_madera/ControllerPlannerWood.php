@@ -47,13 +47,15 @@ class ControllerPlannerWood extends Controller
         }
 
         foreach ($piezas_planificadas as $key => $val) {
-            $bloques = explode(",", $val->troncos);
-            foreach ($bloques as $key => $info) {
-                if(!empty($info)){
-                    $bloque_ = ModelConsecutivosMadera::find($info);
-                    $bloque_->estado = "Ocupado";
-                    $bloque_->save();
-                }                
+            if(!empty($val->troncos)) {
+                $bloques = explode(",", $val->troncos);
+                foreach ($bloques as $key => $info) {
+                    if(!empty($info)){
+                        $bloque_ = ModelConsecutivosMadera::find($info);
+                        $bloque_->estado = "Ocupado";
+                        $bloque_->save();
+                    }
+                }
             }
         }
 
@@ -74,44 +76,62 @@ class ControllerPlannerWood extends Controller
     {
         $id_pieza = $request->id_pieza;
         $tronco = $request->tronco;
+        $madera_ = $request->madera_;
         $pulgadas_cortadas = 0;
+
+        if($madera_ == "Flormorado") {
+            $madera_ = "F";
+        } else if($madera_ == "Vaquera") {
+            $madera_ = "V";
+        } else if($madera_ == "Pino Cipres") {
+            $madera_ = "P";
+        }
 
         $info_tronco = ModelConsecutivosMadera::find($tronco);
 
         if ($info_tronco->estado == "Activo" || $info_tronco->estado == "Ocupado") {
 
-            $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
-            $tronco_db = $info_->troncos_utilizados;
-            $info_->troncos_utilizados = empty($tronco_db) ? $tronco : $tronco_db . "," . $tronco;
-            $info_->save();
+            if($info_tronco->tipo_madera == $madera_) {
+                $info_ = ModelPiezasPlanificadasCorte::find($id_pieza);
+                $tronco_db = $info_->troncos_utilizados;
+                $info_->troncos_utilizados = empty($tronco_db) ? $tronco : $tronco_db . "," . $tronco;
+                $info_->save();
 
-            $pulgadas_tronco = $info_tronco->pulgadas;
-            $pulgadas_restantes =  $info_->pulgadas_resta;
+                $pulgadas_tronco = $info_tronco->pulgadas;
+                $pulgadas_restantes =  $info_->pulgadas_resta;
 
-            $info_tronco->estado = "En corte";
-            $info_tronco->save();
+                $info_tronco->estado = "En corte";
+                $info_tronco->save();
 
-            $info_p = ModelPiezasPlanificadasCorte::where("id_plan", $info_->id_plan)->get();
-            foreach ($info_p as $key => $val) {
-                $bloques = explode(",", $val->troncos_utilizados);
-                foreach ($bloques as $key => $bloque) {
-                    if(!empty($bloque)){
-                        $info_c = ModelConsecutivosMadera::find($bloque);
-                        $pulgadas_cortadas += $info_c->pulgadas;
+                $info_p = ModelPiezasPlanificadasCorte::where("id_plan", $info_->id_plan)->get();
+                foreach ($info_p as $key => $val) {
+                    if(!empty($val->troncos_utilizados)) {
+                        $bloques = explode(",", $val->troncos_utilizados);
+                        foreach ($bloques as $key => $bloque) {
+                            if(!empty($bloque)){
+                                $info_c = ModelConsecutivosMadera::find($bloque);
+                                $pulgadas_cortadas += $info_c->pulgadas;
+                            }
+                        }
                     }
                 }
+
+                $data_c = ModelCortesPlanificados::find($info_->id_plan);
+                $data_c->pulgadas_cortadas = $pulgadas_cortadas;
+                $data_c->save();
+
+                ModelLogs::create([
+                    'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el bloque #' . $tronco . ' para corte de serie en la woodniser',
+                    'usuario' => Auth::user()->nombre
+                ]);
+
+                return response()->json(['status' => true, 'tronco' => number_format($tronco), 'pulgadas' => number_format($pulgadas_tronco), 'utilizables' => number_format($pulgadas_restantes)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+            } else {
+                return response()->json(['status' => false, "mensaje" => "Este tronco es de otro tipo de madera!"], 401);
             }
 
-            $data_c = ModelCortesPlanificados::find($info_->id_plan);
-            $data_c->pulgadas_cortadas = $pulgadas_cortadas;
-            $data_c->save();
-
-            ModelLogs::create([
-                'accion' => 'El usuario ' . Auth::user()->nombre . ' utilizó el bloque #' . $tronco . ' para corte de serie en la woodniser',
-                'usuario' => Auth::user()->nombre
-            ]);
-
-            return response()->json(['status' => true, 'tronco' => number_format($tronco), 'pulgadas' => number_format($pulgadas_tronco), 'utilizables' => number_format($pulgadas_restantes)], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        } else {
+            return response()->json(['status' => false, "mensaje" => "Este tronco no puede ser utilizado, porque ya esta utilizado!"], 403);
         }
     }
 
@@ -141,10 +161,12 @@ class ControllerPlannerWood extends Controller
 
         $info_p = ModelPiezasPlanificadasCorte::where("id_plan", $info_->id_plan)->get();
         foreach ($info_p as $key => $val) {
-            $bloques = explode(",", $val->troncos_utilizados);
-            foreach ($bloques as $key => $bloque) {
-                $info_c = ModelConsecutivosMadera::find($bloque);
-                $pulgadas_cortadas += $info_c->pulgadas;
+            if(!empty($val->troncos_utilizados)) {
+                $bloques = explode(",", $val->troncos_utilizados);
+                foreach ($bloques as $key => $bloque) {
+                    $info_c = ModelConsecutivosMadera::find($bloque);
+                    $pulgadas_cortadas += $info_c->pulgadas;
+                }
             }
         }
 
@@ -193,7 +215,9 @@ class ControllerPlannerWood extends Controller
             // $cantidad_total = $cantidad_solicitada;
             $info_->estado = 'Completado';
             $clase = 'text-success';
-            self::updateInfoTroncos($info_->troncos, $info_->troncos_utilizados);
+            if(!empty($info_->troncos_utilizados) && !empty($info_->troncos)) {
+                self::updateInfoTroncos($info_->troncos, $info_->troncos_utilizados);
+            }
         }
 
         $info_->cantidad_cortada = $cantidad_total;
@@ -395,6 +419,7 @@ class ControllerPlannerWood extends Controller
     public function saveInformationPiezasMadera(Request $request)
     {
         $largo = $request->largoOtraSerie;
+        $largo = str_replace(',', '.', $largo);
         $ancho = $request->anchoOtraSerie;
         $grueso = $request->gruesoOtraSerie;
         $cantidad = $request->cantidadOtraSerie;

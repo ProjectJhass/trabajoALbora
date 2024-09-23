@@ -113,7 +113,7 @@
                                 </li>
                             @endif
                             @php
-                                $array_ = ['SERVICIO TECNICO FAB', 'SERVICIO TECNICO', 'HAPPYSLEEP', 'PPAL'];
+                                $array_ = ['SERVICIO TECNICO FAB', 'SERVICIO TECNICO', 'HAPPYSLEEP', 'PPAL', 'MANIZALES_017'];
                             @endphp
                             @if (in_array(Auth::user()->almacen, $array_) && $info_st->estado != 'En devolucion')
                                 <li><a class="dropdown-item" id="close{{ $id_ost }}" href="javascript:void(0);"

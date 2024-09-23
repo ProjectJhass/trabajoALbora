@@ -73,17 +73,26 @@ class ControllerGenerarCredito extends Controller
         ]);
 
         //Url del endpoint para envio de informacion
+
+        // if(Auth::user()->id == "6401505") {
+        //     $url_endPoint = 'https://scriptcase-8.dev.cuotasoft.com/scriptcase/app/Albura/blank_api_creacion_prospecto/';
+        // } else {
+        //     $url_endPoint = 'https://albura.cuotasoft.com/blank_api_creacion_prospecto/';
+        // }
+
         $url_endPoint = 'https://albura.cuotasoft.com/blank_api_creacion_prospecto/';
         //Llave de autenticacion
         $key = '|03ya9C]OTsQcjjm#_mZ:&gf%;*Y#u*V=}F£W!vbO{7g$6%_H9';
 
-        $response = Http::withHeaders(['Key' => $key])->post($url_endPoint, $datos_credito);
+        $response = Http::withHeaders(['Key' => $key])->withOptions(['verify' => false])->post($url_endPoint, $datos_credito);
 
         if ($response->successful()) {
             return response()->json(['status' => true, 'mensaje' => 'Información creada existosamente'], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
         } else {
             if ($response->status() == 409) {
                 return response()->json(['status' => false, 'mensaje' => 'El usuario ya está registrado'], $response->status());
+            } else {
+                return response()->json(['status' => false, 'mensaje' => 'Error no conocido.', 'response' => $response], $response->status());
             }
         }
     }

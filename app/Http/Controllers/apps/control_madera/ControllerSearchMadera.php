@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps\control_madera;
 
 use App\Http\Controllers\Controller;
 use App\Models\apps\control_madera\ModelConsecutivosMadera;
+use App\Models\apps\control_madera\ModelInspeccionMateriaPrima;
 use Illuminate\Http\Request;
 
 class ControllerSearchMadera extends Controller
@@ -128,14 +129,24 @@ class ControllerSearchMadera extends Controller
 
         $form_ = '<option value=""></option>';
         $response = self::findCombinations($id_, $pulgadas_a_utilizar, $bloques_, $id_madera);
-        $troncos = ModelConsecutivosMadera::where('estado', 'Activo')->where("id_info_madera", $id_madera)->whereIn('largo', $bloques_)->orderBy('pulgadas', 'asc')->get();
+        $tipo_madera__ = "";
+
+        if($id_madera == '1') {
+            $tipo_madera__ = "V";
+        } else if($id_madera == "2") {
+            $tipo_madera__ = "F";
+        } else if ($id_madera == "3") {
+            $tipo_madera__ = "P";
+        }
+         // $troncos = ModelConsecutivosMadera::where('estado', 'Activo')->where("id_info_madera", $id_madera)->whereIn('largo', $bloques_)->orderBy('pulgadas', 'asc')->get();
+        $troncos = ModelConsecutivosMadera::where('estado', 'Activo')->where("tipo_madera", $tipo_madera__)->whereIn('largo', $bloques_)->orderBy('pulgadas', 'asc')->get();
         foreach ($troncos as $key => $value) {
             $form_ .= '<option value="' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . '">' . $value->id . ' - ' . number_format($value->pulgadas) . '″ ' . $value->tipo_madera . ' - L' . $value->largo . 'm</option>';
         }
 
         $span_ = empty($response[0]) ? '¡Seleccionar manualmente!' : $response[0];
 
-        return response()->json(['pulgadas_utilizar' => $pulgadas_a_utilizar, 'span' => $span_, 'ids' => $response[1], 'pulgadas' => $form_, 'sum_p' => $response[2]], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
+        return response()->json(['id_madera' => $id_madera, 'pulgadas_utilizar' => $pulgadas_a_utilizar, 'span' => $span_, 'ids' => $response[1], 'pulgadas' => $form_, 'sum_p' => $response[2]], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
     public function changeEstadoTroco(Request $request)

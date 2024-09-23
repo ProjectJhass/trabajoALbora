@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         .loader-wrapper {
             --line-width: 5px;
@@ -1500,9 +1501,10 @@
                             "text_client": text_cliente,
                             "img_client": imageUrl
                         },
-                        success: function (response) {
+                        success: function(response) {
                             console.log(response);
-                        }, error: (err) => {
+                        },
+                        error: (err) => {
                             console.error(err);
                         }
                     });
@@ -1511,6 +1513,40 @@
             } catch (error) {
                 console.error("Error al copiar la imagen al portapapeles:", error);
             }
+        }
+
+        function beforeSendFunction() {
+            Swal.fire({
+                title: "Cargando... Por favor, espere.",
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                showConfirmButton: false,
+                toast: true,
+                position: "top"
+            })
+        }
+
+        function principalToastCallBack(content, timer, icon, callback) {
+            const ToastSW = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                padding: "1.5rem",
+                timer: timer,
+                icon: icon,
+            });
+
+            ToastSW.fire({
+                icon: icon,
+                title: content,
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    if (typeof callback === "function") {
+                        callback();
+                    }
+                }
+            });
         }
     </script>
     @yield('footer')

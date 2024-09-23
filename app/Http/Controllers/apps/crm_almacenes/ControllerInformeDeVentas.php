@@ -97,7 +97,7 @@ class ControllerInformeDeVentas extends Controller
         // Iteramos sobre los clientes y sus ventas efectivas
         foreach ($info_clientes as $cliente) {
             foreach ($cliente->ventasEfectivas as $venta) {
-                $nombre_asesor = $cliente->asesoresCRM[0]->nombre; // Suponiendo que "nombre" es el campo que almacena el nombre del asesor
+                $nombre_asesor = $cliente->asesoresCRM[0]->nombre ?? ""; // Suponiendo que "nombre" es el campo que almacena el nombre del asesor
                 $medio_pago = $venta->medio_de_pago; // Suponiendo que "nombre" es el campo que almacena el tipo de pago
                 $valor_venta_total = 0; // Inicializamos el valor total de la venta en 0
                 foreach ($cliente->itemsCotizados as $producto) {
@@ -156,7 +156,7 @@ class ControllerInformeDeVentas extends Controller
         $ventas_por_asesor_ciudad = [];
 
         foreach ($info_clientes as $cliente) {
-            $asesor_nombre = $cliente->asesoresCRM[0]->nombre;
+            $asesor_nombre = $cliente->asesoresCRM[0]->nombre ?? "";
             $ciudad = $cliente->ciudad;
             $total_venta_cliente = 0;
 

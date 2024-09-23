@@ -196,6 +196,7 @@
     <script>
         visualizarTroncosPlan = (id_pieza) => {
             $("#modalVisualizarTroncosPlanificados").modal("show")
+            $('#listaTroncosPlanificados').html('');
 
             var datos = $.ajax({
                 url: "{{ route('getDataTables') }}",

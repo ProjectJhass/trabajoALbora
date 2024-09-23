@@ -165,7 +165,8 @@ class ControllerPrinterQr extends Controller
                 'estado' => 'Pendiente',
                 'id_info_madera' => $id_,
                 'tipo_madera' => $madera_,
-                'usuario_creacion' => Auth::user()->nombre
+                'usuario_creacion' => Auth::user()->nombre,
+                'bloque_castigado' => false
             ]);
 
             $printed_pages++;
@@ -329,7 +330,8 @@ class ControllerPrinterQr extends Controller
             'estado' => 'Pendiente',
             'id_info_madera' => $id_,
             'tipo_madera' => $madera_,
-            'usuario_creacion' => Auth::user()->nombre
+            'usuario_creacion' => Auth::user()->nombre,
+            'bloque_castigado' => false
         ]);
         $printed_pages++;
         return true;
@@ -598,7 +600,8 @@ class ControllerPrinterQr extends Controller
                         'estado' => 'Pendiente',
                         'id_info_madera' => $id_info_madera,
                         'tipo_madera' => $tipo_madera,
-                        'usuario_creacion' => Auth::user()->nombre
+                        'usuario_creacion' => Auth::user()->nombre,
+                        'bloque_castigado' => false
                     ]);
 
                     $valor_fallido->delete();

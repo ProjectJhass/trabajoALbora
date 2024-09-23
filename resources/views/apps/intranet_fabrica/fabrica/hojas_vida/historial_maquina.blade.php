@@ -19,8 +19,11 @@
 @section('fabrica-body')
     @php
         $info_g = $historialMaquina->first();
-        $maq = explode('-', $info_g->maquina);
-        $maquina_ = trim($maq[0]) . '-' . trim($maq[1]);
+        $maq =
+            strpos($info_g->maquina ?? '', '-') !== false
+                ? explode('-', $info_g->maquina ?? '')
+                : $info_g->maquina ?? '';
+        $maquina_ = is_array($maq) ? trim($maq[0]) . '-' . trim($maq[1]) : $maq ?? '';
     @endphp
     <div class="content-header">
         <div class="container-fluid">
@@ -41,32 +44,65 @@
     </div>
 
     <section class="content">
+        <div class="card card-outline card-danger p-0 m-0">
+            <div class="card-header">
+                <div class="row text-center">
+                    <div class="col-md-6 mb-3" style="border: 1px solid; border-radius: 12px;">
+                        <img src="{{ asset('img/BLANCO.png') }}" width="50%" alt="">
+                    </div>
+                    <div class="col-md-6 mb-3" style="border: 1px solid; border-radius: 12px;">
+                        <h5><strong>HOJAS DE VIDA <br> MÁQUINAS-EQUIPOS-HERRAMIENTAS</strong></h5>
+                    </div>
+                    <div class="col-md-4" style="border: 1px solid; border-radius: 12px;">
+                        <strong>CÓDIGO: RG-MTO-05</strong>
+                    </div>
+                    <div class="col-md-4" style="border: 1px solid; border-radius: 12px;">
+                        <strong>VERSIÓN: 04</strong>
+                    </div>
+                    <div class="col-md-4" style="border: 1px solid; border-radius: 12px;">
+                        <strong>PÁGINA: 1</strong>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
         <div class="card card-outline card-danger">
-            <div class="card-header mt-3 d-flex justify-content-center">
-                <h3 class="card-title mb-3"><strong>{{ $maquina_ }}</strong></h3>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-center w-100">
+                    <h3 class="card-title"><strong>Maquina: {{ $maquina_ }}</strong></h3>
+                </div>
+                <div class="card-tools">
+                    <div style="padding: 5px; color: black; font-weight: bold; text-align: center;">
+                        Copia Controlada <br> S.G.C
+                    </div>
+                </div>
             </div>
             <div class="card-body" style="display: block;">
                 <div class="d-flex justify-content-between">
-                    <button class="btn btn-danger shadow" data-toggle="modal" data-target="#filtroFechasMaquina"><i class="fas fa-filter"></i>
+                    <button class="btn btn-danger shadow" data-toggle="modal"
+                        onclick="$('#filtroFechasMaquina').modal('toggle')"><i class="fas fa-filter"></i>
                         Filtrar</button>
-                    <button onclick="mostrarHistorial('{{ route('mostrar.mantenimiento') }}', '{{ $referencia }}')" class="btn btn-danger shadow"
-                        data-toggle="modal" data-target="#staticBackdrop"><i class="fas fa-stopwatch"></i> Realizados</button>
+                    <button class="btn btn-danger shadow" data-toggle="modal"
+                        onclick="$('#documentoFechasMaquina').modal('toggle')"><i class="fas fa-print"></i>
+                        Informes</button>
+                    <button onclick="mostrarHistorial('{{ route('mostrar.mantenimiento') }}', '{{ $referencia }}')"
+                        class="btn btn-danger shadow" data-toggle="modal" data-target="#staticBackdrop"><i
+                            class="fas fa-stopwatch"></i> Realizados</button>
                 </div>
                 <hr>
                 <div class="row">
                     {{-- procedimientos realizados --}}
                     <div class="col-12 col-md-12 col-lg-12">
-                        <div class="d-flex justify-content-center">
-                            <h4>Mantenimientos o procedimientos realizados</h4>
-                        </div>
                         <div class="row">
                             <div class="col-12" id="procedimientos_realizdos">
                                 @foreach ($historialMaquina as $historial)
                                     <div class="post">
                                         <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="{{ asset('img/mantenimiento.png') }}" alt="user image">
+                                            <img class="img-circle img-bordered-sm"
+                                                src="{{ asset('img/mantenimiento.png') }}" alt="user image">
                                             <span class="username">
-                                                <div class="text-primary">{{ $historial->solicitud }}</div>
+                                                <div><b>Descripción del requerimiento: </b> <b
+                                                        class="text-primary">{{ $historial->solicitud }}</b></div>
                                             </span>
                                             <span class="description">
                                                 <b>Responsable: </b>{{ $historial->responsable_s }} <br>
@@ -124,12 +160,12 @@
                     <input type="hidden" id="id_maquina" name="id_maquina" value="{{ $referencia }}">
                     <div class="row">
                         <div class="form-group col-11">
-                            <input type="text" class="form-control form-control-border border-width-2" id="comentario" name="comentario"
-                                placeholder="Escribir un comentario">
+                            <input type="text" class="form-control form-control-border border-width-2" id="comentario"
+                                name="comentario" placeholder="Escribir un comentario">
                         </div>
                         <div class="col-1 mt-2 d-flex justify-content-end">
-                            <a type="button" title="Guardar Comentario" onclick="guardarComentario()" style="cursor: pointer;"><i
-                                    class="far fa-paper-plane pt-2"></i></a>
+                            <a type="button" title="Guardar Comentario" onclick="guardarComentario()"
+                                style="cursor: pointer;"><i class="far fa-paper-plane pt-2"></i></a>
                         </div>
                     </div>
                 </form>
@@ -138,8 +174,8 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-        aria-hidden="true" style="font-family: sans-serif">
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true" style="font-family: sans-serif">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: whitesmoke;">
@@ -151,7 +187,8 @@
                 <div class="modal-body">
                     <div id="historial_mantenimientos" style="color: #697a8d;">
                         <div class="modal-footer" class="row">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>Cerrar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                    class="fa-solid fa-circle-xmark"></i>Cerrar</button>
 
                         </div>
                     </div>
@@ -160,7 +197,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="filtroFechasMaquina" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="filtroFechasMaquina" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -175,19 +213,57 @@
                         <input type="hidden" value="{{ $referencia }}" name="referencia">
                         <div class="form-group col-md-6">
                             <label for="exampleFormControlInput1">Fecha Inicial:</label>
-                            <input type="date" class="form-control form-control-sm" id="fechaInicial" name="fechaInicial">
+                            <input type="date" class="form-control form-control-sm" id="fechaInicial"
+                                name="fechaInicial">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="exampleFormControlInput1">Fecha Final:</label>
-                            <input type="date" class="form-control form-control-sm" id="fechaFinal" name="fechaFinal">
+                            <input type="date" class="form-control form-control-sm" id="fechaFinal"
+                                name="fechaFinal">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-danger shadow" onclick="procedimientosPorFechas()"><i class="fas fa-search"></i> Filtrar por
+                    <button type="button" class="btn btn-danger shadow" onclick="procedimientosPorFechas()"><i
+                            class="fas fa-search"></i> Filtrar por
                         fecha</button>
-                    <a href="{{ route('historial.maquina', ['referencia' => $referencia]) }}" type="button" class="btn btn-danger shadow"><i
-                            class="fas fa-history"></i> Mostrar todo</a>
+                    <a href="{{ route('historial.maquina', ['referencia' => $referencia]) }}" type="button"
+                        class="btn btn-danger shadow"><i class="fas fa-history"></i> Mostrar todo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="documentoFechasMaquina" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="exampleModalLabel">Documento SGC por fecha</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="row" id="documentoPlanificadoMantt">
+                        @csrf
+                        <input type="hidden" value="{{ $referencia }}" id="referencia_documento_sgc"
+                            name="referencia">
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlInput1">Fecha Inicial:</label>
+                            <input type="date" class="form-control form-control-sm" id="fechaInicial_documento_sgc"
+                                name="fechaInicial">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlInput1">Fecha Final:</label>
+                            <input type="date" class="form-control form-control-sm" id="fechaFinal_documento_sgc"
+                                name="fechaFinal">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-danger shadow" onclick="procedimientoImpresionDocumento()"><i
+                            class="fas fa-print"></i> Imprimir documento</button>
                 </div>
             </div>
         </div>
@@ -205,7 +281,7 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    $("#filtroFechasMaquina").modal("hide")
+                    $("#filtroFechasMaquina").modal("toggle")
                     formulario.reset()
                     $('#procedimientos_realizdos').html(response.historialMaquina);
                 },
@@ -317,6 +393,28 @@
 
         function cerrarChat() {
             document.getElementById('chatModal').style.display = 'none';
+        }
+
+        const procedimientoImpresionDocumento = () => {
+
+            let referencia = $('#referencia_documento_sgc').val();
+            let fecha_inicial = $('#fechaInicial_documento_sgc').val();
+            let fecha_final = $('#fechaFinal_documento_sgc').val();
+
+            var url_p =
+                `{{ route('intranet_fabrica.mantenimientos.hojas_de_vida.maquinas', ['referencia' => 'REFERENCIA_MAQUINA', 'fechaInicial' => 'FECHA_INI', 'fechaFinal' => 'FECHA_FIN']) }}`
+            url_p = url_p.replace("REFERENCIA_MAQUINA", referencia)
+            url_p = url_p.replace("FECHA_INI", fecha_inicial)
+            url_p = url_p.replace("FECHA_FIN", fecha_final)
+            var ventana = window.open(url_p, `SOLICITUDES_DE_MANTENIMIENTO_MAQUINA_${ referencia }`);
+
+            ventana.onload = function() {
+                ventana.print();
+            };
+
+            ventana.addEventListener("afterprint", function(event) {
+                ventana.close();
+            });
         }
     </script>
 @endsection

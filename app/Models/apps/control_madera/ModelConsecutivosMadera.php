@@ -25,6 +25,7 @@ class ModelConsecutivosMadera extends Model
         'usuario_creacion',
         'usuario_actualizacion',
         'usuario_actualizacion_estado',
-        'estado'
+        'estado',
+        'bloque_castigado'
     ];
 }

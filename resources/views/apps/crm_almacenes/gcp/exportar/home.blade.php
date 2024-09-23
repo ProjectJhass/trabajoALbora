@@ -57,30 +57,36 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Asesor</div>
                         </div>
-                        <select class="form-control" name="asesor_co" id="asesor_co" onchange="filtrarInformacion()">
+                        <select class="form-control" name="asesor_co" id="asesor_co"
+                            onchange="filtrarInformacion(), validate_form_load_table()">
                             <option value="" data-nombre="">Seleccionar...</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-wrap flex-column justify-content-center align-items-center p-2 pt-4 w-100" id="informacion">
+            <div class="d-flex flex-wrap flex-column justify-content-center align-items-center p-2 pt-4 w-100"
+                id="info_clientes_totalidades_crm">
+
+            </div>
+            <div class="d-flex flex-wrap flex-column justify-content-center align-items-center p-2 pt-4 w-100"
+                id="informacion">
                 {!! $informacion !!}
             </div>
         </div>
     </div>
 @endsection
 <style>
-
     .excel {
         filter: invert(38%) sepia(100%) saturate(343%) hue-rotate(96deg) brightness(91%) contrast(93%);
     }
 </style>
 @section('footer')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             filtrarInformacion();
+            validate_form_load_table();
         })
-        var start =  moment().startOf('month');
+        var start = moment().startOf('month');
         var end = moment();
 
         moment.locale('es');
@@ -122,14 +128,17 @@
 
         $('#daterange').on('apply.daterangepicker', function(ev, picker) {
             filtrarInformacion()
+            validate_form_load_table();
         });
         $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
             $('#daterange').val('');
             $('#daterange span').html('Selecciona un rango de fechas');
         })
-        $('#almacen_co').change(function(){
+        $('#almacen_co').change(function() {
             $('#asesor_co').val('');
+            $('#info_clientes_totalidades_crm').html("")
             filtrarInformacion();
+            validate_form_load_table();
         })
         filtrarInformacion = () => {
             var fecha_i = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -153,6 +162,39 @@
             datos.done((res) => {
                 document.getElementById('informacion').innerHTML = res.informacion;
             })
+
+        }
+
+        const validate_form_load_table = () => {
+
+            $('#info_clientes_totalidades_crm').html("")
+
+            // beforeSendFunction();
+
+            let fecha_i = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            let fecha_f = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            let almacen = $('#almacen_co').val();
+            let asesor = $('#asesor_co').val();
+
+            if (fecha_i && fecha_f && almacen && asesor) {
+                $.ajax({
+                    beforeSend: function() {
+                        beforeSendFunction();
+                    },
+                    type: "POST",
+                    url: "{{ route('crm_almacenes.administrador.exportar.informes') }}",
+                    data: {
+                        "fecha_i": fecha_i,
+                        "fecha_f": fecha_f,
+                        "almacen": almacen,
+                        "asesor": asesor
+                    },
+                    success: function(response) {
+                        principalToastCallBack("Información cargada", 3000, "success", () => {})
+                        $('#info_clientes_totalidades_crm').html(response.view_table_)
+                    }
+                });
+            }
 
         }
     </script>

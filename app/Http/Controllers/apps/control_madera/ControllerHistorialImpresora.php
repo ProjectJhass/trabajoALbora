@@ -23,7 +23,40 @@ class ControllerHistorialImpresora extends Controller
         $id = $request->id;
         $query_ = ModelInspeccionMateriaPrima::find($id);
         $madera = ModelConsecutivosMadera::where("id_info_madera", $id)->orderBy("id")->get();
-        return view('apps.control_madera.app.printer.history.formato', ['control' => $query_, 'madera' => $madera]);
+        $pulgadas_totales = ModelConsecutivosMadera::where('id_info_madera', $id)->sum('pulgadas');
+
+        $madera_total_null = ModelConsecutivosMadera::where("id_info_madera", $id)->orderBy("id")->count();
+
+        $madera_total = ModelConsecutivosMadera::where("id_info_madera", $id)->whereNotNull('largo')->orderBy("id")->count();
+        $troncos_por_debajo_de_3 = ModelConsecutivosMadera::where('id_info_madera', $id)->where('largo', '<', '3')->count();
+
+        if($troncos_por_debajo_de_3 == 0) {
+            $porcentaje_por_debajo_de_3 = 0;
+        } else {
+            $porcentaje_por_debajo_de_3 = ($troncos_por_debajo_de_3 / $madera_total) * 100;
+        }
+
+        $cantidad_bloques_castigados = ModelConsecutivosMadera::where('id_info_madera', $id)->where('bloque_castigado', true)->count();
+
+        if($cantidad_bloques_castigados == 0) {
+            $porcentaje_bloques_castigados = 0;
+        } else {
+            $porcentaje_bloques_castigados = ($cantidad_bloques_castigados / $madera_total) * 100;
+        }
+
+        return view(
+            'apps.control_madera.app.printer.history.formato',
+            [
+                'control' => $query_,
+                'madera' => $madera,
+                'total_pulgadas' => $pulgadas_totales,
+                'porcentaje_por_debajo_de_3' => $porcentaje_por_debajo_de_3,
+                'cantidad_bloques_castigados' => $cantidad_bloques_castigados,
+                'porcentaje_bloques_castigados' => $porcentaje_bloques_castigados,
+                'id_materia_prima' => $id,
+                'madera_total_null' => $madera_total_null
+            ]
+        );
     }
 
     public function infoHistory($fecha_i, $fecha_f)

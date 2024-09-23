@@ -439,6 +439,7 @@
                                                 <option value="Contra entrega">Contra entrega</option>
                                                 <option value="Link de pago">Link de pago</option>
                                                 <option value="Punto de venta">Punto de venta</option>
+                                                <option value="Leads">Leads</option>
                                             </select>
                                         </div>
                                     </div>

@@ -763,6 +763,11 @@ Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () 
             Route::post('clientes', [ControllerExportarInfoCRM::class, 'exportarClientes'])->name('crm.exportar.clientes');
             Route::post('cotizaciones', [ControllerExportarInfoCRM::class, 'exportarCotizaciones'])->name('crm.exportar.cotizaciones');
             Route::post('llamadas', [ControllerExportarInfoCRM::class, 'exportarLlamadas'])->name('crm.exportar.llamadas');
+
+            Route::group(['prefix' => 'informes'], function() {
+                Route::post('/', [ControllerExportarInfoCRM::class, 'cargar_informacion_tabla'])->name('crm_almacenes.administrador.exportar.informes');
+            });
+
         });
     });
 });
@@ -795,6 +800,13 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
     Route::post('/obtener-secciones-fabrica', [ControllerEncuestaSatisfaccion::class, 'ObtenerSeccionesFabricaEnc'])->name('secciones.fabrica');
     Route::get('/realizar-encuesta-satisfaccion/{proceso}/{seccion}', [ControllerEncuestaSatisfaccion::class, 'RealizarEncuestaSatisfaccion']);
     Route::post('/guardar-informacion-encuesta', [ControllerEncuestaSatisfaccion::class, 'GuardarInformacionEncuestaCliente'])->name('guardar.encuesta');
+
+    /* Rutas Para calidad - ponderacion de encuestas de satisfacción */
+
+    Route::group(['prefix' => 'encuestas_satisfaccion_ponderacion', 'middleware' => 'auth'], function () {
+        Route::post('/', [ControllerEncuestaSatisfaccion::class, 'TraerFiltrosParaPonderacionEncuestasSatisfaccion'])->name('intranet_fabrica.encuestas_satisfaccion_ponderacion.filters');
+        Route::post('/get_ponderacion', [ControllerEncuestaSatisfaccion::class, 'CargarPonderacionEncuestasSatisfaccion'])->name('intranet_fabrica.encuestas_satisfaccion_ponderacion.get');
+    });
 
     /* Rutas para solicitud de mantenimiento */
     Route::get('/menu-solicitudes-mantenimiento', [ControllerSolicitudesMtto::class, 'MenuSolicitudes'])->name('menu.solicitud');
@@ -834,6 +846,9 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
         Route::post('/actualizar-img', [ControllerHojasDeVida::class, 'actualizarImagenMaquina'])->name('actualizar.imagen.maquina');
         Route::post('/guardar-comentario', [ControllerHojasDeVida::class, 'GuardarComentario'])->name('guardar.comentario');
         Route::post('/historial-fechas', [ControllerHojasDeVida::class, 'historialFechas'])->name('historial.fechas');
+        Route::prefix('documents')->group(function () {
+            Route::get('/{referencia}/{fechaInicial}/{fechaFinal}', [ControllerHojasDeVida::class, 'documento_hojas_de_vida_maquinas'])->name('intranet_fabrica.mantenimientos.hojas_de_vida.maquinas');
+        });
     });
 
     /*  Mantenimientos */

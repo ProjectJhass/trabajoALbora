@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ControllerInfoAlmacenes extends Controller
 {
-  
+
     public function solicitudesTable($data_info)
     {
         return view('apps.servicios_tecnicos.servicios_tecnicos.almacen.table', ['st' => $data_info])->render();
@@ -38,6 +38,19 @@ class ControllerInfoAlmacenes extends Controller
                     ->orWhere('almacen', 'NEIVA_012')
                     ->orWhere('almacen', 'NEIVA_025');
             })->where('proceso', 'Almacen')->where('estado', 'Recoger')->get();
+        } else if ($almacen == "MANIZALES_017") {
+            $valoracion = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
+                $query->where('almacen', $almacen)
+                    ->orWhere('almacen', 'MANIZALES_017');
+            })->where('estado', 'Por ingresar')->count();
+            $respuesta = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
+                $query->where('almacen', $almacen)
+                    ->orWhere('almacen', 'MANIZALES_017');
+            })->where('estado', 'En devolucion')->count();
+            $data_info = ModelNuevaSolicitud::where(function ($query) use ($almacen) {
+                $query->where('almacen', $almacen)
+                    ->orWhere('almacen', 'MANIZALES_017');
+            })->where('estado', 'Por ingresar')->get();
         } else {
             $valoracion = ModelNuevaSolicitud::where('almacen', $almacen)->where('proceso', 'Almacen')->where('estado', 'Recoger')->count();
             $respuesta = ModelNuevaSolicitud::where('almacen', $almacen)->where('proceso', 'Servicio tecnico')->where('estado', 'En devolucion')->count();

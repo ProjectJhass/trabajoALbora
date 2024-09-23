@@ -40,7 +40,7 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-sm-3"><strong>Madera</strong></label>
                                 <div class="col-md-9 col-sm-9 ">
-                                    <input type="text" value="{{ $planner->madera }}" class="form-control" readonly>
+                                    <input type="text" value="{{ $planner->madera }}" id="id_madera_plan_corte_" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
         <div class="col-md-12">
             <div class="card alert-top alert-danger">
                 <div class="card-header">
-                    <h5>Lista de piesas</h5>
+                    <h5>Lista de piezas</h5>
                 </div>
                 <div class="card-body">
                     <div class="row" id="piezas-planificadas-corte-wood">
@@ -229,14 +229,14 @@
                             </div>
                             <div class="col-md-2 mb-3">
                                 <div class="form-group">
-                                    <label><strong>Ancho (cm)</strong></label>
+                                    <label><strong>Ancho (Pulgadas)</strong></label>
                                     <input type="number" min="0" class="form-control" style="text-align: center" name="anchoOtraSerie"
                                         id="anchoOtraSerie" required>
                                 </div>
                             </div>
                             <div class="col-md-2 mb-3">
                                 <div class="form-group">
-                                    <label><strong>Grueso (cm)</strong></label>
+                                    <label><strong>Grueso (Pulgadas)</strong></label>
                                     <input type="number" min="0" class="form-control" style="text-align: center" name="gruesoOtraSerie"
                                         id="gruesoOtraSerie" required>
                                 </div>
@@ -278,6 +278,7 @@
     <script>
         troncosUtilizadosWood = (valor, id, id_pieza) => {
             var elemento = document.querySelector(".ui-pnotify-fade-normal");
+            let madera_selected_data = $('#id_madera_plan_corte_').val();
             if (elemento) {
                 elemento.parentNode.removeChild(elemento);
             }
@@ -287,7 +288,8 @@
                 dataType: "json",
                 data: {
                     id_pieza,
-                    tronco: valor
+                    tronco: valor,
+                    madera_: madera_selected_data
                 }
             });
             datos.done((res) => {
@@ -305,8 +307,12 @@
                     '" onclick="deleteTroncoWood(\'' + id + '\',\'' + valor + '\',\'' + id_pieza + '\')" >' + valor + '</span>\t')
                 $("#troncoWood" + id).val('')
             })
-            datos.fail(() => {
-                notificacion("¡ERROR! Este bloque ya fue utilizado, utiliza otro", "error", 6000)
+            datos.fail((err) => {
+                if(err.status == "403" ) {
+                    notificacion("¡ERROR! Este bloque ya fue utilizado, utiliza otro", "error", 6000)
+                } else if(err.status == "401") {
+                    notificacion("¡ERROR! El bloque que estas intentando utilizar es de otro tipo de madera", "error", 6000)
+                }
             })
         }
 
@@ -352,6 +358,7 @@
 
         visualizarTroncosPlan = (id_pieza, bandera) => {
             $("#modalVisualizarTroncosPlanificados").modal("show")
+            $('#listaTroncosPlanificados').html('');
 
             var datos = $.ajax({
                 url: "{{ route('getDataTables') }}",

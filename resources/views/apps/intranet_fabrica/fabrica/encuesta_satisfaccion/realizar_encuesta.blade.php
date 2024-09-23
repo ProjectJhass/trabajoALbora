@@ -417,13 +417,13 @@
                 input.addEventListener('input', () => {
                     const value = parseInt(input.value, 10);
                     if (value != '') {
-                        if (value < 1 || value > 5 || isNaN(value)) {
+                        if (value < 1.0 || value > 5.0 || isNaN(value)) {
                             input.value = '';
                         } else {
-                            const nextIndex = index + 1;
-                            if (nextIndex < inputArray.length) {
-                                inputArray[nextIndex].focus();
-                            }
+                            // const nextIndex = index + 1;
+                            // if (nextIndex < inputArray.length) {
+                            //     inputArray[nextIndex].focus();
+                            // }
                         }
                     }
                 });
@@ -475,6 +475,16 @@
                                 document.getElementById(form).reset();
                                 $('#btn-enviar-y-terminar-encuesta').prop('disabled', false);
                                 $('#btn-enviar-y-terminar-encuesta').html('Terminar y enviar encuesta');
+                                const checkboxes_ = document.querySelectorAll(
+                                    '.checkbox-toggle-disable');
+                                checkboxes_.forEach(checkbox_ => {
+                                    checkbox_.checked = false;
+                                });
+                                selectedCheckboxValue = null;
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
                                 Swal.fire(
                                     'EXCELENTE!',
                                     'La encuesta fue enviada correctamente',
