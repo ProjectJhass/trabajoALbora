@@ -569,7 +569,7 @@
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}" defer></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}" defer></script>
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
-    <script src="{{ asset('js/maestra.js') }}" defer></script>
+    <script src="{{ asset('js/maestra.js') }}" async></script>
     <script>
         $(function() {
             $('.select2').select2();

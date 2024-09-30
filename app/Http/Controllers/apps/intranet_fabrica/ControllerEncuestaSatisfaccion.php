@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\apps\intranet_fabrica;
 
+use App\Exports\encuestas_satisfaccion\ExportEncuestasSatisfaccionPonderacion;
 use App\Http\Controllers\Controller;
 use App\Models\apps\intranet_fabrica\ModelEncuestaSatisfaccion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ControllerEncuestaSatisfaccion extends Controller
 {
@@ -83,8 +85,8 @@ class ControllerEncuestaSatisfaccion extends Controller
 
             $pdf = Pdf::loadView('apps.intranet_fabrica.fabrica.encuesta_satisfaccion.formato_pdf', array('info' => $infoPersonal, 'preguntas' => $respuestas_user));
 
-            // $to = (['sgc@mueblesalbura.com.co', 'diana.mora@mueblesalbura.com.co']);
-            $to = (['albura.development@gmail.com']);
+            $to = (['sgc@mueblesalbura.com.co', 'diana.mora@mueblesalbura.com.co']);
+            // $to = (['albura.development@gmail.com']);
             $subject = 'Encuesta de satisfacción No° ' . $respuesta;
 
             Mail::send('apps.intranet_fabrica.emails.encuesta_satisfaccion', [], function ($mensaje) use ($to, $subject, $pdf, $respuesta) {
@@ -139,27 +141,19 @@ class ControllerEncuestaSatisfaccion extends Controller
                 $seccion_ponderacion[$secciones[$i]->nombre_seccion] = [];
             }
 
-            $get_encuestas_fecha = ModelEncuestaSatisfaccion::ObtenerEncuestasRealizadasPorFecha($desde, $hasta, $proceso);
-
-            foreach ($get_encuestas_fecha as $valE) {
-                $seccion = $valE->seccion;
-                if (isset($seccion_ponderacion[$seccion])) {
-                    for ($i = 1; $i <= count($preguntas_ponderacion); $i++) {
-                        if (!isset($seccion_ponderacion[$seccion][$preguntas_ponderacion[$i]])) {
-                            $seccion_ponderacion[$seccion][$preguntas_ponderacion[$i]][] = [
-                                ModelEncuestaSatisfaccion::ObtenerRespuestasProcesoSeccionOrdenamiento($proceso, $seccion, $desde, $hasta, $i)
-                            ];
+            foreach ($seccion_ponderacion as $key_sec_pon => $value_sec_pon) {
+                foreach ($preguntas_ponderacion as $key_peg_pon => $value_peg_pon) {
+                    $respuestas_ponderacion = ModelEncuestaSatisfaccion::obtener_respuestas_orden_proceso($proceso, $key_sec_pon, $desde, $hasta, $key_peg_pon);
+                    foreach ($respuestas_ponderacion as $value_res_pon) {
+                        if (!isset($seccion_ponderacion[$key_sec_pon][$value_peg_pon][$value_res_pon->pregunta])) {
+                            $seccion_ponderacion[$key_sec_pon][$value_peg_pon][$value_res_pon->pregunta] = ["respuestas" => []];
                         }
+                        $seccion_ponderacion[$key_sec_pon][$value_peg_pon][$value_res_pon->pregunta]["respuestas"][] = $value_res_pon->respuesta;
                     }
-                    $seccion_ponderacion[$seccion]['datos_elecciones'][] = [
-                        "valores" => $valE
-                    ];
                 }
             }
 
-            $data_ponderacion = self::PonderarAgrupacion($seccion_ponderacion, $preguntas_ponderacion);
-
-            // dd($data_ponderacion);
+            $result_ponderacion = self::resultados_ponderacion_($seccion_ponderacion, $proceso, $desde, $hasta);
 
             $view_table_ponderacion = view(
                 'apps.intranet_fabrica.fabrica.encuesta_satisfaccion.ponderacion.visualizar_ponderacion',
@@ -169,10 +163,8 @@ class ControllerEncuestaSatisfaccion extends Controller
                     "hasta" => $hasta,
                     "secciones" => $secciones,
                     "preguntas_ponderacion" => $preguntas_ponderacion,
-                    "seccion_ponderacion" => $seccion_ponderacion,
-                    "get_encuestas_fecha" => $get_encuestas_fecha,
-                    "datos_ponderacion_agrupados" => $seccion_ponderacion,
-                    "data_ponderacion" => $data_ponderacion
+                    "result_ponderacion" => $result_ponderacion
+
                 ]
             )->render();
 
@@ -182,50 +174,90 @@ class ControllerEncuestaSatisfaccion extends Controller
         }
     }
 
-    public function PonderarAgrupacion($datos_ponderacion_agrupados, $preguntas_ponderacion)
+    public function resultados_ponderacion_($datos_ponderacion, $proceso, $desde, $hasta)
     {
-        $ponderacion_totalizada = [];
 
-        foreach ($datos_ponderacion_agrupados as $key_proceso => $value_proceso) {
-            $seccion = $key_proceso;
-            if (!isset($ponderacion_totalizada[$key_proceso])) {
-                // Cambiar el ciclo para recorrer correctamente las preguntas
-                for ($i = 1; $i <= count($preguntas_ponderacion); $i++) {
-                    $total_media = 0;
-                    $total_ponderado = 0;
-                    $total_respuesta_ = 0;
-                    $total_respuestas_conteo = 0;
-                    $seccion_pregunta = $preguntas_ponderacion[$i];
-                    $cantidad_personas_respondieron = count($value_proceso['datos_elecciones']);
+        $data_final_pondera = [];
 
-                    if (isset($value_proceso[$seccion_pregunta])) {
-                        // Cambiar el índice del bucle interior para evitar sobrescribir $i
-                        foreach ($value_proceso[$seccion_pregunta][0] as $respuesta) {
-                            foreach ($respuesta as $res) { // Usar $res en lugar de sobrescribir $i
-                                $value_sum = intval($res->respuestas_ordenamiento);
-                                $total_respuesta_ += $value_sum;
-                            }
-                            $total_respuestas_conteo = count($respuesta); // Mover fuera del bucle interior
-                        }
+        foreach ($datos_ponderacion as $key_pon => $value_pon) {
+            $cantidad_personas_respondieron = ModelEncuestaSatisfaccion::obtener_cantidad_personas_respondieron($proceso, $key_pon, $desde, $hasta);
+            foreach ($value_pon as $key_sec => $value_sec) {
 
-                        // Calcular ponderado y media
-                        $total_ponderado = $total_respuesta_ * (16.6 / 100);
-                        $total_media = $total_respuesta_ / $total_respuestas_conteo;
+                $conteo_cantidad_preguntas = count($value_sec);
 
-                        // Guardar en la estructura de salida
-                        $ponderacion_totalizada[$key_proceso][$seccion_pregunta] = [
-                            "cantidad_personas_respondieron" => $cantidad_personas_respondieron,
-                            "total_respuestas_" => $total_respuesta_,
-                            "total_respuestas_conteo" => $total_respuestas_conteo,
-                            "total_ponderado" => round($total_ponderado, 1),
-                            "total_media" => round($total_media, 1),
-                            "proceso" => $seccion
+                foreach ($value_sec as $key_peg => $value_peg) {
+                    $total_respuestas = array_sum($value_peg['respuestas']);
+                    $conteo_respuestas = count($value_peg['respuestas']);
+                    $promedio = $total_respuestas / $conteo_respuestas;
+                    $porcentaje_respuestas = 0;
+                    $porcentaje_seccion_pregunta = 0;
+
+                    if ($conteo_cantidad_preguntas == 5) {
+                        $porcentaje_respuestas = $promedio * 20 / 100;
+                        $porcentaje_seccion_pregunta = $promedio * 3.333333333333334 / 100;
+                    } else {
+                        $porcentaje_respuestas = $promedio * 16.66666666666667 / 100;
+                        $porcentaje_seccion_pregunta = $promedio * 3.333333333333334 / 100;
+                    }
+
+                    $data_final_pondera[$key_pon][$key_sec][$key_peg] =
+                        [
+                            "total_respuestas" => array_sum($value_peg['respuestas']),
+                            "conteo_respuestas" => count($value_peg['respuestas']),
+                            "promedio_respuestas" => $promedio,
+                            "conteo_cantidad_preguntas" => $conteo_cantidad_preguntas,
+                            "porcentaje_respuestas" => $porcentaje_respuestas,
+                            "porcentaje_seccion_pregunta" => $porcentaje_seccion_pregunta,
+                            "personas_respondieron_encuesta" => count($cantidad_personas_respondieron)
                         ];
+                }
+            }
+        }
+
+        $data_final_pondera_resumen = [];
+
+        foreach ($data_final_pondera as $key_proceso_pon => $value_proceso_pon) {
+            foreach ($value_proceso_pon as $key_sec_peg_pon => $value_sec_peg_pon) {
+                $porcentaje_respuestas_sumado = 0;
+                $porcentaje_seccion_pregunta_sumado = 0;
+                foreach ($value_sec_peg_pon as $key_peg_pon => $value_peg_pon) {
+                    $conteo_cantidad_preguntas_sumado = $value_peg_pon['conteo_cantidad_preguntas'];
+                    $cantidad_personas_respondieron_encuesta = $value_peg_pon['personas_respondieron_encuesta'];
+                    $porcentaje_respuestas_sumado += $value_peg_pon['porcentaje_respuestas'];
+                    $porcentaje_seccion_pregunta_sumado += $value_peg_pon['porcentaje_seccion_pregunta'];
+                    $data_final_pondera_resumen[$key_proceso_pon][$key_sec_peg_pon] = ["resultados" => [
+                        "porcentaje_respuestas_sumado" => $porcentaje_respuestas_sumado,
+                        "porcentaje_seccion_pregunta_sumado" => (($porcentaje_seccion_pregunta_sumado * 100) / $conteo_cantidad_preguntas_sumado),
+                        "cantidad_personas_respondieron_encuesta" => $cantidad_personas_respondieron_encuesta
+                    ]];
+                }
+            }
+        }
+
+        return ["data_final_pondera" => $data_final_pondera, "data_final_pondera_resumen" => $data_final_pondera_resumen];
+    }
+
+    public function resultados_ponderacion_excel_export(Request $request) {
+
+        $data_request = $request->data_exception[0] ?? array();
+
+        $data_seccion_preguntas = [];
+
+        if(!empty($data_request)) {
+            foreach ($data_request as $key_excp => $value_excp) {
+                foreach ($value_excp as $key_sec_peg => $value_sec_peg) {
+                    foreach ($value_sec_peg as $key_peg => $value_peg) {
+                        $data_seccion_preguntas[$key_sec_peg][$key_peg] = ["cantidad_preguntas" => $value_peg['conteo_cantidad_preguntas']];
                     }
                 }
             }
         }
 
-        return $ponderacion_totalizada;
+
+        // dd(array_values($data_seccion_preguntas));
+
+        return Excel::download(new ExportEncuestasSatisfaccionPonderacion($request->data_exception[0] ?? array(), $request->proceso ?? "", $data_seccion_preguntas ?? array(), $request->data_exception[1] ?? array()), 'ponderacion_encuesta.xlsx');
+
+        // return response()->json(['status' => true, 'message' => $request->data_exception[0], 'proceso' => $request->proceso], 200);
     }
 }

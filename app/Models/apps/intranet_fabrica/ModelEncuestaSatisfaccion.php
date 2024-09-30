@@ -94,8 +94,26 @@ class ModelEncuestaSatisfaccion extends Model
         ->join('respuestas_por_usuario as rporu', 'rpu.id_respuesta_usuario', '=', 'rporu.id_respuesta_u')
         ->where('rporu.proceso', $proceso)
         ->where('rporu.seccion', $seccion)
-        ->whereBetween('rporu.fecha_realizacion', [$desde, $hasta])
+        ->whereBetween('.fecha_realizacion', [$desde, $hasta])
         ->where('pe.orden', $id_orden)
         ->get(['rpu.respuesta as respuestas_ordenamiento']);
+    }
+
+    public static function obtener_respuestas_orden_proceso($proceso, $seccion, $desde, $hasta, $id_orden) {
+        return DB::connection('db_fabrica')->select(
+            "SELECT * FROM respuestas_preguntas_users AS rpu
+            INNER JOIN preguntas_encuesta AS pe ON(rpu.pregunta=pe.id_pregunta)
+            INNER JOIN respuestas_por_usuario AS rporu ON(rpu.id_respuesta_usuario=rporu.id_respuesta_u)
+            WHERE pe.orden = ? AND rporu.proceso = ? AND rporu.seccion = ?
+            AND rporu.fecha_realizacion BETWEEN ? AND ?", [$id_orden, $proceso, $seccion, $desde, $hasta]
+        );
+    }
+
+    public static function obtener_cantidad_personas_respondieron($proceso, $seccion, $desde, $hasta) {
+        return DB::connection('db_fabrica')->select(
+            "SELECT * FROM respuestas_por_usuario AS rporu
+            WHERE rporu.proceso = ? AND rporu.seccion = ?
+            AND rporu.fecha_realizacion BETWEEN ? AND ?", [$proceso, $seccion, $desde, $hasta]
+        );
     }
 }

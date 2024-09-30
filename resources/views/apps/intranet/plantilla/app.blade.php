@@ -1,6 +1,6 @@
 <?php
-$permisos_ingresos = ['3726391', '16357590', '1087997915', '52444253', '38670577', '1087993135', '42084244', '24581232', '31991990', '28554243', '39584824', '30314322'];
-$permiso_general = ['16357590', '1087997915', '52444253', '38670577', '1087993135'];
+$permisos_ingresos = ['3726391', '16357590', '1087997915', '52444253', '38670577', '1087993135', '42084244', '24581232', '31991990', '28554243', '39584824', '30314322', '1075625328'];
+$permiso_general = ['16357590', '1087997915', '52444253', '38670577', '1087993135', '1075625328'];
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -244,7 +244,6 @@ $permiso_general = ['16357590', '1087997915', '52444253', '38670577', '108799313
                                     </a>
                                 </li>
                             </ul>
-
                             @if (Auth::user()->permisos == '4' || in_array(Auth::user()->id, $permisos_ingresos))
                                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                                     <li class="nav-item @yield('menu-ingresos')" id="classMenuOpen" onclick="EliminarClase()">

@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Valor couta</label>
+                                    <label for="">Valor cuota</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text"><i class="fas fa-hand-holding-usd"></i></div>

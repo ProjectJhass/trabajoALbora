@@ -432,11 +432,9 @@ Route::group(['prefix' => 'automoviles', 'middleware' => 'auth'], function () {
     });
 });
 
-Route::group(['prefix' => 'catalogo', 'middleware' => 'auth'], function () {
-});
+Route::group(['prefix' => 'catalogo', 'middleware' => 'auth'], function () {});
 
-Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function () {
-});
+Route::group(['prefix' => 'control_de_piso', 'middleware' => 'auth'], function () {});
 
 
 //Plataforma de control de madera
@@ -483,8 +481,8 @@ Route::group(['prefix' => 'control_de_madera', 'middleware' => 'auth', 'middlewa
         Route::post('change-tronco', [ControllerSearchMadera::class, 'changeEstadoTroco'])->name('change.info.troncos');
 
         //Informacion general piezas a favor desde corte de madera
-        Route::post("obtener-info-madera",[ControllerPlannerMadera::class, 'getInfoPiezasPorTipoDeMadera'])->name('get.info.por.madera');
-        Route::post("agregar-piezas-madera",[ControllerPlannerMadera::class, 'getInfoUtilizarPiezasMadera'])->name('add.info.por.madera');
+        Route::post("obtener-info-madera", [ControllerPlannerMadera::class, 'getInfoPiezasPorTipoDeMadera'])->name('get.info.por.madera');
+        Route::post("agregar-piezas-madera", [ControllerPlannerMadera::class, 'getInfoUtilizarPiezasMadera'])->name('add.info.por.madera');
 
         //Planear Corte de tablas
         Route::post('planner-corte-tabla', [ControllerPlannerTabla::class, 'saveInfoCorteTabla'])->name('save.planner.tabla');
@@ -588,7 +586,6 @@ Route::group(['prefix' => 'cotizador_albura', 'middleware' => 'auth'], function 
         Route::group(['prefix' => 'simulador'], function () {
             Route::post('/', [ControllerGenerarLiquidador::class, 'traerModuloSimuladorCredito'])->name('traer.simulador.credito.crexit');
         });
-
     });
 
     Route::post('consultar-ciudades', [ControllerLiquidador::class, 'ConsultarCiudad'])->name('ciudades.consultar.crexit');
@@ -646,10 +643,10 @@ Route::group(['prefix' => 'cotizador_pruebas', 'middleware' => 'auth'], function
 
 Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () {
 
-    Route::prefix('general')->group(function() {
-        Route::prefix('birthday')->group(function() {
-            Route::get('/getClientBirthday', [ControllerCRMGeneral:: class, 'getClientBirthdayAdviser'])->name("crm_almacenes.general.birthday");
-            Route::post('/postClientBirthday', [ControllerCRMGeneral:: class, 'postClientBirthdayAdviser'])->name("crm_almacenes.general.create_birthday");
+    Route::prefix('general')->group(function () {
+        Route::prefix('birthday')->group(function () {
+            Route::get('/getClientBirthday', [ControllerCRMGeneral::class, 'getClientBirthdayAdviser'])->name("crm_almacenes.general.birthday");
+            Route::post('/postClientBirthday', [ControllerCRMGeneral::class, 'postClientBirthdayAdviser'])->name("crm_almacenes.general.create_birthday");
         });
     });
 
@@ -757,17 +754,16 @@ Route::group(['prefix' => 'crm_almacenes', 'middleware' => 'auth'], function () 
             Route::post('/por-asesor', [ControllerEstadisticasAdmin::class, 'fechas'])->name("consultar.info.asesor.estadisticas");
         });
 
-        Route::group(['prefix' => 'exportar'], function (){
+        Route::group(['prefix' => 'exportar'], function () {
             Route::get('', [ControllerExportarInfoCRM::class, 'index'])->name('crm.exportar.home');
             Route::get('filtrar', [ControllerExportarInfoCRM::class, 'filtrarInfo'])->name('crm.filtrar.info');
             Route::post('clientes', [ControllerExportarInfoCRM::class, 'exportarClientes'])->name('crm.exportar.clientes');
             Route::post('cotizaciones', [ControllerExportarInfoCRM::class, 'exportarCotizaciones'])->name('crm.exportar.cotizaciones');
             Route::post('llamadas', [ControllerExportarInfoCRM::class, 'exportarLlamadas'])->name('crm.exportar.llamadas');
 
-            Route::group(['prefix' => 'informes'], function() {
+            Route::group(['prefix' => 'informes'], function () {
                 Route::post('/', [ControllerExportarInfoCRM::class, 'cargar_informacion_tabla'])->name('crm_almacenes.administrador.exportar.informes');
             });
-
         });
     });
 });
@@ -806,6 +802,7 @@ Route::group(['prefix' => 'intranet_fabrica', 'middleware' => 'auth'], function 
     Route::group(['prefix' => 'encuestas_satisfaccion_ponderacion', 'middleware' => 'auth'], function () {
         Route::post('/', [ControllerEncuestaSatisfaccion::class, 'TraerFiltrosParaPonderacionEncuestasSatisfaccion'])->name('intranet_fabrica.encuestas_satisfaccion_ponderacion.filters');
         Route::post('/get_ponderacion', [ControllerEncuestaSatisfaccion::class, 'CargarPonderacionEncuestasSatisfaccion'])->name('intranet_fabrica.encuestas_satisfaccion_ponderacion.get');
+        Route::post('/get_ponderacion_exportado_excel', [ControllerEncuestaSatisfaccion::class, 'resultados_ponderacion_excel_export'])->name('intranet_fabrica.encuestas_satisfaccion_ponderacion.get_excel_export');
     });
 
     /* Rutas para solicitud de mantenimiento */
@@ -1054,5 +1051,4 @@ Route::group(['prefix' => 'servicios_tecnicos', 'middleware' => 'auth', 'middlew
     });
 });
 
-Route::group(['prefix' => 'tareas', 'middleware' => 'auth'], function () {
-});
+Route::group(['prefix' => 'tareas', 'middleware' => 'auth'], function () {});

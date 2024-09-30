@@ -37,8 +37,8 @@
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="">PROCESO</label>
-                                    <select name="proceso-fabrica-enc" onchange="ObtenerSeccionesFab(this.value)" id="proceso-fabrica-enc"
-                                        class="form-control">
+                                    <select name="proceso-fabrica-enc" onchange="ObtenerSeccionesFab(this.value)"
+                                        id="proceso-fabrica-enc" class="form-control">
                                         <option value="">Seleccionar...</option>
                                         @foreach ($procesos as $key => $value)
                                             <option value="{{ $value->id_proceso }}">{{ $value->nombre_proceso }}</option>
@@ -62,7 +62,9 @@
                             </div> --}}
                             <div class="col-md-4 mb-3 d-flex justify-content-center align-self-center">
                                 {{-- <div class="d-flex justify-content-center align-self-center"> --}}
-                                    <button type="button" class="btn btn-outline-danger" onclick="RealizarEncuestaSatisfaccionFab('{{ url('/intranet_fabrica/realizar-encuesta-satisfaccion') }}')">Realizar encuesta</button>
+                                <button type="button" class="btn btn-outline-danger"
+                                    onclick="RealizarEncuestaSatisfaccionFab('{{ url('/intranet_fabrica/realizar-encuesta-satisfaccion') }}')">Realizar
+                                    encuesta</button>
                                 {{-- </div> --}}
                             </div>
                         </div>
@@ -82,18 +84,21 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="" id="frm_review_ponderacion_" class="was-validated">
+                    <form id="frm_review_ponderacion_" class="was-validated" onsubmit="return false;">
                         @csrf
                         <div class="row d-flex justify-content-around">
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="">CODIGO DE ACCESO</label>
-                                    <input type="text" name="code_fabrica_admin" id="code_fabrica_admin" class="form-control" required />
+                                    <input type="text" name="code_fabrica_admin" id="code_fabrica_admin"
+                                        class="form-control" required />
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-3 d-flex justify-content-center align-self-center">
-                                <button type="button" class="btn btn-outline-secondary" onclick="RevisarPonderacionEncuestasSatisfaccion('{{ url('/intranet_fabrica/realizar-encuesta-satisfaccion') }}')">Revisar ponderación</button>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="RevisarPonderacionEncuestasSatisfaccion('{{ url('/intranet_fabrica/realizar-encuesta-satisfaccion') }}')">Revisar
+                                    ponderación</button>
                             </div>
                         </div>
                     </form>
@@ -149,12 +154,13 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#review-filter-ponderacion-total').html(response.view_filter_ponderacion);
                     console.log(response)
-                }, error: (jqXHR, textStatus, errorThrown) => {
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
                     $('#review-filter-ponderacion-total').html("");
-                    if(jqXHR.status == "403") {
+                    if (jqXHR.status == "403") {
                         toastr.error('Acceso no valido!');
                     } else {
                         toastr.error('No se pudo completar la solicitud, contacte a sistemas!');
@@ -176,17 +182,31 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#load_ponderacion_encuesta_satisfaccion').html(response.view_data_ponderacion);
                     console.log(response)
-                }, error: (jqXHR, textStatus, errorThrown) => {
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
                     $('#load_ponderacion_encuesta_satisfaccion').html("");
                     console.log(jqXHR);
-                    if(jqXHR.status == "400") {
-                        toastr.error('Por favor, llenar los datos de fechas para visualizar la ponderación!');
+                    if (jqXHR.status == "400") {
+                        toastr.error(
+                            'Por favor, llenar los datos de fechas para visualizar la ponderación!');
                     }
                 }
             });
+        }
+
+        function beforeSendFunction() {
+            Swal.fire({
+                title: "Cargando... Por favor, espere.",
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                showConfirmButton: false,
+                toast: true,
+                position: "top"
+            })
         }
     </script>
 @endsection

@@ -190,7 +190,23 @@ class ControllerIngresosSalidas extends Controller
         $fecha_f = session('fecha_f_ingresos') != '' ? session('fecha_f_ingresos') : date('Y-m-d');
 
         $data = ModelIngresosSalidas::ObtenerDataLlegadasTarde($fecha_i, $fecha_f, $co, $hora_ingreso);
-        $table = view('apps.intranet.ingresos.tables.infoLlegadasTarde', ['info' => $data])->render();
+
+        $dataArray = [];
+
+        foreach ($data as $item) {
+            $dataArray[] = array(
+                "id" => $item->id,
+                "nombre" => $item->nombre,
+                "fecha_registro" => $item->fecha_registro,
+                "hora_ingreso" => $item->hora_ingreso,
+                "hora_salida" => $item->hora_salida,
+                "hora_reingreso" => $item->hora_reingreso,
+                "hora_salida_reingreso" => $item->hora_salida_reingreso,
+                "id_row" => self::searchNovedades($item->fecha_registro, $co, $item->id)
+            );
+        }
+
+        $table = view('apps.intranet.ingresos.tables.infoLlegadasTarde', ['info' => $dataArray])->render();
         return view('apps.intranet.ingresos.tarde', ['table' => $table]);
     }
 
@@ -214,7 +230,7 @@ class ControllerIngresosSalidas extends Controller
                 "hora_salida" => $item->hora_salida,
                 "hora_reingreso" => $item->hora_reingreso,
                 "hora_salida_reingreso" => $item->hora_salida_reingreso,
-                "id_row" => $item->id_row
+                "id_row" => self::searchNovedades($item->fecha_registro, $co, $item->id)
             );
         }
 
@@ -222,8 +238,9 @@ class ControllerIngresosSalidas extends Controller
         return response()->json(['status' => true, 'table' => $table], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
     }
 
-    public function searchNovedades($id_row)
+    public function searchNovedades($fecha_novedad, $co, $id_cc)
     {
+        return ModelIngresosSalidas::ObtenerInformacionNovedadesLlegadasTarde($co, $fecha_novedad, $id_cc);
     }
 
     protected static function ObtenerListadoInasistenciasUsuarios($co, $fecha_i, $fecha_f)

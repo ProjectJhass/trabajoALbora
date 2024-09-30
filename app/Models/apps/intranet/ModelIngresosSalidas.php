@@ -106,10 +106,10 @@ class ModelIngresosSalidas extends Model
     public static function ObtenerNovedadesLlegadasTarde($id_row)
     {
         return DB::table('novedades')
-        ->where('id_registro_ingreso', $id_row)
-        ->limit(1)
-        ->orderBy('id_novedad', 'DESC')
-        ->get();
+            ->where('id_registro_ingreso', $id_row)
+            ->limit(1)
+            ->orderBy('id_novedad', 'DESC')
+            ->get();
     }
 
     public static function ValidarEventosUsuarios($cedula_u, $fecha_c)
@@ -140,6 +140,16 @@ class ModelIngresosSalidas extends Model
             ->whereBetween('n.fecha_novedad', ([$fecha_i, $fecha_f]))
             ->distinct()
             ->get();
+    }
+
+    public static function ObtenerInformacionNovedadesLlegadasTarde($co, $fecha_i, $id)
+    {
+        return DB::table('novedades as n')
+            ->where('n.co', $co)
+            ->where('n.id_registro', $id)
+            ->where('n.fecha_novedad', $fecha_i)
+            ->orderBy('n.id_novedad', 'asc')
+            ->first();
     }
 
     public static function ObtenerFechasUsuarioNovedades($id_registro)

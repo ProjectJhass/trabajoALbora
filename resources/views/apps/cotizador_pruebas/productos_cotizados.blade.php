@@ -68,6 +68,11 @@
         .custom-btn-danger.active:focus {
             box-shadow: 0 0 0 0.2rem rgba(95, 1, 203, 0.5);
         }
+
+        .cu_couta_mensual{
+            font-size: 0.4em;
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('body')
@@ -382,6 +387,52 @@
                                             value="{{ isset($cliente->email) ? $cliente->email : '' }}"
                                             class="form-control" name="correo_credito" id="correo_credito" required>
                                     </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="">Género</label>
+                                        <select name="genero_credito" id="genero_credito" class="form-control" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="HOMBRE"
+                                                {{ isset($cliente->genero) ? ($cliente->genero == 'HOMBRE' ? 'selected' : '') : '' }}>
+                                                HOMBRE
+                                            </option>
+                                            <option value="MUJER"
+                                                {{ isset($cliente->genero) ? ($cliente->genero == 'MUJER' ? 'selected' : '') : '' }}>
+                                                MUJER
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="mes_dia">Fecha cumpleaños (Mes - Día)</label>
+                                        <div class="d-flex">
+                                            <select class="form-control mr-2" name="mes_cumple_credito_" id="mes_cumple_credito_" required>
+                                                <option value="" selected disabled>Seleccionar</option>
+                                                <option value="01">Enero</option>
+                                                <option value="02">Febrero</option>
+                                                <option value="03">Marzo</option>
+                                                <option value="04">Abril</option>
+                                                <option value="05">Mayo</option>
+                                                <option value="06">Junio</option>
+                                                <option value="07">Julio</option>
+                                                <option value="08">Agosto</option>
+                                                <option value="09">Septiembre</option>
+                                                <option value="10">Octubre</option>
+                                                <option value="11">Noviembre</option>
+                                                <option value="12">Diciembre</option>
+                                            </select>
+
+                                            <select class="form-control" name="dia_cumple_credito_" id="dia_cumple_credito_" required>
+                                                <option value="" selected disabled>Seleccionar</option>
+                                                @for ($i = 1; $i <= 31; $i++)
+                                                    <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">
+                                                        {{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <label for="">Observaciones</label>
+                                        <textarea name="observaciones_credito_" id="observaciones_credito_" class="form-control" cols="30" rows="1">{{ session('observaciones') }}</textarea>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
@@ -389,6 +440,8 @@
                                             </div>
                                             <input type="text" name="txt_financiar_credito" id="txt_financiar_credito"
                                                 readonly class="form-control">
+                                            <input type="text" name="txt_financiar_credito_inicial" hidden
+                                                id="txt_financiar_credito_inicial" readonly class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -532,6 +585,7 @@
             StylesTableCotizacion();
             var format = new Intl.NumberFormat();
             $("#txt_financiar_credito").val("$ " + format.format($("#total_a_pagar").val()))
+            $("#txt_financiar_credito_inicial").val("$ " + format.format($("#valor_resta_financiar").val()));
         });
 
         obtenerCiudadesCoti = (id) => {
@@ -942,12 +996,14 @@
                 $("#valor_nuevo_financiar").val(formatter.format(valor_resta));
                 $("#valor_resta_financiar").val(formatter.format(valor_financiar));
                 $("#txt_financiar_credito").val("$ " + formatter.format(valor_resta))
+                $("#txt_financiar_credito_inicial").val("$ " + formatter.format($("#valor_resta_financiar").val()));
             } else {
                 document.getElementById('txtValorFinanciar').hidden = true;
                 document.getElementById('txtValorRestaCredito').hidden = true;
                 $("#valor_nuevo_financiar").val("");
                 $("#valor_resta_financiar").val("");
                 $("#txt_financiar_credito").val("$ " + formatter.format(total_pagar))
+                $("#txt_financiar_credito_inicial").val("$ " + formatter.format($("#valor_resta_financiar").val()));
             }
         }
 
@@ -1016,6 +1072,7 @@
             $("#modalValorFinanciarCredito").modal("hide")
             $("#modalInfoSolicitarCredito").modal("show")
             $("#txt_financiar_credito").val("$ " + traerValorAFinanciar())
+            $("#txt_financiar_credito_inicial").val("$ " + $("#valor_resta_financiar").val());
         }
 
         traerValorAFinanciar = () => {
@@ -1045,7 +1102,9 @@
 
             var formData = new FormData(document.getElementById("formInformacionClienteNuevoCredito"));
             formData.append("id_ciudad_credito", ciudad.data("id_city"));
+            formData.append("ciudad_credito_name", $("#ciudad_credito").val());
             formData.append("departamento", nom_depto);
+            formData.append("cumple_cl_credito", `2024-${$('#mes_cumple_credito_').val()}-${$('#dia_cumple_credito_').val()}`);
 
             var datos = $.ajax({
                 url: "{{ route('generar.solicitud.credito.crexit') }}",
@@ -1057,6 +1116,7 @@
                 processData: false,
             })
             datos.done((res) => {
+                console.log(res);
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -1139,9 +1199,9 @@
             Swal.fire({
                 html: `
                 <div class="container text-center">
-                    <div class="mx-auto py-3 px-5 d-flex flex-column justify-content-between" style="border-radius:12px;width:350px; height:500px; box-shadow: 0px 0px 20px 0px rgb(0,0,0,0.3)">
+                    <div class="mx-auto py-3 px-5 d-flex flex-column justify-content-between" style="border-radius:12px;width:350px; height:650px; box-shadow: 0px 0px 20px 0px rgb(0,0,0,0.3)">
                         <h2 class="fw-bold m-0 p-0" style="color:#5f01cb;">Cuota Mensual</h2>
-                        <h1 class="fw-bold m-0 p-0" style="color:#5f01cb;"><b class="m-0 p-0">$${formatter.format(Math.round(coutaMensualFija))}</b></h1>
+                        <h1 class="fw-bold m-0 p-0" style="color:#5f01cb;"><b class="m-0 p-0">$${formatter.format(Math.round(coutaMensualFija))} <small class='cu_couta_mensual'>c/u</small></b></h1>
 
                         <div class="d-flex justify-content-between my-3">
                             <div class="text-start px-2 flex-fill">
@@ -1165,7 +1225,8 @@
                         </div>
                         <br>
                         <p class="text-muted mt-3" style="font-size:12px">*El valor de tu cuota es un aproximado y dependerá de tu fecha de compra.*</p>
-                        <p class="text-muted mt-3" style="font-size:12px">*El IVA ya viene aplicado en la couta mensual, al igual que en el total del credito.*</p>
+                        <p class="text-muted mt-3" style="font-size:12px">*El IVA ya viene aplicado en la cuota mensual, al igual que en el total del credito.*</p>
+                        <p class="text-muted mt-3" style="font-size:12px">*La cuota es un promedio del plan que elijas.*</p>
                     </div>
                 </div>
                 <style>

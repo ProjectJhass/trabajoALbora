@@ -25,7 +25,7 @@
                 <td>{{ $item['hora_salida'] }}</td>
                 <td>{{ $item['hora_reingreso'] }}</td>
                 <td>{{ $item['hora_salida_reingreso'] }}</td>
-                <td>{{ $item['hora_salida_reingreso'] }}</td>
+                <td>{{ $item['id_row']->novedad_usuario ?? 'No registro la novedad.' }}</td>
             </tr>
         @endforeach
     </tbody>
