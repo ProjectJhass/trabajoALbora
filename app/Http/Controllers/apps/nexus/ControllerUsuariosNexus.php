@@ -21,14 +21,15 @@ class ControllerUsuariosNexus extends Controller
     public function usuarios()
     {
         $usuarios = ModelUsuarios::join("cargos as c", "c.id_cargo", "=", "cargo")->get();
-        return view('apps.nexus.app.usuarios.infoUsuarios', ['usuarios' => $usuarios]);
+        
+        return view('apps.nexus.app.InformacionUsuarios.InformacionUsuarios.infoUsuarios', ['usuarios' => $usuarios]);
     }
 
     public function crearInfo()
     {
         $deptos = ModelDepartamentos::orderBy("depto")->get();
         $roles = ModelInfoRoles::where("estado", "Activo")->get();
-        return view('apps.nexus.app.usuarios.crearUsuario', ['deptos' => $deptos, 'roles' => $roles]);
+        return view('apps.nexus.app.InformacionUsuarios.CrearUsuario.crearUsuario', ['deptos' => $deptos, 'roles' => $roles]);
     }
 
     public function buscarCiudad(Request $request)

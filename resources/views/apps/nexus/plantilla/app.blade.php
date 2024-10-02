@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/pnotify/dist/pnotify.buttons.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
+
         .right_col {
             min-height: 50rem !important;
         }
@@ -443,7 +444,7 @@
                 </div>
             </div>
         </div>
-        <div class="conatiner-fluid content-inner mt-n5 py-0">
+        <div class="conatiner-fluid content-inner mt-n5 py-0" id="bodyModuleTraining">
             @yield('body')
         </div>
     </main>
