@@ -12,12 +12,16 @@ use Illuminate\Support\Facades\DB;
 
 class ControllerInfoModulos extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $areas = ModelInfoAreas::all();
+        $searchTerm = $request->input("search", '');
+    
+        $areas = ModelInfoAreas::where('nombre_dpto', 'like', '%' . $searchTerm . '%')->get();
+    
         $info =  view('apps.nexus.app.modulos_capacitacion.info.areas', ['info' => $areas])->render();
-        return view('apps.nexus.app.modulos_capacitacion.areas', ['info' => $info]);
+        return view('apps.nexus.app.modulos_capacitacion.areas', ['info' => $info, 'searchTerm' => $searchTerm]);
     }
+    
 
     public function infoCargos(Request $request)
     {
@@ -57,4 +61,42 @@ class ControllerInfoModulos extends Controller
 
         return view('apps.nexus.app.modulos_capacitacion.temaContenido', ['item' => $tema_, 'tema' => $infoTema, 'evaluaciones' => $infoEvaluaciones]);
     }
-}
+
+    // Funcion para la eidicion de las areas de la empresa 
+
+    public function EdicionArea(Request $request){
+        
+    }
+
+
+    // public function EdicionArea(Request $request){
+    //     $id_area = $request->id_area;
+
+    //     // $AreaDpto= ModelInfoTemasAreaDpto::find($id_area);
+
+    //     $area_depto_update = ModelInfoTemasAreaDpto::find($id_area);
+
+    //     $descripcion = $area_depto_update->descripcion_dpto;
+
+    
+    //     $area_depto_update->descripcion_dpto = "Valor nuevo";
+    //     $area_depto_update->save();
+
+    // $area_depto_update = ModelInfoTemasAreaDpto::where("id_dpto", $id_area)
+    // ->update(["descripcion_dpto" => "Valor nuevo"]);
+
+
+    // $area = ModelInfoTemasAreaDpto::create([
+
+    // ]);
+
+    // $area->id_dpto;
+
+    // }
+
+    
+
+
+
+
+}    

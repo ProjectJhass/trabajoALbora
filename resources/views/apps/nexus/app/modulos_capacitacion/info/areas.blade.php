@@ -1,67 +1,69 @@
-<div class="row">
+<div class="row" style="padding-top: 60px;">
+    <form method="GET" action="{{ route('modulos.nexus') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre de departamento" value="{{ request('search') }}">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+    <a href="#"><button class="btn btn-outline-primary">Crear área</button></a>
+</div>
+
+<div class="row mt-2">
     @foreach ($info as $item)
-        <div class="col-md-3 mb-2 d-flex">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <div class="d-flex flex-column text-center align-items-center justify-content-between ">
-                            <div class="fs-italic">
-                                <h5>{{ $item->nombre_dpto }}</h5>
-                            </div>
-                            <div class="text-black-50 text-warning">
-                                <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="orange">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="orange">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="orange">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="orange">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="orange">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <a href="{{ route('cargos.modulos.nexus', ['id_area' => $item->id_dpto]) }}" class="card-profile-progress">
-                                <div id="circle-progress-1{{ $item->id_dpto }}" class="circle-progress-basic circle-progress-primary"
-                                    data-min-value="0" data-max-value="100" data-value="80" data-type="percent" role="progressbar" aria-valuemin="0"
-                                    aria-valuemax="100" aria-valuenow="80">
-                                    <svg version="1.1" width="100" height="100" viewBox="0 0 100 100" class="circle-progress">
-                                        <circle class="circle-progress-circle" cx="50" cy="50" r="46" fill="none" stroke="#ddd"
-                                            stroke-width="8">
-                                        </circle>
-                                    </svg>
-                                </div>
-                                <img src="{{ asset('img/profile.png') }}" alt="User-Profile" class="img-fluid rounded-circle card-img">
-                            </a>
-                            <div class="mt-3 text-center text-muted-50">
-                                <p>{{ $item->descripcion }}</p>
-                            </div>
-                            <div class="d-flex icon-pill">
-                                <a href="#" class="btn btn-sm rounded-pill px-2 py-2  ms-2">
-                                    <i class="fas fa-phone-alt"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm rounded-pill px-2 py-2 ms-2">
-                                    <i class="fab fa-whatsapp fa-lg"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12 col-md-6 col-lg-3 mb-4"> <!-- Ajuste para grilla responsive -->
+        <div class="card h-100" style="border-radius: 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease;">
+            <img src="{{ asset('img/diseñoGrafr.png') }}" class="card-img-top img-fluid" style="border-top-left-radius: 15px; border-top-right-radius: 15px; height: 220px; object-fit: contain; padding-top:10px;" alt="Imagen de ejemplo">
+            <div class="card-body text-center d-flex flex-column justify-content-between" style="height: auto;"> <!-- Ajuste para alturas dinámicas -->
+                <h5 class="card-title fw-bold text-primary">{{ $item->nombre_dpto }}</h5>
+                <p class="card-text text-muted" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; text-overflow: ellipsis; font-size: 14px;">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga harum accusamus aliquid earum? Sed necessitatibus ipsa, dolor, delectus provident enim quidem illum voluptatibus fugit aut, dolores labore facilis ut iure.
+                </p>
+                <a href="{{ route('cargos.modulos.nexus', ['id_area' => $item->id_dpto]) }}" class="btn-custom">
+                    <span id="circle-progress-1{{ $item->id_dpto }}">Ver más</span>
+                </a>
             </div>
         </div>
+    </div>
     @endforeach
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    .card {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-custom {
+        border: 1px solid #db5363;
+        color: #db5363;
+        border-radius: 50px;
+        padding: 10px 24px;
+        margin-top: 1rem;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        background-color: #db5363;
+        color: white;
+    }
+
+    /* Ajustes para responsividad */
+    @media (max-width: 768px) {
+        .card-img-top {
+            height: 180px; /* Reducir altura en pantallas más pequeñas */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card-img-top {
+            height: 150px; /* Reducir altura en pantallas aún más pequeñas */
+        }
+    }
+</style>

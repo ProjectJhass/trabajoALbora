@@ -18,6 +18,13 @@ class ModelInfoAreas extends Model
     protected $fillable = [
         'id_dpto',
         'nombre_dpto',
+        'descripcion_dpto',
         'id_empresa'
     ];
+
+
+    public function empresa()
+    {
+        return $this->belongsTo(ModelEmpresa::class, 'id_empresa', 'id_empresa');
+    }
 }

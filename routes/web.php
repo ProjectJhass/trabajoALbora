@@ -904,6 +904,7 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         Route::post('getInfo-seccion', [ControllerHomeNexus::class, 'getInfoSeccionUsuario'])->name('search.seccion.nexus');
     });
 
+    
     Route::group(['prefix' => 'usuarios'], function () {
         Route::get('', [ControllerUsuariosNexus::class, 'usuarios'])->name('usuarios.nexus');
         Route::get('crear-info', [ControllerUsuariosNexus::class, 'crearInfo'])->name('crear.info.nexus');
@@ -912,16 +913,31 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         Route::post('search-areas', [ControllerUsuariosNexus::class, 'buscarAreas'])->name('search.areas.nexus');
         Route::post('search-cargos', [ControllerUsuariosNexus::class, 'buscarCargosAreas'])->name('search.cargos.nexus');
         Route::post('crear-info-user', [ControllerUsuariosNexus::class, 'crearInformacionUsuariosNexus'])->name('crear.users.nexus');
+        
     });
-
+    
+    //Rutas para la seccion de Capacitaciones
     Route::group(['prefix' => 'modulos'], function () {
+        
+        //lista de las  Areas 
         Route::get('', [ControllerInfoModulos::class, 'index'])->name('modulos.nexus');
+        
+        //lista de los cargos 
         Route::get('info-cargos/{id_area}', [ControllerInfoModulos::class, 'infoCargos'])->name('cargos.modulos.nexus');
+        
+        
+        //lista de los modulos 
         Route::get('info-modulos/{id_cargo}', [ControllerInfoModulos::class, 'infoModulos'])->name('info.modulos.nexus');
+        
+        
+        // lista de los temas 
         Route::get('info-temas/{id_modulo}', [ControllerInfoModulos::class, 'infoTemasCapacitacion'])->name('info.temas.nexus');
+        
+        
+        //Contenido de los temas 
         Route::get('contenido-tema/{id_tema}', [ControllerInfoModulos::class, 'getContenidoTemaCapacitacion'])->name('contenido.tema.nexus');
     });
-
+    
     Route::group(['prefix' => 'manual-de-funciones'], function () {
         Route::get('', [ControllerManualFunciones::class, 'index'])->name('registros.manual.nexus');
         Route::get('crear', [ControllerManualFunciones::class, 'formulario'])->name('form.manual.nexus');

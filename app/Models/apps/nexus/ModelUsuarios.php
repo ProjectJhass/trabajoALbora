@@ -43,5 +43,6 @@ class ModelUsuarios extends Model
         'zona',
         'permisos',
         'estado'
+        
     ];
 }
