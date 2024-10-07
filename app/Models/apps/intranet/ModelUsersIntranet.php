@@ -28,6 +28,7 @@ class ModelUsersIntranet extends Model
         'calendario',
         'estado',
         'almacen',
+        'seccion_empresa',//modificacion a la tabla de user agregando una seccion de empresa la cual ayudara identificar en que empresa esta el usuario
         'empresa',
         'rol',
         'ruta_foto',

@@ -45,4 +45,7 @@ class ModelUsuarios extends Model
         'estado'
         
     ];
+
+
+
 }

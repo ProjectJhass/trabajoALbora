@@ -8,6 +8,7 @@ use App\Models\apps\nexus\ModelInfoCargos;
 use App\Models\apps\nexus\ModelInfoModulos;
 use App\Models\apps\nexus\ModelInfoTemasCapacitacion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ControllerInfoModulos extends Controller
@@ -64,11 +65,45 @@ class ControllerInfoModulos extends Controller
 
     // Funcion para la eidicion de las areas de la empresa 
 
-    public function EdicionArea(Request $request){
-        
+    public function crearUsuario(){
+        return view('apps.nexus.app.modulos_capacitacion.Blade_Area.creacion');
     }
 
+    public function store(Request $request)
+    {
+        return $this->storeArea($request);
+    }
+    private function storeArea(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nombre_dpto' => 'required|string|max:255',
+            'descripcion_dpto' => 'nullable|string',
+            'name_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'id_empresa' => 'nullable|exists:empresas,id_empresa', 
+        ]);
+    
+        $id_empresa = Auth::user()->seccion_empresa; 
 
+        
+        $validatedData['id_empresa'] = $id_empresa;
+    
+        $imageUploadController = new ControllerImages();
+    
+        if ($request->hasFile('name_image')) {
+            try {
+                $fileName = $imageUploadController->uploadImage($request->file('name_image'));
+                $validatedData['name_image'] = $fileName;
+            } catch (\Throwable $e) {
+                return redirect()->back()->withErrors(['imagen' => $e->getMessage()]);
+            }
+        }
+    
+        ModelInfoAreas::create($validatedData);
+    
+        return redirect()->route('areas.index')->with('success', 'Área creada exitosamente.');
+    }
+    
+    
     // public function EdicionArea(Request $request){
     //     $id_area = $request->id_area;
 

@@ -19,6 +19,7 @@ class ModelInfoAreas extends Model
         'id_dpto',
         'nombre_dpto',
         'descripcion_dpto',
+        'name_image',
         'id_empresa'
     ];
 

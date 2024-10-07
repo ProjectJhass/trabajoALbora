@@ -26,6 +26,12 @@ use Illuminate\Database\Eloquent\Model;
     {
         return $this->hasMany(ModelInfoAreas::class, 'id_empresa', 'id_empresa');
     }
+
+    public function usuarios()
+    {
+        return $this->belongsToMany(ModelUsuarios::class, 'empresa_usuario', 'id_empresa', 'id');
+    }
+    
 }
 
 

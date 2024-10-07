@@ -5,7 +5,7 @@
             <button class="btn btn-primary" type="submit">Buscar</button>
         </div>
     </form>
-    <a href="#"><button class="btn btn-outline-primary">Crear área</button></a>
+    <a href="{{route('contenido.areas.empresa')}}"><button class="btn btn-outline-primary">Crear área</button></a>
 </div>
 
 <div class="row mt-2">

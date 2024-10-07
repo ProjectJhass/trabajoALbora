@@ -99,6 +99,7 @@ use App\Http\Controllers\apps\nexus\ControllerManualFunciones;
 use App\Http\Controllers\apps\nexus\ControllerUsuariosNexus;
 use App\Http\Controllers\apps\intranet_fabrica\ControllerPQRS;
 use App\Http\Controllers\apps\nexus\ControllerEmitirConceptoEntrevista;
+use App\Http\Controllers\apps\nexus\ControllerImages;
 use App\Http\Controllers\apps\servicios_tecnicos\analytics\ControllerAnalytics;
 use App\Http\Controllers\apps\servicios_tecnicos\pagina_web\ControllerWeb;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\admin\ControllerInformes;
@@ -117,6 +118,7 @@ use App\Http\Controllers\apps\servicios_tecnicos\servicios\fabrica\ControllerSeg
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\plantilla\ControllerAlmacenes;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\pw\ControllerAdminInfoPw;
 use App\Http\Controllers\apps\servicios_tecnicos\ws\ControllerConexionWs;
+use App\Http\Controllers\ControllerEmpresa;
 use App\Http\Controllers\PruebaOP;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -916,6 +918,11 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         
     });
     
+
+    Route::group(['prefix'=> 'ImagesLocal'], function () {
+        Route::post('Submit/Image', [ControllerImages::class,'uploadImage'])->name('function.submit.image');
+    });
+
     //Rutas para la seccion de Capacitaciones
     Route::group(['prefix' => 'modulos'], function () {
         
@@ -936,6 +943,25 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         
         //Contenido de los temas 
         Route::get('contenido-tema/{id_tema}', [ControllerInfoModulos::class, 'getContenidoTemaCapacitacion'])->name('contenido.tema.nexus');
+    });
+
+    Route::group(['prefix'=> 'crear'], function () {
+        //Creacion de  la area 
+        Route::get('areas/crear',[ControllerInfoModulos::class, 'crearUsuario'])->name('contenido.areas.empresa');
+        Route::post('/area', [ControllerInfoModulos::class,'store'])->name('formulario.areas.empresa');
+
+
+    }); 
+
+    
+    Route::group(['prefix' => 'empresas'], function () {
+        Route::get('/', [ControllerEmpresa::class, 'index'])->name('index'); // Mostrar todas las empresas
+        Route::get('/create', [ControllerEmpresa::class, 'create'])->name('create'); // Mostrar formulario para crear nueva empresa
+        Route::post('/', [ControllerEmpresa::class, 'store'])->name('store'); // Almacenar nueva empresa
+        Route::get('/{empresa}', [ControllerEmpresa::class, 'show'])->name('show'); // Mostrar detalles de una empresa específica
+        Route::get('/{empresa}/edit', [ControllerEmpresa::class, 'edit'])->name('edit'); // Mostrar formulario para editar una empresa
+        Route::put('/{empresa}', [ControllerEmpresa::class, 'update'])->name('update'); // Actualizar empresa existente
+        Route::delete('/{empresa}', [ControllerEmpresa::class, 'destroy'])->name('destroy'); // Eliminar una empresa
     });
     
     Route::group(['prefix' => 'manual-de-funciones'], function () {
