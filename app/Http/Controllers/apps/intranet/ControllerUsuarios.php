@@ -27,52 +27,60 @@ class ControllerUsuarios extends Controller
         $cedulas_ = array();
 
         $dptos = ModelUsuariosIntranet::ObtenerDepartamentos();
-        $usuarios = ModelConsultasWs::informacion();
+        // $usuarios = ModelConsultasWs::informacion();
 
-        if (count($usuarios) > 0) {
-            foreach ($usuarios as $key => $value) {
-                // $info_ = ModelUsersIntranet::where('id', 'LIKE' "$value['cedula']%");
-                $info_ = ModelUsersIntranet::find($value['cedula']);
+        // if (count($usuarios) > 0) {
+        //     foreach ($usuarios as $key => $value) {
+        //         // $info_ = ModelUsersIntranet::where('id', 'LIKE' "$value['cedula']%");
+        //         $info_ = ModelUsersIntranet::find($value['cedula']);
 
-                if ($info_) {
-                    array_push($cedulas_, $value['cedula']);
+        //         if ($info_) {
+        //             array_push($cedulas_, $value['cedula']);
 
-                    array_push($data, ([
-                        'cedula' => $value['cedula'],
-                        'nombre' => $value['nombre'],
-                        'empresa' => ($value['empresa'] == 2) ? 'ALBURA SAS' : (($value['empresa'] == 5) ? 'INVERSIONES' : ''),
-                        'sucursal' => $info_->sucursal,
-                        'usuario' => $info_->usuario,
-                        'estado' => ($info_->estado == '1') ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>'
-                    ]));
-                } else {
-                    array_push($data, ([
-                        'cedula' => $value['cedula'],
-                        'nombre' => $value['nombre'],
-                        'empresa' => ($value['empresa'] == 2) ? 'ALBURA SAS' : (($value['empresa'] == 5) ? 'INVERSIONES' : ''),
-                        'sucursal' => '',
-                        'usuario' => '',
-                        'estado' => '<span class="badge badge-danger">Inactivo</span>'
-                    ]));
-                }
-            }
+        //             array_push($data, ([
+        //                 'cedula' => $value['cedula'],
+        //                 'nombre' => $value['nombre'],
+        //                 'empresa' => ($value['empresa'] == 2) ? 'ALBURA SAS' : (($value['empresa'] == 5) ? 'INVERSIONES' : ''),
+        //                 'sucursal' => $info_->sucursal,
+        //                 'usuario' => $info_->usuario,
+        //                 'estado' => ($info_->estado == '1') ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>'
+        //             ]));
+        //         } else {
+        //             array_push($data, ([
+        //                 'cedula' => $value['cedula'],
+        //                 'nombre' => $value['nombre'],
+        //                 'empresa' => ($value['empresa'] == 2) ? 'ALBURA SAS' : (($value['empresa'] == 5) ? 'INVERSIONES' : ''),
+        //                 'sucursal' => '',
+        //                 'usuario' => '',
+        //                 'estado' => '<span class="badge badge-danger">Inactivo</span>'
+        //             ]));
+        //         }
+        //     }
 
-            ModelUsersIntranet::whereNotIn('id', $cedulas_)->where("inhabilitar", "1")->update(['estado' => 0]);
-            $info_db = ModelUsersIntranet::whereNotIn('id', $cedulas_)->get();
-            foreach ($info_db as $key => $val) {
-                array_push($data, ([
-                    'cedula' => $val->id,
-                    'nombre' => $val->nombre,
-                    'empresa' => $val->empresa,
-                    'sucursal' => $val->sucursal,
-                    'usuario' => $val->usuario,
-                    'estado' => ($val->estado == '1') ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>'
-                ]));
-            }
+        //     ModelUsersIntranet::whereNotIn('id', $cedulas_)->where("inhabilitar", "1")->update(['estado' => 0]);
+        // }
+        $info_db = ModelUsersIntranet::whereNotIn('id', $cedulas_)->get();
+        foreach ($info_db as $key => $val) {
+            array_push($data, ([
+                'cedula' => $val->id,
+                'nombre' => $val->nombre,
+                'empresa' => $val->empresa,
+                'sucursal' => $val->sucursal,
+                'usuario' => $val->usuario,
+                'estado' => ($val->estado == '1') ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>'
+            ]));
         }
 
         return view('apps.intranet.usuarios.home', ['dptos' => $dptos, 'usuarios' => $data]);
     }
+
+    public function listUsersInSelect(){
+        $usuarios=ModelUsersIntranet::all();
+
+        return response()->json($usuarios);
+
+    }
+    
 
     public function getInfoUsuarioIntranet(Request $request)
     {
@@ -124,7 +132,9 @@ class ControllerUsuarios extends Controller
         $fotografia = $request->file("fotografia");
         $rol_fab = $request->rol_fab;
         $permiso_madera = $request->control_madera;
-        $inhabilitar = $request->inhabilitar;
+        $inhabilitar = $request->inhabilitar; 
+        $Nexus= $request->Nexus; // Anexo el campo e Nexus al actualizar
+        $CargoNexus= $request->CargoNexus; //Anexo del campo cargo nexus al actualizar
         $estado = $request->estado;
 
         $info_user = ModelUsersIntranet::find($cedula);
@@ -159,6 +169,8 @@ class ControllerUsuarios extends Controller
             $info_user->rol_user = $rol_fab;
             $info_user->permiso_madera = $permiso_madera;
             $info_user->inhabilitar = $inhabilitar;
+            $info_user->Nexus=$Nexus;// Anexo el campo e Nexus al actualizar
+            $info_user->CargoNexus=$CargoNexus;//Anexo del campo cargo nexus al actualizar
             $info_user->save();
 
             return response()->json(['status' => true], 200, ['Content-type' => 'application/json', 'charset' => 'utf-8']);
@@ -190,6 +202,8 @@ class ControllerUsuarios extends Controller
         $fotografia = $request->file("fotografia");
         $rol_fab = $request->rol_fab;
         $inhabilitar = $request->inhabilitar;
+        $Nexus= $request->Nexus; // Anexo el campo e Nexus al actualizar
+        $CargoNexus= $request->CargoNexus; //Anexo del campo cargo nexus al actualizar
         $estado = $request->estado;
 
         $info_user = ModelUsersIntranet::create([
@@ -214,6 +228,8 @@ class ControllerUsuarios extends Controller
             'rol' => $rol_st,
             'rol_user' => $rol_fab,
             'inhabilitar' => $inhabilitar,
+            'Nexus'=> $Nexus,
+            'CargoNexus'=> $CargoNexus
         ]);
 
         if ($info_user) {

@@ -118,7 +118,7 @@ use App\Http\Controllers\apps\servicios_tecnicos\servicios\fabrica\ControllerSeg
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\plantilla\ControllerAlmacenes;
 use App\Http\Controllers\apps\servicios_tecnicos\servicios\pw\ControllerAdminInfoPw;
 use App\Http\Controllers\apps\servicios_tecnicos\ws\ControllerConexionWs;
-use App\Http\Controllers\ControllerEmpresa;
+use App\Http\Controllers\apps\nexus\ControllerEmpresa;
 use App\Http\Controllers\PruebaOP;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -947,8 +947,9 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix'=> 'crear'], function () {
         //Creacion de  la area 
-        Route::get('areas/crear',[ControllerInfoModulos::class, 'crearUsuario'])->name('contenido.areas.empresa');
+        Route::get('areas/crear',[ControllerInfoModulos::class, 'crearArea'])->name('contenido.areas.empresa');
         Route::post('/area', [ControllerInfoModulos::class,'store'])->name('formulario.areas.empresa');
+        Route::get('/list_usuarios', [ControllerUsuarios::class, 'listUsersInSelect'])->name('get.usuarios');
 
 
     }); 

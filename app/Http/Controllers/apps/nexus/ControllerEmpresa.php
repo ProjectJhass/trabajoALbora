@@ -1,6 +1,7 @@
 <?php 
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\apps\nexus;
+use App\Http\Controllers\Controller;
 
 use App\Models\apps\nexus\ModelEmpresa;
 use Illuminate\Http\Request;

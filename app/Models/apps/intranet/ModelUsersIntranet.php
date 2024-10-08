@@ -34,6 +34,8 @@ class ModelUsersIntranet extends Model
         'ruta_foto',
         'rol_user',
         'permiso_madera',
-        'inhabilitar'
+        'inhabilitar',
+        'Nexus', //modificacion a la tabla user anexando 'Nexus ' sirve para habilitar los permisos necesarios para poder acceder como admin o usuario normal 
+        'CargoNexus' //modificacion a la tabla user anexando 'CargoNexus' sirve para poder asignar su respectivo rol en la seccion nexus 
     ];
 }

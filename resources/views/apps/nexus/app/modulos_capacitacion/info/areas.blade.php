@@ -12,12 +12,12 @@
     @foreach ($info as $item)
     <div class="col-12 col-md-6 col-lg-3 mb-4"> <!-- Ajuste para grilla responsive -->
         <div class="card h-100" style="border-radius: 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease;">
-            <img src="{{ asset('img/diseñoGrafr.png') }}" class="card-img-top img-fluid" style="border-top-left-radius: 15px; border-top-right-radius: 15px; height: 220px; object-fit: contain; padding-top:10px;" alt="Imagen de ejemplo">
+            <img src="{{ asset('assets/img/ImageAreas/'.$item->name_image) }}" class="card-img-top img-fluid" style="border-top-left-radius: 15px; border-top-right-radius: 15px; height: 220px; object-fit: contain; padding-top:10px;" alt="Imagen de ejemplo">
             <div class="card-body text-center d-flex flex-column justify-content-between" style="height: auto;"> <!-- Ajuste para alturas dinámicas -->
                 <h5 class="card-title fw-bold text-primary">{{ $item->nombre_dpto }}</h5>
                 <p class="card-text text-muted" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; text-overflow: ellipsis; font-size: 14px;">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga harum accusamus aliquid earum? Sed necessitatibus ipsa, dolor, delectus provident enim quidem illum voluptatibus fugit aut, dolores labore facilis ut iure.
-                </p>
+                    {{$item->descripcion_dpto}}
+            </p>
                 <a href="{{ route('cargos.modulos.nexus', ['id_area' => $item->id_dpto]) }}" class="btn-custom">
                     <span id="circle-progress-1{{ $item->id_dpto }}">Ver más</span>
                 </a>

@@ -421,7 +421,7 @@
             </div>
         </div>
     </aside>
-    <main class="main-content" style="  position: relative; overflow-y: auto; height:100vh;">
+    <main class="main-content" style=" width: 100vw; position: relative; overflow-y: auto; height:100vh;">
         <div class="position-relative iq-banner">
             <!-- <nav class="nav navbar navbar-expand-lg bg-primary iq-navbar" style="padding: 10px;">
                 <div class="container-fluid navbar-inner">
