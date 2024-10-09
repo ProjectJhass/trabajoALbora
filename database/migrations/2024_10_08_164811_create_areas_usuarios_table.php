@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Schema;
             $table->unsignedBigInteger('id_dpto');  // ID del departamento
 
             // Definir las claves foráneas
-            $table->foreign('id')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_dpto')->references('id_dpto')->on('areas')->onDelete('cascade');
 
             $table->timestamps();

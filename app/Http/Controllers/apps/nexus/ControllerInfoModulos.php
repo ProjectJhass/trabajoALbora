@@ -18,14 +18,14 @@ class ControllerInfoModulos extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->input("search", '');
-    
+
         $areas = ModelInfoAreas::where('nombre_dpto', 'like', '%' . $searchTerm . '%')->get();
-    
+
         $info =  view('apps.nexus.app.modulos_capacitacion.info.areas', ['info' => $areas])->render();
         return view('apps.nexus.app.modulos_capacitacion.areas', ['info' => $info, 'searchTerm' => $searchTerm]);
     }
-    
-    
+
+
     public function infoCargos(Request $request)
     {
         $id_area = $request->id_area;
@@ -33,7 +33,7 @@ class ControllerInfoModulos extends Controller
         $info =  view('apps.nexus.app.modulos_capacitacion.info.cargos', ['info' => $cargos, 'id_area' => $id_area])->render();
         return view('apps.nexus.app.modulos_capacitacion.cargos', ['info' => $info]);
     }
-    
+
     public function infoModulos(Request $request)
     {
         $id_cargo = $request->id_cargo;
@@ -46,8 +46,8 @@ class ControllerInfoModulos extends Controller
     {
         $id_modulo = $request->id_modulo;
         $temas = ModelInfoTemasCapacitacion::leftJoin("evaluaciones_temas as e", "e.id_tema_capacitacion", "=", "id_tema")
-        ->select("temas_capacitacion.*", DB::raw("COUNT(e.id_tema_capacitacion) as cantidad_evaluaciones"))
-        ->where("id_modulo", $id_modulo)->groupBy("temas_capacitacion.id_tema")->get();
+            ->select("temas_capacitacion.*", DB::raw("COUNT(e.id_tema_capacitacion) as cantidad_evaluaciones"))
+            ->where("id_modulo", $id_modulo)->groupBy("temas_capacitacion.id_tema")->get();
 
         $info =  view('apps.nexus.app.modulos_capacitacion.info.temas', ['info' => $temas])->render();
         return view('apps.nexus.app.modulos_capacitacion.temas', ['info' => $info]);
@@ -64,10 +64,11 @@ class ControllerInfoModulos extends Controller
 
         return view('apps.nexus.app.modulos_capacitacion.temaContenido', ['item' => $tema_, 'tema' => $infoTema, 'evaluaciones' => $infoEvaluaciones]);
     }
-    
+
     // Funcion para la eidicion de las areas de la empresa 
-    
-    public function crearArea(){
+
+    public function crearArea()
+    {
         return view('apps.nexus.app.modulos_capacitacion.Blade_Area.creacion');
     }
     public function store(Request $request)
@@ -75,41 +76,63 @@ class ControllerInfoModulos extends Controller
         return $this->storeArea($request);
     }
     private function storeArea(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nombre_dpto' => 'required|string|max:255',
-            'descripcion_dpto' => 'nullable|string',
-            'name_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $validatedData = $request->validate([
+        'nombre_dpto' => 'required|string|max:255',
+        'descripcion_dpto' => 'nullable|string',
+        'name_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'select_usuario_seleccionado' => 'required|array',
+    ]);
 
-        $seccion_empresa = Auth::user()->seccion_empresa; 
-       $contentEmpresa= ModelEmpresa::where('nombre_empresa', $seccion_empresa)->first();
-       
-       if ($contentEmpresa) {
-           $validatedData['id_empresa']=$contentEmpresa->id_empresa;
-        }else {
-            return redirect()->back()->with('empresa','No se encontró una empresa para esta sección.');
-        }
-        
-        
-        $imageUploadController = new ControllerImages();
+    $seccion_empresa = Auth::user()->seccion_empresa;
+    $contentEmpresa = ModelEmpresa::where('nombre_empresa', $seccion_empresa)->first();
 
-    
-    
-        if ($request->hasFile('name_image')) {
-            try {
-                $fileName = $imageUploadController->uploadImage($request->file('name_image'));
-                $validatedData['name_image'] = $fileName;
-            } catch (\Throwable $e) {
-                return redirect()->back()->withErrors(['imagen' => $e->getMessage()]);
-            }
-        }
-    
-        ModelInfoAreas::create($validatedData);
-    
-        return redirect()->route('contenido.areas.empresa')->with('success', 'Área creada exitosamente.');
+    if (!$contentEmpresa) {
+        return response()->json(['status' => false, 'mensaje' => 'No se encontró una empresa para esta sección.'], 404);
     }
-    
+
+    $validatedData['id_empresa'] = $contentEmpresa->id_empresa;
+
+    $imageUploadController = new ControllerImages();
+
+    // Manejo de la imagen
+    try {
+        if ($request->hasFile('name_image')) {
+            $fileName = $imageUploadController->uploadImage($request->file('name_image'));
+            $validatedData['name_image'] = $fileName;
+        }
+    } catch (\Throwable $e) {
+        return response()->json(['status' => false, 'mensaje' => 'Hubo un error al subir la imagen!', 'error' => $e->getMessage()], 500);
+    }
+
+    // Crear el área
+    $area = ModelInfoAreas::create($validatedData);
+
+    // Crear asociaciones de área y usuarios
+    $ControllerAreaUsuarios = new ControllerAreasUsuarios();
+    $respuestaIdUsuarios = $ControllerAreaUsuarios->CreacionAreaUsuarios($validatedData['select_usuario_seleccionado'], $area->id_dpto);
+
+    if ($respuestaIdUsuarios['status'] === false) {
+        return response()->json(['status' => false, 'mensaje' => 'No se logró asignar el área a los usuarios'], 500);
+    }
+
+    return response()->json(['status' => true, 'mensaje' => 'Área creada exitosamente.'], 200);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // public function EdicionArea(Request $request){
     //     $id_area = $request->id_area;
 
@@ -119,7 +142,7 @@ class ControllerInfoModulos extends Controller
 
     //     $descripcion = $area_depto_update->descripcion_dpto;
 
-    
+
     //     $area_depto_update->descripcion_dpto = "Valor nuevo";
     //     $area_depto_update->save();
 
@@ -135,9 +158,9 @@ class ControllerInfoModulos extends Controller
 
     // }
 
-    
 
 
 
 
-}    
+
+}
