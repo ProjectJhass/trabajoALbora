@@ -1,3 +1,10 @@
+<div class="row mb-3">
+    <div class="col-md-12 text-end">
+        <a href="{{ route('contenido.modulo.cargos.area.empresa', ['id_cargo' => $id_cargo])}}" class="btn btn-primary">
+            Crear nuevo modulo
+        </a>
+    </div>
+</div>
 <div class="row">
     @foreach ($info as $item)
         <div class="col-md-3 mb-2 d-flex">

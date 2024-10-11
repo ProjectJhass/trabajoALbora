@@ -24,12 +24,6 @@
                 <div class="text-white">
                     <h3 class="text-white">Módulos de capacitación</h3>
                 </div>
-                <div>
-                    <a href="#" class="btn btn-gray rounded-pill ">
-                        <i class="fas fa-plus"></i>
-                        Crear módulo de capacitación
-                    </a>
-                </div>
             </div>
         </div>
     </div>

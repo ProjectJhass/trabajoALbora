@@ -45,17 +45,8 @@
 
 <script>
     const crearArea = () => {
-        // const ContentIdUsers=document.getElementById("usuarios-select").selectedOptions;
-        // const selectedArray = Array.from(ContentIdUsers);
-        // const arregloIdUsers=[]
-        // selectedArray.forEach(element => {
-        //     arregloIdUsers.push({
-        //         name:element.textContent,
-        //         value:element.value
-        //     });
-        // });
+
         let formData = new FormData(document.getElementById('frmCreateArea'));
-        // formData.append("IdUsers", JSON.parse(arregloIdUsers));
         
         $.ajax({
             url: "{{ route('formulario.areas.empresa') }}",

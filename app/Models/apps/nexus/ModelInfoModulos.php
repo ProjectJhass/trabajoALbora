@@ -18,6 +18,8 @@ class ModelInfoModulos extends Model
     protected $fillable = [
         'id_modulo',
         'nombre_modulo',
+        'descripcion_modulo',
+        'name_image',
         'estado'
     ];
 }

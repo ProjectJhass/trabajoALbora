@@ -375,6 +375,7 @@ Route::group(['prefix' => 'intranet', 'middleware' => 'auth', 'middleware' => 'c
     Route::group(['prefix' => 'usuarios'], function () {
         Route::get('/general', [ControllerUsuarios::class, 'index'])->name('usuarios');
         Route::post('/general', [ControllerUsuarios::class, 'getInfoUsuarioIntranet'])->name('get.info.usuarios');
+        Route::get('/list_usuarios', [ControllerUsuarios::class, 'listUsersInSelect'])->name('get.usuarios');
 
         Route::group(['prefix' => 'admin'], function () {
             Route::get('/crear-info/{cedula?}/{nombre?}', [ControllerUsuarios::class, 'createUserIntranet'])->name('crear.info.usuario');
@@ -945,14 +946,39 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         Route::get('contenido-tema/{id_tema}', [ControllerInfoModulos::class, 'getContenidoTemaCapacitacion'])->name('contenido.tema.nexus');
     });
 
-    Route::group(['prefix'=> 'crear'], function () {
+    Route::group(['prefix'=> 'crear_areas'], function () {
         //Creacion de  la area 
-        Route::get('areas/crear',[ControllerInfoModulos::class, 'crearArea'])->name('contenido.areas.empresa');
-        Route::post('/area', [ControllerInfoModulos::class,'store'])->name('formulario.areas.empresa');
-        Route::get('/list_usuarios', [ControllerUsuarios::class, 'listUsersInSelect'])->name('get.usuarios');
+        Route::get('/formulario_area',[ControllerInfoModulos::class, 'crearArea'])->name('contenido.areas.empresa');
+        Route::post('/contenido/formulario', [ControllerInfoModulos::class,'store'])->name('formulario.areas.empresa');
+
+        //falta modulo para realizar la actualizacion
 
 
-    }); 
+
+        // falta modulo para realizar la eliminacion
+
+    });
+    
+    Route::group(['prefix'=> 'cargos_area'], function () {
+                //Creacion de  cargos 
+        Route::get('/fomulario_cargo/{id_area}',[ControllerInfoModulos::class,'crearCargo'])->name('contenido.cargos.areas.empresa');
+        Route::post('/contenido/formulario', [ControllerInfoModulos::class,'storee'])->name('formulario.cargos.areas.empresa');
+
+   
+        //falta modulo para realizar la actualizacion
+
+
+
+        // falta modulo para realizar la eliminacion
+    });
+
+    Route::group(['prefix'=> 'modulo_area'], function () {
+        Route::get('/formulario_modulo/{id_cargo}',[ControllerInfoModulos::class, 'crearModulo'])->name('contenido.modulo.cargos.area.empresa');        
+        Route::post('/contenido/formulario/modulo', [ControllerInfoModulos::class,'stores'])->name('formulario.modulo.cargos.area.empresa');
+   
+   
+    });
+
 
     
     Route::group(['prefix' => 'empresas'], function () {

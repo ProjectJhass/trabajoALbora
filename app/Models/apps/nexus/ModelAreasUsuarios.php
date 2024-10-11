@@ -21,11 +21,11 @@ class ModelAreasUsuarios extends Model
     ];
 
     public function usuario(){
-        return $this->belongsTo('app\Models\apps\intranet\ModelUsersIntranet','id','id');
+        return $this->belongsTo('App\Models\apps\intranet\ModelUsersIntranet','id','id');
     }
 
     public function Areas(){
-        return $this->belongsTo('app\Models\apps\nexus\ModelInfoAreas','id_dpto','id_dpto');
+        return $this->belongsTo('App\Models\apps\nexus\ModelInfoAreas','id_dpto','id_dpto');
     }
 }
 

@@ -18,6 +18,8 @@ class ModelInfoCargos extends Model
     protected $fillable = [
         'id_cargo',
         'nombre_cargo',
-        'id_departamento'
+        'id_departamento',
+        'descripcion_cargo',
+        'name_image',
     ];
 }

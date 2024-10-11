@@ -16,12 +16,6 @@
                 <div class="text-white">
                     <h3 class="text-white">Cargos</h3>
                 </div>
-                <div>
-                    <a href="#" class="btn btn-gray rounded-pill ">
-                        <i class="fas fa-plus"></i>
-                        Crear tema de capacitación
-                    </a>
-                </div>
             </div>
         </div>
     </div>
