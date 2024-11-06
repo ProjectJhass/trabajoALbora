@@ -907,7 +907,7 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         Route::post('getInfo-seccion', [ControllerHomeNexus::class, 'getInfoSeccionUsuario'])->name('search.seccion.nexus');
     });
 
-    
+
     Route::group(['prefix' => 'usuarios'], function () {
         Route::get('', [ControllerUsuariosNexus::class, 'usuarios'])->name('usuarios.nexus');
         Route::get('crear-info', [ControllerUsuariosNexus::class, 'crearInfo'])->name('crear.info.nexus');
@@ -916,40 +916,43 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         Route::post('search-areas', [ControllerUsuariosNexus::class, 'buscarAreas'])->name('search.areas.nexus');
         Route::post('search-cargos', [ControllerUsuariosNexus::class, 'buscarCargosAreas'])->name('search.cargos.nexus');
         Route::post('crear-info-user', [ControllerUsuariosNexus::class, 'crearInformacionUsuariosNexus'])->name('crear.users.nexus');
-        
     });
-    
 
-    Route::group(['prefix'=> 'ImagesLocal'], function () {
-        Route::post('Submit/Image', [ControllerImages::class,'uploadImage'])->name('function.submit.image');
+
+    Route::group(['prefix' => 'ImagesLocal'], function () {
+        Route::post('Submit/Image', [ControllerImages::class, 'uploadImage'])->name('function.submit.image');
     });
 
     //Rutas para la seccion de Capacitaciones
     Route::group(['prefix' => 'modulos'], function () {
-        
+
         //lista de las  Areas 
         Route::get('', [ControllerInfoModulos::class, 'index'])->name('modulos.nexus');
-        
+
         //lista de los cargos 
         Route::get('info-cargos/{id_area}', [ControllerInfoModulos::class, 'infoCargos'])->name('cargos.modulos.nexus');
-        
-        
+
+
         //lista de los modulos 
         Route::get('info-modulos/{id_cargo}', [ControllerInfoModulos::class, 'infoModulos'])->name('info.modulos.nexus');
-        
-        
+
+
         // lista de los temas 
         Route::get('info-temas/{id_modulo}', [ControllerInfoModulos::class, 'infoTemasCapacitacion'])->name('info.temas.nexus');
-        
-        
+
+
         //Contenido de los temas 
         Route::get('contenido-tema/{id_tema}', [ControllerInfoModulos::class, 'getContenidoTemaCapacitacion'])->name('contenido.tema.nexus');
     });
 
-    Route::group(['prefix'=> 'crear_areas'], function () {
+    Route::group(['prefix' => 'crear_areas'], function () {
+        // Consulta de la area 
+        Route::get('/', [ControllerInfoModulos::class, 'getContentAreas'])->name('informacion.areas');
+
+
         //Creacion de  la area 
-        Route::get('/formulario_area',[ControllerInfoModulos::class, 'crearArea'])->name('contenido.areas.empresa');
-        Route::post('/contenido/formulario', [ControllerInfoModulos::class,'store'])->name('formulario.areas.empresa');
+        Route::get('/formulario_area', [ControllerInfoModulos::class, 'crearArea'])->name('contenido.areas.empresa');
+        Route::post('/contenido/formulario', [ControllerInfoModulos::class, 'store'])->name('formulario.areas.empresa');
 
         //falta modulo para realizar la actualizacion
 
@@ -958,13 +961,16 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         // falta modulo para realizar la eliminacion
 
     });
-    
-    Route::group(['prefix'=> 'cargos_area'], function () {
-                //Creacion de  cargos 
-        Route::get('/fomulario_cargo/{id_area}',[ControllerInfoModulos::class,'crearCargo'])->name('contenido.cargos.areas.empresa');
-        Route::post('/contenido/formulario', [ControllerInfoModulos::class,'storee'])->name('formulario.cargos.areas.empresa');
 
-   
+    Route::group(['prefix' => 'cargos_area'], function () {
+
+        Route::post('/{id_area}',[ControllerInfoModulos::class,'getContentCargos'])->name('informacion.cargos');
+
+        //Creacion de  cargos 
+        Route::get('/fomulario_cargo/{id_area}', [ControllerInfoModulos::class, 'crearCargo'])->name('contenido.cargos.areas.empresa');
+        Route::post('/contenido/formulario', [ControllerInfoModulos::class, 'storee'])->name('formulario.cargos.areas.empresa');
+
+
         //falta modulo para realizar la actualizacion
 
 
@@ -972,15 +978,13 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         // falta modulo para realizar la eliminacion
     });
 
-    Route::group(['prefix'=> 'modulo_area'], function () {
-        Route::get('/formulario_modulo/{id_cargo}',[ControllerInfoModulos::class, 'crearModulo'])->name('contenido.modulo.cargos.area.empresa');        
-        Route::post('/contenido/formulario/modulo', [ControllerInfoModulos::class,'stores'])->name('formulario.modulo.cargos.area.empresa');
-   
-   
+    Route::group(['prefix' => 'modulo_area'], function () {
+        Route::get('/formulario_modulo/{id_cargo}', [ControllerInfoModulos::class, 'crearModulo'])->name('contenido.modulo.cargos.area.empresa');
+        Route::post('/contenido/formulario/modulo', [ControllerInfoModulos::class, 'stores'])->name('formulario.modulo.cargos.area.empresa');
     });
 
 
-    
+
     Route::group(['prefix' => 'empresas'], function () {
         Route::get('/', [ControllerEmpresa::class, 'index'])->name('index'); // Mostrar todas las empresas
         Route::get('/create', [ControllerEmpresa::class, 'create'])->name('create'); // Mostrar formulario para crear nueva empresa
@@ -990,7 +994,7 @@ Route::group(['prefix' => 'nexus', 'middleware' => 'auth'], function () {
         Route::put('/{empresa}', [ControllerEmpresa::class, 'update'])->name('update'); // Actualizar empresa existente
         Route::delete('/{empresa}', [ControllerEmpresa::class, 'destroy'])->name('destroy'); // Eliminar una empresa
     });
-    
+
     Route::group(['prefix' => 'manual-de-funciones'], function () {
         Route::get('', [ControllerManualFunciones::class, 'index'])->name('registros.manual.nexus');
         Route::get('crear', [ControllerManualFunciones::class, 'formulario'])->name('form.manual.nexus');

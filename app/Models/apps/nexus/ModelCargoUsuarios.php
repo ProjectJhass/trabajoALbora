@@ -9,7 +9,7 @@ class ModelCargoUsuarios extends Model{
 
     protected $connection="app_nexus";
 
-    protected $table= "cargo_usuarios";
+    protected $table= "cargo_area_usuarios";
 
     protected $primaryKey='id_cargo_usuarios';
 
@@ -17,6 +17,7 @@ class ModelCargoUsuarios extends Model{
         "id_cargo_usuarios",
         "id",
         "id_cargo",
+        "id_dpto",
     ];
 
 

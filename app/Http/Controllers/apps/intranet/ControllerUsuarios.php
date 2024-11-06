@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\apps\intranet;
 
+use App\Http\Controllers\apps\nexus\ControllerAreasUsuarios;
+use App\Http\Controllers\apps\nexus\ControllerCargoUsuarios;
 use App\Http\Controllers\Controller;
 use App\Models\apps\intranet\ModelCentroOperaciones;
 use App\Models\apps\intranet\ModelUsersIntranet;
@@ -181,6 +183,7 @@ class ControllerUsuarios extends Controller
 
     public function createInfoGeneralUser(Request $request)
     {
+        // dd($request->all());
         $permisos = $request->permisoGeneral;
         $cedula = $request->cedula;
         $nombre = $request->nombre;
@@ -205,6 +208,8 @@ class ControllerUsuarios extends Controller
         $Nexus= $request->Nexus; // Anexo el campo e Nexus al actualizar
         $CargoNexus= $request->CargoNexus; //Anexo del campo cargo nexus al actualizar
         $estado = $request->estado;
+        $ids_areas=$request->area_id;
+        $ids_cargos=$request->cargo_ids;
 
         $info_user = ModelUsersIntranet::create([
             'id' => $cedula,
@@ -231,6 +236,40 @@ class ControllerUsuarios extends Controller
             'Nexus'=> $Nexus,
             'CargoNexus'=> $CargoNexus
         ]);
+
+        $ControllerAreaUsuarios = new ControllerAreasUsuarios();
+
+        // Verificar si $ids_areas es un array o un valor único
+        if (!is_array($ids_areas)) {
+            $ids_areas = [$ids_areas]; // Convertir a array si no lo es
+        }
+        
+        // Asociar usuarios a las áreas
+        foreach ($ids_areas as $area_id) {
+            // Verificar si $info_user->id es un array o un valor único
+            $response = $ControllerAreaUsuarios->CreacionAreaUsuarios($area_id, $info_user->id);
+            
+            $responseData = $response->getData(); // Obtener los datos de la respuesta
+            if ($responseData->status === false) {
+                return response()->json(false, 422); // Retornar error en caso de fallo
+            }
+        }
+        
+        $ControlleCargoUsuarios=new ControllerCargoUsuarios();
+
+        foreach ($ids_areas as $value1) {
+            foreach ($ids_cargos as $value2) {
+                $responses=$ControlleCargoUsuarios->CreacionCargoUsuarios($info_user->id, $value2, $value1);
+                $responsesTwo=$responses->getData();
+                    if ($responsesTwo->status === false) {
+                        return response()->json( false, status: 422);
+                    }
+                
+            }
+
+        }
+
+        
 
         if ($info_user) {
             $info_ = ModelUsersIntranet::find($cedula);

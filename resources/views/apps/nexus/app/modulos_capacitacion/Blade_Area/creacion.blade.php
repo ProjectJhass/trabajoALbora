@@ -30,15 +30,6 @@
             <input type="file" class="form-control" id="name_image" name="name_image" accept="image/*" required>
         </div>
 
-        <!-- Sección para seleccionar usuarios -->
-        <div class="mb-3">
-            <label class="form-label">Asignar Usuarios al Área</label>
-            <select class="form-control js-example-basic-multiple" multiple="multiple" name="select_usuario_seleccionado[]" id="usuarios-select"></select>
-            <small class="form-text text-muted">Selecciona uno o más usuarios.</small>
-        </div>
-
-
-
         <button type="button" onclick="crearArea()" class="btn btn-primary">Guardar Area</button>
     </form>
 </div>
@@ -73,48 +64,6 @@
         })
 
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // Selecciona el elemento del select
-        const selectElement = $('.js-example-basic-multiple');
-
-        // Asegurarse de que Select2 esté disponible y luego inicializarlo
-        if (selectElement) {
-            $(selectElement).select2(); // Usamos el método select2
-        }
-
-
-
-        // Hacer la petición AJAX para obtener los usuarios
-        fetch("{{ route('get.usuarios') }}")
-            .then(function(response) {
-                return response.json(); // Convertir la respuesta a JSON
-            })
-            .then(function(usuarios) {
-                let select = document.getElementById('usuarios-select');
-                select.innerHTML = ''; // Vaciar el select
-
-                // Recorrer los usuarios y añadir opciones al select
-                usuarios.forEach(function(usuario) {
-
-                    let option = document.createElement('option');
-                    option.value = usuario.id; // ID del usuario como valor
-                    option.textContent = usuario.nombre; // Nombre del usuario como texto
-                    select.appendChild(option);
-                });
-
-                // Refrescar Select2 después de cargar las opciones
-                const event = new Event('change', {
-                    bubbles: true
-                });
-                select.dispatchEvent(event); // Disparar evento 'change'
-            })
-            .catch(function(error) {
-                console.error('Error al cargar los usuarios:', error);
-            });
-
-
-    });
 </script>
 
 @endsection

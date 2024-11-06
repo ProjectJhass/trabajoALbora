@@ -14,23 +14,37 @@ class ControllerAreasUsuarios extends Controller
         return response()->json($usuarios, 200);
     }
 
-    public function CreacionAreaUsuarios(array $usuarios, $areaId)
+    public function CreacionAreaUsuarios($areaId, $usuarios)
     {
+        // Si $areaId no es un array, conviértelo en un array
+        if (!is_array($areaId)) {
+            $areaId = [$areaId];
+        }
+    
+        // Si $usuarios no es un array, conviértelo en un array
+        if (!is_array($usuarios)) {
+            $usuarios = [$usuarios];
+        }
+    
         // Validar que se reciban usuarios e ID de área
         if (empty($usuarios) || empty($areaId)) {
-            return response()->json(['status' => false, 'mensaje' => 'Faltan datos necesarios.'], 400);
+            return response()->json(['status' => false], 400);
         }
     
-        // Crear la relación en la base de datos para cada usuario
-        foreach ($usuarios as $usuarioId) {
-            ModelAreasUsuarios::create([
-                'id' => $usuarioId, // Asegúrate de usar el campo correcto
-                'id_dpto' => $areaId,
-            ]);
+        // Crear la relación en la base de datos para cada usuario y área
+        foreach ($areaId as $areasId) {
+            foreach ($usuarios as $usuarioId) {
+                ModelAreasUsuarios::create([
+                    'id' => $usuarioId, // Asegúrate de usar el campo correcto
+                    'id_dpto' => $areasId,
+                ]);
+            }
         }
     
-        return response()->json(['status' => true, 'mensaje' => 'Usuarios asignados al área exitosamente.'], 201);
+        return response()->json(['status' => true], 201);
     }
+    
+    
     
 }
 

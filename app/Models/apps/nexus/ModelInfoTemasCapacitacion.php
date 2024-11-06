@@ -18,13 +18,10 @@ class ModelInfoTemasCapacitacion extends Model
     protected $fillable = [
         'id_tema',
         'nombre_tema',
-        'objetivo',
-        'doc',
-        'tipo',
-        'tama',
-        'id_modulo',
-        'encargado',
-        'estado'
+        'objetivo_tema',
+        'documento_tema',
+        'url_tema',
+        'estado',
     ];
 
 
